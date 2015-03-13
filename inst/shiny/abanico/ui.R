@@ -1,4 +1,5 @@
 ## UI.R
+library(RLumShiny)
 
 # load example data
 data(ExampleData.DeValues)

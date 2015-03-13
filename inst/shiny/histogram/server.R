@@ -4,7 +4,11 @@ library(shiny)
 
 # load example data
 data(ExampleData.DeValues)
-data<- ExampleData.DeValues$CA1
+if (is.data.frame(ExampleData.DeValues)) {
+  data <- ExampleData.DeValues
+} else {
+  data <- ExampleData.DeValues$CA1
+} 
 
 ## MAIN FUNCTION
 shinyServer(function(input, output, session) {

@@ -4,7 +4,9 @@ library(shiny)
 
 ## read example data set and misapply them for this plot type
 data(ExampleData.DeValues, envir = environment())
-
+if (!is.data.frame(ExampleData.DeValues)) {
+  ExampleData.DeValues <- ExampleData.DeValues$BT998
+}
 
 ##############################################################################
 ###                        MAIN PROGRAM                                    ###
@@ -45,8 +47,8 @@ shinyServer(function(input, output, session) {
         data<- list(datGet())
       }
     } else {
-      x.1 <- ExampleData.DeValues$BT998[7:11,]
-      x.2 <- ExampleData.DeValues$BT998[7:11,] * c(runif(5, 0.9, 1.1), 1)
+      x.1 <- ExampleData.DeValues[7:11,]
+      x.2 <- ExampleData.DeValues[7:11,] * c(runif(5, 0.9, 1.1), 1)
       data<- list(x.1, x.2)
     }
   })
