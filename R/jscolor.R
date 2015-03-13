@@ -6,7 +6,7 @@
 #' @param label \code{\link{character}}: Display label for the control, or NULL for no label.
 #' @param value \code{\link{character}}: Initial RGB value of the color picker. Default is black ('#000000').
 #' @param position \code{\link{character}}: Position of the picker relative to the text input ('bottom', 'left', 'top', 'right').
-#' @param color \code{\link{character}}: Picker color scheme ('transparent' by default). Use RGB color coding ('#000000').
+#' @param color \code{\link{character}}: Picker color scheme ('transparent' by default). Use RGB color coding ('000000').
 #' @param mode \code{\link{character}}: Mode of hue, saturation and value. Can either be 'HSV' or 'HVS'.
 #' @param slider \code{\link{logical}}: Show or hide the slider.
 #' @param close \code{\link{logical}}: Show or hide a close button.
@@ -44,7 +44,7 @@ jscolorInput <- function(inputId, label, value, position = 'bottom', color = 'tr
     singleton(tags$head(tags$script(src = "RLumShiny/jscolor/jscolor.js"))),
     if (missing(label)) { tags$p(" ") } else if (!is.null(label)) { tags$p(label) },
     tags$input(id = inputId, 
-               value = ifelse(!missing(value), value, "#000000"), 
+               value = ifelse(!missing(value), value, "000000"), 
                class = sprintf("color {hash:true, pickerPosition:'%s', pickerBorderColor:'transparent', pickerFaceColor:'%s', pickerMode:'%s', slider:%s, pickerClosable:%s} shiny-bound-input", position, color, mode, tolower(slider), tolower(close)), 
                onchange = sprintf("$('#%s').trigger('afterChange')", inputId)),
     tags$script(sprintf("$('#%s').trigger('afterChange')", inputId))

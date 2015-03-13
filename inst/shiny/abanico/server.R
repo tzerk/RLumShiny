@@ -452,7 +452,7 @@ shinyServer(function(input, output, session) {
     
     # if custom datapoint color get RGB code from separate input panel
     if(input$color == "custom") {
-      color<- ifelse(input$jscol1 == "", "black", paste0("#",input$jscol1))
+      color<- ifelse(input$jscol1 == "", "black", input$jscol1)
     } else {
       color<- input$color
     }
@@ -463,7 +463,7 @@ shinyServer(function(input, output, session) {
         if(input$jscol2 == "") {
           color<- "black"
         } else {
-          color2<- paste0("#",input$jscol2)
+          color2<- input$jscol2
         }
       } else {
         color2<- input$color2
@@ -493,10 +493,10 @@ shinyServer(function(input, output, session) {
                          input$line7, input$line8))
     
     # create char vector of line colors
-    line.col<-  c(paste0("#",input$colline1), paste0("#",input$colline2),
-                  paste0("#",input$colline3), paste0("#",input$colline4),
-                  paste0("#",input$colline5), paste0("#",input$colline6),
-                  paste0("#",input$colline7), paste0("#",input$colline8))
+    line.col<-  c(input$colline1, input$colline2,
+                  input$colline3, input$colline4,
+                  input$colline5, input$colline6,
+                  input$colline7, input$colline8)
     
     line.col[which(line.col=="#")] <- "#FFFFFF"
     

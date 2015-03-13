@@ -16,7 +16,7 @@ jscolorInput(inputId, label, value, position = "bottom",
 
 \item{position}{\code{\link{character}}: Position of the picker relative to the text input ('bottom', 'left', 'top', 'right').}
 
-\item{color}{\code{\link{character}}: Picker color scheme ('transparent' by default). Use RGB color coding ('#000000').}
+\item{color}{\code{\link{character}}: Picker color scheme ('transparent' by default). Use RGB color coding ('000000').}
 
 \item{mode}{\code{\link{character}}: Mode of hue, saturation and value. Can either be 'HSV' or 'HVS'.}
 
