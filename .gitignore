@@ -1,0 +1,10 @@
+/.Rproj.user/*
+*.RData
+*.Rhistory
+*.Rproj
+*.Rprofile
+testthat.R
+test-plot_Spectrum.R$
+UML_class_ESR_package.vsdx
+.Rproj.user
+packrat/lib*/

@@ -1,0 +1,7 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+LICENSE$
+README.md$
+^.Rprofile$
+^\.Rprofile$
+.Rprofile
