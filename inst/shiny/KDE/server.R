@@ -4,7 +4,11 @@ library(shiny)
 
 # load example data
 data(ExampleData.DeValues)
-data<- list(ExampleData.DeValues$CA1, ExampleData.DeValues$CA1)
+if (is.data.frame(ExampleData.DeValues)) {
+  data <- list(ExampleData.DeValues, ExampleData.DeValues)
+} else {
+  data <- list(ExampleData.DeValues$CA1, ExampleData.DeValues$CA1)
+} 
 
 ## MAIN FUNCTION
 shinyServer(function(input, output, session) {
@@ -65,9 +69,9 @@ shinyServer(function(input, output, session) {
       
       sliderInput(inputId = "xlim", 
                   label = "Range x-axis",
-                  min = min(ExampleData.DeValues$CA1[,1])*0.25, 
-                  max = max(ExampleData.DeValues$CA1[,1])*1.75,
-                  value = c(min(ExampleData.DeValues$CA1[,1])*0.9, max(ExampleData.DeValues$CA1[,1]))*1.05,
+                  min = min(data[[1]][,1])*0.25, 
+                  max = max(data[[1]][,1])*1.75,
+                  value = c(min(data[[1]][,1])*0.9, max(data[[1]][,1]))*1.05,
                   step = 1, round = 0)
     }
   })## EndOf::renderUI()
@@ -104,8 +108,8 @@ shinyServer(function(input, output, session) {
       
       sliderInput(inputId = "bw", 
                   label = "KDE bandwidth", 
-                  min = 1, max = 20,
-                  value = 6, step = 0.1)
+                  min = 1, max = 100,
+                  value = 15, step = 1)
     }
   })## EndOf::renderUI()
   

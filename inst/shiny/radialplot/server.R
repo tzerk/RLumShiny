@@ -4,7 +4,11 @@ library(shiny)
 
 # load example data
 data(ExampleData.DeValues)
-data<- ExampleData.DeValues$CA1
+if (is.data.frame(ExampleData.DeValues)) {
+  data <- ExampleData.DeValues
+} else {
+  data <- ExampleData.DeValues$CA1
+} 
 
 ## MAIN FUNCTION
 shinyServer(function(input, output, session) {
@@ -60,9 +64,9 @@ shinyServer(function(input, output, session) {
     else { #case 2: no -> sliderInput for example data
       sliderInput(inputId = "centValue", 
                   label = "Central Value", 
-                  min = min(ExampleData.DeValues$CA1[,1])*0.9, 
-                  max = max(ExampleData.DeValues$CA1[,1])*1.1,
-                  value = mean(ExampleData.DeValues$CA1[,1]), 
+                  min = min(data[,1])*0.9, 
+                  max = max(data[,1])*1.1,
+                  value = mean(data[,1]), 
                   step = 1, round = 0)
     }
   })## EndOf::renderUI()
@@ -109,9 +113,9 @@ shinyServer(function(input, output, session) {
     }
     else { #case 2: no -> sliderInput for example data
       if(input$logz == TRUE) {
-        sd<- ExampleData.DeValues$CA1[,2] / ExampleData.DeValues$CA1[,1]        
+        sd<- data[,2] / data[,1]        
       } else {
-        sd<- ExampleData.DeValues$CA1[,2] 
+        sd<- data[,2] 
         
       }
       prec<- 1/sd
@@ -150,9 +154,9 @@ shinyServer(function(input, output, session) {
     else { #case 2: no -> sliderInput for example data
       sliderInput(inputId = "zlim", 
                   label = "Range z-axis",
-                  min = min(ExampleData.DeValues$CA1[,1])*0.25, 
-                  max = max(ExampleData.DeValues$CA1[,1])*1.75,
-                  value = c(min(ExampleData.DeValues$CA1[,1])*0.8, max(ExampleData.DeValues$CA1[,1]))*1.2,
+                  min = min(data[,1])*0.25, 
+                  max = max(data[,1])*1.75,
+                  value = c(min(data[,1])*0.8, max(data[,1]))*1.2,
                   step = 1, round = 0)
     }
   })## EndOf::renderUI()

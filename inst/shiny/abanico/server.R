@@ -1,12 +1,17 @@
 ## Server.R
 library(Luminescence)
+library(RLumShiny)
 library(shiny)
 library(digest)
 library(RCurl)
 
 # load example data
-data(ExampleData.DeValues)
-data<- ExampleData.DeValues$CA1
+data(ExampleData.DeValues, envir = environment())
+if (is.data.frame(ExampleData.DeValues)) {
+  data <- ExampleData.DeValues
+} else {
+  data <- ExampleData.DeValues$CA1
+} 
 
 # see AES {digest} documentation
 hextextToRaw <- function(text) {
