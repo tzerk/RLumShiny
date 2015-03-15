@@ -7,7 +7,7 @@ Authors@R: c(person("Christoph", "Burow", role = c("aut", "cre"), email = "chris
     )
 Author: Christoph Burow [aut, cre]
 Maintainer: Christoph Burow <christoph.burow@uni-koeln.de>
-Description: A collection of shiny apps for the R package Luminescence.
+Description: A collection of shiny applications for the R package Luminescence. These mainly, but not exclusively, include applications for plotting chronometric data from e.g. luminescence or radiocarbon dating.
 License: GPL-3
 Depends:
     R (>= 3.1.2)
