@@ -22,4 +22,5 @@ BugReports: https://github.com/tzerk/RLumShiny/issues
 Collate:
     'app_RLum.R'
     'jscolor.R'
+    'tooltip.R'
     'zzz.R'

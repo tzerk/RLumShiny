@@ -1,0 +1,57 @@
+#' Create a bootstrap tooltip
+#' 
+#' Creates a bootstrap tooltip for any DOM to be used in shiny applications. 
+#' 
+#' @param refId \code{\link{character}} (required): ID of the DOM the tooltip is attached to.
+#' @param text \code{\link{character}}: Text to be displayed in the tooltip.
+#' @param animation \code{\link{logical}}: Apply a CSS fade transition to the tooltip.
+#' @param delay \code{\link{numeric}}: Delay showing and hiding the tooltip (ms).
+#' @param html \code{\link{logical}}: Insert HTML into the tooltip.
+#' @param placement \code{\link{character}}: How to position the tooltip - top | bottom | left | right | auto. When 'auto' is specified, it will dynamically reorient the tooltip. For example, if placement is 'auto left', the tooltip will display to the left when possible, otherwise it will display right.
+#' @param trigger \code{\link{character}}: How tooltip is triggered - click | hover | focus | manual. You may pass multiple triggers; separate them with a space.
+#' 
+#' @examples 
+#' # html code
+#' tt <- tooltip("someId", "This is a tooltip.")
+#' str(tt)
+#' 
+#' # example app
+#' \dontrun{
+#' shinyApp(
+#' ui = fluidPage(
+#'   jscolorInput(inputId = "col", label = "JSColor Picker", 
+#'                value = "21BF6B", position = "right", 
+#'                mode = "HVS", close = TRUE),
+#'   tooltip("col", "This is a JScolor widget"),
+#'   
+#'   checkboxInput("cbox", "Checkbox", FALSE),
+#'   tooltip("cbox", "This is a checkbox"),
+#'   
+#'   checkboxGroupInput("cboxg", "Checkbox group", selected = "a", 
+#'                      choices = c("a" = "a",
+#'                                  "b" = "b",
+#'                                  "c" = "c")),
+#'   tooltip("cboxg", "This is a checkbox group"),
+#'   
+#'   textInput("textIn", "Textinput"),
+#'   tooltip("textIn", "This is a text input field"),
+#'   
+#'   passwordInput("pwIn", "Passwordinput"),
+#'   tooltip("pwIn", "This is a password input field"),
+#'   
+#'   plotOutput("plot")
+#' ),
+#' server = function(input, output) {
+#'   output$plot <- renderPlot({
+#'     plot(cars, col = input$col, cex = 2, pch = 16)
+#'  })
+#' })
+#' }
+#' @import shiny
+#' @export
+tooltip <- function(refId, text, animation = TRUE, delay = 100, html = TRUE, placement = 'top', trigger = 'hover') {
+  tagList(        
+    tags$head(tags$script(sprintf("$(window).load(function(){ $('#%s').tooltip({ html: %s, trigger: '%s', title: '%s', animation: %s, delay: {'show': %i, 'hide': %i}, placement: '%s' }); })",
+                                  refId, tolower(html), trigger, text, tolower(animation), delay, delay, placement)))
+  )
+}
