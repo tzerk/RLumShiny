@@ -5,10 +5,10 @@
 \title{Create a bootstrap tooltip}
 \usage{
 tooltip(refId, text, animation = TRUE, delay = 100, html = TRUE,
-  placement = "top", trigger = "hover")
+  placement = "auto", trigger = "hover")
 }
 \arguments{
-\item{refId}{\code{\link{character}} (required): ID of the DOM the tooltip is attached to.}
+\item{refId}{\code{\link{character}} (required): id of the element the tooltip is to be attached to.}
 
 \item{text}{\code{\link{character}}: Text to be displayed in the tooltip.}
 
@@ -27,7 +27,8 @@ Creates a bootstrap tooltip for any DOM to be used in shiny applications.
 }
 \examples{
 # html code
-tooltip("col", "This is a JSColor widget.")
+tt <- tooltip("someId", "This is a tooltip.")
+str(tt)
 
 # example app
 \dontrun{

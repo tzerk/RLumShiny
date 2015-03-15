@@ -1,8 +1,8 @@
 #' Create a bootstrap tooltip
 #' 
-#' Creates a bootstrap tooltip for any DOM to be used in shiny applications. 
+#' Create bootstrap tooltips for any HTML element to be used in shiny applications. 
 #' 
-#' @param refId \code{\link{character}} (required): ID of the DOM the tooltip is attached to.
+#' @param refId \code{\link{character}} (required): id of the element the tooltip is to be attached to.
 #' @param text \code{\link{character}}: Text to be displayed in the tooltip.
 #' @param animation \code{\link{logical}}: Apply a CSS fade transition to the tooltip.
 #' @param delay \code{\link{numeric}}: Delay showing and hiding the tooltip (ms).
@@ -31,7 +31,7 @@
 #'                      choices = c("a" = "a",
 #'                                  "b" = "b",
 #'                                  "c" = "c")),
-#'   tooltip("cboxg", "This is a checkbox group"),
+#'   tooltip("cboxg", "This is a <b>checkbox group</b>", html = TRUE),
 #'   
 #'   textInput("textIn", "Textinput"),
 #'   tooltip("textIn", "This is a text input field"),
@@ -49,7 +49,7 @@
 #' }
 #' @import shiny
 #' @export
-tooltip <- function(refId, text, animation = TRUE, delay = 100, html = TRUE, placement = 'top', trigger = 'hover') {
+tooltip <- function(refId, text, animation = TRUE, delay = 100, html = TRUE, placement = 'auto', trigger = 'hover') {
   tagList(        
     tags$head(tags$script(sprintf("$(window).load(function(){ $('#%s').tooltip({ html: %s, trigger: '%s', title: '%s', animation: %s, delay: {'show': %i, 'hide': %i}, placement: '%s' }); })",
                                   refId, tolower(html), trigger, text, tolower(animation), delay, delay, placement)))
