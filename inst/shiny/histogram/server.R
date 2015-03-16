@@ -153,7 +153,7 @@ shinyServer(function(input, output, session) {
                    mtext = input$mtext, 
                    main = input$main,
                    rug = input$rugs, 
-                   se = input$error.bars, 
+                   se = input$errorBars, 
                    normal_curve = input$norm, 
                    summary = summary,
                    xlab = input$xlab,
@@ -178,7 +178,7 @@ shinyServer(function(input, output, session) {
     str4 <- paste("colour = c('",colors[1],"','",colors[2],"','",colors[3],"','",colors[4],"'),", sep = "") 
     str5 <- paste("pch = ",pch,",", sep = "")                         
     str6<- paste("normal_curve = ",input$norm,",", sep = "")            
-    str7<- paste("se = ", input$error.bars, ",", sep = "")                      
+    str7<- paste("se = ", input$errorBars, ",", sep = "")                      
     str8<- paste("rug = ", input$rugs, ",", sep = "")                   
     str9 <- paste("main = '",input$main,"',", sep = "")               
     str10 <- paste("cex.global = ", input$cex, ",", sep = "")          
@@ -263,7 +263,7 @@ shinyServer(function(input, output, session) {
                        mtext = input$mtext, 
                        main = input$main,
                        rug = input$rugs, 
-                       se = input$error.bars, 
+                       se = input$errorBars, 
                        normal_curve = input$norm, 
                        summary = summary,
                        xlab = input$xlab,
