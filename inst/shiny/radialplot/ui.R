@@ -662,14 +662,16 @@ pageWithSidebar(
                                         # HTML code to include a .png file in the tab; the image file must be in
                                         # a subfolder called "wwww"
                                         img(src="RL_Logo.png", height = 100, width = 100, alt = "R.Lum"),
+                                        p("Links:"),
+                                        a(href = "http://www.r-luminescence.de", "R.Luminescence project page", target="_blank"),
                                         br(),
-                                        a(href = "http://www.r-luminescence.de", "http://www.r-luminescence.de", target="_blank"),
+                                        a(href = "https://forum.r-luminescence.de", "Message board", target="_blank"),
                                         br(),
-                                        a(href = "https://forum.r-luminescence.de", "https://forum.r-luminescence.de", target="_blank"),
-                                        br(),br(),hr(),
-                                        p("See the R code of this app on GitHub:"),
-                                        a(href = "https://github.com/tzerk/shiny-radialplot/",
-                                          "https://github.com/tzerk/shiny-radialplot/", target="_blank")
+                                        a(href = "https://zerk.canopus.uberspace.de/R.Lum", "Online application", target="_blank"),
+                                        br(),hr(),
+                                        img(src='GitHub-Mark-32px.png', width='32px', height='32px'),
+                                        br(),
+                                        a(href = "https://github.com/tzerk/RLumShiny/tree/master/inst/shiny/radialplot", "See the code at GitHub!", target="_blank")
                                     )#/div
                            )##EndOf::Tab_9
                )##EndOf::tabsetPanel
