@@ -639,7 +639,7 @@ shinyServer(function(input, output, session) {
                 grid.col = grid.col,
                 legend = legend,
                 legend.pos = legend.pos,
-                na.exclude = input$na.exclude,
+                na.exclude = input$naExclude,
                 lwd = c(input$lwd, input$lwd2),
                 xlab = c(input$xlab1, input$xlab2, input$xlab3),
                 ylab = input$ylab,
@@ -762,7 +762,7 @@ shinyServer(function(input, output, session) {
     str25 <- paste0("grid.col = '",grid.col,"',")
     str26 <- paste0("legend = c('",legend[1],"','",legend[2],"'),")
     str27 <- paste0("legend.pos = ",verb.legend.pos,",")
-    str28 <- paste0("na.exclude = ",input$na.exclude,",")
+    str28 <- paste0("na.exclude = ",input$naExclude,",")
     str29 <- paste0("lwd = c(",input$lwd,",",input$lwd2,"),")
     str30 <- paste0("xlab = c('", input$xlab1,"','",input$xlab2,"','",input$xlab3,"'),")
     str31 <- paste0("ylab = '",input$ylab,"',",sep ="")
