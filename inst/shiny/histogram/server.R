@@ -92,14 +92,14 @@ shinyServer(function(input, output, session) {
     
     # if custom datapoint color get RGB code from separate input panel
     if(input$pchColor == "custom") {
-      pch.color<- input$pch.rgb
+      pch.color<- input$pchRgb
     } else {
       pch.color<- input$pchColor
     }
     
     # if custom datapoint color get RGB code from separate input panel
     if(input$barsColor == "custom") {
-      bars.color<-  adjustcolor(col = input$bars.rgb,
+      bars.color<-  adjustcolor(col = input$barsRgb,
                                 alpha.f = input$alpha.bars/100)
     } else {
       bars.color<-  adjustcolor(col = input$barsColor,
@@ -108,14 +108,14 @@ shinyServer(function(input, output, session) {
     
     # if custom datapoint color get RGB code from separate input panel
     if(input$rugsColor == "custom") {
-      rugs.color<- input$rugs.rgb
+      rugs.color<- input$rugsRgb
     } else {
       rugs.color<- input$rugsColor
     }
     
     # if custom datapoint color get RGB code from separate input panel
     if(input$normalColor == "custom") {
-      normal.color<- input$normal.rgb
+      normal.color<- input$normalRgb
     } else {
       normal.color<- input$normalColor
     }

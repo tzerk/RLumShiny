@@ -115,7 +115,7 @@ pageWithSidebar(
                                       ),
                                       column(width = 6, offset = 3,
                                              actionButton("newAccount","Create new account")
-                                             )
+                                      )
                                     ),
                                     
                                     div(align = "center", h5("Data sets")),
@@ -132,7 +132,7 @@ pageWithSidebar(
                                     fluidRow(
                                       column(width = 6, offset =6,
                                              actionButton("delete", "Delete", class = "btn btn-danger")
-                                             )),
+                                      )),
                                     
                                     
                                     div(align = "center", h5("Upload new data set")),
@@ -144,14 +144,14 @@ pageWithSidebar(
                                     fluidRow(
                                       column(width = 6,
                                              actionButton("upload", "Upload file", icon = icon("upload"))
-                                             ),
+                                      ),
                                       column(width = 1, offsett = 5,
                                              #helpPopup("Help", "...", placement='top', trigger='click')
                                              actionButton("logout", "Logout")
-                                             ))
-                                   
+                                      ))
                                     
-                                   
+                                    
+                                    
                                     
                                     
                            ),
@@ -269,10 +269,10 @@ pageWithSidebar(
                                     fluidRow(
                                       column(width = 6,
                                              div(id="pratiodiv",
-                                             sliderInput(inputId = "p.ratio", 
-                                                         label = "Plot ratio", 
-                                                         min=0.25, max=0.90,
-                                                         value=0.75, step=0.01, round= FALSE)
+                                                 sliderInput(inputId = "p.ratio", 
+                                                             label = "Plot ratio", 
+                                                             min=0.25, max=0.90,
+                                                             value=0.75, step=0.01, round= FALSE)
                                              ),
                                              tooltip(refId = "pratiodiv", text = "Relative space given to the radial versus the cartesian plot part, default is 0.75.")
                                       ),
@@ -709,16 +709,14 @@ pageWithSidebar(
                                       column(width = 6,
                                              # show only if custom color is desired
                                              conditionalPanel(condition = "input.polygon == 'custom'",
-                                                              textInput(inputId = "rgb.polygon",
-                                                                        label = "Color name or RGB Code",
-                                                                        value = "#000000"))
+                                                              jscolorInput(inputId = "rgbPolygon",
+                                                                           label = "Choose a color"))
                                       ),
                                       column(width = 6,
                                              # show only if custom color is desired
                                              conditionalPanel(condition = "input.polygon2 == 'custom'",
-                                                              textInput(inputId = "rgb.polygon2",
-                                                                        label = "Color name or RGB Code",
-                                                                        value = "#000000"))
+                                                              jscolorInput(inputId = "rgbPolygon2",
+                                                                           label = "Choose a color"))
                                       )
                                     ),
                                     
@@ -751,17 +749,15 @@ pageWithSidebar(
                                       column(width = 6,
                                              # show only if custom color is desired
                                              conditionalPanel(condition = "input.bar == 'custom'",
-                                                              textInput(inputId = "rgb.bar",
-                                                                        label = "Color name or RGB Code",
-                                                                        value = "#000000"))
+                                                              jscolorInput(inputId = "rgbBar",
+                                                                           label = "Choose a color"))
                                       ),
                                       column(width = 6,
                                              
                                              # show only if custom color is desired
                                              conditionalPanel(condition = "input.bar2 == 'custom'",
-                                                              textInput(inputId = "rgb.bar2",
-                                                                        label = "Color name or RGB Code",
-                                                                        value = "#000000"))
+                                                              jscolorInput(inputId = "rgbBar2",
+                                                                           label = "Choose a color"))
                                       )
                                     ),
                                     
@@ -785,9 +781,8 @@ pageWithSidebar(
                                       column(width = 6,
                                              # show only if custom color is desired
                                              conditionalPanel(condition = "input.grid == 'custom'",
-                                                              textInput(inputId = "rgb.grid",
-                                                                        label = "Color name or RGB Code",
-                                                                        value = "#000000"))
+                                                              jscolorInput(inputId = "rgbGrid",
+                                                                        label = "Choose a color"))
                                       )
                                     ),
                                     
@@ -862,11 +857,11 @@ pageWithSidebar(
                                     div(align = "center", h5("Layout")),
                                     
                                     div(id = "layout", 
-                                    selectInput(inputId = "layout", 
-                                                label = "Choose layout", 
-                                                selected = "default",
-                                                choices = c("Default"="default",
-                                                            "Journal"="journal"))
+                                        selectInput(inputId = "layout", 
+                                                    label = "Choose layout", 
+                                                    selected = "default",
+                                                    choices = c("Default"="default",
+                                                                "Journal"="journal"))
                                     ),
                                     tooltip(refId = "layout", text = "The optional parameter layout allows to modify the entire plot more sophisticated. Each element of the plot can be addressed and its properties can be defined. This includes font type, size and decoration, colours and sizes of all plot items. To infer the definition of a specific layout style cf. get_Layout() or type eg. for the layout type \"journal\" get_Layout(\"journal\"). A layout type can be modified by the user by assigning new values to the list object.")
                                     

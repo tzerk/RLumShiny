@@ -151,9 +151,8 @@ pageWithSidebar(
                                       column(width = 6,
                                              # show only if custom color is desired
                                              conditionalPanel(condition = "input.barsColor == 'custom'",
-                                                              textInput(inputId = "bars.rgb",
-                                                                        label = "Color name or RGB Code",
-                                                                        value = "#000000"))
+                                                              jscolorInput(inputId = "barsRgb",
+                                                                        label = "Choose a color"))
                                       )
                                     ),
                                     
@@ -185,9 +184,8 @@ pageWithSidebar(
                                       column(width = 6,
                                              # show only if custom color is desired
                                              conditionalPanel(condition = "input.normalColor == 'custom'",
-                                                              textInput(inputId = "normal.rgb",
-                                                                        label = "Color name or RGB Code",
-                                                                        value = "#000000"))
+                                                              jscolorInput(inputId = "normalRgb",
+                                                                        label = "Choose a color"))
                                       )
                                     ),
                                     
@@ -221,9 +219,8 @@ pageWithSidebar(
                                       column(width = 6,
                                              # show only if custom color is desired
                                              conditionalPanel(condition = "input.rugsColor == 'custom'",
-                                                              textInput(inputId = "rugs.rgb",
-                                                                        label = "Color name or RGB Code",
-                                                                        value = "#000000"))
+                                                              jscolorInput(inputId = "rugsRgb",
+                                                                        label = "Choose a color"))
                                       )
                                     )
                                     
@@ -319,9 +316,8 @@ pageWithSidebar(
                                       column(width = 6,
                                              # show only if custom color is desired
                                              conditionalPanel(condition = "input.pchColor == 'custom'",
-                                                              textInput(inputId = "pch.rgb",
-                                                                        label = "Color name or RGB Code",
-                                                                        value = "#000000"))
+                                                              jscolorInput(inputId = "pchRgb",
+                                                                        label = "Choose a color"))
                                       )
                                     )
                                     

@@ -296,9 +296,8 @@ pageWithSidebar(
                                       column(width = 6,
                                              # show only if custom color is desired
                                              conditionalPanel(condition = "input.color == 'custom'",
-                                                              textInput(inputId = "rgb",
-                                                                        label = "Color name or RGB Code",
-                                                                        value = "#000000"))
+                                                              jscolorInput(inputId = "rgb",
+                                                                        label = "Choose a color"))
                                       )
                                     ),
                                     
@@ -357,9 +356,8 @@ pageWithSidebar(
                                       column(width = 6,
                                              # show only if custom color is desired
                                              conditionalPanel(condition = "input.color2 == 'custom'",
-                                                              textInput(inputId = "rgb2",
-                                                                        label = "Color name or RGB Code",
-                                                                        value = "#000000"))
+                                                              jscolorInput(inputId = "rgb2",
+                                                                           label = "Choose a color"))
                                       )
                                     )
                                     
@@ -379,10 +377,9 @@ pageWithSidebar(
                                     tooltip(refId = "line1", text = "Numeric values of the additional lines to be added."),
                                     
                                     fluidRow(
-                                      column(width = 6,
-                                             textInput(inputId = "colline1",
-                                                       label = "Color name or RGB Code",
-                                                       value = "#000000")
+                                      column(width = 6, 
+                                             HTML("Choose a color<br>"),
+                                             jscolorInput(inputId = "colline1")
                                       ),
                                       column(width = 6,                                    
                                              textInput(inputId = "labline1",
@@ -396,14 +393,14 @@ pageWithSidebar(
                                     conditionalPanel(condition = "input.line1 > 0",
                                                      numericInput(inputId = "line2", strong("Line #2"), NA, min = 0),
                                                      fluidRow(
-                                                       column(width = 6, textInput("colline2","Color name or RGB Code",value = "#000000")),
+                                                       column(width = 6, HTML("Choose a color<br>"),jscolorInput(inputId = "colline2")),
                                                        column(width = 6, textInput("labline2","Label",value = ""))
                                                      )
                                     ),
                                     conditionalPanel(condition = "input.line2 > 0",
                                                      numericInput(inputId = "line3", strong("Line #3"), NA, min = 0),
                                                      fluidRow(
-                                                       column(width = 6, textInput("colline3","Color name or RGB Code",value = "#000000")),
+                                                       column(width = 6, HTML("Choose a color<br>"),jscolorInput(inputId = "colline3")),
                                                        column(width = 6, textInput("labline3","Label",value = ""))
                                                      )
                                     ),
@@ -411,7 +408,7 @@ pageWithSidebar(
                                     conditionalPanel(condition = "input.line3 > 0",
                                                      numericInput(inputId = "line4", strong("Line #4"), NA, min = 0),
                                                      fluidRow(
-                                                       column(width = 6, textInput("colline4","Color name or RGB Code",value = "#000000")),
+                                                       column(width = 6, HTML("Choose a color<br>"),jscolorInput(inputId = "colline4")),
                                                        column(width = 6, textInput("labline4","Label",value = ""))
                                                      )
                                     ),
@@ -419,7 +416,7 @@ pageWithSidebar(
                                     conditionalPanel(condition = "input.line4 > 0",
                                                      numericInput(inputId = "line5", strong("Line #5"), NA, min = 0),
                                                      fluidRow(
-                                                       column(width = 6, textInput("colline5","Color name or RGB Code",value = "#000000")),
+                                                       column(width = 6, HTML("Choose a color<br>"),jscolorInput(inputId = "colline5")),
                                                        column(width = 6, textInput("labline5","Label",value = ""))
                                                      )
                                     ),
@@ -427,7 +424,7 @@ pageWithSidebar(
                                     conditionalPanel(condition = "input.line5 > 0",
                                                      numericInput(inputId = "line6", strong("Line #6"), NA, min = 0),
                                                      fluidRow(
-                                                       column(width = 6, textInput("colline6","Color name or RGB Code",value = "#000000")),
+                                                       column(width = 6, HTML("Choose a color<br>"),jscolorInput(inputId = "colline6")),
                                                        column(width = 6, textInput("labline6","Label",value = ""))
                                                      )
                                     ),
@@ -435,7 +432,7 @@ pageWithSidebar(
                                     conditionalPanel(condition = "input.line6 > 0",
                                                      numericInput(inputId = "line7", strong("Line #7"), NA, min = 0),
                                                      fluidRow(
-                                                       column(width = 6, textInput("colline7","Color name or RGB Code",value = "#000000")),
+                                                       column(width = 6, HTML("Choose a color<br>"),jscolorInput(inputId = "colline7")),
                                                        column(width = 6, textInput("labline7","Label",value = ""))
                                                      )
                                     ),
@@ -443,7 +440,7 @@ pageWithSidebar(
                                     conditionalPanel(condition = "input.line7 > 0",
                                                      numericInput(inputId = "line8", strong("Line #8"), NA, min = 0),
                                                      fluidRow(
-                                                       column(width = 6, textInput("colline8","Color name or RGB Code",value = "#000000")),
+                                                       column(width = 6, HTML("Choose a color<br>"),jscolorInput(inputId = "colline8")),
                                                        column(width = 6, textInput("labline8","Label",value = ""))
                                                      )
                                     )
@@ -518,17 +515,15 @@ pageWithSidebar(
                                       column(width = 6,
                                              # show only if custom color is desired
                                              conditionalPanel(condition = "input.bar == 'custom'",
-                                                              textInput(inputId = "rgb.bar",
-                                                                        label = "Color name or RGB Code",
-                                                                        value = "#000000"))
+                                                              jscolorInput(inputId = "rgbBar",
+                                                                        label = "Choose a color"))
                                       ),
                                       column(width = 6,
                                              
                                              # show only if custom color is desired
                                              conditionalPanel(condition = "input.bar2 == 'custom'",
-                                                              textInput(inputId = "rgb.bar2",
-                                                                        label = "Color name or RGB Code",
-                                                                        value = "#000000"))
+                                                              jscolorInput(inputId = "rgbBar2",
+                                                                        label = "Choose a color"))
                                       )
                                     ),
                                     
@@ -550,9 +545,8 @@ pageWithSidebar(
                                       column(width = 6,
                                              # show only if custom color is desired
                                              conditionalPanel(condition = "input.grid == 'custom'",
-                                                              textInput(inputId = "rgb.grid",
-                                                                        label = "Color name or RGB Code",
-                                                                        value = "#000000"))
+                                                              jscolorInput(inputId = "rgbGrid",
+                                                                        label = "Choose a color"))
                                       )
                                     ),
                                     

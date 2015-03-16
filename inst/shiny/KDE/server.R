@@ -164,7 +164,7 @@ shinyServer(function(input, output, session) {
     
     # if custom polygon color get RGB from separate input panel or "none"
     if(input$polygon == "custom") {
-      polygon.col<- adjustcolor(col = input$rgb.polygon, 
+      polygon.col<- adjustcolor(col = input$rgbPolygon, 
                                 alpha.f = input$alpha.polygon/100)
     } else {
       if(input$polygon == "none") {
@@ -177,7 +177,7 @@ shinyServer(function(input, output, session) {
     
     # if custom polygon color get RGB from separate input panel or "none"
     if(input$polygon2 == "custom") {
-      polygon.col2<- adjustcolor(col = input$rgb.polygon2, 
+      polygon.col2<- adjustcolor(col = input$rgbPolygon2, 
                                  alpha.f = input$alpha.polygon/100)
     } else {
       if(input$polygon2 == "none") {

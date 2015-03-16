@@ -275,7 +275,7 @@ shinyServer(function(input, output, session) {
     
     # if custom bar color get RGB from separate input panel or "none"
     if(input$bar == "custom") {
-      bar.col<- adjustcolor(col = input$rgb.bar, 
+      bar.col<- adjustcolor(col = input$rgbBar, 
                             alpha.f = input$alpha.bar/100)
     } else {
       if(input$bar == "none") {
@@ -289,7 +289,7 @@ shinyServer(function(input, output, session) {
     # if custom bar color get RGB from separate input panel or "none"
     # SECONDARY DATA SET
     if(input$bar2 == "custom") {
-      bar.col2<- adjustcolor(col = input$rgb.bar2, 
+      bar.col2<- adjustcolor(col = input$rgbBar2, 
                              alpha.f = input$alpha.bar/100)
     } else {
       if(input$bar2 == "none") {
@@ -302,7 +302,7 @@ shinyServer(function(input, output, session) {
     
     # if custom grid color get RGB from separate input panel or "none"
     if(input$grid == "custom") {
-      grid.col<- adjustcolor(col = input$rgb.grid, 
+      grid.col<- adjustcolor(col = input$rgbGrid, 
                              alpha.f = input$alpha.grid/100)
     } else {
       if(input$grid == "none") {
