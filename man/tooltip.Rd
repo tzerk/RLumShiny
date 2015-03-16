@@ -4,13 +4,15 @@
 \alias{tooltip}
 \title{Create a bootstrap tooltip}
 \usage{
-tooltip(refId, text, animation = TRUE, delay = 100, html = TRUE,
-  placement = "auto", trigger = "hover")
+tooltip(refId, text, attr = NULL, animation = TRUE, delay = 100,
+  html = TRUE, placement = "auto", trigger = "hover")
 }
 \arguments{
 \item{refId}{\code{\link{character}} (required): id of the element the tooltip is to be attached to.}
 
 \item{text}{\code{\link{character}}: Text to be displayed in the tooltip.}
+
+\item{attr}{\code{\link{character}}: Attach tooltip to all elements with attribute \code{attr='refId'}.}
 
 \item{animation}{\code{\link{logical}}: Apply a CSS fade transition to the tooltip.}
 
@@ -23,11 +25,11 @@ tooltip(refId, text, animation = TRUE, delay = 100, html = TRUE,
 \item{trigger}{\code{\link{character}}: How tooltip is triggered - click | hover | focus | manual. You may pass multiple triggers; separate them with a space.}
 }
 \description{
-Creates a bootstrap tooltip for any DOM to be used in shiny applications.
+Create bootstrap tooltips for any HTML element to be used in shiny applications.
 }
 \examples{
 # html code
-tt <- tooltip("someId", "This is a tooltip.")
+tt <- tooltip("elementId", "This is a tooltip.")
 str(tt)
 
 # example app
@@ -46,7 +48,7 @@ ui = fluidPage(
                      choices = c("a" = "a",
                                  "b" = "b",
                                  "c" = "c")),
-  tooltip("cboxg", "This is a checkbox group"),
+  tooltip("cboxg", "This is a <b>checkbox group</b>", html = TRUE),
 
   textInput("textIn", "Textinput"),
   tooltip("textIn", "This is a text input field"),
