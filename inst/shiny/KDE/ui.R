@@ -44,9 +44,10 @@ pageWithSidebar(
                                     fluidRow(
                                       column(width = 6,
                                              # logical: should NA values be excluded?
-                                             checkboxInput(inputId = "na.exclude", 
+                                             checkboxInput(inputId = "naExclude", 
                                                            label = "Exclude NA values",
-                                                           value = TRUE)
+                                                           value = TRUE),
+                                             tooltip(refId = "naExclude", text = "Exclude NA values from the data set prior to any further operations.")
                                       ),
                                       column(width = 6,
                                              
@@ -133,12 +134,14 @@ pageWithSidebar(
                                       column(width = 6,
                                              checkboxInput(inputId = "cumulative",
                                                            label = "Show individual data",
-                                                           value = TRUE)
+                                                           value = TRUE),
+                                             tooltip(refId = "cumulative", text = "Show cumulative individual data.")
                                              ),
                                       column(width = 6,
                                              checkboxInput(inputId = "weights",
                                                            label = "Errors as weights",
-                                                           value = FALSE)
+                                                           value = FALSE),
+                                             tooltip(refId = "weights", text = "Calculate the KDE with De-errors as weights. Attention: using errors as weights will result in a plot similar to a a probability density plot, with all ambiguities related to this plot type!")
                                              ))
                                  
                            ),##EndOf::Tab_2
@@ -164,6 +167,7 @@ pageWithSidebar(
                                                      "Weighted mean" = "mean.weighted", 
                                                      "Weighted median" = "median.weighted",
                                                      "max. KDE" = "kdemax")),
+                                    tooltip(refId = "centrality", attr = "for", text = "Measure of centrality, used for plotting vertical lines of the respective measure."),
                                     
                                     
                                     div(align = "center", h5("Dispersion")),
@@ -173,6 +177,7 @@ pageWithSidebar(
                                                 list("1 sigma" = "sd",
                                                      "2 sigma" = "2sd", 
                                                      "Quartile range" = "qr")),
+                                    tooltip(refId = "dispersion", attr = "for", text = "Measure of dispersion, used for drawing the polygon that depicts the dose distribution."),
                                     
                                     fluidRow(
                                       column(width = 6,

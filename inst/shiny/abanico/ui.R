@@ -45,9 +45,10 @@ pageWithSidebar(
                                     fluidRow(
                                       column(width = 6,
                                              # logical: should NA values be excluded?
-                                             checkboxInput(inputId = "na.exclude", 
+                                             checkboxInput(inputId = "naExclude", 
                                                            label = "Exclude NA values",
-                                                           value = TRUE)
+                                                           value = TRUE),
+                                             tooltip(refId = "naExclude", text = "Exclude NA values from the data set prior to any further operations.")
                                       ),
                                       column(width = 6,
                                              
@@ -400,8 +401,11 @@ pageWithSidebar(
                                     ),
                                     
                                     checkboxInput(inputId = "kde", label = "KDE", value = TRUE),
+                                    tooltip(refId = "kde", text = "Option to add a KDE plot to the dispersion part."),
                                     checkboxInput(inputId = "histogram", label = "Histogram", value = TRUE),
-                                    checkboxInput(inputId = "dots", label = "Dots", value = TRUE)
+                                    tooltip(refId = "histogram", text = "Option to add a histogram to the dispersion part. Only meaningful when not more than one data set is plotted."),
+                                    checkboxInput(inputId = "dots", label = "Dots", value = TRUE),
+                                    tooltip(refId = "dots", text = "Option to add a dot plot to the dispersion part. If number of dots exceeds space in the dispersion part, a square indicates this.")
                                     
                            ),##EndOf::Tab_3
                            
@@ -440,6 +444,7 @@ pageWithSidebar(
                                     checkboxInput(inputId = "yaxis",
                                                   label = "Show y-axis",
                                                   value = TRUE),
+                                    tooltip(refId = "yaxis", text = "Option to hide y-axis labels. Useful for data with small scatter."),
                                     
                                     textInput(inputId = "ylab", 
                                               label = "Label y-axis",
@@ -455,6 +460,7 @@ pageWithSidebar(
                                     checkboxInput(inputId = "logz",
                                                   label = "Logarithmic z-axis",
                                                   value = TRUE),
+                                    tooltip(refId = "logz", text = "Option to display the z-axis in logarithmic scale."),
                                     
                                     textInput(inputId = "zlab", 
                                               label = "Label z-axis",
@@ -603,11 +609,12 @@ pageWithSidebar(
                                     numericInput(inputId = "line1", 
                                                  label = strong("Line #1"), 
                                                  value =  NA, min = 0),
+                                    tooltip(refId = "line1", text = "Numeric values of the additional lines to be added."),
                                     
                                     fluidRow(
                                       column(width = 6, 
                                              HTML("Choose a color<br>"),
-                                             jscolorInput(inputId = "colline1")
+                                             jscolorInput(inputId = "colline1"),
                                       ),
                                       column(width = 6,                                    
                                              textInput(inputId = "labline1",
@@ -686,7 +693,8 @@ pageWithSidebar(
                                                          label = "Dispersion bar color #1",
                                                          choices = list("Grey" = "grey80",
                                                                         "Custom" = "custom",
-                                                                        "None" = "none"))
+                                                                        "None" = "none")),
+                                             tooltip(refId = "polygon", attr = "for", text = "Colour of the polygon showing the dose dispersion around the central value.")
                                       ),
                                       column(width = 6,
                                              selectInput(inputId = "polygon2", 
@@ -728,7 +736,8 @@ pageWithSidebar(
                                              selectInput(inputId = "bar", label = HTML("2&sigma; bar color"),
                                                          choices = list("Grey" = "grey50",
                                                                         "Custom" = "custom",
-                                                                        "None" = "none"))
+                                                                        "None" = "none")),
+                                             tooltip(refId = "bar", attr = "for", text = "Colour of the bar showing the 2-sigma range of the dose error around the central value.")
                                       ),
                                       column(width = 6,
                                              selectInput(inputId = "bar2", label = HTML("2&sigma; bar color #2"),
@@ -798,7 +807,8 @@ pageWithSidebar(
                                       column(width = 6,
                                              checkboxInput(inputId = "showlegend", 
                                                            label = "Show legend", 
-                                                           value = FALSE)
+                                                           value = FALSE),
+                                             tooltip(refId = "showlegend", text = "Legend content to be added to the plot.")
                                       ),
                                       column(width = 6,
                                              selectInput(inputId = "legend.pos",

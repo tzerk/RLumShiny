@@ -44,9 +44,10 @@ pageWithSidebar(
                                     fluidRow(
                                       column(width = 6,
                                              # logical: should NA values be excluded?
-                                             checkboxInput(inputId = "na.exclude", 
+                                             checkboxInput(inputId = "naExclude", 
                                                            label = "Exclude NA values",
-                                                           value = TRUE)
+                                                           value = TRUE),
+                                             tooltip(refId = "naExclude", text = "Exclude NA values from the data set prior to any further operations.")
                                       ),
                                       column(width = 6,
                                              
@@ -165,7 +166,7 @@ pageWithSidebar(
                                       column(width = 6,
                                              # inject sliderInput from Server.R
                                              uiOutput(outputId = "centValue"),
-                                             tooltip(refId = "centValue", text =  "User-defined central value, primarily used for horizontal centering of the z-axis")
+                                             tooltip(refId = "centValue", text = "User-defined central value, primarily used for horizontal centering of the z-axis")
                                       ),
                                       column(width = 6,
                                              sliderInput(inputId = "cex", 
@@ -211,6 +212,7 @@ pageWithSidebar(
                                     checkboxInput(inputId = "yticks",
                                                   label = HTML("Show &plusmn;2&sigma; label"),
                                                   value = TRUE),
+                                    tooltip(refId = "yticks", text = "Option to hide y-axis labels."),
                                     
                                     textInput(inputId = "ylab", 
                                               label = "Label y-axis",
@@ -221,6 +223,7 @@ pageWithSidebar(
                                     checkboxInput(inputId = "logz",
                                                   label = "Logarithmic z-axis",
                                                   value = TRUE),
+                                    tooltip(refId = "logz", text = "Option to display the z-axis in logarithmic scale."),
                                     
                                     textInput(inputId = "zlab", 
                                               label = "Label z-axis",
@@ -231,7 +234,8 @@ pageWithSidebar(
                                     
                                     sliderInput('curvature', 'Z-axis curvature', 
                                                 min=0, max=3,
-                                                value=4.5/5.5, step=0.01, round=FALSE)
+                                                value=4.5/5.5, step=0.01, round=FALSE),
+                                    tooltip(refId = "curvature", attr = "for", text = "User-defined plot area ratio (i.e. curvature of the z-axis). If omitted, the default value (4.5/5.5) is used and modified automatically to optimise the z-axis curvature. The parameter should be decreased when data points are plotted outside the z-axis or when the z-axis gets too elliptic.")
                                     
                                     
                            ),##EndOf::Tab_4
@@ -372,6 +376,7 @@ pageWithSidebar(
                                     numericInput(inputId = "line1", 
                                                  label = strong("Line #1"), 
                                                  value =  NA, min = 0),
+                                    tooltip(refId = "line1", text = "Numeric values of the additional lines to be added."),
                                     
                                     fluidRow(
                                       column(width = 6,
@@ -539,7 +544,8 @@ pageWithSidebar(
                                              selectInput("grid", "Grid color",
                                                          list("Grey" = "grey",
                                                               "Custom" = "custom",
-                                                              "None" = "none"))
+                                                              "None" = "none")),
+                                             tooltip(refId = "grid", attr = "for", text = "colour of the grid lines (originating at [0,0] and stretching to the z-scale). To disable grid lines, use \"none\".")
                                       ),
                                       column(width = 6,
                                              # show only if custom color is desired
@@ -565,7 +571,8 @@ pageWithSidebar(
                                       column(width = 6,
                                              checkboxInput(inputId = "showlegend", 
                                                            label = "Show legend", 
-                                                           value = FALSE)
+                                                           value = FALSE),
+                                             tooltip(refId = "showlegend", text = "Legend content to be added to the plot.")
                                       ),
                                       column(width = 6,
                                              selectInput(inputId = "legend.pos",

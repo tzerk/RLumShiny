@@ -36,9 +36,10 @@ pageWithSidebar(
                                     fluidRow(
                                       column(width = 6,
                                              # logical: should NA values be excluded?
-                                             checkboxInput(inputId = "na.exclude", 
+                                             checkboxInput(inputId = "naExclude", 
                                                            label = "Exclude NA values",
-                                                           value = TRUE)
+                                                           value = TRUE),
+                                             tooltip(refId = "naExclude", text = "Exclude NA values from the data set prior to any further operations.")
                                       ),
                                       column(width = 6,
                                              
@@ -113,7 +114,8 @@ pageWithSidebar(
                                     
                                     numericInput(inputId = "error",
                                                   label = "Symmetric error range (%)",
-                                                  value = 10, min = 0, max = 100, step = 1)
+                                                  value = 10, min = 0, max = 100, step = 1),
+                                    tooltip(refId = "error", text = "Symmetric error range in percent will be shown as dashed lines in the plot. Set error.range to 0 to void plotting of error ranges.")
                            ),##EndOf::Tab_2
                            
                            # Tab 3: input that refer to the plot rather than the data
@@ -122,12 +124,14 @@ pageWithSidebar(
                                     div(align = "center", h5("Experimental details")),
                                     
                                     numericInput(inputId = "dose", label = "Given dose (primary data set)", value = 2800),
+                                    tooltip(refId = "dose", text = "Given dose used for the dose recovery test to normalise data. If only one given dose is provided this given dose is valid for all input data sets (i.e., values is a list). Otherwise a given dose for each input data set has to be provided (e.g., given.dose = c(100,200)). If no given.dose values are plotted without normalisation (might be useful for preheat plateau tests). Note: Unit has to be the same as from the input values (e.g., Seconds or Gray)."),
                                     
                                     numericInput(inputId = "dose2", label = "Given dose (secondary data set)", value = 3000),
                                     
                                     div(align = "center", h5("Preheat temperatures")),
                                     
                                     checkboxInput(inputId = "preheat", label = "Group values by preheat temperature", FALSE),
+                                    tooltip(refId = "preheat", text = "Optional preheat temperatures to be used for grouping the De values. If specified, the temperatures are assigned to the x-axis."),
                                     
                                     conditionalPanel(condition = 'input.preheat == true', 
                                                      numericInput(inputId = "ph1", "PH Temperature #1", 180, min = 0),
@@ -165,6 +169,7 @@ pageWithSidebar(
                                     div(align = "center", h5("Boxplot")),
                                     
                                     checkboxInput(inputId = "boxplot", label = "Plot as boxplot", value = FALSE),
+                                    tooltip(refId = "boxplot", text = "Optionally plot values, that are grouped by preheat temperature as boxplots. Only possible when preheat vector is specified."),
                                     
                                     div(align = "center", h5("Scaling")),
                                     

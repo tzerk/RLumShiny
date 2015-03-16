@@ -32,9 +32,10 @@ pageWithSidebar(
                                     
                                     
                                     # logical: should NA values be excluded?
-                                    checkboxInput(inputId = "na.exclude", 
+                                    checkboxInput(inputId = "naExclude", 
                                                   label = "Exclude NA values",
                                                   value = TRUE),
+                                    tooltip(refId = "naExclude", text = "Exclude NA values from the data set prior to any further operations."),
                                     
                                     # logical: file contains headers?
                                     checkboxInput(inputId = "headers", 

@@ -31,6 +31,7 @@ shinyUI(fluidPage(
            
            wellPanel(
              numericInput(inputId = "altitude", label = p(class="h","Altitude (m asl)"), value = 124, step = 1),
+             tooltip(refId = "altitude", text = "Altitude (m above sea-level)"),
              
              selectInput(inputId = "coords", label = "Coordinates", selected = "decDeg", 
                          choices = c("Decimal degrees" = "decDeg",
@@ -76,6 +77,7 @@ shinyUI(fluidPage(
            
            wellPanel(
              numericInput(inputId = "density_1", label = p(class="h","Density (g/cm\uB3)"), value = 2.0, step = 0.1),
+             tooltip(refId = "density_1", text = "Average overburden density (g/cm\uB3)."),
              
              conditionalPanel(condition = "input.mode == 'xAsS'", 
                               numericInput(inputId = "density_2", label = p(class="h","Density (g/cm\uB3)"), value = NULL, step = 0.1),
@@ -91,6 +93,7 @@ shinyUI(fluidPage(
            
            wellPanel(
              numericInput(inputId = "depth_1", label = p(class="h","Depth (m)"), value = 1.00, step = 0.01),
+             tooltip("depth_1", text = "Depth of overburden (m)."),
              
              conditionalPanel(condition = "input.mode == 'sAxS' || input.mode == 'xAsS'", 
                               numericInput(inputId = "depth_2", label = p(class="h","Depth (m)"), value = NULL, step = 0.01),
@@ -107,9 +110,13 @@ shinyUI(fluidPage(
            
            wellPanel(
              checkboxInput(inputId = "corr", label = p(class="h","Correct for geomagnetic field changes"), value = FALSE),
+             tooltip(refId = "corr", text = "Correct for geomagnetic field changes after Prescott & Hutton (1994). Apply only when justified by the data."),
              numericInput(inputId = "estage", label = p(class="h","Estimated age"), value = 30, step = 1, min = 0, max = 80),
+             tooltip(refId = "estage", text = "Estimated age range (ka) for geomagnetic field change correction (0-80 ka allowed)."),
              checkboxInput(inputId = "half", label = p(class="h","Use half the depth"), value = FALSE),
+             tooltip(refId = "half", text = " How to overcome with varying overburden thickness. If TRUE only half the depth is used for calculation. Apply only when justified, i.e. when a constant sedimentation rate can safely be assumed."),
              numericInput(inputId = "error", label = p(class="h","General error (%)"), value = 10, step = 1),
+             tooltip(refId = "error", text = "General error (percentage) to be implemented on corrected cosmic dose rate estimate"), 
              selectInput(inputId = "mode", label = "Mode", selected = "sAsS", 
                          choices = c("1 absorber, 1 sample" = "sAsS",
                                      "x absorber, 1 sample" = "xAsS",
@@ -118,7 +125,8 @@ shinyUI(fluidPage(
              
            fluidRow(
              column(width = 3, 
-                      actionButton(inputId = "refresh", label = "", icon = icon("refresh"))
+                      actionButton(inputId = "refresh", label = "", icon = icon("refresh")),
+                    tooltip(refId = "refresh", text = "Reload app")
                      ),
              column(width = 3,
                       actionButton(inputId = "exit", label = "Exit", class = "btn btn-danger")
