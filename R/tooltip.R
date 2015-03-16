@@ -35,7 +35,7 @@
 #'   tooltip("cboxg", "This is a <b>checkbox group</b>", html = TRUE),
 #'   
 #'   selectInput("select", "Selectinput", selected = "a", choices = c("a"="a", "b"="b")),
-#'   tooltip("select", "This is a text input field", attr = "for", placement = "ri),
+#'   tooltip("select", "This is a text input field", attr = "for", placement = "right"),
 #'   
 #'   passwordInput("pwIn", "Passwordinput"),
 #'   tooltip("pwIn", "This is a password input field"),
