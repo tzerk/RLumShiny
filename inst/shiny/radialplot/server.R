@@ -275,7 +275,7 @@ shinyServer(function(input, output, session) {
     
     # if custom bar color get RGB from separate input panel or "none"
     if(input$bar == "custom") {
-      bar.col<- adjustcolor(col = input$rgb.bar, 
+      bar.col<- adjustcolor(col = input$rgbBar, 
                             alpha.f = input$alpha.bar/100)
     } else {
       if(input$bar == "none") {
@@ -289,7 +289,7 @@ shinyServer(function(input, output, session) {
     # if custom bar color get RGB from separate input panel or "none"
     # SECONDARY DATA SET
     if(input$bar2 == "custom") {
-      bar.col2<- adjustcolor(col = input$rgb.bar2, 
+      bar.col2<- adjustcolor(col = input$rgbBar2, 
                              alpha.f = input$alpha.bar/100)
     } else {
       if(input$bar2 == "none") {
@@ -302,7 +302,7 @@ shinyServer(function(input, output, session) {
     
     # if custom grid color get RGB from separate input panel or "none"
     if(input$grid == "custom") {
-      grid.col<- adjustcolor(col = input$rgb.grid, 
+      grid.col<- adjustcolor(col = input$rgbGrid, 
                              alpha.f = input$alpha.grid/100)
     } else {
       if(input$grid == "none") {
@@ -371,7 +371,7 @@ shinyServer(function(input, output, session) {
                     summary.pos = input$sumpos, 
                     legend = legend, 
                     legend.pos = legend.pos,
-                    na.exclude = input$na.exclude, 
+                    na.exclude = input$naExclude, 
                     central.value = input$centValue, 
                     centrality = input$centrality,
                     lwd = c(input$lwd, input$lwd2),
@@ -474,7 +474,7 @@ shinyServer(function(input, output, session) {
     str25 <- paste("grid.col = '",grid.col,"',", sep = "")
     str26 <- paste("legend = c('",legend[1],"','",legend[2],"'),", sep = "")
     str27 <- paste("legend.pos = ",verb.legend.pos,",", sep = "")
-    str28 <- paste("na.exclude = ",input$na.exclude,",", sep = "")
+    str28 <- paste("na.exclude = ",input$naExclude,",", sep = "")
     str29 <- paste("lwd = c(",input$lwd,",",input$lwd2,"),", sep = "")
     str30 <- paste("xlab = c('", input$xlab1,"','",input$xlab2,"'),", sep="")
     str31 <- paste("ylab = '",input$ylab,"',",sep ="")
@@ -582,7 +582,7 @@ shinyServer(function(input, output, session) {
                         summary.pos = input$sumpos, 
                         legend = legend, 
                         legend.pos = legend.pos,
-                        na.exclude = input$na.exclude, 
+                        na.exclude = input$naExclude, 
                         central.value = input$centValue, 
                         centrality = input$centrality,
                         lwd = c(input$lwd, input$lwd2),

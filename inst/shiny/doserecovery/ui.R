@@ -20,13 +20,15 @@ pageWithSidebar(
                                     
                                     # file upload button (data set 1)
                                     fileInput(inputId = "file1", 
-                                              label = strong("Primary data set"), 
+                                              label = strong("Primary data set"),
                                               accept="text/plain"),
+                                    tooltip(refId = "file1", text = tags$img(src='file_structure.png', width='250px')),
                                     
                                     # file upload button (data set 2)
                                     fileInput(inputId = "file2", 
                                               label = strong("Secondary data set"), 
                                               accept="text/plain"),
+                                    tooltip(refId = "file2", text = tags$img(src='file_structure.png', width='250px')),
                                     
                                     # informational text
                                     div(align = "center", h5("Settings")),
@@ -34,16 +36,18 @@ pageWithSidebar(
                                     fluidRow(
                                       column(width = 6,
                                              # logical: should NA values be excluded?
-                                             checkboxInput(inputId = "na.exclude", 
+                                             checkboxInput(inputId = "naExclude", 
                                                            label = "Exclude NA values",
-                                                           value = TRUE)
+                                                           value = TRUE),
+                                             tooltip(refId = "naExclude", text = "Exclude NA values from the data set prior to any further operations.")
                                       ),
                                       column(width = 6,
                                              
                                              # logical: file contains headers?
                                              checkboxInput(inputId = "headers", 
                                                            label = "File contains headers", 
-                                                           value = FALSE)
+                                                           value = FALSE),
+                                             tooltip(refId = "headers", text = tags$img(src='file_containsHeader.png', width='250px'))
                                       )),
                                     
                                     # char: columns separated by tab, space, comma
@@ -52,12 +56,14 @@ pageWithSidebar(
                                                    "Space" = " ",
                                                    "Comma" = ",",
                                                    "Semicolon" = ";")),
+                                    tooltip(refId = "sep", text = tags$img(src='file_sep.png', width='400px'), placement = "auto left"),
                                     
                                     hr(),
                                     
                                     fluidRow(
                                       column(width = 6,
-                                             actionButton(inputId = "refresh", label = "Refresh", icon = icon("refresh"))
+                                             actionButton(inputId = "refresh", label = "Refresh", icon = icon("refresh")),
+                                             tooltip(refId = "refresh", text = "Redraw the plot")
                                       ),
                                       column(width = 6,
                                              actionButton(inputId = "exit", label = "Exit", class = "btn btn-danger")
@@ -81,6 +87,7 @@ pageWithSidebar(
                                                                Bottom=c("Bottom" = "bottom",
                                                                         "Bottom left" = "bottomleft",
                                                                         "Bottom right" = "bottomright"))),
+                                    tooltip(refId = "sumpos", attr = "for", text = "Position of the statistical summary. The keyword \"Subtitle\" will only work if no plot subtitle is used."),
                                     
                                     checkboxGroupInput(inputId = "stats",
                                                        label = "Parameters", 
@@ -96,9 +103,10 @@ pageWithSidebar(
                                                                    "abs. Standard error" = "seabs",
                                                                    #"25 % Quartile" = "q25", #not implemented yet
                                                                    #"75 % Quartile" = "q75", #not implemented yet
-                                                                   #"Skewness" = "skewness", #not implemented yet
-                                                                   #"Kurtosis" = "kurtosis", #not implemented yet
+                                                                   "Skewness" = "skewness", #not implemented yet
+                                                                   "Kurtosis" = "kurtosis", #not implemented yet
                                                                    "Confidence interval" = "in.ci")),
+                                    tooltip(refId = "stats", text = "Statistical parameters to be shown in the summary"),
                                     
                                     br(),
                                     
@@ -106,7 +114,8 @@ pageWithSidebar(
                                     
                                     numericInput(inputId = "error",
                                                   label = "Symmetric error range (%)",
-                                                  value = 10, min = 0, max = 100, step = 1)
+                                                  value = 10, min = 0, max = 100, step = 1),
+                                    tooltip(refId = "error", text = "Symmetric error range in percent will be shown as dashed lines in the plot. Set error.range to 0 to void plotting of error ranges.")
                            ),##EndOf::Tab_2
                            
                            # Tab 3: input that refer to the plot rather than the data
@@ -115,12 +124,14 @@ pageWithSidebar(
                                     div(align = "center", h5("Experimental details")),
                                     
                                     numericInput(inputId = "dose", label = "Given dose (primary data set)", value = 2800),
+                                    tooltip(refId = "dose", text = "Given dose used for the dose recovery test to normalise data. If only one given dose is provided this given dose is valid for all input data sets (i.e., values is a list). Otherwise a given dose for each input data set has to be provided (e.g., given.dose = c(100,200)). If no given.dose values are plotted without normalisation (might be useful for preheat plateau tests). Note: Unit has to be the same as from the input values (e.g., Seconds or Gray)."),
                                     
                                     numericInput(inputId = "dose2", label = "Given dose (secondary data set)", value = 3000),
                                     
                                     div(align = "center", h5("Preheat temperatures")),
                                     
                                     checkboxInput(inputId = "preheat", label = "Group values by preheat temperature", FALSE),
+                                    tooltip(refId = "preheat", text = "Optional preheat temperatures to be used for grouping the De values. If specified, the temperatures are assigned to the x-axis."),
                                     
                                     conditionalPanel(condition = 'input.preheat == true', 
                                                      numericInput(inputId = "ph1", "PH Temperature #1", 180, min = 0),
@@ -158,6 +169,7 @@ pageWithSidebar(
                                     div(align = "center", h5("Boxplot")),
                                     
                                     checkboxInput(inputId = "boxplot", label = "Plot as boxplot", value = FALSE),
+                                    tooltip(refId = "boxplot", text = "Optionally plot values, that are grouped by preheat temperature as boxplots. Only possible when preheat vector is specified."),
                                     
                                     div(align = "center", h5("Scaling")),
                                     
@@ -253,9 +265,8 @@ pageWithSidebar(
                                       column(width = 6,
                                              # show only if custom color is desired
                                              conditionalPanel(condition = "input.color == 'custom'",
-                                                              textInput(inputId = "rgb",
-                                                                        label = "Color name or RGB Code",
-                                                                        value = "#000000"))
+                                                              jscolorInput(inputId = "rgb",
+                                                                           label = "Choose a color"))
                                       )
                                     ),
                                     
@@ -316,9 +327,8 @@ pageWithSidebar(
                                       column(width = 6,
                                              # show only if custom color is desired
                                              conditionalPanel(condition = "input.color2 == 'custom'",
-                                                              textInput(inputId = "rgb2",
-                                                                        label = "Color name or RGB Code",
-                                                                        value = "#000000"))
+                                                              jscolorInput(inputId = "rgb2",
+                                                                           label = "Choose a color"))
                                       )
                                     )
                                     
@@ -404,15 +414,16 @@ pageWithSidebar(
                                         # HTML code to include a .png file in the tab; the image file must be in
                                         # a subfolder called "wwww"
                                         img(src="RL_Logo.png", height = 100, width = 100, alt = "R.Lum"),
+                                        p("Links:"),
+                                        a(href = "http://www.r-luminescence.de", "R.Luminescence project page", target="_blank"),
                                         br(),
-                                        a(href = "http://www.r-luminescence.de", "http://www.r-luminescence.de", target="_blank"),
+                                        a(href = "https://forum.r-luminescence.de", "Message board", target="_blank"),
                                         br(),
-                                        a(href = "https://forum.r-luminescence.de", "https://forum.r-luminescence.de", target="_blank"),
-                                        br(),br(),hr(),
-                                        HTML("<img src='GitHub-Mark-32px.png' width='32px' height='32px'></img>"),
-                                        p("See the R code of this app on GitHub:"),
-                                        a(href = "https://github.com/tzerk/doserecovery/",
-                                          "https://github.com/tzerk/shiny-doserecovery/", target="_blank")
+                                        a(href = "https://zerk.canopus.uberspace.de/R.Lum", "Online application", target="_blank"),
+                                        br(),hr(),
+                                        img(src='GitHub-Mark-32px.png', width='32px', height='32px'),
+                                        br(),
+                                        a(href = "https://github.com/tzerk/RLumShiny/tree/master/inst/shiny/doserecovery", "See the code at GitHub!", target="_blank")
                                     )#/div
                            )##EndOf::Tab_xy
                )
@@ -427,10 +438,7 @@ pageWithSidebar(
             tags$head(tags$style(type="text/css",".tab-content {overflow: visible;}")),
             tags$head(includeCSS("www/style.css")),
             
-            # include js code that activates bootstraps tooltip plugin (opt-in)
-            # the .js file also contains all the content of the tooltips
-            tags$head(includeScript("www/tooltip.js")),
-            
+            # divide output in separate tabs via tabsetPanel
             tabsetPanel(
               tabPanel("Plot", plotOutput(outputId = "main_plot", height = "400px")),
               tabPanel("Primary data set", fluidRow(column(width = 12, dataTableOutput("dataset")))),

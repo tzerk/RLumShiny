@@ -92,14 +92,14 @@ shinyServer(function(input, output, session) {
     
     # if custom datapoint color get RGB code from separate input panel
     if(input$pchColor == "custom") {
-      pch.color<- input$pch.rgb
+      pch.color<- input$pchRgb
     } else {
       pch.color<- input$pchColor
     }
     
     # if custom datapoint color get RGB code from separate input panel
     if(input$barsColor == "custom") {
-      bars.color<-  adjustcolor(col = input$bars.rgb,
+      bars.color<-  adjustcolor(col = input$barsRgb,
                                 alpha.f = input$alpha.bars/100)
     } else {
       bars.color<-  adjustcolor(col = input$barsColor,
@@ -108,14 +108,14 @@ shinyServer(function(input, output, session) {
     
     # if custom datapoint color get RGB code from separate input panel
     if(input$rugsColor == "custom") {
-      rugs.color<- input$rugs.rgb
+      rugs.color<- input$rugsRgb
     } else {
       rugs.color<- input$rugsColor
     }
     
     # if custom datapoint color get RGB code from separate input panel
     if(input$normalColor == "custom") {
-      normal.color<- input$normal.rgb
+      normal.color<- input$normalRgb
     } else {
       normal.color<- input$normalColor
     }
@@ -145,7 +145,7 @@ shinyServer(function(input, output, session) {
                  detail = "Ready to plot")
     
     plot_Histogram(data = data,
-                   na.exclude = input$na.exclude, 
+                   na.exclude = input$naExclude, 
                    cex.global = input$cex, 
                    pch = pch,
                    xlim = input$xlim,
@@ -153,7 +153,7 @@ shinyServer(function(input, output, session) {
                    mtext = input$mtext, 
                    main = input$main,
                    rug = input$rugs, 
-                   se = input$error.bars, 
+                   se = input$errorBars, 
                    normal_curve = input$norm, 
                    summary = summary,
                    xlab = input$xlab,
@@ -178,12 +178,12 @@ shinyServer(function(input, output, session) {
     str4 <- paste("colour = c('",colors[1],"','",colors[2],"','",colors[3],"','",colors[4],"'),", sep = "") 
     str5 <- paste("pch = ",pch,",", sep = "")                         
     str6<- paste("normal_curve = ",input$norm,",", sep = "")            
-    str7<- paste("se = ", input$error.bars, ",", sep = "")                      
+    str7<- paste("se = ", input$errorBars, ",", sep = "")                      
     str8<- paste("rug = ", input$rugs, ",", sep = "")                   
     str9 <- paste("main = '",input$main,"',", sep = "")               
     str10 <- paste("cex.global = ", input$cex, ",", sep = "")          
     str11 <- paste("mtext = '",input$mtext,"',", sep = "")             
-    str12 <- paste("na.exclude = ",input$na.exclude,",", sep = "")     
+    str12 <- paste("na.exclude = ",input$naExclude,",", sep = "")     
     str13 <- paste("xlab = '", input$xlab,"',", sep="")                
     str14 <- paste("ylab = c('",input$ylab1,"','", input$ylab2,"'),",sep ="") 
     str15 <- paste("xlim = c(", input$xlim[1],",",input$xlim[2],"))", sep="") 
@@ -255,7 +255,7 @@ shinyServer(function(input, output, session) {
         }
         
         plot_Histogram(data = data,
-                       na.exclude = input$na.exclude, 
+                       na.exclude = input$naExclude, 
                        cex.global = input$cex, 
                        pch = pch,
                        xlim = input$xlim,
@@ -263,7 +263,7 @@ shinyServer(function(input, output, session) {
                        mtext = input$mtext, 
                        main = input$main,
                        rug = input$rugs, 
-                       se = input$error.bars, 
+                       se = input$errorBars, 
                        normal_curve = input$norm, 
                        summary = summary,
                        xlab = input$xlab,

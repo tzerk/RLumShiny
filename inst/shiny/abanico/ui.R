@@ -29,13 +29,15 @@ pageWithSidebar(
                                     
                                     # file upload button (data set 1)
                                     fileInput(inputId = "file1", 
-                                              label = strong("Primary data set"), 
+                                              label = strong("Primary data set"),
                                               accept="text/plain"),
+                                    tooltip(refId = "file1", text = tags$img(src='file_structure.png', width='250px')),
                                     
                                     # file upload button (data set 2)
                                     fileInput(inputId = "file2", 
                                               label = strong("Secondary data set"), 
                                               accept="text/plain"),
+                                    tooltip(refId = "file2", text = tags$img(src='file_structure.png', width='250px')),
                                     
                                     # informational text
                                     div(align = "center", h5("Settings")),
@@ -43,16 +45,18 @@ pageWithSidebar(
                                     fluidRow(
                                       column(width = 6,
                                              # logical: should NA values be excluded?
-                                             checkboxInput(inputId = "na.exclude", 
+                                             checkboxInput(inputId = "naExclude", 
                                                            label = "Exclude NA values",
-                                                           value = TRUE)
+                                                           value = TRUE),
+                                             tooltip(refId = "naExclude", text = "Exclude NA values from the data set prior to any further operations.")
                                       ),
                                       column(width = 6,
                                              
                                              # logical: file contains headers?
                                              checkboxInput(inputId = "headers", 
                                                            label = "File contains headers", 
-                                                           value = FALSE)
+                                                           value = FALSE),
+                                             tooltip(refId = "headers", text = tags$img(src='file_containsHeader.png', width='250px'))
                                       )),
                                     
                                     # char: columns separated by tab, space, comma
@@ -61,12 +65,14 @@ pageWithSidebar(
                                                    "Space" = " ",
                                                    "Comma" = ",",
                                                    "Semicolon" = ";")),
+                                    tooltip(refId = "sep", text = tags$img(src='file_sep.png', width='400px'), placement = "auto left"),
                                     
                                     hr(),
                                     
                                     fluidRow(
                                       column(width = 6,
-                                             actionButton(inputId = "refresh", label = "Refresh", icon = icon("refresh"))
+                                             actionButton(inputId = "refresh", label = "Refresh", icon = icon("refresh")),
+                                             tooltip(refId = "refresh", text = "Redraw the plot")
                                       ),
                                       column(width = 6,
                                              actionButton(inputId = "exit", label = "Exit", class = "btn btn-danger")
@@ -109,7 +115,7 @@ pageWithSidebar(
                                       ),
                                       column(width = 6, offset = 3,
                                              actionButton("newAccount","Create new account")
-                                             )
+                                      )
                                     ),
                                     
                                     div(align = "center", h5("Data sets")),
@@ -126,7 +132,7 @@ pageWithSidebar(
                                     fluidRow(
                                       column(width = 6, offset =6,
                                              actionButton("delete", "Delete", class = "btn btn-danger")
-                                             )),
+                                      )),
                                     
                                     
                                     div(align = "center", h5("Upload new data set")),
@@ -138,14 +144,14 @@ pageWithSidebar(
                                     fluidRow(
                                       column(width = 6,
                                              actionButton("upload", "Upload file", icon = icon("upload"))
-                                             ),
+                                      ),
                                       column(width = 1, offsett = 5,
                                              #helpPopup("Help", "...", placement='top', trigger='click')
                                              actionButton("logout", "Logout")
-                                             ))
-                                   
+                                      ))
                                     
-                                   
+                                    
+                                    
                                     
                                     
                            ),
@@ -159,7 +165,8 @@ pageWithSidebar(
                                       column(width = 6,
                                              checkboxInput(inputId = "summary",
                                                            label = "Show summary",
-                                                           value = FALSE)
+                                                           value = FALSE),
+                                             tooltip(refId = "summary", text = "Adds numerical output to the plot")
                                       ),
                                       column(width = 6,
                                              selectInput(inputId = "sumpos",
@@ -173,7 +180,8 @@ pageWithSidebar(
                                                                         Bottom=c("Bottom" = "bottom",
                                                                                  "Bottom left" = "bottomleft",
                                                                                  "Bottom right" = "bottomright")
-                                                         ))
+                                                         )),
+                                             tooltip(refId = "sumpos", attr = "for", text = "Position of the statistical summary. The keyword \"Subtitle\" will only work if no plot subtitle is used.")
                                       )
                                     ),
                                     
@@ -191,9 +199,10 @@ pageWithSidebar(
                                                                    "abs. Standard error" = "seabs",
                                                                    #"25 % Quartile" = "q25", #not implemented yet
                                                                    #"75 % Quartile" = "q75", #not implemented yet
-                                                                   #"Skewness" = "skewness", #not implemented yet
-                                                                   #"Kurtosis" = "kurtosis", #not implemented yet
+                                                                   "Skewness" = "skewness",
+                                                                   "Kurtosis" = "kurtosis",
                                                                    "Confidence interval" = "in.ci")),
+                                    tooltip(refId = "stats", text = "Statistical parameters to be shown in the summary"),
                                     
                                     br(),
                                     
@@ -205,13 +214,15 @@ pageWithSidebar(
                                                                              choices = c("Min" = "min",
                                                                                          "Max" = "max",
                                                                                          "Median" = "median"))),
+                                    tooltip(refId = "statlabels", text = "Additional labels of statistically important values in the plot."),
                                     br(),
                                     
                                     div(align = "center", h5("Error bars")),
                                     
                                     checkboxInput(inputId = "errorbars",
                                                   label = "Show error bars",
-                                                  value = FALSE)
+                                                  value = FALSE),
+                                    tooltip(refId = "errorbars", text = "Option to show D<sub>e</sub>-errors as error bars on D<sub>e</sub>-points. Useful in combination with hidden y-axis and 2&sigma; bar")
                                     
                                     
                            ),##EndOf::Tab_2
@@ -242,23 +253,28 @@ pageWithSidebar(
                                              # inject sliderInput from Server.R
                                              div(id="cent", # DIV with id for tooltip
                                                  uiOutput(outputId = "centValue")
-                                             )
+                                             ),
+                                             tooltip(refId = "cent", text =  "User-defined central value, primarily used for horizontal centering of the z-axis")
                                       ),
                                       column(width = 6,
                                              # inject sliderInput from Server.R
                                              div(id="bwKDE",
                                                  uiOutput(outputId = "bw")
-                                             )
+                                             ),
+                                             tooltip(refId = "bwKDE", text = "Bin width of the kernel density estimate")
                                       )
                                     ),
                                     
                                     
                                     fluidRow(
                                       column(width = 6,
-                                             sliderInput(inputId = "p.ratio", 
-                                                         label = "Plot ratio", 
-                                                         min=0.25, max=0.90,
-                                                         value=0.75, step=0.01, round= FALSE)
+                                             div(id="pratiodiv",
+                                                 sliderInput(inputId = "p.ratio", 
+                                                             label = "Plot ratio", 
+                                                             min=0.25, max=0.90,
+                                                             value=0.75, step=0.01, round= FALSE)
+                                             ),
+                                             tooltip(refId = "pratiodiv", text = "Relative space given to the radial versus the cartesian plot part, default is 0.75.")
                                       ),
                                       column(width = 6,
                                              sliderInput(inputId = "cex", 
@@ -285,7 +301,8 @@ pageWithSidebar(
                                                               "Median" = "median", 
                                                               "Weighted mean" = "mean.weighted", 
                                                               "Weighted median" = "median.weighted",
-                                                              "Custom value" = "custom"))
+                                                              "Custom value" = "custom")),
+                                             tooltip(refId = "centrality", text = "Measure of centrality, used for the standardisation, centering the plot and drawing the central line. When a second 2&sigma; bar is plotted the dataset is centered by the median.")
                                       ),
                                       column(width = 6,
                                              selectInput(inputId = "dispersion", 
@@ -293,7 +310,8 @@ pageWithSidebar(
                                                          list("1 sigma" = "sd",
                                                               "2 sigma" = "2sd", 
                                                               "95% quartile" = "qr",
-                                                              "Custom quartile" = "custom"))
+                                                              "Custom quartile" = "custom")),
+                                             tooltip(refId = "dispersion", text = "Measure of dispersion, used for drawing the polygon that depicts the spread in the dose distribution.")
                                       )
                                     ),
                                     
@@ -371,18 +389,23 @@ pageWithSidebar(
                                       column(width = 6,
                                              checkboxInput(inputId = "rug",
                                                            label = "Add rug",
-                                                           value = FALSE)
+                                                           value = FALSE),
+                                             tooltip(refId = "rug", text = "Option to add a rug to the KDE part, to indicate the location of individual values")
                                       ),
                                       column(width = 6,
                                              checkboxInput(inputId = "rotate",
                                                            label = "Rotate plot",
-                                                           value = FALSE)
+                                                           value = FALSE),
+                                             tooltip(refId = "rotate", text = "Option to rotate the plot by 90&deg;.")
                                       )
                                     ),
                                     
                                     checkboxInput(inputId = "kde", label = "KDE", value = TRUE),
+                                    tooltip(refId = "kde", text = "Option to add a KDE plot to the dispersion part."),
                                     checkboxInput(inputId = "histogram", label = "Histogram", value = TRUE),
-                                    checkboxInput(inputId = "dots", label = "Dots", value = TRUE)
+                                    tooltip(refId = "histogram", text = "Option to add a histogram to the dispersion part. Only meaningful when not more than one data set is plotted."),
+                                    checkboxInput(inputId = "dots", label = "Dots", value = TRUE),
+                                    tooltip(refId = "dots", text = "Option to add a dot plot to the dispersion part. If number of dots exceeds space in the dispersion part, a square indicates this.")
                                     
                            ),##EndOf::Tab_3
                            
@@ -421,6 +444,7 @@ pageWithSidebar(
                                     checkboxInput(inputId = "yaxis",
                                                   label = "Show y-axis",
                                                   value = TRUE),
+                                    tooltip(refId = "yaxis", text = "Option to hide y-axis labels. Useful for data with small scatter."),
                                     
                                     textInput(inputId = "ylab", 
                                               label = "Label y-axis",
@@ -436,6 +460,7 @@ pageWithSidebar(
                                     checkboxInput(inputId = "logz",
                                                   label = "Logarithmic z-axis",
                                                   value = TRUE),
+                                    tooltip(refId = "logz", text = "Option to display the z-axis in logarithmic scale."),
                                     
                                     textInput(inputId = "zlab", 
                                               label = "Label z-axis",
@@ -584,6 +609,7 @@ pageWithSidebar(
                                     numericInput(inputId = "line1", 
                                                  label = strong("Line #1"), 
                                                  value =  NA, min = 0),
+                                    tooltip(refId = "line1", text = "Numeric values of the additional lines to be added."),
                                     
                                     fluidRow(
                                       column(width = 6, 
@@ -667,7 +693,8 @@ pageWithSidebar(
                                                          label = "Dispersion bar color #1",
                                                          choices = list("Grey" = "grey80",
                                                                         "Custom" = "custom",
-                                                                        "None" = "none"))
+                                                                        "None" = "none")),
+                                             tooltip(refId = "polygon", attr = "for", text = "Colour of the polygon showing the dose dispersion around the central value.")
                                       ),
                                       column(width = 6,
                                              selectInput(inputId = "polygon2", 
@@ -682,16 +709,14 @@ pageWithSidebar(
                                       column(width = 6,
                                              # show only if custom color is desired
                                              conditionalPanel(condition = "input.polygon == 'custom'",
-                                                              textInput(inputId = "rgb.polygon",
-                                                                        label = "Color name or RGB Code",
-                                                                        value = "#000000"))
+                                                              jscolorInput(inputId = "rgbPolygon",
+                                                                           label = "Choose a color"))
                                       ),
                                       column(width = 6,
                                              # show only if custom color is desired
                                              conditionalPanel(condition = "input.polygon2 == 'custom'",
-                                                              textInput(inputId = "rgb.polygon2",
-                                                                        label = "Color name or RGB Code",
-                                                                        value = "#000000"))
+                                                              jscolorInput(inputId = "rgbPolygon2",
+                                                                           label = "Choose a color"))
                                       )
                                     ),
                                     
@@ -709,7 +734,8 @@ pageWithSidebar(
                                              selectInput(inputId = "bar", label = HTML("2&sigma; bar color"),
                                                          choices = list("Grey" = "grey50",
                                                                         "Custom" = "custom",
-                                                                        "None" = "none"))
+                                                                        "None" = "none")),
+                                             tooltip(refId = "bar", attr = "for", text = "Colour of the bar showing the 2-sigma range of the dose error around the central value.")
                                       ),
                                       column(width = 6,
                                              selectInput(inputId = "bar2", label = HTML("2&sigma; bar color #2"),
@@ -723,17 +749,15 @@ pageWithSidebar(
                                       column(width = 6,
                                              # show only if custom color is desired
                                              conditionalPanel(condition = "input.bar == 'custom'",
-                                                              textInput(inputId = "rgb.bar",
-                                                                        label = "Color name or RGB Code",
-                                                                        value = "#000000"))
+                                                              jscolorInput(inputId = "rgbBar",
+                                                                           label = "Choose a color"))
                                       ),
                                       column(width = 6,
                                              
                                              # show only if custom color is desired
                                              conditionalPanel(condition = "input.bar2 == 'custom'",
-                                                              textInput(inputId = "rgb.bar2",
-                                                                        label = "Color name or RGB Code",
-                                                                        value = "#000000"))
+                                                              jscolorInput(inputId = "rgbBar2",
+                                                                           label = "Choose a color"))
                                       )
                                     ),
                                     
@@ -757,9 +781,8 @@ pageWithSidebar(
                                       column(width = 6,
                                              # show only if custom color is desired
                                              conditionalPanel(condition = "input.grid == 'custom'",
-                                                              textInput(inputId = "rgb.grid",
-                                                                        label = "Color name or RGB Code",
-                                                                        value = "#000000"))
+                                                              jscolorInput(inputId = "rgbGrid",
+                                                                        label = "Choose a color"))
                                       )
                                     ),
                                     
@@ -779,7 +802,8 @@ pageWithSidebar(
                                       column(width = 6,
                                              checkboxInput(inputId = "showlegend", 
                                                            label = "Show legend", 
-                                                           value = FALSE)
+                                                           value = FALSE),
+                                             tooltip(refId = "showlegend", text = "Legend content to be added to the plot.")
                                       ),
                                       column(width = 6,
                                              selectInput(inputId = "legend.pos",
@@ -832,11 +856,14 @@ pageWithSidebar(
                                     
                                     div(align = "center", h5("Layout")),
                                     
-                                    selectInput(inputId = "layout", 
-                                                label = "Choose layout", 
-                                                selected = "default",
-                                                choices = c("Default"="default",
-                                                            "Journal"="journal"))
+                                    div(id = "layout", 
+                                        selectInput(inputId = "layout", 
+                                                    label = "Choose layout", 
+                                                    selected = "default",
+                                                    choices = c("Default"="default",
+                                                                "Journal"="journal"))
+                                    ),
+                                    tooltip(refId = "layout", text = "The optional parameter layout allows to modify the entire plot more sophisticated. Each element of the plot can be addressed and its properties can be defined. This includes font type, size and decoration, colours and sizes of all plot items. To infer the definition of a specific layout style cf. get_Layout() or type eg. for the layout type \"journal\" get_Layout(\"journal\"). A layout type can be modified by the user by assigning new values to the list object.")
                                     
                            ),
                            
@@ -900,15 +927,16 @@ pageWithSidebar(
                                         # HTML code to include a .png file in the tab; the image file must be in
                                         # a subfolder called "wwww"
                                         img(src="RL_Logo.png", height = 100, width = 100, alt = "R.Lum"),
+                                        p("Links:"),
+                                        a(href = "http://www.r-luminescence.de", "R.Luminescence project page", target="_blank"),
                                         br(),
-                                        a(href = "http://www.r-luminescence.de", "http://www.r-luminescence.de", target="_blank"),
+                                        a(href = "https://forum.r-luminescence.de", "Message board", target="_blank"),
                                         br(),
-                                        a(href = "https://forum.r-luminescence.de", "https://forum.r-luminescence.de", target="_blank"),
-                                        br(),br(),hr(),
-                                        HTML("<img src='GitHub-Mark-32px.png' width='32px' height='32px'></img>"),
-                                        p("See the R code of this app on GitHub:"),
-                                        a(href = "https://github.com/tzerk/shiny-abanico/",
-                                          "https://github.com/tzerk/shiny-abanico/", target="_blank")
+                                        a(href = "https://zerk.canopus.uberspace.de/R.Lum", "Online application", target="_blank"),
+                                        br(),hr(),
+                                        img(src='GitHub-Mark-32px.png', width='32px', height='32px'),
+                                        br(),
+                                        a(href = "https://github.com/tzerk/RLumShiny/tree/master/inst/shiny/abanico", "See the code at GitHub!", target="_blank")
                                     )#/div
                            )##EndOf::Tab_9
                )##EndOf::tabsetPanel
@@ -922,20 +950,7 @@ pageWithSidebar(
             tags$head(tags$style(type="text/css",".tab-content {overflow: visible;}")),
             tags$head(includeCSS("www/style.css")),
             
-            # include js code that activates bootstraps tooltip plugin (opt-in)
-            # the .js file also contains all the content of the tooltips
-            tags$head(includeScript("www/tooltip.js")),
-            
-            # .js plugin that extends bootstrap tooltips by new placement keywords (top-left, ...)
-            # source: https://github.com/andresgutgon/bootstrap-tooltip-extension
-            #tags$head(includeScript("www/bootstrap-tooltip-extension.js")),
-            
             # divide output in separate tabs via tabsetPanel
-            # 1 - show Abanico Plot
-            # 2 - print the data set that is plotted
-            # 3 - show the results of the central age model (CAM) for primary data set
-            # 4 - show the results of the central age model (CAM) for secondary  data set
-            # 5 - generate and print the R code that is used for the plot in tab 1
             tabsetPanel(
               tabPanel("Plot", plotOutput(outputId = "main_plot", height = "500px")),
               tabPanel("Primary data set", fluidRow(column(width = 12, dataTableOutput("dataset")))),

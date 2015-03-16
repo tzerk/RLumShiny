@@ -164,7 +164,7 @@ shinyServer(function(input, output, session) {
     
     # if custom polygon color get RGB from separate input panel or "none"
     if(input$polygon == "custom") {
-      polygon.col<- adjustcolor(col = input$rgb.polygon, 
+      polygon.col<- adjustcolor(col = input$rgbPolygon, 
                                 alpha.f = input$alpha.polygon/100)
     } else {
       if(input$polygon == "none") {
@@ -177,7 +177,7 @@ shinyServer(function(input, output, session) {
     
     # if custom polygon color get RGB from separate input panel or "none"
     if(input$polygon2 == "custom") {
-      polygon.col2<- adjustcolor(col = input$rgb.polygon2, 
+      polygon.col2<- adjustcolor(col = input$rgbPolygon2, 
                                  alpha.f = input$alpha.polygon/100)
     } else {
       if(input$polygon2 == "none") {
@@ -234,7 +234,7 @@ shinyServer(function(input, output, session) {
              main = input$main,
              weights = input$weights,
              values.cumulative = input$cumulative,
-             na.exclude = input$na.exclude, 
+             na.exclude = input$naExclude, 
              dispersion = input$dispersion, 
              summary = summary,
              summary.pos = input$sumpos,
@@ -265,7 +265,7 @@ shinyServer(function(input, output, session) {
     str8 <- paste("cex = ", input$cex, ",", sep = "")
     str9 <- paste("summary = ",verb.summary,",", sep = "")
     str10 <- paste("polygon.col = c('",polygon.col,"','",polygon.col2,"'),", sep = "")
-    str11 <- paste("na.exclude = ",input$na.exclude,",", sep = "")
+    str11 <- paste("na.exclude = ",input$naExclude,",", sep = "")
     str12 <- paste("ylab = c('", input$ylab1,"','",input$ylab2,"'),", sep="")
     str13 <- paste("xlab = '",input$xlab,"',",sep ="")
     str14 <- paste("xlim = c(", input$xlim[1],",",input$xlim[2],"),", sep="")
@@ -355,7 +355,7 @@ shinyServer(function(input, output, session) {
                  main = input$main,
                  weights = input$weights,
                  values.cumulative = input$cumulative,
-                 na.exclude = input$na.exclude, 
+                 na.exclude = input$naExclude, 
                  dispersion = input$dispersion, 
                  summary = summary,
                  summary.pos = input$sumpos,

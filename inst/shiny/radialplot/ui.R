@@ -28,35 +28,50 @@ pageWithSidebar(
                                     
                                     # file upload button (data set 1)
                                     fileInput(inputId = "file1", 
-                                              label = strong("Primary data set"), 
+                                              label = strong("Primary data set"),
                                               accept="text/plain"),
+                                    tooltip(refId = "file1", text = tags$img(src='file_structure.png', width='250px')),
                                     
                                     # file upload button (data set 2)
                                     fileInput(inputId = "file2", 
                                               label = strong("Secondary data set"), 
                                               accept="text/plain"),
+                                    tooltip(refId = "file2", text = tags$img(src='file_structure.png', width='250px')),
                                     
-                                    # logical: should NA values be excluded?
-                                    checkboxInput(inputId = "na.exclude", 
-                                                  label = "Exclude NA values",
-                                                  value = TRUE),
+                                    # informational text
+                                    div(align = "center", h5("Settings")),
                                     
-                                    # logical: file contains headers?
-                                    checkboxInput(inputId = "headers", 
-                                                  label = "File contains headers", 
-                                                  value = FALSE),
+                                    fluidRow(
+                                      column(width = 6,
+                                             # logical: should NA values be excluded?
+                                             checkboxInput(inputId = "naExclude", 
+                                                           label = "Exclude NA values",
+                                                           value = TRUE),
+                                             tooltip(refId = "naExclude", text = "Exclude NA values from the data set prior to any further operations.")
+                                      ),
+                                      column(width = 6,
+                                             
+                                             # logical: file contains headers?
+                                             checkboxInput(inputId = "headers", 
+                                                           label = "File contains headers", 
+                                                           value = FALSE),
+                                             tooltip(refId = "headers", text = tags$img(src='file_containsHeader.png', width='250px'))
+                                      )),
                                     
                                     # char: columns separated by tab, space, comma
-                                    radioButtons("sep", "Separator", selected = "\t",
+                                    radioButtons("sep", "Separator", selected = "\t", inline = TRUE,
                                                  c("Tab" = "\t",
                                                    "Space" = " ",
                                                    "Comma" = ",",
                                                    "Semicolon" = ";")),
+                                    tooltip(refId = "sep", text = tags$img(src='file_sep.png', width='400px'), placement = "auto left"),
                                     
                                     hr(),
+                                    
                                     fluidRow(
                                       column(width = 6,
-                                             actionButton(inputId = "refresh", label = "Refresh", icon = icon("refresh"))
+                                             actionButton(inputId = "refresh", label = "Refresh", icon = icon("refresh")),
+                                             tooltip(refId = "refresh", text = "Redraw the plot")
                                       ),
                                       column(width = 6,
                                              actionButton(inputId = "exit", label = "Exit", class = "btn btn-danger")
@@ -73,7 +88,8 @@ pageWithSidebar(
                                       column(width = 6,
                                              checkboxInput(inputId = "summary",
                                                            label = "Show summary",
-                                                           value = FALSE)
+                                                           value = FALSE),
+                                             tooltip(refId = "summary", text = "Adds numerical output to the plot")
                                       ),
                                       column(width = 6,
                                              selectInput(inputId = "sumpos",
@@ -87,7 +103,8 @@ pageWithSidebar(
                                                                         Bottom=c("Bottom" = "bottom",
                                                                                  "Bottom left" = "bottomleft",
                                                                                  "Bottom right" = "bottomright")
-                                                         ))
+                                                         )),
+                                             tooltip(refId = "sumpos", attr = "for", text = "Position of the statistical summary. The keyword \"Subtitle\" will only work if no plot subtitle is used.")
                                       )
                                     ),
                                     
@@ -108,6 +125,7 @@ pageWithSidebar(
                                                                    #"Skewness" = "skewness", #not implemented yet
                                                                    #"Kurtosis" = "kurtosis", #not implemented yet
                                                                    "Confidence interval" = "in.ci")),
+                                    tooltip(refId = "stats", text = "Statistical parameters to be shown in the summary"),
                                     
                                     br(),
                                     
@@ -118,7 +136,8 @@ pageWithSidebar(
                                                                              label = NULL, 
                                                                              choices = c("Min" = "min",
                                                                                          "Max" = "max",
-                                                                                         "Median" = "median")))
+                                                                                         "Median" = "median"))),
+                                    tooltip(refId = "statlabels", text = "Additional labels of statistically important values in the plot.")
                                     
                                     
                            ),##EndOf::Tab_2
@@ -146,7 +165,8 @@ pageWithSidebar(
                                     fluidRow(
                                       column(width = 6,
                                              # inject sliderInput from Server.R
-                                             uiOutput(outputId = "centValue")
+                                             uiOutput(outputId = "centValue"),
+                                             tooltip(refId = "centValue", text = "User-defined central value, primarily used for horizontal centering of the z-axis")
                                       ),
                                       column(width = 6,
                                              sliderInput(inputId = "cex", 
@@ -160,7 +180,8 @@ pageWithSidebar(
                                                 list("Mean" = "mean",
                                                      "Median" = "median", 
                                                      "Weighted mean" = "mean.weighted", 
-                                                     "Weighted median" = "median.weighted"))
+                                                     "Weighted median" = "median.weighted")),
+                                    tooltip(refId = "centrality", attr = "for", text = "Measure of centrality, used for the standardisation, centering the plot and drawing the central line.")
                                     
                                     
                            ),##EndOf::Tab_3
@@ -191,6 +212,7 @@ pageWithSidebar(
                                     checkboxInput(inputId = "yticks",
                                                   label = HTML("Show &plusmn;2&sigma; label"),
                                                   value = TRUE),
+                                    tooltip(refId = "yticks", text = "Option to hide y-axis labels."),
                                     
                                     textInput(inputId = "ylab", 
                                               label = "Label y-axis",
@@ -201,6 +223,7 @@ pageWithSidebar(
                                     checkboxInput(inputId = "logz",
                                                   label = "Logarithmic z-axis",
                                                   value = TRUE),
+                                    tooltip(refId = "logz", text = "Option to display the z-axis in logarithmic scale."),
                                     
                                     textInput(inputId = "zlab", 
                                               label = "Label z-axis",
@@ -211,7 +234,8 @@ pageWithSidebar(
                                     
                                     sliderInput('curvature', 'Z-axis curvature', 
                                                 min=0, max=3,
-                                                value=4.5/5.5, step=0.01, round=FALSE)
+                                                value=4.5/5.5, step=0.01, round=FALSE),
+                                    tooltip(refId = "curvature", attr = "for", text = "User-defined plot area ratio (i.e. curvature of the z-axis). If omitted, the default value (4.5/5.5) is used and modified automatically to optimise the z-axis curvature. The parameter should be decreased when data points are plotted outside the z-axis or when the z-axis gets too elliptic.")
                                     
                                     
                            ),##EndOf::Tab_4
@@ -272,9 +296,8 @@ pageWithSidebar(
                                       column(width = 6,
                                              # show only if custom color is desired
                                              conditionalPanel(condition = "input.color == 'custom'",
-                                                              textInput(inputId = "rgb",
-                                                                        label = "Color name or RGB Code",
-                                                                        value = "#000000"))
+                                                              jscolorInput(inputId = "rgb",
+                                                                        label = "Choose a color"))
                                       )
                                     ),
                                     
@@ -333,9 +356,8 @@ pageWithSidebar(
                                       column(width = 6,
                                              # show only if custom color is desired
                                              conditionalPanel(condition = "input.color2 == 'custom'",
-                                                              textInput(inputId = "rgb2",
-                                                                        label = "Color name or RGB Code",
-                                                                        value = "#000000"))
+                                                              jscolorInput(inputId = "rgb2",
+                                                                           label = "Choose a color"))
                                       )
                                     )
                                     
@@ -352,12 +374,12 @@ pageWithSidebar(
                                     numericInput(inputId = "line1", 
                                                  label = strong("Line #1"), 
                                                  value =  NA, min = 0),
+                                    tooltip(refId = "line1", text = "Numeric values of the additional lines to be added."),
                                     
                                     fluidRow(
-                                      column(width = 6,
-                                             textInput(inputId = "colline1",
-                                                       label = "Color name or RGB Code",
-                                                       value = "#000000")
+                                      column(width = 6, 
+                                             HTML("Choose a color<br>"),
+                                             jscolorInput(inputId = "colline1")
                                       ),
                                       column(width = 6,                                    
                                              textInput(inputId = "labline1",
@@ -371,14 +393,14 @@ pageWithSidebar(
                                     conditionalPanel(condition = "input.line1 > 0",
                                                      numericInput(inputId = "line2", strong("Line #2"), NA, min = 0),
                                                      fluidRow(
-                                                       column(width = 6, textInput("colline2","Color name or RGB Code",value = "#000000")),
+                                                       column(width = 6, HTML("Choose a color<br>"),jscolorInput(inputId = "colline2")),
                                                        column(width = 6, textInput("labline2","Label",value = ""))
                                                      )
                                     ),
                                     conditionalPanel(condition = "input.line2 > 0",
                                                      numericInput(inputId = "line3", strong("Line #3"), NA, min = 0),
                                                      fluidRow(
-                                                       column(width = 6, textInput("colline3","Color name or RGB Code",value = "#000000")),
+                                                       column(width = 6, HTML("Choose a color<br>"),jscolorInput(inputId = "colline3")),
                                                        column(width = 6, textInput("labline3","Label",value = ""))
                                                      )
                                     ),
@@ -386,7 +408,7 @@ pageWithSidebar(
                                     conditionalPanel(condition = "input.line3 > 0",
                                                      numericInput(inputId = "line4", strong("Line #4"), NA, min = 0),
                                                      fluidRow(
-                                                       column(width = 6, textInput("colline4","Color name or RGB Code",value = "#000000")),
+                                                       column(width = 6, HTML("Choose a color<br>"),jscolorInput(inputId = "colline4")),
                                                        column(width = 6, textInput("labline4","Label",value = ""))
                                                      )
                                     ),
@@ -394,7 +416,7 @@ pageWithSidebar(
                                     conditionalPanel(condition = "input.line4 > 0",
                                                      numericInput(inputId = "line5", strong("Line #5"), NA, min = 0),
                                                      fluidRow(
-                                                       column(width = 6, textInput("colline5","Color name or RGB Code",value = "#000000")),
+                                                       column(width = 6, HTML("Choose a color<br>"),jscolorInput(inputId = "colline5")),
                                                        column(width = 6, textInput("labline5","Label",value = ""))
                                                      )
                                     ),
@@ -402,7 +424,7 @@ pageWithSidebar(
                                     conditionalPanel(condition = "input.line5 > 0",
                                                      numericInput(inputId = "line6", strong("Line #6"), NA, min = 0),
                                                      fluidRow(
-                                                       column(width = 6, textInput("colline6","Color name or RGB Code",value = "#000000")),
+                                                       column(width = 6, HTML("Choose a color<br>"),jscolorInput(inputId = "colline6")),
                                                        column(width = 6, textInput("labline6","Label",value = ""))
                                                      )
                                     ),
@@ -410,7 +432,7 @@ pageWithSidebar(
                                     conditionalPanel(condition = "input.line6 > 0",
                                                      numericInput(inputId = "line7", strong("Line #7"), NA, min = 0),
                                                      fluidRow(
-                                                       column(width = 6, textInput("colline7","Color name or RGB Code",value = "#000000")),
+                                                       column(width = 6, HTML("Choose a color<br>"),jscolorInput(inputId = "colline7")),
                                                        column(width = 6, textInput("labline7","Label",value = ""))
                                                      )
                                     ),
@@ -418,7 +440,7 @@ pageWithSidebar(
                                     conditionalPanel(condition = "input.line7 > 0",
                                                      numericInput(inputId = "line8", strong("Line #8"), NA, min = 0),
                                                      fluidRow(
-                                                       column(width = 6, textInput("colline8","Color name or RGB Code",value = "#000000")),
+                                                       column(width = 6, HTML("Choose a color<br>"),jscolorInput(inputId = "colline8")),
                                                        column(width = 6, textInput("labline8","Label",value = ""))
                                                      )
                                     )
@@ -493,17 +515,15 @@ pageWithSidebar(
                                       column(width = 6,
                                              # show only if custom color is desired
                                              conditionalPanel(condition = "input.bar == 'custom'",
-                                                              textInput(inputId = "rgb.bar",
-                                                                        label = "Color name or RGB Code",
-                                                                        value = "#000000"))
+                                                              jscolorInput(inputId = "rgbBar",
+                                                                        label = "Choose a color"))
                                       ),
                                       column(width = 6,
                                              
                                              # show only if custom color is desired
                                              conditionalPanel(condition = "input.bar2 == 'custom'",
-                                                              textInput(inputId = "rgb.bar2",
-                                                                        label = "Color name or RGB Code",
-                                                                        value = "#000000"))
+                                                              jscolorInput(inputId = "rgbBar2",
+                                                                        label = "Choose a color"))
                                       )
                                     ),
                                     
@@ -519,14 +539,14 @@ pageWithSidebar(
                                              selectInput("grid", "Grid color",
                                                          list("Grey" = "grey",
                                                               "Custom" = "custom",
-                                                              "None" = "none"))
+                                                              "None" = "none")),
+                                             tooltip(refId = "grid", attr = "for", text = "colour of the grid lines (originating at [0,0] and stretching to the z-scale). To disable grid lines, use \"none\".")
                                       ),
                                       column(width = 6,
                                              # show only if custom color is desired
                                              conditionalPanel(condition = "input.grid == 'custom'",
-                                                              textInput(inputId = "rgb.grid",
-                                                                        label = "Color name or RGB Code",
-                                                                        value = "#000000"))
+                                                              jscolorInput(inputId = "rgbGrid",
+                                                                        label = "Choose a color"))
                                       )
                                     ),
                                     
@@ -545,7 +565,8 @@ pageWithSidebar(
                                       column(width = 6,
                                              checkboxInput(inputId = "showlegend", 
                                                            label = "Show legend", 
-                                                           value = FALSE)
+                                                           value = FALSE),
+                                             tooltip(refId = "showlegend", text = "Legend content to be added to the plot.")
                                       ),
                                       column(width = 6,
                                              selectInput(inputId = "legend.pos",
@@ -635,14 +656,16 @@ pageWithSidebar(
                                         # HTML code to include a .png file in the tab; the image file must be in
                                         # a subfolder called "wwww"
                                         img(src="RL_Logo.png", height = 100, width = 100, alt = "R.Lum"),
+                                        p("Links:"),
+                                        a(href = "http://www.r-luminescence.de", "R.Luminescence project page", target="_blank"),
                                         br(),
-                                        a(href = "http://www.r-luminescence.de", "http://www.r-luminescence.de", target="_blank"),
+                                        a(href = "https://forum.r-luminescence.de", "Message board", target="_blank"),
                                         br(),
-                                        a(href = "https://forum.r-luminescence.de", "https://forum.r-luminescence.de", target="_blank"),
-                                        br(),br(),hr(),
-                                        p("See the R code of this app on GitHub:"),
-                                        a(href = "https://github.com/tzerk/shiny-radialplot/",
-                                          "https://github.com/tzerk/shiny-radialplot/", target="_blank")
+                                        a(href = "https://zerk.canopus.uberspace.de/R.Lum", "Online application", target="_blank"),
+                                        br(),hr(),
+                                        img(src='GitHub-Mark-32px.png', width='32px', height='32px'),
+                                        br(),
+                                        a(href = "https://github.com/tzerk/RLumShiny/tree/master/inst/shiny/radialplot", "See the code at GitHub!", target="_blank")
                                     )#/div
                            )##EndOf::Tab_9
                )##EndOf::tabsetPanel
@@ -656,16 +679,7 @@ pageWithSidebar(
             tags$head(tags$style(type="text/css",".tab-content {overflow: visible;}")),
             tags$head(includeCSS("www/style.css")),
             
-            # include js code that activates bootstraps tooltip plugin (opt-in)
-            # the .js file also contains all the content of the tooltips
-            tags$head(includeScript("www/tooltip.js")),
-            
             # divide output in separate tabs via tabsetPanel
-            # 1 - show Radial Plot
-            # 2 - print the data set that is plotted
-            # 3 - show the results of the central age model (CAM) for primary data set
-            # 4 - show the results of the central age model (CAM) for secondary  data set
-            # 5 - generate and print the R code that is used for the plot in tab 1
             tabsetPanel(
               tabPanel("Plot", plotOutput(outputId = "main_plot", height = "500px")),
               tabPanel("Primary data set", dataTableOutput("dataset")),

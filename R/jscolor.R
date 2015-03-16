@@ -44,7 +44,7 @@ jscolorInput <- function(inputId, label, value, position = 'bottom', color = 'tr
     singleton(tags$head(tags$script(src = "RLumShiny/jscolor/jscolor.js"))),
     if (missing(label)) { tags$p(" ") } else if (!is.null(label)) { tags$p(label) },
     tags$input(id = inputId, 
-               value = ifelse(!missing(value), value, "000000"), 
+               value = ifelse(!missing(value), value, "#000000"), 
                class = sprintf("color {hash:true, pickerPosition:'%s', pickerBorderColor:'transparent', pickerFaceColor:'%s', pickerMode:'%s', slider:%s, pickerClosable:%s} shiny-bound-input", position, color, mode, tolower(slider), tolower(close)), 
                onchange = sprintf("$('#%s').trigger('afterChange')", inputId)),
     tags$script(sprintf("$('#%s').trigger('afterChange')", inputId))
