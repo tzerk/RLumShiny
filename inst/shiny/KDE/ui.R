@@ -28,36 +28,49 @@ pageWithSidebar(
                                     
                                     # file upload button (data set 1)
                                     fileInput(inputId = "file1", 
-                                              label = strong("Primary data set"), 
+                                              label = strong("Primary data set"),
                                               accept="text/plain"),
+                                    tooltip(refId = "file1", text = tags$img(src='file_structure.png', width='250px')),
                                     
                                     # file upload button (data set 2)
                                     fileInput(inputId = "file2", 
                                               label = strong("Secondary data set"), 
                                               accept="text/plain"),
+                                    tooltip(refId = "file2", text = tags$img(src='file_structure.png', width='250px')),
                                     
-                                    # logical: should NA values be excluded?
-                                    checkboxInput(inputId = "na.exclude", 
-                                                  label = "Exclude NA values",
-                                                  value = TRUE),
+                                    # informational text
+                                    div(align = "center", h5("Settings")),
                                     
-                                    # logical: file contains headers?
-                                    checkboxInput(inputId = "headers", 
-                                                  label = "File contains headers", 
-                                                  value = FALSE),
+                                    fluidRow(
+                                      column(width = 6,
+                                             # logical: should NA values be excluded?
+                                             checkboxInput(inputId = "na.exclude", 
+                                                           label = "Exclude NA values",
+                                                           value = TRUE)
+                                      ),
+                                      column(width = 6,
+                                             
+                                             # logical: file contains headers?
+                                             checkboxInput(inputId = "headers", 
+                                                           label = "File contains headers", 
+                                                           value = FALSE),
+                                             tooltip(refId = "headers", text = tags$img(src='file_containsHeader.png', width='250px'))
+                                      )),
                                     
                                     # char: columns separated by tab, space, comma
-                                    radioButtons("sep", "Separator", selected = "\t",
+                                    radioButtons("sep", "Separator", selected = "\t", inline = TRUE,
                                                  c("Tab" = "\t",
                                                    "Space" = " ",
                                                    "Comma" = ",",
                                                    "Semicolon" = ";")),
+                                    tooltip(refId = "sep", text = tags$img(src='file_sep.png', width='400px'), placement = "auto left"),
                                     
                                     hr(),
                                     
                                     fluidRow(
                                       column(width = 6,
-                                             actionButton(inputId = "refresh", label = "Refresh", icon = icon("refresh"))
+                                             actionButton(inputId = "refresh", label = "Refresh", icon = icon("refresh")),
+                                             tooltip(refId = "refresh", text = "Redraw the plot")
                                       ),
                                       column(width = 6,
                                              actionButton(inputId = "exit", label = "Exit", class = "btn btn-danger")
@@ -75,7 +88,8 @@ pageWithSidebar(
                                       column(width = 6,
                                              checkboxInput(inputId = "summary",
                                                            label = "Show summary",
-                                                           value = FALSE)
+                                                           value = FALSE),
+                                             tooltip(refId = "summary", text = "Adds numerical output to the plot")
                                       ),
                                       column(width = 6,
                                              selectInput(inputId = "sumpos",
@@ -89,7 +103,8 @@ pageWithSidebar(
                                                                         Bottom=c("Bottom" = "bottom",
                                                                                  "Bottom left" = "bottomleft",
                                                                                  "Bottom right" = "bottomright")
-                                                         ))
+                                                         )),
+                                             tooltip(refId = "sumpos", attr = "for", text = "Position of the statistical summary. The keyword \"Subtitle\" will only work if no plot subtitle is used.")
                                       )
                                     ),
                                     
@@ -110,6 +125,7 @@ pageWithSidebar(
                                                                             "weighted Mean" = "mean.weighted"
                                                                             #"weighted Median" = "weighted.median,  currently not supported
                                                                             )),
+                                    tooltip(refId = "stats", text = "Statistical parameters to be shown in the summary"),
                                     
                                     div(align = "center", h5("Additional options")),
                                     
@@ -138,6 +154,7 @@ pageWithSidebar(
                                     
                                     # inject sliderInput from Server.R
                                     uiOutput(outputId = "bw"),
+                                    tooltip(refId = "bw", text = "Bin width of the kernel density estimate"),
                                     
                                     
                                     selectInput(inputId = "centrality", 
@@ -376,16 +393,7 @@ pageWithSidebar(
             tags$head(tags$style(type="text/css",".tab-content {overflow: visible;}")),
             tags$head(includeCSS("www/style.css")),
             
-            # include js code that activates bootstraps tooltip plugin (opt-in)
-            # the .js file also contains all the content of the tooltips
-            tags$head(includeScript("www/tooltip.js")),
-            
             # divide output in separate tabs via tabsetPanel
-            # 1 - show Abanico Plot
-            # 2 - print the data set that is plotted
-            # 3 - show the results of the central age model (CAM) for primary data set
-            # 4 - show the results of the central age model (CAM) for secondary  data set
-            # 5 - generate and print the R code that is used for the plot in tab 1
             tabsetPanel(
               tabPanel("Plot", plotOutput(outputId = "main_plot", height = "500px")),
               tabPanel("Primary data set", dataTableOutput("dataset")),

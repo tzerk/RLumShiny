@@ -29,15 +29,15 @@ pageWithSidebar(
                                     
                                     # file upload button (data set 1)
                                     fileInput(inputId = "file1", 
-                                              label = strong("Primary data set"), 
+                                              label = strong("Primary data set"),
                                               accept="text/plain"),
-                                    tooltip(refId = "file1", text = "<img src='file_structure.png' width='250px'/>"),
+                                    tooltip(refId = "file1", text = tags$img(src='file_structure.png', width='250px')),
                                     
                                     # file upload button (data set 2)
                                     fileInput(inputId = "file2", 
                                               label = strong("Secondary data set"), 
                                               accept="text/plain"),
-                                    tooltip(refId = "file2", text = "<img src='file_structure.png' width='250px'/>"),
+                                    tooltip(refId = "file2", text = tags$img(src='file_structure.png', width='250px')),
                                     
                                     # informational text
                                     div(align = "center", h5("Settings")),
@@ -55,7 +55,7 @@ pageWithSidebar(
                                              checkboxInput(inputId = "headers", 
                                                            label = "File contains headers", 
                                                            value = FALSE),
-                                             tooltip(refId = "headers", text = "<img src='file_containsHeader.png' width='250px'/>")
+                                             tooltip(refId = "headers", text = tags$img(src='file_containsHeader.png', width='250px'))
                                       )),
                                     
                                     # char: columns separated by tab, space, comma
@@ -64,14 +64,14 @@ pageWithSidebar(
                                                    "Space" = " ",
                                                    "Comma" = ",",
                                                    "Semicolon" = ";")),
-                                    tooltip(refId = "sep", text = "<img src='file_sep.png' width='400px'/>"),
+                                    tooltip(refId = "sep", text = tags$img(src='file_sep.png', width='400px'), placement = "auto left"),
                                     
                                     hr(),
                                     
                                     fluidRow(
                                       column(width = 6,
                                              actionButton(inputId = "refresh", label = "Refresh", icon = icon("refresh")),
-                                             tooltip(refId = "refres", text = "Redraw the plot")
+                                             tooltip(refId = "refresh", text = "Redraw the plot")
                                       ),
                                       column(width = 6,
                                              actionButton(inputId = "exit", label = "Exit", class = "btn btn-danger")
@@ -180,7 +180,7 @@ pageWithSidebar(
                                                                                  "Bottom left" = "bottomleft",
                                                                                  "Bottom right" = "bottomright")
                                                          )),
-                                             tooltip(refId = "sumpos", text = "Position of the statistical summary. The keyword 'Subtitle' will only work if no plot subtitle is used.")
+                                             tooltip(refId = "sumpos", attr = "for", text = "Position of the statistical summary. The keyword \"Subtitle\" will only work if no plot subtitle is used.")
                                       )
                                     ),
                                     
@@ -267,11 +267,13 @@ pageWithSidebar(
                                     
                                     fluidRow(
                                       column(width = 6,
+                                             div(id="pratiodiv",
                                              sliderInput(inputId = "p.ratio", 
                                                          label = "Plot ratio", 
                                                          min=0.25, max=0.90,
-                                                         value=0.75, step=0.01, round= FALSE),
-                                             tooltip(refId = "p.ratio", text = "Relative space given to the radial versus the cartesian plot part, default is 0.75.")
+                                                         value=0.75, step=0.01, round= FALSE)
+                                             ),
+                                             tooltip(refId = "pratiodiv", text = "Relative space given to the radial versus the cartesian plot part, default is 0.75.")
                                       ),
                                       column(width = 6,
                                              sliderInput(inputId = "cex", 
@@ -849,12 +851,14 @@ pageWithSidebar(
                                     
                                     div(align = "center", h5("Layout")),
                                     
+                                    div(id = "layout", 
                                     selectInput(inputId = "layout", 
                                                 label = "Choose layout", 
                                                 selected = "default",
                                                 choices = c("Default"="default",
-                                                            "Journal"="journal")),
-                                    tooltip(refId = "layout", text = "The optional parameter layout allows to modify the entire plot more sophisticated. Each element of the plot can be addressed and its properties can be defined. This includes font type, size and decoration, colours and sizes of all plot items. To infer the definition of a specific layout style cf. get_Layout() or type eg. for the layout type 'journal' get_Layout('journal'). A layout type can be modified by the user by assigning new values to the list object.")
+                                                            "Journal"="journal"))
+                                    ),
+                                    tooltip(refId = "layout", text = "The optional parameter layout allows to modify the entire plot more sophisticated. Each element of the plot can be addressed and its properties can be defined. This includes font type, size and decoration, colours and sizes of all plot items. To infer the definition of a specific layout style cf. get_Layout() or type eg. for the layout type \"journal\" get_Layout(\"journal\"). A layout type can be modified by the user by assigning new values to the list object.")
                                     
                            ),
                            
@@ -940,20 +944,7 @@ pageWithSidebar(
             tags$head(tags$style(type="text/css",".tab-content {overflow: visible;}")),
             tags$head(includeCSS("www/style.css")),
             
-            # include js code that activates bootstraps tooltip plugin (opt-in)
-            # the .js file also contains all the content of the tooltips
-            #tags$head(includeScript("www/tooltip.js")),
-            
-            # .js plugin that extends bootstrap tooltips by new placement keywords (top-left, ...)
-            # source: https://github.com/andresgutgon/bootstrap-tooltip-extension
-            #tags$head(includeScript("www/bootstrap-tooltip-extension.js")),
-            
             # divide output in separate tabs via tabsetPanel
-            # 1 - show Abanico Plot
-            # 2 - print the data set that is plotted
-            # 3 - show the results of the central age model (CAM) for primary data set
-            # 4 - show the results of the central age model (CAM) for secondary  data set
-            # 5 - generate and print the R code that is used for the plot in tab 1
             tabsetPanel(
               tabPanel("Plot", plotOutput(outputId = "main_plot", height = "500px")),
               tabPanel("Primary data set", fluidRow(column(width = 12, dataTableOutput("dataset")))),
