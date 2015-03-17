@@ -115,17 +115,19 @@ pageWithSidebar(
                                                                 selected = c("n","mean"),
                                                                 choices = c("n" = "n",
                                                                             "Mean" = "mean",
+                                                                            "weighted Mean" = "mean.weighted",
                                                                             "Median" = "median",
+                                                                            "weighted Median" = "median.weighted",
                                                                             "rel. Standard deviation" = "sdrel",
                                                                             "abs. Standard deviation" = "sdabs",
+                                                                            "rel. Standard error" = "serel",
+                                                                            "abs. Standard error" = "seabs",
+                                                                            #"25 % Quartile" = "q25", #not implemented yet
+                                                                            #"75 % Quartile" = "q75", #not implemented yet
+                                                                            "KDEmax"  = "kdemax",
                                                                             "Skewness" = "skewness",
-                                                                            "kurtosis" = "kurtosis",
-                                                                            "max. KDE" = "kdemax",
-                                                                            #"rel. Standard error" = "serel",       currently not supported
-                                                                            #"abs. Standard error" = "seabs",       currently not supported
-                                                                            "weighted Mean" = "mean.weighted"
-                                                                            #"weighted Median" = "weighted.median,  currently not supported
-                                                                            )),
+                                                                            "Kurtosis" = "kurtosis",
+                                                                            "Confidence interval" = "in.ci")),
                                     tooltip(refId = "stats", text = "Statistical parameters to be shown in the summary"),
                                     
                                     div(align = "center", h5("Additional options")),

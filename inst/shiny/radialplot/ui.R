@@ -122,8 +122,9 @@ pageWithSidebar(
                                                                    "abs. Standard error" = "seabs",
                                                                    #"25 % Quartile" = "q25", #not implemented yet
                                                                    #"75 % Quartile" = "q75", #not implemented yet
-                                                                   #"Skewness" = "skewness", #not implemented yet
-                                                                   #"Kurtosis" = "kurtosis", #not implemented yet
+                                                                   "KDEmax"  = "kdemax",
+                                                                   "Skewness" = "skewness",
+                                                                   "Kurtosis" = "kurtosis",
                                                                    "Confidence interval" = "in.ci")),
                                     tooltip(refId = "stats", text = "Statistical parameters to be shown in the summary"),
                                     

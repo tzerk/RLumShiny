@@ -199,6 +199,7 @@ pageWithSidebar(
                                                                    "abs. Standard error" = "seabs",
                                                                    #"25 % Quartile" = "q25", #not implemented yet
                                                                    #"75 % Quartile" = "q75", #not implemented yet
+                                                                   "KDEmax"  = "kdemax",
                                                                    "Skewness" = "skewness",
                                                                    "Kurtosis" = "kurtosis",
                                                                    "Confidence interval" = "in.ci")),

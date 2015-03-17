@@ -94,13 +94,16 @@ pageWithSidebar(
                                                        choices = c("n" = "n",
                                                                    "Mean" = "mean",
                                                                    "Median" = "median",
+                                                                   "weighted Mean" = "mean.weighted",
+                                                                   "KDEmax" = "kdemax",
                                                                    "rel. Standard deviation" = "sdrel",
-                                                                   #"abs. Standard deviation" = "sdabs",   #currently not supported
-                                                                   "rel. Standard error" = "serel",       #currently not supported
-                                                                   #"abs. Standard error" = "seabs",       #currently not supported
-                                                                   #"weighted Median" = "median.weighted",  #currently not supported
-                                                                   #"Confidence interval" = "in.ci")),      #currently not supported
-                                                                   "weighted Mean" = "mean.weighted")),     #currently not supported
+                                                                   "abs. Standard deviation" = "sdabs", 
+                                                                   "rel. Standard error" = "serel",
+                                                                   "abs. Standard error" = "seabs",
+                                                                   "weighted Median" = "median.weighted",
+                                                                   "Skewness" = "skewness",
+                                                                   "Kurtosis" = "kurtosis",
+                                                                   "Confidence interval" = "in.ci")),
                                     tooltip(refId = "stats", text = "Statistical parameters to be shown in the summary"),
                                     
                                     div(align = "center", h5("Error bars")),
