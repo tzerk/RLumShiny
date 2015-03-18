@@ -1,3 +1,4 @@
+library(RLumShiny)
 # Define UI
 pageWithSidebar(
   

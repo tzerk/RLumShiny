@@ -1,3 +1,4 @@
+library(RLumShiny)
 ## UI.R
 
 # load example data
