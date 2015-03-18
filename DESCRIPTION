@@ -23,4 +23,5 @@ Collate:
     'app_RLum.R'
     'jscolor.R'
     'tooltip.R'
+    'popover.R'
     'zzz.R'
