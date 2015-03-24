@@ -1,38 +1,13 @@
-# helpPopup Button by Winston Chang from RStudio:
-# https://gist.github.com/jcheng5/5913297
-helpPopup <- function(title, content,
-                      placement=c('right', 'top', 'left', 'bottom'),
-                      trigger=c('click', 'hover', 'focus', 'manual')) {
-  tagList(
-    singleton(
-      tags$head(
-        tags$script("$(function() { $(\"[data-toggle='popover']\").popover(); })")
-      )
-    ),
-    tags$a(
-      href = NULL, class = "btn btn-mini", `data-toggle` = "popover",
-      title = title, `data-content` = content, `data-animation` = TRUE,
-      `data-placement` = match.arg(placement, several.ok=TRUE)[1],
-      `data-trigger` = match.arg(trigger, several.ok=TRUE)[1],
-      
-      #tags$i(class="icon-question-sign")
-      tags$img(class="icon", src="RL_Logo_alpha.png", alt="RLum", title="RLum", height="40", width="40")
-    )
-  )
-}
+library(RLumShiny)
 
 shinyUI(fluidPage(
   includeCSS("./www/style.css"),
   fluidRow(
-    
     column(width = 3,
-           
            div(align = "center", span(class="label label-info", "Site")),
-           
            wellPanel(
              numericInput(inputId = "altitude", label = p(class="h","Altitude (m asl)"), value = 124, step = 1),
              tooltip(refId = "altitude", text = "Altitude (m above sea-level)"),
-             
              selectInput(inputId = "coords", label = "Coordinates", selected = "decDeg", 
                          choices = c("Decimal degrees" = "decDeg",
                                      "Degrees decimal minutes" = "degDecMin",
@@ -102,8 +77,6 @@ shinyUI(fluidPage(
                               numericInput(inputId = "depth_5", label = p(class="h","Depth (m)"), value = NULL, step = 0.01)
              )
            )
-           
-           
     ),
     column(width = 3,
            div(align = "center", span(class="label label-info", "Options")),
@@ -122,24 +95,22 @@ shinyUI(fluidPage(
                                      "x absorber, 1 sample" = "xAsS",
                                      "1 absorber, x samples" = "sAxS"))
            ),
-             
            fluidRow(
              column(width = 3, 
-                      actionButton(inputId = "refresh", label = "", icon = icon("refresh")),
+                    actionButton(inputId = "refresh", label = "", icon = icon("refresh")),
                     tooltip(refId = "refresh", text = "Reload app")
-                     ),
+             ),
              column(width = 3,
-                      actionButton(inputId = "exit", label = "Exit", class = "btn btn-danger")
-                    ),
+                    actionButton(inputId = "exit", label = "Exit", class = "btn btn-danger")
+             ),
              column(width = 3, offset = 1,
-                    helpPopup("About", "...",
-                              placement='left',
-                              trigger='click')
-                    ))
+                    popover(title = "?", content = "...", header = "Unter construction...",
+                            placement='left',
+                            trigger='click')
+             )
+           )
     )
   ),
-  
-  
   fluidRow(
     column(width = 6,
            div(id="gmap",
@@ -147,16 +118,15 @@ shinyUI(fluidPage(
            )
     ),
     column(width = 6,
-           
            div(align = "center", h6("Results")),
            conditionalPanel(condition = "input.mode == 'sAsS' || input.mode == 'xAsS'",
-           wellPanel(
-             htmlOutput("results")
-           )),
+                            wellPanel(
+                              htmlOutput("results")
+                            )),
            conditionalPanel(condition = "input.mode == 'sAxS'",
-      
-             dataTableOutput("resultsTable")
-             )
+                            
+                            dataTableOutput("resultsTable")
+           )
     )
   ),
   includeCSS("./www/style.css")

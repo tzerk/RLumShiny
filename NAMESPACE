@@ -2,5 +2,6 @@
 
 export(app_RLum)
 export(jscolorInput)
+export(popover)
 export(tooltip)
 import(shiny)

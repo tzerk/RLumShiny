@@ -12,7 +12,7 @@
 #' @param trigger \code{\link{character}}: How tooltip is triggered - click | hover | focus | manual. You may pass multiple triggers; separate them with a space.
 #' 
 #' @examples 
-#' # html code
+#' # javascript code
 #' tt <- tooltip("elementId", "This is a tooltip.")
 #' str(tt)
 #' 

@@ -28,7 +28,7 @@ tooltip(refId, text, attr = NULL, animation = TRUE, delay = 100,
 Create bootstrap tooltips for any HTML element to be used in shiny applications.
 }
 \examples{
-# html code
+# javascript code
 tt <- tooltip("elementId", "This is a tooltip.")
 str(tt)
 

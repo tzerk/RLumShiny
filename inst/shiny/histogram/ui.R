@@ -1,3 +1,4 @@
+library(RLumShiny)
 ## UI.R
 # load example data
 data(ExampleData.DeValues)
@@ -6,43 +7,32 @@ data(ExampleData.DeValues)
 # 1 - headerPanel: basically just for a header
 # 2 - sidebarPanel: data input
 # 3 - mainPanel: data output
-
 pageWithSidebar(  
   # 1 - title = NULL -> Panel will not be shown
   headerPanel(title = NULL),
-  
-  
-  
   sidebarPanel(width = 5,
                
                # include a tabs in the input panel for easier navigation
                tabsetPanel(id = "tabs", type = "pill", selected = "Data",
-                           
                            # Tab 1: Data input
                            tabPanel("Data",
-                                    
                                     # informational text
                                     div(align = "center", h5("Data upload")),
-                                    
                                     # file upload button (data set 1)
                                     fileInput(inputId = "file1", 
                                               label = strong("Primary data set"),
                                               accept="text/plain"),
                                     tooltip(refId = "file1", text = tags$img(src='file_structure.png', width='250px')),
-                                    
-                                    
                                     # logical: should NA values be excluded?
                                     checkboxInput(inputId = "naExclude", 
                                                   label = "Exclude NA values",
                                                   value = TRUE),
                                     tooltip(refId = "naExclude", text = "Exclude NA values from the data set prior to any further operations."),
-                                    
                                     # logical: file contains headers?
                                     checkboxInput(inputId = "headers", 
                                                   label = "File contains headers", 
                                                   value = FALSE),
                                     tooltip(refId = "headers", text = tags$img(src='file_containsHeader.png', width='250px')),
-                                    
                                     # char: columns separated by tab, space, comma
                                     radioButtons("sep", "Separator", selected = "\t", inline = TRUE,
                                                  c("Tab" = "\t",
@@ -50,9 +40,7 @@ pageWithSidebar(
                                                    "Comma" = ",",
                                                    "Semicolon" = ";")),
                                     tooltip(refId = "sep", text = tags$img(src='file_sep.png', width='400px'), placement = "auto left"),
-                                    
                                     hr(),
-                                    
                                     fluidRow(
                                       column(width = 6,
                                              actionButton(inputId = "refresh", label = "Refresh", icon = icon("refresh")),
@@ -62,20 +50,15 @@ pageWithSidebar(
                                              actionButton(inputId = "exit", label = "Exit", class = "btn btn-danger")
                                       )
                                     )
-                                    
                            ),##EndOf::Tab_1
-                           
                            
                            # Tab 2: Statistical information
                            tabPanel("Statistics",                             
-                                    
                                     div(align = "center", h5("Summary")),
-                                    
                                     checkboxInput(inputId = "summary",
                                                   label = "Show summary",
                                                   value = FALSE),
                                     tooltip(refId = "summary", text = "Adds numerical output to the plot"),
-                                    
                                     selectInput(inputId = "sumpos",
                                                 label = "Summary position",
                                                 selected = "topleft",
@@ -87,40 +70,33 @@ pageWithSidebar(
                                                             "Bottom left" = "bottomleft",
                                                             "Bottom right" = "bottomright")),
                                     tooltip(refId = "sumpos", attr = "for", text = "Position of the statistical summary. The keyword \"Subtitle\" will only work if no plot subtitle is used."),
-                                    
                                     checkboxGroupInput(inputId = "stats", 
                                                        label = "Parameters", 
                                                        selected = c("n","mean"),
                                                        choices = c("n" = "n",
                                                                    "Mean" = "mean",
                                                                    "Median" = "median",
+                                                                   "weighted Mean" = "mean.weighted",
+                                                                   "KDEmax" = "kdemax",
                                                                    "rel. Standard deviation" = "sdrel",
-                                                                   #"abs. Standard deviation" = "sdabs",   #currently not supported
-                                                                   "rel. Standard error" = "serel",       #currently not supported
-                                                                   #"abs. Standard error" = "seabs",       #currently not supported
-                                                                   #"weighted Median" = "median.weighted",  #currently not supported
-                                                                   #"Confidence interval" = "in.ci")),      #currently not supported
-                                                                   "weighted Mean" = "mean.weighted")),     #currently not supported
+                                                                   "abs. Standard deviation" = "sdabs", 
+                                                                   "rel. Standard error" = "serel",
+                                                                   "abs. Standard error" = "seabs",
+                                                                   "weighted Median" = "median.weighted",
+                                                                   "Skewness" = "skewness",
+                                                                   "Kurtosis" = "kurtosis",
+                                                                   "Confidence interval" = "in.ci")),
                                     tooltip(refId = "stats", text = "Statistical parameters to be shown in the summary"),
-                                    
                                     div(align = "center", h5("Error bars")),
-                                    
                                     checkboxInput(inputId = "errorBars",
                                                   label = "Show standard error points",
                                                   value = TRUE),
                                     tooltip(refId = "errorBars", text = "Plot the standard error points over the histogram.")
-                                    
-                                    
-                                    
-                                    
-                                    
                            ),##EndOf::Tab_2
                            
                            # Tab 1: Data input
                            tabPanel("Plot",
-                                    
                                     div(align = "center", h5("Title")),
-                                    
                                     fluidRow(
                                       column(width = 6,
                                              textInput(inputId = "main", 
@@ -133,9 +109,7 @@ pageWithSidebar(
                                                        value = "")
                                       )
                                     ),
-                                    
                                     div(align = "center", h5("Histogram bars")),
-                                    
                                     fluidRow(
                                       column(width = 6,
                                              selectInput(inputId = "barsColor", label = "Bar color",
@@ -155,21 +129,16 @@ pageWithSidebar(
                                                                         label = "Choose a color"))
                                       )
                                     ),
-                                    
                                     sliderInput(inputId = "alpha.bars", 
                                                 label = "Bar transparency", 
                                                 min = 0, max = 100, 
                                                 step = 1, value = 66),
-                                    
                                     br(),
-                                    
                                     div(align = "center", h5("Normal curve")),
-                                    
                                     checkboxInput(inputId = "norm",
                                                   label = "Add normal curve",
                                                   value = FALSE),
                                     tooltip(refId = "norm", text = "Add a normal curve to the histogram. Mean and standard deviation are calculated from the input data. If the normal curve is added, the y-axis in the histogram will show the probability density"),
-                                    
                                     fluidRow(
                                       column(width = 6,
                                              selectInput(inputId = "normalColor", label = "Normal curve color",
@@ -188,24 +157,17 @@ pageWithSidebar(
                                                                         label = "Choose a color"))
                                       )
                                     ),
-                                    
-                                    
                                     div(align = "center", h5("Scaling")),
-                                    
                                     sliderInput(inputId = "cex", 
                                                 label = "Scaling factor",
                                                 min = 0.5, max = 2, 
                                                 value = 1.0, step = 0.1),
-                                    
                                     br(),
-                                    
                                     div(align = "center", h5("Rugs")),
-                                    
                                     checkboxInput(inputId = "rugs",
                                                   label = "Add rugs",
                                                   value = TRUE),
                                     tooltip(refId = "rugs", text = "Option to add a rug to the KDE part, to indicate the location of individual values"),
-                                    
                                     fluidRow(
                                       column(width = 6,
                                              selectInput(inputId = "rugsColor", label = "Rugs color",
@@ -223,26 +185,17 @@ pageWithSidebar(
                                                                         label = "Choose a color"))
                                       )
                                     )
-                                    
-                                    
-                                    
                            ),##EndOf::Tab_9
                            
                            # Tab 4: modify axis parameters
                            tabPanel("Axis",
-                                    
                                     div(align = "center", h5("X-axis")),
-                                    
                                     textInput(inputId = "xlab", 
                                               label = "Label x-axis",
                                               value = "Equivalent dose [Gy]"),
-                                    
-                                    
                                     # inject sliderInput from Server.R
                                     uiOutput(outputId = "xlim"),
-                                    
                                     div(align = "center", h5("Y-axis")),
-                                    
                                     fluidRow(
                                       column(width = 6,
                                              textInput(inputId = "ylab1", 
@@ -255,16 +208,11 @@ pageWithSidebar(
                                                        value = "Error")
                                       )
                                     )
-                                    
-                                    
-                                    
                            ),##EndOf::Tab_4
                            
                            # Tab 5: modify data point representation
                            tabPanel("Datapoints",              
-                                    
                                     div(align = "center", h5("Primary data set")),
-                                    
                                     fluidRow(
                                       column(width = 6,
                                              selectInput(inputId = "pch",
@@ -294,7 +242,6 @@ pageWithSidebar(
                                                                      "Custom"="custom"))
                                       ),
                                       column(width = 6,
-                                             
                                              # show only if custom symbol is desired
                                              conditionalPanel(condition = "input.pch == 'custom'",
                                                               textInput(inputId = "custompch", 
@@ -302,7 +249,6 @@ pageWithSidebar(
                                                                         value = "?"))
                                       )
                                     ),
-                                    
                                     fluidRow(
                                       column(width = 6,
                                              selectInput(inputId = "pchColor", label = "Datapoint color",
@@ -320,25 +266,20 @@ pageWithSidebar(
                                                                         label = "Choose a color"))
                                       )
                                     )
-                                    
-                                    
                            ),##EndOf::Tab_5
                            
                            
                            # Tab 9: save plot as pdf, wmf or eps
                            tabPanel("Export",
-                                    
                                     radioButtons(inputId = "fileformat", 
                                                  label = "Fileformat", 
                                                  selected = "pdf",
                                                  choices = c("PDF   (Portable Document Format)" = "pdf",
                                                              "SVG   (Scalable Vector Graphics)" = "svg",
                                                              "EPS   (Encapsulated Postscript)" = "eps")),
-                                    
                                     textInput(inputId = "filename", 
                                               label = "Filename", 
                                               value = "Histogram"),
-                                    
                                     fluidRow(
                                       column(width = 6,
                                              numericInput(inputId = "imgheight",
@@ -351,7 +292,6 @@ pageWithSidebar(
                                                           value = 7)
                                       )
                                     ),
-                                    
                                     selectInput(inputId = "fontfamily", 
                                                 label = "Font", 
                                                 selected = "Helvetica",
@@ -361,22 +301,16 @@ pageWithSidebar(
                                                             "Courier" = "Courier",
                                                             "Bookman" = "Bookman",
                                                             "Palatino" = "Palatino")),
-                                    
                                     tags$hr(),
-                                    
                                     downloadButton(outputId = "exportFile", 
                                                    label = "Download plot"),
-                                    
                                     tags$hr(),
-                                    
                                     helpText("Additionally, you can download a corresponding .R file that contains",
                                              "a fully functional script to reproduce the plot in your R environment!"),
-                                    
                                     downloadButton(outputId = "exportScript", 
                                                    label = "Download R script")
-                                    
-                                    
                            ),##EndOf::Tab_8
+                           
                            # Tab 10: further information
                            tabPanel("About",
                                     hr(),
@@ -402,12 +336,10 @@ pageWithSidebar(
   
   # 3 - output panel
   mainPanel(width = 7,
-            
             # insert css code inside <head></head> of the generated HTML file:
             # allow open dropdown menus to reach over the container
             tags$head(tags$style(type="text/css",".tab-content {overflow: visible;}")),
             tags$head(includeCSS("www/style.css")),
-            
             # divide output in separate tabs via tabsetPanel
             tabsetPanel(
               tabPanel("Plot", plotOutput(outputId = "main_plot", height = "500px")),

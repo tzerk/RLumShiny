@@ -7,11 +7,7 @@ library(RCurl)
 
 # load example data
 data(ExampleData.DeValues, envir = environment())
-if (is.data.frame(ExampleData.DeValues)) {
-  data <- ExampleData.DeValues
-} else {
-  data <- ExampleData.DeValues$CA1
-} 
+data <- ExampleData.DeValues$CA1
 
 # see AES {digest} documentation
 hextextToRaw <- function(text) {
@@ -81,16 +77,16 @@ shinyServer(function(input, output, session) {
                             pw = val$pw,
                             do = "v", style = "POST"))
     
-    print(response)
-    
-    
-    if("#VALID#" %in% unlist(strsplit(response,split = " "))) {
+    if (inherits(response, "try-error")) {
+      val$status <- "invalid"
+      val$status.msg <- "This service is only available on the official website!"
+    } else if ("#VALID#" %in% unlist(strsplit(response, split = " "))) {
       val$status<- "valid"
       val$status.msg<- paste("<font color='green'>logged in as",input$user,"</font>")
     } else {
       val$status<- "invalid"
-      val$status.msg<- "not logged in"
-    }
+      val$status.msg <- "not logged in"
+    } 
   })
   
   ### LOGIN STATUS

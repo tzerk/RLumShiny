@@ -4,9 +4,7 @@ library(shiny)
 
 ## read example data set and misapply them for this plot type
 data(ExampleData.DeValues, envir = environment())
-if (!is.data.frame(ExampleData.DeValues)) {
-  ExampleData.DeValues <- ExampleData.DeValues$BT998
-}
+ExampleData.DeValues <- ExampleData.DeValues$BT998
 
 ##############################################################################
 ###                        MAIN PROGRAM                                    ###
