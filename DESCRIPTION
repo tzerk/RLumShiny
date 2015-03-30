@@ -13,7 +13,7 @@ Description: A collection of shiny applications for the R package Luminescence.
       These mainly, but not exclusively, include applications for plotting chronometric 
       data from e.g. luminescence or radiocarbon dating. It further provides access to 
       bootstraps tooltip and popover functionality as well as a binding to JSColor.
-License: GPL-3
+License: GPL-3 | file LICENSE
 Depends:
     R (>= 3.1.2)
 Imports:
@@ -29,4 +29,5 @@ Collate:
     'jscolor.R'
     'tooltip.R'
     'popover.R'
+    'RLumShiny.R'
     'zzz.R'
