@@ -1,4 +1,4 @@
-//input binding
+// JSColor shiny input binding
 var jscolor = new Shiny.InputBinding();
 $.extend(jscolor, {
   find: function(scope) {
