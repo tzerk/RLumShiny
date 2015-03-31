@@ -793,7 +793,7 @@ pageWithSidebar(
                                         br(),
                                         a(href = "https://forum.r-luminescence.de", "Message board", target="_blank"),
                                         br(),
-                                        a(href = "https://zerk.canopus.uberspace.de/R.Lum", "Online application", target="_blank"),
+                                        a(href = "http://zerk.canopus.uberspace.de/R.Lum", "Online application", target="_blank"),
                                         br(),hr(),
                                         img(src='GitHub-Mark-32px.png', width='32px', height='32px'),
                                         br(),

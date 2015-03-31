@@ -1,26 +1,4 @@
-NEWS for the R Package ESR
+RLumShiny 0.1.0 (Release date: 2015-03-31)
+==============
 
-Changes in version 0.1.x (XXXXXXX XXth, 2015):
-
-  Preface:
-
-         • 
-
-  New functions:
-
-         • 
-
-  New example data sets:
-
-         • 
-
-  Bugfixes and changes:
-
-         • 
-
-             • 
-
-  Internals:
-
-         • 
-
+* Initial release
