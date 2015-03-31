@@ -6,7 +6,9 @@ A collection of 'shiny' applications for the R package 'Luminescence'. These mai
 
 To install the stable version from CRAN, simply run the following from an R console:
 
+```r
 install.packages("RLumShiny")
+```
 
 To install the latest development builds directly from GitHub, run
 
