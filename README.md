@@ -1,8 +1,12 @@
 # RLumShiny
 
-A collection of shiny applications for the R package Luminescence. These mainly, but not exclusively, include applications for plotting chronometric data from e.g. luminescence or radiocarbon dating. It further provides access to bootstraps tooltip and popover functionality as well as a binding to JSColor.
+A collection of 'shiny' applications for the R package 'Luminescence'. These mainly, but not exclusively, include applications for plotting chronometric data from e.g. luminescence or radiocarbon dating. It further provides access to bootstraps tooltip and popover functionality and contains the 'jscolor.js' library with a custom 'shiny' output binding.
 
 ## Installation
+
+To install the stable version from CRAN, simply run the following from an R console:
+
+install.packages("RLumShiny")
 
 To install the latest development builds directly from GitHub, run
 
@@ -59,10 +63,11 @@ This package is part of the R Luminescence project. The is based on and evolves 
 
 ## Note
 
-This version is a development version and it comes without any guarentee! A stable release on the CRAN is planned for April.
+This version is a development version and it comes without any guarentee! For stable branches please visit
+the package on [CRAN 'RLumShiny'](http://cran.r-project.org/web/packages/RLumShiny/index.html).
 
 ## License
 
 The RLumShiny package is licensed under the GPLv3. See these files in the main directory for additional details: 
 
-- LICENSE - RLumShiny package license (GPLv3)
+- LICENSE.note
