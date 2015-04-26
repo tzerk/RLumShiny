@@ -13,7 +13,8 @@
 #' Kernel Density Estimate Plot \tab \emph{KDE} \tab \code{\link{plot_KDE}} \cr
 #' Radial Plot \tab \emph{radialplot} \tab \code{\link{plot_RadialPlot}} \cr
 #' Dose Recovery Test \tab \emph{doserecovery} \tab \code{\link{plot_DRTResults}} \cr
-#' Cosmic Dose Rate \tab \emph{cosmicdose}  \tab \code{\link{calc_CosmicDoseRate}}
+#' Cosmic Dose Rate \tab \emph{cosmicdose}  \tab \code{\link{calc_CosmicDoseRate}} \cr
+#' CW Curve Transformation \tab \emph{transformCW} \tab \code{\link{CW2pHMi}, \link{CW2pLM}, \link{CW2pLMi}, \link{CW2pPMi}}
 #' }
 #' 
 #' The \code{app_RLum()} function is just a wrapper for \code{\link{runApp}}. 
@@ -47,7 +48,8 @@ app_RLum <- function(app, ...) {
                   "doserecovery",
                   "histogram",
                   "KDE",
-                  "radialplot")
+                  "radialplot",
+                  "transformCW")
   
   if (!app %in% valid_apps) 
     return(message(paste0("Invalid app name: ", app, " \n Valid options are: ", paste(valid_apps, collapse = ", "))))
