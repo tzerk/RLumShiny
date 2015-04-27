@@ -5,3 +5,4 @@ README.md$
 ^\.Rprofile$
 .Rprofile
 cran-comments.md$
+.travis.yml$
