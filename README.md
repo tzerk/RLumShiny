@@ -6,7 +6,7 @@
 [1.1]: http://i.imgur.com/wWzX9uB.png (twitter icon without padding)
 [1]: http://www.twitter.com/RLuminescence
 
-A collection of 'shiny' applications for the R package 'Luminescence'. These mainly, but not exclusively, include applications for plotting chronometric data from e.g. luminescence or radiocarbon dating. It further provides access to bootstraps tooltip and popover functionality and contains the 'jscolor.js' library with a custom 'shiny' output binding.
+A collection of `shiny` applications for the R package `Luminescence`. These mainly, but not exclusively, include applications for plotting chronometric data from e.g. luminescence or radiocarbon dating. It further provides access to twitter bootstraps tooltip and popover functionality and contains the [jscolor.js library](http://jscolor.com/) with a custom `shiny` output binding.
 
 ## Installation
 
@@ -19,7 +19,7 @@ install.packages("RLumShiny")
 To install the latest development builds directly from GitHub, run
 
 ```r
-if(!require("devtools"))
+if (!require("devtools"))
   install.packages("devtools")
 devtools::install_github("tzerk/RLumShiny@master")
 ```
@@ -36,14 +36,17 @@ The RLumShiny package provides a single function from which all apps can be star
 | Radial Plot | radialplot | `plot_RadialPlot` |
 | Dose Recovery Test | doserecovery | `plot_DRTResults` |
 | Cosmic Dose Rate | cosmicdose | `calc_CosmicDoseRate`|
+| CW Curve Transformation* | transformCW | `CW2pHMi`, `CW2pLM`, `CW2pLMi`, `CW2pPMi` |
 
 The `app_RLum()` function is just a wrapper for `shiny::runApp()`. Via the `...` argument further arguments can be directly passed to `shiny::runApp()`. See `?shiny::runApp` for further details on valid arguments.
 
+> \* not yet available on CRAN
+
 ## Extending Shiny
 
-In addition to its main purpose of providing convenient access to the Luminescence shiny applications this package also provides further functions to extend the functionality of shiny. From the Bootstrap framework the JavaScript tooltip and popover components can be added to any shiny application via `tooltip()` and `popover()`.
+In addition to its main purpose of providing convenient access to the Luminescence shiny applications this package also provides further functions to extend the functionality of `shiny`. From the Bootstrap framework the JavaScript tooltip and popover components can be added to any shiny application via `tooltip()` and `popover()`.
 
-It further provides a custom input binding to the JavaScript/HTML color picker [JSColor](http://jscolor.com). Offering access to most options provided by the JSColor API the function `jscolorInput()` is easily implemented in a shiny app. RGB colors are returned as hex values and be directly used in **R**'s base plotting functions without the need of any format conversion.
+It further provides a custom input binding to the JavaScript/HTML color picker [JSColor](http://jscolor.com). Offering access to most options provided by the JSColor API the function `jscolorInput()` is easily implemented in a shiny app. RGB colors are returned as hex values and can be directly used in **R**'s base plotting functions without requiring any format conversion.
 
 ## Examples
 
