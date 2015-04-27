@@ -1,5 +1,11 @@
 # RLumShiny
 
+[![Build Status](https://travis-ci.org/tzerk/RLumShiny.svg?branch=master)](https://travis-ci.org/tzerk/RLumShiny)
+
+> Follow us on [![alt text][1.1]][1] <a href="http://www.twitter.com/RLuminescence" target="_blank">@RLuminescence</a>
+[1.1]: http://i.imgur.com/wWzX9uB.png (twitter icon without padding)
+[1]: http://www.twitter.com/RLuminescence
+
 A collection of 'shiny' applications for the R package 'Luminescence'. These mainly, but not exclusively, include applications for plotting chronometric data from e.g. luminescence or radiocarbon dating. It further provides access to bootstraps tooltip and popover functionality and contains the 'jscolor.js' library with a custom 'shiny' output binding.
 
 ## Installation
