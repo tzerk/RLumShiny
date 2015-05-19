@@ -367,7 +367,7 @@ shinyServer(function(input, output, session) {
                     summary.pos = input$sumpos, 
                     legend = legend, 
                     legend.pos = legend.pos,
-                    na.exclude = input$naExclude, 
+                    na.rm = input$naExclude, 
                     central.value = input$centValue, 
                     centrality = input$centrality,
                     lwd = c(input$lwd, input$lwd2),
@@ -470,7 +470,7 @@ shinyServer(function(input, output, session) {
     str25 <- paste("grid.col = '",grid.col,"',", sep = "")
     str26 <- paste("legend = c('",legend[1],"','",legend[2],"'),", sep = "")
     str27 <- paste("legend.pos = ",verb.legend.pos,",", sep = "")
-    str28 <- paste("na.exclude = ",input$naExclude,",", sep = "")
+    str28 <- paste("na.rm = ",input$naExclude,",", sep = "")
     str29 <- paste("lwd = c(",input$lwd,",",input$lwd2,"),", sep = "")
     str30 <- paste("xlab = c('", input$xlab1,"','",input$xlab2,"'),", sep="")
     str31 <- paste("ylab = '",input$ylab,"',",sep ="")
@@ -578,7 +578,7 @@ shinyServer(function(input, output, session) {
                         summary.pos = input$sumpos, 
                         legend = legend, 
                         legend.pos = legend.pos,
-                        na.exclude = input$naExclude, 
+                        na.rm = input$naExclude, 
                         central.value = input$centValue, 
                         centrality = input$centrality,
                         lwd = c(input$lwd, input$lwd2),

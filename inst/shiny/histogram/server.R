@@ -141,7 +141,7 @@ shinyServer(function(input, output, session) {
                  detail = "Ready to plot")
     
     plot_Histogram(data = data,
-                   na.exclude = input$naExclude, 
+                   na.rm = input$naExclude, 
                    cex.global = input$cex, 
                    pch = pch,
                    xlim = input$xlim,
@@ -179,7 +179,7 @@ shinyServer(function(input, output, session) {
     str9 <- paste("main = '",input$main,"',", sep = "")               
     str10 <- paste("cex.global = ", input$cex, ",", sep = "")          
     str11 <- paste("mtext = '",input$mtext,"',", sep = "")             
-    str12 <- paste("na.exclude = ",input$naExclude,",", sep = "")     
+    str12 <- paste("na.rm = ",input$naExclude,",", sep = "")     
     str13 <- paste("xlab = '", input$xlab,"',", sep="")                
     str14 <- paste("ylab = c('",input$ylab1,"','", input$ylab2,"'),",sep ="") 
     str15 <- paste("xlim = c(", input$xlim[1],",",input$xlim[2],"))", sep="") 
@@ -251,7 +251,7 @@ shinyServer(function(input, output, session) {
         }
         
         plot_Histogram(data = data,
-                       na.exclude = input$naExclude, 
+                       na.rm = input$naExclude, 
                        cex.global = input$cex, 
                        pch = pch,
                        xlim = input$xlim,
