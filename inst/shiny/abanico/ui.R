@@ -351,20 +351,15 @@ pageWithSidebar(
                            tabPanel("Axis",
                                     div(align = "center", h5("X-axis")),
                                     fluidRow(
-                                      column(width = 4,
+                                      column(width = 6,
                                              textInput(inputId = "xlab1", 
                                                        label = "Label x-axis (upper)",
                                                        value = "Relative error [%]")
                                       ),
-                                      column(width = 4,
+                                      column(width = 6,
                                              textInput(inputId = "xlab2", 
                                                        label = "Label x-axis (lower)",
                                                        value = "Precision")
-                                      ),
-                                      column(width = 4,
-                                             textInput(inputId = "xlab3", 
-                                                       label = "Label x-axis (KDE)",
-                                                       value = "Density")
                                       )
                                     ),
                                     # inject sliderInput from Server.R
@@ -674,7 +669,15 @@ pageWithSidebar(
                                     sliderInput(inputId = "alpha.grid",
                                                 label = "Transparency",
                                                 min = 0, max = 100, 
-                                                step = 1, value = 50)
+                                                step = 1, value = 50),
+                                    
+                                    br(),
+                                    div(align = "center", h5("Frame")),
+                                    selectInput(inputId = "frame", label = "Frame", selected = 1,
+                                                choices = list("No frame" = 0,
+                                                               "Origin at {0,0}" = 1,
+                                                               "Anchors at {0,-2}, {0,2}" = 2,
+                                                               "Rectangle" = 3))
                            ),##EndOf::Tab_7
                            
                            # Tab 8: add and customize legend
@@ -735,7 +738,8 @@ pageWithSidebar(
                                                     choices = c("Default"="default",
                                                                 "Journal"="journal"))
                                     ),
-                                    tooltip(refId = "layout", text = "The optional parameter layout allows to modify the entire plot more sophisticated. Each element of the plot can be addressed and its properties can be defined. This includes font type, size and decoration, colours and sizes of all plot items. To infer the definition of a specific layout style cf. get_Layout() or type eg. for the layout type \"journal\" get_Layout(\"journal\"). A layout type can be modified by the user by assigning new values to the list object.")
+                                    tooltip(refId = "layout", placement = "top",
+                                            text = "The optional parameter layout allows to modify the entire plot more sophisticated. Each element of the plot can be addressed and its properties can be defined. This includes font type, size and decoration, colours and sizes of all plot items. To infer the definition of a specific layout style cf. get_Layout() or type eg. for the layout type \"journal\" get_Layout(\"journal\"). A layout type can be modified by the user by assigning new values to the list object.")
                            ),
                            
                            # Tab 10: save plot as pdf, wmf or eps

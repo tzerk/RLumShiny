@@ -635,9 +635,9 @@ shinyServer(function(input, output, session) {
                 grid.col = grid.col,
                 legend = legend,
                 legend.pos = legend.pos,
-                na.exclude = input$naExclude,
+                na.rm = input$naExclude,
                 lwd = c(input$lwd, input$lwd2),
-                xlab = c(input$xlab1, input$xlab2, input$xlab3),
+                xlab = c(input$xlab1, input$xlab2),
                 ylab = input$ylab,
                 lty = c(as.integer(input$lty), as.integer(input$lty2)),
                 xlim = input$xlim,
@@ -647,7 +647,8 @@ shinyServer(function(input, output, session) {
                 rotate = input$rotate,
                 kde = input$kde,
                 hist = input$histogram,
-                dots = input$dots)
+                dots = input$dots,
+                frame = input$frame)
     
     progress$set(value = 5)
     progress$set(message = "Calculation in progress",
@@ -758,9 +759,9 @@ shinyServer(function(input, output, session) {
     str25 <- paste0("grid.col = '",grid.col,"',")
     str26 <- paste0("legend = c('",legend[1],"','",legend[2],"'),")
     str27 <- paste0("legend.pos = ",verb.legend.pos,",")
-    str28 <- paste0("na.exclude = ",input$naExclude,",")
+    str28 <- paste0("na.rm = ",input$naExclude,",")
     str29 <- paste0("lwd = c(",input$lwd,",",input$lwd2,"),")
-    str30 <- paste0("xlab = c('", input$xlab1,"','",input$xlab2,"','",input$xlab3,"'),")
+    str30 <- paste0("xlab = c('", input$xlab1,"','",input$xlab2,"'),")
     str31 <- paste0("ylab = '",input$ylab,"',",sep ="")
     str32 <- paste0("lty = c(",as.integer(input$lty),",",as.integer(input$lty2),"),")
     str33 <- paste0("xlim = c(", input$xlim[1],",",input$xlim[2],"),")
@@ -770,7 +771,8 @@ shinyServer(function(input, output, session) {
     str37 <- paste0("rotate = ", input$rotate, ",")
     str38 <- paste0("kde = ", input$kde, ",")
     str39 <- paste0("hist = ", input$histogram, ",")
-    str40 <- paste0("dots = ", input$dots, ")")
+    str40 <- paste0("dots = ", input$dots, ",")
+    str41 <- paste0("frame = ", input$frame, ")")
     
     
     if(is.null(input$sep)) updateRadioButtons(session, "fileformat", selected = "\t")
@@ -804,6 +806,7 @@ shinyServer(function(input, output, session) {
                         str11, str12, str13, str14, str15, str16, str17, str18, str19, str20, 
                         str21, str22, str23, str24, str25, str26, str27, str28, str29, str30,
                         str31, str32, str33, str34, str35, str36, str37, str38, str39, str40,
+                        str41,
                         sep="\n   ")
     
     # nested renderText({}) for code output on "R plot code" tab
