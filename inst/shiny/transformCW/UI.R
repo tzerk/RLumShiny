@@ -60,9 +60,9 @@ pageWithSidebar(
                                                              "Parabolic" = "CW2pPMi")
                                     ),
                                     conditionalPanel(condition = "input.method == 'CW2pHMi'",
-                                                     numericInput("delta", "Delta", value = 0)),
+                                                     numericInput("delta", "Delta", value = 1, min = 0)),
                                     conditionalPanel(condition = "input.method == 'CW2pLMi' || input.method == 'CW2pPMi'",
-                                                      numericInput("p", "P", value = 0))
+                                                      numericInput("p", "P", value = 1, min = 0))
                            ),
                            
                            tabPanel("Plot", 
@@ -218,7 +218,7 @@ pageWithSidebar(
                                         br(),hr(),
                                         img(src='GitHub-Mark-32px.png', width='32px', height='32px'),
                                         br(),
-                                        a(href = "https://github.com/tzerk/RLumShiny/tree/master/inst/shiny/abanico", "See the code at GitHub!", target="_blank")
+                                        a(href = "https://github.com/tzerk/RLumShiny/tree/master/inst/shiny/transformCW", "See the code at GitHub!", target="_blank")
                                     )#/div
                            )##EndOf::Tab_9
                )##EndOf::tabsetPanel
