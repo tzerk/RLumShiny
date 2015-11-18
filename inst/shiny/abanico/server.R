@@ -615,7 +615,7 @@ shinyServer(function(input, output, session) {
                 bw = input$bw,
                 dispersion = dispersion,
                 plot.ratio = input$p.ratio,
-                central.value = input$centValue, 
+                z.0 = input$centValue, 
                 log.z = input$logz, 
                 summary = summary,
                 col = c(color,color2),
