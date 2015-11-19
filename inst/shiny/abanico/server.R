@@ -313,7 +313,7 @@ shinyServer(function(input, output, session) {
     sliderInput(inputId = "xlim", sep="",
                 label = "Range x-axis",
                 min = 0, 
-                max = max(prec)*2,
+                max = round(max(prec)*2, 3),
                 value = c(0, max(prec)*1.05))
   })## EndOf::renderUI()
   
@@ -325,7 +325,7 @@ shinyServer(function(input, output, session) {
     sliderInput(inputId = "zlim",  sep="",
                 label = "Range z-axis", 
                 min = min*0.25,
-                max = max*1.75,
+                max = round(max*1.75, 3),
                 value = c(min*0.8, max*1.2))
   })## EndOf::renderUI()
   
@@ -335,7 +335,7 @@ shinyServer(function(input, output, session) {
     sliderInput(inputId = "ylim",  sep="",
                 label = "Range y-axis",
                 min = ylim[1]*4, 
-                max = ylim[2]*4,
+                max = round(ylim[2]*4, 3),
                 value = c(ylim[1], ylim[2]))
   })
   
@@ -382,7 +382,7 @@ shinyServer(function(input, output, session) {
       data<- datGet()
     }
     numericInput(inputId = "centralityNumeric", 
-                 label = "Value (primary)", 
+                 label = "Value", 
                  value = round(mean(data[,1]), 2),
                  step = 0.01)
   })

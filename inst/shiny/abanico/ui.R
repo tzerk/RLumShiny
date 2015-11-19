@@ -256,17 +256,17 @@ pageWithSidebar(
                                                                   max = 100, 
                                                                   step = 1)),
                                     
-                                    div(align = "center", h5("2 sigma bar")),
+                                    div(align = "center", HTML("<h5>2&sigma; bar</h5>")),
                                     
                                     fluidRow(
                                       column(width = 6,
                                              checkboxInput(inputId = "customSigBar", 
-                                                           label = "Customise 2-Sigma Bar",
+                                                           label = HTML("Customise 2&sigma; bar"),
                                                            value = FALSE)
                                              ),
                                       column(width = 6,
                                              checkboxInput(inputId = "addBar", 
-                                                           label = "Second 2-Sigma Bar",
+                                                           label = HTML("Second 2&sigma; bar"),
                                                            value = FALSE)
                                              )
                                     ),
@@ -276,7 +276,7 @@ pageWithSidebar(
                                       column(width = 6, 
                                              conditionalPanel(condition = "input.customSigBar == true",
                                                               numericInput(inputId = "sigmabar1", 
-                                                                           label = "Bar 1", 
+                                                                           label = HTML("2&sigma; bar 1"), 
                                                                            min = 0, max = 100, 
                                                                            value = 60)
                                              )
@@ -284,9 +284,9 @@ pageWithSidebar(
                                       column(width = 6,
                                              conditionalPanel(condition = "input.customSigBar == true",
                                                               numericInput(inputId = "sigmabar2", 
-                                                                           label = "Bar 2", 
+                                                                           label = HTML("2&sigma; bar 2"), 
                                                                            min = 0, max = 100, 
-                                                                           value = 70)
+                                                                           value = 100)
                                              )
                                       )
                                     ),
