@@ -301,20 +301,6 @@ shinyServer(function(input, output, session) {
                       header = input$headers)) # else return file
   })
   
-  # dynamically inject sliderInput for central value
-  output$centValue<- renderUI({
-    data<- unlist(lapply(Data(), function(x) x[,1]))
-    min<- min(data)
-    max<- max(data)
-    mean<- mean(data)
-    
-    sliderInput(inputId = "centValue", sep = "",
-                label = "Central value",
-                min = min*0.9, 
-                max = max*1.1,
-                value = mean)
-  })## EndOf::renderUI()
-  
   # dynamically inject sliderInput for x-axis range
   output$xlim<- renderUI({
     data<- Data()
@@ -327,7 +313,7 @@ shinyServer(function(input, output, session) {
     sliderInput(inputId = "xlim", sep="",
                 label = "Range x-axis",
                 min = 0, 
-                max = max(prec)*2,
+                max = round(max(prec)*2, 3),
                 value = c(0, max(prec)*1.05))
   })## EndOf::renderUI()
   
@@ -339,7 +325,7 @@ shinyServer(function(input, output, session) {
     sliderInput(inputId = "zlim",  sep="",
                 label = "Range z-axis", 
                 min = min*0.25,
-                max = max*1.75,
+                max = round(max*1.75, 3),
                 value = c(min*0.8, max*1.2))
   })## EndOf::renderUI()
   
@@ -349,7 +335,7 @@ shinyServer(function(input, output, session) {
     sliderInput(inputId = "ylim",  sep="",
                 label = "Range y-axis",
                 min = ylim[1]*4, 
-                max = ylim[2]*4,
+                max = round(ylim[2]*4, 3),
                 value = c(ylim[1], ylim[2]))
   })
   
@@ -369,25 +355,25 @@ shinyServer(function(input, output, session) {
     }
     sliderInput(inputId = "bw",  sep="",
                 label = "KDE bandwidth", 
-                min = min, 
-                max = max,
+                min = round(min, 3), 
+                max = round(max, 3),
                 value = value)
   })## EndOf::renderUI()
   
-  observe({
-    # case: 1 data set, 2 sigma bars --> switch to custom value
-    if(input$addBar == TRUE && is.null(datGet2())) {
-      updateSelectInput(session = session, inputId = "centrality", 
-                        label = "Centrality",
-                        selected = "custom")
-    }
-    # case: 1 data set, 1 sigma bars --> return to mean centrality
-    if(input$addBar == FALSE && is.null(datGet2())) {
-      updateSelectInput(session = session, inputId = "centrality", 
-                        label = "Centrality",
-                        selected = "mean")
-    }
-  })  
+  # observe({
+  #   # case: 1 data set, 2 sigma bars --> switch to custom value
+  #   if(input$addBar == TRUE && is.null(datGet2())) {
+  #     updateSelectInput(session = session, inputId = "centrality", 
+  #                       label = "Centrality",
+  #                       selected = "custom")
+  #   }
+  #   # case: 1 data set, 1 sigma bars --> return to mean centrality
+  #   if(input$addBar == FALSE && is.null(datGet2())) {
+  #     updateSelectInput(session = session, inputId = "centrality", 
+  #                       label = "Centrality",
+  #                       selected = "mean")
+  #   }
+  # })  
   
   
   output$centralityNumeric<- renderUI({
@@ -396,25 +382,9 @@ shinyServer(function(input, output, session) {
       data<- datGet()
     }
     numericInput(inputId = "centralityNumeric", 
-                 label = "Value (primary)", 
+                 label = "Value", 
                  value = round(mean(data[,1]), 2),
                  step = 0.01)
-  })
-  
-  output$centralityNumeric2<- renderUI({
-    if(!is.null(datGet2())){
-      data<- datGet2()
-    }
-    if(!is.null(datGet2()) || input$addBar == TRUE) {
-      numericInput(inputId = "centralityNumeric2",  
-                   label = "Value (secondary)", 
-                   value = round(mean(data[,1]), 2),
-                   step = 0.01)
-    } else {
-      numericInput(inputId = "centralityNumeric2",  
-                   label = "Activate second bar first", 
-                   value = 0)
-    }
   })
   
   # render Abanico Plot
@@ -434,11 +404,9 @@ shinyServer(function(input, output, session) {
     # not available
     outputOptions(x = output, name = "bw", suspendWhenHidden = FALSE)
     outputOptions(x = output, name = "zlim", suspendWhenHidden = FALSE)
-    outputOptions(x = output, name = "centValue", suspendWhenHidden = FALSE)
     outputOptions(x = output, name = "xlim", suspendWhenHidden = FALSE)
     outputOptions(x = output, name = "ylim", suspendWhenHidden = FALSE)
     outputOptions(x = output, name = "centralityNumeric", suspendWhenHidden = FALSE)
-    outputOptions(x = output, name = "centralityNumeric2", suspendWhenHidden = FALSE)
     
     # get data
     data<- Data()
@@ -478,9 +446,6 @@ shinyServer(function(input, output, session) {
     
     # if custom datapoint style get char from separate input panel
     pch2<- ifelse(input$pch2 == "custom", input$custompch2, as.integer(input$pch2)-1)
-    
-    # workaround to initialize plotting after app startup
-    centValue<- ifelse(is.null(input$centValue), 3000, input$centValue)
     
     # update progress bar
     progress$set(value = 2)
@@ -582,40 +547,44 @@ shinyServer(function(input, output, session) {
       }
     }
     
+    # TODO: arg 'bar' handling (custom values, 1 or 2 bars)
+    if (input$customSigBar) {
+      if (!input$addBar)
+        bar <- input$sigmabar1
+      if (input$addBar)
+        bar <- c(input$sigmabar1, input$sigmabar2)
+    } else {
+      bar <- TRUE
+    }
+
+    
     # check wether a keyword or a numeric value is used for
     # centrality
     if(input$centrality == "custom") {
-      # 2-sigma bar selection
-      if(!is.null(datGet2()) || input$addBar == TRUE) {
-        centrality<- c(input$centralityNumeric, input$centralityNumeric2)
-      } else { # case: Example data
         centrality<- input$centralityNumeric
-      }
     } else {
       centrality<- input$centrality
     }
     
     # check wether predefined or custom dispersion
-    dispersion<- ifelse(input$dispersion == "custom", paste("ci", input$cinn, sep=""), input$dispersion)
+    dispersion<- ifelse(input$dispersion == "custom", paste("p", input$cinn, sep=""), input$dispersion)
     
     # validate(need()) makes sure that all data are available to
     # renderUI({}) before plotting and will wait until there
-    validate(need(expr = input$centValue, ''),
-             need(expr = input$bw, message = ''),
+    validate(need(expr = input$bw, message = ''),
              need(expr = input$zlim, message = ''),
              need(expr = input$ylim, message = ''),
-             need(expr = input$centralityNumeric, message = ''),
-             need(expr = input$centralityNumeric2, message = 'Waiting for data... Please wait!'))
+             need(expr = input$centralityNumeric, message = 'Waiting for data... Please wait!'))
     
     # save all arguments in a list
     args<- list(data = data,
                 summary.pos = input$sumpos,
                 y.axis = input$yaxis,
-                centrality = centrality,
                 bw = input$bw,
+                bar = bar,
                 dispersion = dispersion,
                 plot.ratio = input$p.ratio,
-                central.value = input$centValue, 
+                z.0 = centrality, 
                 log.z = input$logz, 
                 summary = summary,
                 col = c(color,color2),
@@ -635,9 +604,9 @@ shinyServer(function(input, output, session) {
                 grid.col = grid.col,
                 legend = legend,
                 legend.pos = legend.pos,
-                na.exclude = input$naExclude,
+                na.rm = input$naExclude,
                 lwd = c(input$lwd, input$lwd2),
-                xlab = c(input$xlab1, input$xlab2, input$xlab3),
+                xlab = c(input$xlab1, input$xlab2),
                 ylab = input$ylab,
                 lty = c(as.integer(input$lty), as.integer(input$lty2)),
                 xlim = input$xlim,
@@ -647,7 +616,8 @@ shinyServer(function(input, output, session) {
                 rotate = input$rotate,
                 kde = input$kde,
                 hist = input$histogram,
-                dots = input$dots)
+                dots = input$dots,
+                frame = input$frame)
     
     progress$set(value = 5)
     progress$set(message = "Calculation in progress",
@@ -720,12 +690,18 @@ shinyServer(function(input, output, session) {
         }
       }
     } else {
-      verb.stats<- ''
+      verb.stats<- "''"
     }
     
     # char vector for code output
+    if (length(bar) == 1)
+      verb.bar <- bar
+    else
+      verb.bar <- paste0("c(", input$sigmabar1, ", ", input$sigmabar2, ")")
+    
+    # char vector for code output
     if(is.numeric(centrality) == TRUE) {
-      verb.centrality<- paste("c(",input$centralityNumeric,", ",input$centralityNumeric2,")", sep = "")
+      verb.centrality<- input$centralityNumeric
     } else {
       verb.centrality<- paste("'",centrality,"'", sep = "")
     }
@@ -734,11 +710,11 @@ shinyServer(function(input, output, session) {
     str1 <- paste0("plot_AbanicoPlot(data = data, ")
     str2 <- paste0("summary.pos = '", input$sumpos,"',")
     str3 <- paste0("y.axis = ",input$yaxis, ",")
-    str4 <- paste0("centrality = ",verb.centrality,",")
+    str4 <- paste0("z.0 = ",verb.centrality,",")
     str5 <- paste0("bw = ",input$bw,",")
     str6 <- paste0("dispersion = '",dispersion,"',")
     str7 <- paste0("plot.ratio = ",input$p.ratio,",")
-    str8 <- paste0("central.value = ",input$centValue, ",")
+    str8 <- paste0("bar = ", verb.bar, ",")
     str9 <- paste0("log.z = ",input$logz, ",")
     str10 <- paste0("summary = ",verb.summary,",")
     str11 <- paste0("col = c('",color,"','",color2,"'),")
@@ -758,9 +734,9 @@ shinyServer(function(input, output, session) {
     str25 <- paste0("grid.col = '",grid.col,"',")
     str26 <- paste0("legend = c('",legend[1],"','",legend[2],"'),")
     str27 <- paste0("legend.pos = ",verb.legend.pos,",")
-    str28 <- paste0("na.exclude = ",input$naExclude,",")
+    str28 <- paste0("na.rm = ",input$naExclude,",")
     str29 <- paste0("lwd = c(",input$lwd,",",input$lwd2,"),")
-    str30 <- paste0("xlab = c('", input$xlab1,"','",input$xlab2,"','",input$xlab3,"'),")
+    str30 <- paste0("xlab = c('", input$xlab1,"','",input$xlab2,"'),")
     str31 <- paste0("ylab = '",input$ylab,"',",sep ="")
     str32 <- paste0("lty = c(",as.integer(input$lty),",",as.integer(input$lty2),"),")
     str33 <- paste0("xlim = c(", input$xlim[1],",",input$xlim[2],"),")
@@ -770,7 +746,8 @@ shinyServer(function(input, output, session) {
     str37 <- paste0("rotate = ", input$rotate, ",")
     str38 <- paste0("kde = ", input$kde, ",")
     str39 <- paste0("hist = ", input$histogram, ",")
-    str40 <- paste0("dots = ", input$dots, ")")
+    str40 <- paste0("dots = ", input$dots, ",")
+    str41 <- paste0("frame = ", input$frame, ")")
     
     
     if(is.null(input$sep)) updateRadioButtons(session, "fileformat", selected = "\t")
@@ -804,6 +781,7 @@ shinyServer(function(input, output, session) {
                         str11, str12, str13, str14, str15, str16, str17, str18, str19, str20, 
                         str21, str22, str23, str24, str25, str26, str27, str28, str29, str30,
                         str31, str32, str33, str34, str35, str36, str37, str38, str39, str40,
+                        str41,
                         sep="\n   ")
     
     # nested renderText({}) for code output on "R plot code" tab

@@ -1,5 +1,6 @@
 # RLumShiny
 
+[![Build status](https://ci.appveyor.com/api/projects/status/jp8ueedudbuhvtfe/branch/master?svg=true)](https://ci.appveyor.com/project/tzerk/rlumshiny/branch/master)
 [![Build Status](https://travis-ci.org/tzerk/RLumShiny.svg?branch=master)](https://travis-ci.org/tzerk/RLumShiny)
 
 > Follow us on [![alt text][1.1]][1] <a href="http://www.twitter.com/RLuminescence" target="_blank">@RLuminescence</a>
