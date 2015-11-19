@@ -158,7 +158,6 @@ pageWithSidebar(
                                                                    "Mean" = "mean",
                                                                    "weighted Mean" = "mean.weighted",
                                                                    "Median" = "median",
-                                                                   "weighted Median" = "median.weighted",
                                                                    "rel. Standard deviation" = "sdrel",
                                                                    "abs. Standard deviation" = "sdabs",
                                                                    "rel. Standard error" = "serel",
@@ -168,7 +167,7 @@ pageWithSidebar(
                                                                    "KDEmax"  = "kdemax",
                                                                    "Skewness" = "skewness",
                                                                    "Kurtosis" = "kurtosis",
-                                                                   "Confidence interval" = "in.ci")),
+                                                                   "% in 2 sigma range" = "in.2s")),
                                     tooltip(refId = "stats", text = "Statistical parameters to be shown in the summary"),
                                     br(),
                                     div(align = "center", h5("Datapoint labels")),
@@ -202,22 +201,11 @@ pageWithSidebar(
                                       )
                                     ),
                                     div(align = "center", h5("Scaling")),
-                                    fluidRow(
-                                      column(width = 6,
-                                             # inject sliderInput from Server.R
-                                             div(id="cent", # DIV with id for tooltip
-                                                 uiOutput(outputId = "centValue")
-                                             ),
-                                             tooltip(refId = "cent", text =  "User-defined central value, primarily used for horizontal centering of the z-axis")
-                                      ),
-                                      column(width = 6,
-                                             # inject sliderInput from Server.R
-                                             div(id="bwKDE",
-                                                 uiOutput(outputId = "bw")
-                                             ),
-                                             tooltip(refId = "bwKDE", text = "Bin width of the kernel density estimate")
-                                      )
+                                    # inject sliderInput from Server.R
+                                    div(id="bwKDE",
+                                        uiOutput(outputId = "bw")
                                     ),
+                                    tooltip(refId = "bwKDE", text = "Bin width of the kernel density estimate"),
                                     fluidRow(
                                       column(width = 6,
                                              div(id="pratiodiv",
@@ -236,51 +224,73 @@ pageWithSidebar(
                                       )
                                     ),
                                     br(),
-                                    div(align = "center", h5("Centrality & Dispersion")),
-                                    checkboxInput(inputId = "addBar", 
-                                                  label = "Second 2-Sigma Bar",
-                                                  value = FALSE),
+                                    div(align = "center", h5("Centrality")),
+                                    
                                     # centrality can either be a keyword or numerical input
-                                    fluidRow(
-                                      column(width = 6,
-                                             selectInput(inputId = "centrality", 
-                                                         label = "Centrality",
-                                                         list("Mean" = "mean",
-                                                              "Median" = "median", 
-                                                              "Weighted mean" = "mean.weighted", 
-                                                              "Weighted median" = "median.weighted",
-                                                              "Custom value" = "custom")),
-                                             tooltip(refId = "centrality", text = "Measure of centrality, used for the standardisation, centering the plot and drawing the central line. When a second 2&sigma; bar is plotted the dataset is centered by the median.")
-                                      ),
-                                      column(width = 6,
-                                             selectInput(inputId = "dispersion", 
-                                                         label = "Measure of dispersion",
-                                                         list("1 sigma" = "sd",
-                                                              "2 sigma" = "2sd", 
-                                                              "95% quartile" = "qr",
-                                                              "Custom quartile" = "custom")),
-                                             tooltip(refId = "dispersion", text = "Measure of dispersion, used for drawing the polygon that depicts the spread in the dose distribution.")
-                                      )
-                                    ),
+                                    selectInput(inputId = "centrality", 
+                                                label = "Central Value",
+                                                list("Mean" = "mean",
+                                                     "Median" = "median", 
+                                                     "Weighted mean" = "mean.weighted", 
+                                                     "Custom value" = "custom")),
+                                    tooltip(refId = "centrality", text = "User-defined central value, used for centering of data."),
+                                    
+                                    conditionalPanel(condition = "input.centrality == 'custom'",
+                                                     uiOutput("centralityNumeric")),
+                                    
+                                    div(align = "center", h5("Dispersion")),
+                                    
+                                    selectInput(inputId = "dispersion", 
+                                                label = "Measure of dispersion",
+                                                list("Quartile range" = "qr",
+                                                     "1 sigma" = "sd",
+                                                     "2 sigma" = "2sd",
+                                                     "Custom percentile range" = "custom")),
+                                    tooltip(refId = "dispersion", text = "Measure of dispersion, used for drawing the polygon that depicts the spread in the dose distribution."),
+                                    
                                     conditionalPanel(condition = "input.dispersion == 'custom'",
                                                      numericInput(inputId = "cinn",
                                                                   label = "x% quartile",
                                                                   value = 25,
                                                                   min = 0, 
                                                                   max = 100, 
-                                                                  step = 1)
-                                    ),
+                                                                  step = 1)),
+                                    
+                                    div(align = "center", h5("2 sigma bar")),
+                                    
                                     fluidRow(
                                       column(width = 6,
-                                             conditionalPanel(condition = "input.centrality == 'custom'",
-                                                              uiOutput("centralityNumeric"))
-                                      ),
-                                      
+                                             checkboxInput(inputId = "customSigBar", 
+                                                           label = "Customise 2-Sigma Bar",
+                                                           value = FALSE)
+                                             ),
                                       column(width = 6,
-                                             conditionalPanel(condition = "input.centrality == 'custom'",
-                                                              uiOutput("centralityNumeric2"))
+                                             checkboxInput(inputId = "addBar", 
+                                                           label = "Second 2-Sigma Bar",
+                                                           value = FALSE)
+                                             )
+                                    ),
+
+                                    
+                                    fluidRow(
+                                      column(width = 6, 
+                                             conditionalPanel(condition = "input.customSigBar == true",
+                                                              numericInput(inputId = "sigmabar1", 
+                                                                           label = "Bar 1", 
+                                                                           min = 0, max = 100, 
+                                                                           value = 60)
+                                             )
+                                      ),
+                                      column(width = 6,
+                                             conditionalPanel(condition = "input.customSigBar == true",
+                                                              numericInput(inputId = "sigmabar2", 
+                                                                           label = "Bar 2", 
+                                                                           min = 0, max = 100, 
+                                                                           value = 70)
+                                             )
                                       )
                                     ),
+                                    
                                     div(align = "center", h5("Central line")),
                                     
                                     fluidRow(
