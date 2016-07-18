@@ -59,72 +59,14 @@ pageWithSidebar(
                                                    "Semicolon" = ";")),
                                     tooltip(refId = "sep", text = tags$img(src='file_sep.png', width='400px'), placement = "auto left"),
                                     hr(),
-                                    fluidRow(
-                                      column(width = 6,
-                                             actionButton(inputId = "refresh", label = "Refresh", icon = icon("refresh")),
-                                             tooltip(refId = "refresh", text = "Redraw the plot")
-                                      ),
-                                      column(width = 6,
-                                             actionButton(inputId = "exit", label = "Exit", class = "btn btn-danger")
-                                      )
-                                    )
+     
+                                    actionButton(inputId = "refresh", label = "Refresh", icon = icon("refresh")),
+                                    tooltip(refId = "refresh", text = "Redraw the plot")
+
+                         
+        
                            ),##EndOf::Tab_1
                            
-                           tabPanel("Login",
-                                    div(align = "center", 
-                                        fluidRow(
-                                          column(width = 2, offset = 5,
-                                                 h5("Login")
-                                          ),
-                                          column(width = 1, offset = 2,
-                                                 actionButton("infoButton", "", icon = icon("question")))
-                                        )
-                                    ),
-                                    uiOutput("infobox"),
-                                    div(align = "center", htmlOutput("status.msg")),
-                                    # Login for own data sets
-                                    fluidRow(
-                                      column(width = 6,
-                                             textInput(inputId = "user", "Username", value = "")
-                                      ),
-                                      column(width = 6,
-                                             textInput(inputId = "pw", "Password", value = "")
-                                      )
-                                    ),
-                                    fluidRow(
-                                      column(width = 3,
-                                             actionButton("enter", "Enter", class = "btn btn-success")
-                                      ),
-                                      column(width = 6, offset = 3,
-                                             actionButton("newAccount","Create new account")
-                                      )
-                                    ),
-                                    div(align = "center", h5("Data sets")),
-                                    fluidRow(
-                                      column(width = 6,
-                                             selectInput(inputId = "serverData", "Plot data set", choices = "")
-                                      ),
-                                      column(width = 6,
-                                             selectInput(inputId = "del.dataset", "Delete selected data sets", choices = "", multiple = TRUE)
-                                      )
-                                    ),
-                                    fluidRow(
-                                      column(width = 6, offset =6,
-                                             actionButton("delete", "Delete", class = "btn btn-danger")
-                                      )),
-                                    div(align = "center", h5("Upload new data set")),
-                                    uiOutput("file2server"),
-                                    textInput(inputId = "filenameUpload", label = "Filename", "choose a name"),
-                                    fluidRow(
-                                      column(width = 6,
-                                             actionButton("upload", "Upload file", icon = icon("upload"))
-                                      ),
-                                      column(width = 1, offsett = 5,
-                                             #helpPopup("Help", "...", placement='top', trigger='click')
-                                             actionButton("logout", "Logout")
-                                      )
-                                    )
-                           ),
                            
                            # Tab 2: Statistical information
                            tabPanel("Statistics",                             
