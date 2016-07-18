@@ -404,130 +404,7 @@ shinyServer(function(input, output, session) {
     # plot Abanico Plot 
     do.call(what = plot_AbanicoPlot, args = args)
     
-    # char vector for code output
-    verb.line<- paste("c(", 
-                      line[1], ",",
-                      line[2], ",",
-                      line[3], ",",
-                      line[4], ",",
-                      line[5], ",",
-                      line[6], ",",
-                      line[7], ",",
-                      line[8], 
-                      ")", sep = "")
-    
-    # char vector for code output
-    verb.line.col<- paste("c('", 
-                          line.col[1], "','",
-                          line.col[2], "','",
-                          line.col[3], "','",
-                          line.col[4], "','",
-                          line.col[5], "','",
-                          line.col[6], "','",
-                          line.col[7], "','",
-                          line.col[8], 
-                          "')", sep = "")
-    
-    # char vector for code output
-    verb.line.label<- paste("c('", 
-                            line.label[1], "','",
-                            line.label[2], "','",
-                            line.label[3], "','",
-                            line.label[4], "','",
-                            line.label[5], "','",
-                            line.label[6], "','",
-                            line.label[7], "','",
-                            line.label[8], 
-                            "')", sep = "")
-    
-    # char vector for code output
-    if(length(legend.pos) == 2) {
-      verb.legend.pos<- "c(-999,-999)"
-    } else {
-      verb.legend.pos<- paste("'", legend.pos, "'", sep="")
-    }
-    
-    # char vector for code output
-    verb.summary<- "c('"
-    for(i in 1:length(summary)){
-      verb.summary<- paste(verb.summary, summary[i], "','", sep="")
-      if(i == length(summary)) {
-        verb.summary<- substr(verb.summary, 1, nchar(verb.summary)-2)
-        verb.summary<- paste(verb.summary, ")", sep="")
-      }
-    }
-    
-    # char vector for code output
-    if(!is.null(input$statlabels)) {
-      verb.stats<- "c('"
-      for(i in 1:length(input$statlabels)){
-        verb.stats<- paste(verb.stats, input$statlabels[i], "','", sep="")
-        if(i == length(input$statlabels)) {
-          verb.stats<- substr(verb.stats, 1, nchar(verb.stats)-2)
-          verb.stats<- paste(verb.stats, ")", sep="")
-        }
-      }
-    } else {
-      verb.stats<- "''"
-    }
-    
-    # char vector for code output
-    if (length(bar) == 1)
-      verb.bar <- bar
-    else
-      verb.bar <- paste0("c(", input$sigmabar1, ", ", input$sigmabar2, ")")
-    
-    # char vector for code output
-    if(is.numeric(centrality) == TRUE) {
-      verb.centrality<- input$centralityNumeric
-    } else {
-      verb.centrality<- paste("'",centrality,"'", sep = "")
-    }
-    
-    # char vectors for code output
-    str1 <- paste0("plot_AbanicoPlot(data = data, ")
-    str2 <- paste0("summary.pos = '", input$sumpos,"',")
-    str3 <- paste0("y.axis = ",input$yaxis, ",")
-    str4 <- paste0("z.0 = ",verb.centrality,",")
-    str5 <- paste0("bw = ",input$bw,",")
-    str6 <- paste0("dispersion = '",dispersion,"',")
-    str7 <- paste0("plot.ratio = ",input$p.ratio,",")
-    str8 <- paste0("bar = ", verb.bar, ",")
-    str9 <- paste0("log.z = ",input$logz, ",")
-    str10 <- paste0("summary = ",verb.summary,",")
-    str11 <- paste0("col = c('",color,"','",color2,"'),")
-    str12 <- paste0("pch = c(",pch,",",pch2,"),")
-    str13 <- paste0("zlab = '",input$zlab,"',")
-    str14 <- paste0("main = '",input$main,"',")
-    str15 <- paste0("zlim = c(",input$zlim[1],",",input$zlim[2],"),")
-    str16 <- paste0("cex = ", input$cex, ",")
-    str17 <- paste0("mtext = '",input$mtext,"',")
-    str18 <- paste0("stats = ",verb.stats,",")
-    str19 <- paste0("error.bars = ",input$errorbars,",")
-    str20 <- paste0("line = ",verb.line,",")
-    str21 <- paste0("line.col = ",verb.line.col,",")
-    str22 <- paste0("line.label = ",verb.line.label,",")
-    str23 <- paste0("polygon.col = c('",polygon.col,"','",polygon.col2,"'),")
-    str24 <- paste0("bar.col = c('",bar.col,"','",bar.col2,"'),")
-    str25 <- paste0("grid.col = '",grid.col,"',")
-    str26 <- paste0("legend = c('",legend[1],"','",legend[2],"'),")
-    str27 <- paste0("legend.pos = ",verb.legend.pos,",")
-    str28 <- paste0("na.rm = ",input$naExclude,",")
-    str29 <- paste0("lwd = c(",input$lwd,",",input$lwd2,"),")
-    str30 <- paste0("xlab = c('", input$xlab1,"','",input$xlab2,"'),")
-    str31 <- paste0("ylab = '",input$ylab,"',",sep ="")
-    str32 <- paste0("lty = c(",as.integer(input$lty),",",as.integer(input$lty2),"),")
-    str33 <- paste0("xlim = c(", input$xlim[1],",",input$xlim[2],"),")
-    str34 <- paste0("ylim = c(", input$ylim[1],",",input$ylim[2],"),")
-    str35 <- paste0("rug = ", input$rug, ",")
-    str36 <- paste0("layout = '", input$layout, "',")
-    str37 <- paste0("rotate = ", input$rotate, ",")
-    str38 <- paste0("kde = ", input$kde, ",")
-    str39 <- paste0("hist = ", input$histogram, ",")
-    str40 <- paste0("dots = ", input$dots, ",")
-    str41 <- paste0("frame = ", input$frame, ")")
-    
-    
+    # prepare code as text output
     if(is.null(input$sep)) updateRadioButtons(session, "fileformat", selected = "\t")
     
     if(input$sep == "\t") { verb.sep<-  "\\t"}
@@ -545,22 +422,29 @@ shinyServer(function(input, output, session) {
       str0.1 <- paste(str0.1, str0.2.0, str0.2.1, str0.2.2, sep = "\n")
     }
     
-    str0 <- paste("# To reproduce the plot in your local R environment",
+    header <- paste("# To reproduce the plot in your local R environment",
                   "# copy and run the following code to your R console.",
                   "library(Luminescence)",
                   "file<- file.choose()",
                   str0.1,
                   "\n",
-                  str1,
                   sep = "\n")
     
-    code.output<- paste(str0,
-                        str2, str3, str4, str5, str6, str7, str8, str9, str10, 
-                        str11, str12, str13, str14, str15, str16, str17, str18, str19, str20, 
-                        str21, str22, str23, str24, str25, str26, str27, str28, str29, str30,
-                        str31, str32, str33, str34, str35, str36, str37, str38, str39, str40,
-                        str41,
-                        sep="\n   ")
+    names <- names(args)
+    
+    verb.arg <- paste(mapply(function(name, arg) {
+      if (all(inherits(arg, "character")))
+        arg <- paste0("'", arg, "'")
+      if (length(arg) > 1)
+        arg <- paste0("c(", paste(arg, collapse = ", "), ")")
+      if (is.null(arg))
+        arg <- "NULL"
+      paste(name, "=", arg) 
+    }, names[-1], args[-1]), collapse = ",\n")
+    
+    funCall <- paste0("plot_AbanicoPlot(data = data,\n", verb.arg, ")")
+    
+    code.output <- paste0(header, funCall, collapse = "\n")
     
     # nested renderText({}) for code output on "R plot code" tab
     output$plotCode<- renderText({
