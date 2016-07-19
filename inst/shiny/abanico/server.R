@@ -356,7 +356,6 @@ shinyServer(function(input, output, session) {
     
     # save all arguments in a list
     args<- list(data = data,
-                summary.pos = input$sumpos,
                 y.axis = input$yaxis,
                 bw = input$bw,
                 bar = bar,
@@ -365,6 +364,8 @@ shinyServer(function(input, output, session) {
                 z.0 = centrality, 
                 log.z = input$logz, 
                 summary = summary,
+                summary.pos = input$sumpos,
+                summary.method = input$summary.method,
                 col = c(color,color2),
                 pch = c(pch,pch2),
                 zlab = input$zlab,

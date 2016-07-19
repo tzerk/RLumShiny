@@ -93,6 +93,14 @@ pageWithSidebar(
                                              tooltip(refId = "sumpos", attr = "for", text = "Position of the statistical summary. The keyword \"Subtitle\" will only work if no plot subtitle is used.")
                                       )
                                     ),
+                                    selectInput(inputId = "summary.method",
+                                                label = "Summary method",
+                                                selected = "unweighted",
+                                                choices = list("Unweighted" = "unweighted",
+                                                               "Weighted" = "weighted",
+                                                               "Monte Carlo" = "MCM")),
+                                    tooltip(refId = "summary.method", attr = "for", text = "Keyword indicating the method used to calculate the statistic summary. See calc_Statistics for details."),
+                                    
                                     checkboxGroupInput(inputId = "stats",
                                                        label = "Parameters", 
                                                        selected = c("n","mean"),
