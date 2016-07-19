@@ -80,7 +80,7 @@ shinyServer(function(input, output, session) {
     input$delta
     input$p
     
-    args <- list(tdata[ ,1], tdata[ ,2], 
+    pargs <- list(tdata[ ,1], tdata[ ,2], 
                   log = paste0(ifelse(input$logx, "x", ""), ifelse(input$logy, "y", "")),
                   main = input$main,
                   xlab = input$xlab,
@@ -90,7 +90,7 @@ shinyServer(function(input, output, session) {
                   pch = ifelse(input$pch != "custom", as.integer(input$pch) - 1, input$custompch),
                   col = ifelse(input$color != "custom", input$color, input$jscol1))
     
-    do.call(plot, args)
+    do.call(plot, pargs)
     
     output$exportScript <- downloadHandler(
       filename = function() { paste(input$filename, ".", "txt", sep="") },
@@ -130,7 +130,7 @@ shinyServer(function(input, output, session) {
         }
         
         # plot curve 
-        do.call(plot, args = args)
+        do.call(plot, args = pargs)
         
         dev.off()
       },#EO content =,
