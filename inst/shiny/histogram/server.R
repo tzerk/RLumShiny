@@ -234,21 +234,7 @@ shinyServer(function(input, output, session) {
                      family = input$fontfamily)
         }
         
-        plot_Histogram(data = data,
-                       na.rm = input$naExclude, 
-                       cex.global = input$cex, 
-                       pch = pch,
-                       xlim = input$xlim,
-                       summary.pos = input$sumpos, 
-                       mtext = input$mtext, 
-                       main = input$main,
-                       rug = input$rugs, 
-                       se = input$errorBars, 
-                       normal_curve = input$norm, 
-                       summary = summary,
-                       xlab = input$xlab,
-                       ylab = c(input$ylab1, input$ylab2),
-                       colour = colors)
+        do.call(plot_Histogram, args = args)
         
         dev.off()
         

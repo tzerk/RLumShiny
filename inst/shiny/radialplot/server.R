@@ -462,38 +462,7 @@ shinyServer(function(input, output, session) {
         }
         
         # plot radial Plot 
-        plot_RadialPlot(data = data, 
-                        xlim = input$xlim, 
-                        zlim = input$zlim, 
-                        xlab = c(input$xlab1, input$xlab2), 
-                        ylab = input$ylab,
-                        zlab = input$zlab,
-                        y.ticks = input$yticks,
-                        grid.col = grid.col,
-                        bar.col = c(bar.col, bar.col2),
-                        pch = c(pch,pch2),
-                        col = c(color,color2),
-                        line = line,
-                        line.col = line.col,
-                        line.label = line.label,
-                        main = input$main,
-                        cex = input$cex,
-                        mtext = input$mtext,
-                        log.z = input$logz, 
-                        stats = input$statlabels, 
-                        plot.ratio = input$curvature, 
-                        summary = summary, 
-                        summary.pos = input$sumpos, 
-                        legend = legend, 
-                        legend.pos = legend.pos,
-                        na.rm = input$naExclude, 
-                        central.value = input$centValue, 
-                        centrality = input$centrality,
-                        lwd = c(input$lwd, input$lwd2),
-                        lty = c(as.integer(input$lty), as.integer(input$lty2))
-                        
-        )
-
+        do.call(plot_RadialPlot, args = args)
         
         dev.off()
       },#EO content =,

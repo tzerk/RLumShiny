@@ -331,23 +331,7 @@ shinyServer(function(input, output, session) {
                      family = input$fontfamily)
         }
         
-        plot_KDE(data = data, 
-                 centrality = input$centrality, 
-                 cex = input$cex, 
-                 log = logx,
-                 xlab = input$xlab,
-                 ylab = c(input$ylab1, input$ylab2),
-                 main = input$main,
-                 weights = input$weights,
-                 values.cumulative = input$cumulative,
-                 na.rm = input$naExclude, 
-                 dispersion = input$dispersion, 
-                 summary = summary,
-                 summary.pos = input$sumpos,
-                 bw = input$bw,
-                 xlim = input$xlim,
-                 polygon.col = poly.col,
-                 col = c(color2, color))
+        do.call(plot_KDE, args = args)
         
         dev.off()
         
