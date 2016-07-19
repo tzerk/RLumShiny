@@ -230,6 +230,7 @@ shinyServer(function(input, output, session) {
                  dispersion = input$dispersion, 
                  summary = summary,
                  summary.pos = input$sumpos,
+                 summary.method = input$summary.method,
                  bw = input$bw,
                  xlim = input$xlim,
                  polygon.col = poly.col,
