@@ -12,10 +12,6 @@ ExampleData.DeValues <- ExampleData.DeValues$BT998
 
 shinyServer(function(input, output, session) {
   
-  observeEvent(input$exit, {
-    stopApp(message("Goodbye!"))
-  })
-  
   # check and read in file (DATA SET 1)
   datGet<- reactive({
     inFile<- input$file1
@@ -156,7 +152,7 @@ shinyServer(function(input, output, session) {
       
     }
     
-    # plot Abanico Plot 
+    # plot DRT Results
     do.call(what = plot_DRTResults, args = args)
     
     # nested downloadHandler() to print plot to file

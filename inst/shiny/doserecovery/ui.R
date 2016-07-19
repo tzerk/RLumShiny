@@ -52,15 +52,8 @@ pageWithSidebar(
                                                    "Semicolon" = ";")),
                                     tooltip(refId = "sep", text = tags$img(src='file_sep.png', width='400px'), placement = "auto left"),
                                     hr(),
-                                    fluidRow(
-                                      column(width = 6,
-                                             actionButton(inputId = "refresh", label = "Refresh", icon = icon("refresh")),
-                                             tooltip(refId = "refresh", text = "Redraw the plot")
-                                      ),
-                                      column(width = 6,
-                                             actionButton(inputId = "exit", label = "Exit", class = "btn btn-danger")
-                                      )
-                                    )
+                                    actionButton(inputId = "refresh", label = "Refresh", icon = icon("refresh")),
+                                    tooltip(refId = "refresh", text = "Redraw the plot")
                            ),##EndOf::Tab_1
                            
                            # Tab 2: Statistical information
