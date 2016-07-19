@@ -4,5 +4,5 @@ LICENSE version 3).
 The RLumShiny package includes other open source software components. The following
 is a list of these components:
 
-- JSColor, https://github.com/odvarko/jscolor, LGPL License
+- JSColor, https://github.com/odvarko/jscolor, GPLv3 License
 - ShinySky, https://github.com/AnalytixWare/ShinySky, MIT license (YEAR: 2015, COPYRIGHT HOLDER: AnalytixWare)
