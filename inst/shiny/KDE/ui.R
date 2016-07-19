@@ -111,20 +111,12 @@ pageWithSidebar(
                                                                    "% in 2 sigma range" = "in.2s")),
                                     tooltip(refId = "stats", text = "Statistical parameters to be shown in the summary"),
                                     div(align = "center", h5("Additional options")),
-                                    fluidRow(
-                                      column(width = 6,
-                                             checkboxInput(inputId = "cumulative",
-                                                           label = "Show individual data",
-                                                           value = TRUE),
-                                             tooltip(refId = "cumulative", text = "Show cumulative individual data.")
-                                             ),
-                                      column(width = 6,
-                                             checkboxInput(inputId = "weights",
-                                                           label = "Errors as weights",
-                                                           value = FALSE),
-                                             tooltip(refId = "weights", text = "Calculate the KDE with De-errors as weights. Attention: using errors as weights will result in a plot similar to a a probability density plot, with all ambiguities related to this plot type!")
-                                             )
-                                      )
+                                    
+                                    checkboxInput(inputId = "cumulative",
+                                                  label = "Show individual data",
+                                                  value = TRUE),
+                                    tooltip(refId = "cumulative", text = "Show cumulative individual data.")
+
                            ),##EndOf::Tab_2
                            
                            # Tab 3: input that refer to the plot rather than the data
@@ -134,70 +126,29 @@ pageWithSidebar(
                                     textInput(inputId = "main", 
                                               label = "Title", 
                                               value = "KDE Plot"),
+                                    
                                     # inject sliderInput from Server.R
                                     uiOutput(outputId = "bw"),
                                     tooltip(refId = "bw", text = "Bin width of the kernel density estimate"),
-                                    selectInput(inputId = "centrality", 
-                                                label = "Centrality",
-                                                list("Mean" = "mean",
-                                                     "Median" = "median", 
-                                                     "Weighted mean" = "mean.weighted", 
-                                                     "Weighted median" = "median.weighted",
-                                                     "max. KDE" = "kdemax")),
-                                    tooltip(refId = "centrality", attr = "for", text = "Measure of centrality, used for plotting vertical lines of the respective measure."),
-                                    div(align = "center", h5("Dispersion")),
-                                    selectInput(inputId = "dispersion", 
-                                                label = "Measure of dispersion",
-                                                list("1 sigma" = "sd",
-                                                     "2 sigma" = "2sd", 
-                                                     "Quartile range" = "qr")),
-                                    tooltip(refId = "dispersion", attr = "for", text = "Measure of dispersion, used for drawing the polygon that depicts the dose distribution."),
-                                    fluidRow(
-                                      column(width = 6,
-                                             selectInput(inputId = "polygon", 
-                                                         label = "Polygon color #1",
-                                                         choices = list("Grey" = "grey80",
-                                                                        "Red" = "#b22222", 
-                                                                        "Green" = "#6E8B3D", 
-                                                                        "Blue" = "#428bca",
-                                                                        "Custom" = "custom",
-                                                                        "None" = "none"))
-                                      ),
-                                      column(width = 6,
-                                             # show only if custom color is desired
-                                             conditionalPanel(condition = "input.polygon == 'custom'",
-                                                              jscolorInput(inputId = "rgbPolygon",
-                                                                           label = "Choose a color"))
-                                      )
-                                    ),
-                                    fluidRow(
-                                      column(width = 6,
-                                             selectInput(inputId = "polygon2", 
-                                                         label = "Polygon color #2",
-                                                         choices = list("Grey" = "grey80",
-                                                                        "Red" = "#b22222", 
-                                                                        "Green" = "#6E8B3D", 
-                                                                        "Blue" = "#428bca",
-                                                                        "Custom" = "custom",
-                                                                        "None" = "none"))
-                                      ),
-                                      column(width = 6,
-                                             # show only if custom color is desired
-                                             conditionalPanel(condition = "input.polygon2 == 'custom'",
-                                                              jscolorInput(inputId = "rgbPolygon2",
-                                                                           label = "Choose a color"))
-                                      )
-                                    ),
-                                    sliderInput(inputId = "alpha.polygon", 
-                                                label = "Polygon transparency", 
-                                                min = 0, max = 100, 
-                                                step = 1, value = 66),
                                     br(),
                                     div(align = "center", h5("Scaling")),
                                     sliderInput(inputId = "cex", 
                                                 label = "Scaling factor",
                                                 min = 0.5, max = 2, 
-                                                value = 1.0, step = 0.1)
+                                                value = 1.0, step = 0.1),
+                                    
+                                    div(align = "center", h5("Further options")),
+                                    fluidRow(
+                                      column(width = 6,
+                                             checkboxInput(inputId = "rug",
+                                                           label = "Add rug",
+                                                           value = TRUE)
+                                      ),
+                                      column(width = 6,
+                                             checkboxInput(inputId = "boxplot",
+                                                           label = "Add boxplot",
+                                                           value = TRUE))
+                                    )
                            ),##EndOf::Tab_3
                            
                            # Tab 4: modify axis parameters

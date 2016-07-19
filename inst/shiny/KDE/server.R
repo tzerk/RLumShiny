@@ -154,38 +154,11 @@ shinyServer(function(input, output, session) {
       logx<- ""
     }
     
-    # if custom polygon color get RGB from separate input panel or "none"
-    if(input$polygon == "custom") {
-      polygon.col<- adjustcolor(col = input$rgbPolygon, 
-                                alpha.f = input$alpha.polygon/100)
-    } else {
-      if(input$polygon == "none") {
-        polygon.col<- "white"
-      } else {
-        polygon.col<- adjustcolor(col = input$polygon, 
-                                  alpha.f = input$alpha.polygon/100) 
-      }
-    }
-    
-    # if custom polygon color get RGB from separate input panel or "none"
-    if(input$polygon2 == "custom") {
-      polygon.col2<- adjustcolor(col = input$rgbPolygon2, 
-                                 alpha.f = input$alpha.polygon/100)
-    } else {
-      if(input$polygon2 == "none") {
-        polygon.col2<- "white"
-      } else {
-        polygon.col2<- adjustcolor(col = input$polygon2, 
-                                   alpha.f = input$alpha.polygon/100) 
-      }
-    }
     
     # update progress bar
     progress$set(value = 2)
     progress$set(message = "Calculation in progress",
                  detail = "Combine values")
-    
-    poly.col<- c(polygon.col, polygon.col2)
     
     # if custom datapoint color get RGB code from separate input panel
     if(input$color == "custom") {
@@ -218,22 +191,20 @@ shinyServer(function(input, output, session) {
                  detail = "Ready to plot")    
     
     args <- list(data = data, 
-                 centrality = input$centrality, 
                  cex = input$cex, 
                  log = logx,
                  xlab = input$xlab,
                  ylab = c(input$ylab1, input$ylab2),
                  main = input$main,
-                 weights = input$weights,
                  values.cumulative = input$cumulative,
                  na.rm = input$naExclude, 
-                 dispersion = input$dispersion, 
+                 rug = input$rug,
+                 boxplot = input$boxplot,
                  summary = summary,
                  summary.pos = input$sumpos,
                  summary.method = input$summary.method,
                  bw = input$bw,
                  xlim = input$xlim,
-                 polygon.col = poly.col,
                  col = c(color, color2))
     
     do.call(plot_KDE, args = args)
