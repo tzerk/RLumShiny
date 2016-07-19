@@ -2,8 +2,6 @@
 library(Luminescence)
 library(RLumShiny)
 library(shiny)
-library(digest)
-library(RCurl)
 
 # load example data
 data(ExampleData.DeValues, envir = environment())
