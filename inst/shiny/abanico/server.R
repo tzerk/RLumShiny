@@ -250,6 +250,11 @@ shinyServer(function(input, output, session) {
                    input$labline5, input$labline6,
                    input$labline7, input$labline8)
     
+    # create integer vector of line types
+    line.lty<- as.integer(c(input$linelty1, input$linelty2,
+                            input$linelty3, input$linelty4,
+                            input$linelty5, input$linelty6,
+                            input$linelty7, input$linelty8))
     
     # update progress bar
     progress$set(value = 3)
@@ -378,6 +383,7 @@ shinyServer(function(input, output, session) {
                 line = line,
                 line.col = line.col,
                 line.label = line.label,
+                line.lty = line.lty,
                 polygon.col = c(polygon.col,polygon.col2),
                 bar.col = c(bar.col, bar.col2),
                 grid.col = grid.col,
