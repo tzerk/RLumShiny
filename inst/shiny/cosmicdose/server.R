@@ -6,10 +6,6 @@ library(googleVis)
 ## MAIN FUNCTION
 shinyServer(function(input, output, session) {
   
-  observeEvent(input$exit, {
-    stopApp(message("Goodbye!"))
-  })
-  
   # function to convert coordinates to degree decimal format
   coord_conv<- function(x, id) {
     if(id=="degDecMin") {
