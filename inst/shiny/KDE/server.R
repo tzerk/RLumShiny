@@ -9,10 +9,6 @@ data <- list(ExampleData.DeValues$CA1, ExampleData.DeValues$CA1)
 ## MAIN FUNCTION
 shinyServer(function(input, output, session) {
   
-  observeEvent(input$exit, {
-    stopApp(message("Goodbye!"))
-  })
-  
   # check and read in file (DATA SET 1)
   datGet<- reactive({
     inFile<- input$file1
