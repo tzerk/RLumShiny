@@ -102,8 +102,8 @@ pageWithSidebar(
                                                                    #"75 % Quartile" = "q75", #not implemented yet
                                                                    "KDEmax"  = "kdemax",
                                                                    "Skewness" = "skewness",
-                                                                   "Kurtosis" = "kurtosis",
-                                                                   "Confidence interval" = "in.ci")),
+                                                                   "Kurtosis" = "kurtosis"
+                                                                   )),
                                     tooltip(refId = "stats", text = "Statistical parameters to be shown in the summary"),
                                     br(),
                                     div(align = "center", h5("Datapoint labels")),
