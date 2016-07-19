@@ -75,7 +75,7 @@ pageWithSidebar(
                                       column(width = 6,
                                              checkboxInput(inputId = "summary",
                                                            label = "Show summary",
-                                                           value = FALSE),
+                                                           value = TRUE),
                                              tooltip(refId = "summary", text = "Adds numerical output to the plot")
                                       ),
                                       column(width = 6,
