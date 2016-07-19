@@ -80,7 +80,7 @@ shinyServer(function(input, output, session) {
     input$delta
     input$p
     
-    pargs <- list(tdata[ ,1], tdata[ ,2], 
+    args <- list(tdata[ ,1], tdata[ ,2], 
                   log = paste0(ifelse(input$logx, "x", ""), ifelse(input$logy, "y", "")),
                   main = input$main,
                   xlab = input$xlab,
@@ -90,7 +90,7 @@ shinyServer(function(input, output, session) {
                   pch = ifelse(input$pch != "custom", as.integer(input$pch) - 1, input$custompch),
                   col = ifelse(input$color != "custom", input$color, input$jscol1))
     
-    do.call(plot, pargs)
+    do.call(plot, args)
     
     output$exportScript <- downloadHandler(
       filename = function() { paste(input$filename, ".", "txt", sep="") },
@@ -129,8 +129,8 @@ shinyServer(function(input, output, session) {
                      family = input$fontfamily)
         }
         
-        # plot Abanico Plot 
-        do.call(plot, args = pargs)
+        # plot curve 
+        do.call(plot, args = args)
         
         dev.off()
       },#EO content =,
@@ -150,14 +150,5 @@ shinyServer(function(input, output, session) {
     }
   })
   
-  output$plotCode <- renderText({
-    
-  })
-  
-  observeEvent(input$exit, {
-    if (exists("tdata"))
-      rm(tdata)
-    stopApp(message("Goodbye!"))
-  })
-  
+
 })##EndOf::shinyServer(function(input, output)
