@@ -405,28 +405,30 @@ shinyServer(function(input, output, session) {
     do.call(what = plot_AbanicoPlot, args = args)
     
     # prepare code as text output
-    if(is.null(input$sep)) updateRadioButtons(session, "fileformat", selected = "\t")
+    if (is.null(input$sep)) 
+      updateRadioButtons(session, "fileformat", selected = "\t")
     
-    if(input$sep == "\t") { verb.sep<-  "\\t"}
-    else {
+    if(input$sep == "\t")
+      verb.sep<-  "\\t"
+    else
       verb.sep<- input$sep
-    }
     
-    str0.1 <- paste("data <- read.delim(file, header = ",input$headers, ", sep= '", verb.sep,"')",
+    str1 <- paste("data <- read.delim(file, header = ",input$headers, ", sep= '", verb.sep,"')",
                     sep = "")
+    
     if(!is.null(datGet2())) {
-      str0.2.0 <- "file2<- file.choose()"
-      str0.2.1 <- paste("data2 <- read.delim(file2, header = ",input$headers, ", sep= '", verb.sep,"')",
+      str2 <- "file2<- file.choose()"
+      str3 <- paste("data2 <- read.delim(file2, header = ",input$headers, ", sep= '", verb.sep,"')",
                         sep= "")
-      str0.2.2 <- "data<- list(data, data2)"
-      str0.1 <- paste(str0.1, str0.2.0, str0.2.1, str0.2.2, sep = "\n")
+      str4 <- "data<- list(data, data2)"
+      str1 <- paste(str1, str2, str3, str4, sep = "\n")
     }
     
     header <- paste("# To reproduce the plot in your local R environment",
                   "# copy and run the following code to your R console.",
                   "library(Luminescence)",
                   "file<- file.choose()",
-                  str0.1,
+                  str1,
                   "\n",
                   sep = "\n")
     
