@@ -342,171 +342,83 @@ shinyServer(function(input, output, session) {
     progress$set(message = "Calculation in progress",
                  detail = "Ready to plot")
     
-    # plot radial Plot 
-    plot_RadialPlot(data = data, 
-                    xlim = input$xlim, 
-                    zlim = input$zlim, 
-                    xlab = c(input$xlab1, input$xlab2), 
-                    ylab = input$ylab,
-                    zlab = input$zlab,
-                    y.ticks = input$yticks,
-                    grid.col = grid.col,
-                    bar.col = c(bar.col, bar.col2),
-                    pch = c(pch,pch2),
-                    col = c(color,color2),
-                    line = line,
-                    line.col = line.col,
-                    line.label = line.label,
-                    main = input$main,
-                    cex = input$cex,
-                    mtext = input$mtext,
-                    log.z = input$logz, 
-                    stats = input$statlabels, 
-                    plot.ratio = input$curvature, 
-                    summary = summary, 
-                    summary.pos = input$sumpos, 
-                    legend = legend, 
-                    legend.pos = legend.pos,
-                    na.rm = input$naExclude, 
-                    central.value = input$centValue, 
-                    centrality = input$centrality,
-                    lwd = c(input$lwd, input$lwd2),
-                    lty = c(as.integer(input$lty), as.integer(input$lty2))
-                    
-    )
+    # plot radial Plot
+    args <- list(data = data, 
+                 xlim = input$xlim, 
+                 zlim = input$zlim, 
+                 xlab = c(input$xlab1, input$xlab2), 
+                 ylab = input$ylab,
+                 zlab = input$zlab,
+                 y.ticks = input$yticks,
+                 grid.col = grid.col,
+                 bar.col = c(bar.col, bar.col2),
+                 pch = c(pch,pch2),
+                 col = c(color,color2),
+                 line = line,
+                 line.col = line.col,
+                 line.label = line.label,
+                 main = input$main,
+                 cex = input$cex,
+                 mtext = input$mtext,
+                 log.z = input$logz, 
+                 stats = input$statlabels, 
+                 plot.ratio = input$curvature, 
+                 summary = summary, 
+                 summary.pos = input$sumpos, 
+                 legend = legend, 
+                 legend.pos = legend.pos,
+                 na.rm = input$naExclude, 
+                 central.value = input$centValue, 
+                 centrality = input$centrality,
+                 lwd = c(input$lwd, input$lwd2),
+                 lty = c(as.integer(input$lty), as.integer(input$lty2)))
     
-    # char vector for code output
-    verb.line<- paste("c(", 
-                      line[1], ",",
-                      line[2], ",",
-                      line[3], ",",
-                      line[4], ",",
-                      line[5], ",",
-                      line[6], ",",
-                      line[7], ",",
-                      line[8], 
-                      ")", sep = "")
     
-    # char vector for code output
-    verb.line.col<- paste("c('", 
-                          line.col[1], "','",
-                          line.col[2], "','",
-                          line.col[3], "','",
-                          line.col[4], "','",
-                          line.col[5], "','",
-                          line.col[6], "','",
-                          line.col[7], "','",
-                          line.col[8], 
-                          "')", sep = "")
+    do.call(plot_RadialPlot, args = args)
     
-    # char vector for code output
-    verb.line.label<- paste("c('", 
-                            line.label[1], "','",
-                            line.label[2], "','",
-                            line.label[3], "','",
-                            line.label[4], "','",
-                            line.label[5], "','",
-                            line.label[6], "','",
-                            line.label[7], "','",
-                            line.label[8], 
-                            "')", sep = "")
+    # prepare code as text output
+    if (is.null(input$sep)) 
+      updateRadioButtons(session, "fileformat", selected = "\t")
     
-    # char vector for code output
-    if(length(legend.pos) == 2) {
-      verb.legend.pos<- "c(-999,-999)"
-    } else {
-      verb.legend.pos<- paste("'", legend.pos, "'", sep="")
-    }
-    
-    # char vector for code output
-    verb.summary<- "c('"
-    for(i in 1:length(summary)){
-      verb.summary<- paste(verb.summary, summary[i], "','", sep="")
-      if(i == length(summary)) {
-        verb.summary<- substr(verb.summary, 1, nchar(verb.summary)-2)
-        verb.summary<- paste(verb.summary, ")", sep="")
-      }
-    }
-    
-    # char vector for code output
-    if(!is.null(input$statlabels)) {
-      verb.stats<- "c('"
-      for(i in 1:length(input$statlabels)){
-        verb.stats<- paste(verb.stats, input$statlabels[i], "','", sep="")
-        if(i == length(input$statlabels)) {
-          verb.stats<- substr(verb.stats, 1, nchar(verb.stats)-2)
-          verb.stats<- paste(verb.stats, ")", sep="")
-        }
-      }
-    } else {
-      verb.stats<- ''
-    }
-    
-    # char vectors for code output
-    str1 <- paste("plot_RadialPlot(data = data, ", sep = "")
-    str2 <- paste("summary.pos = '", input$sumpos,"',", sep = "")
-    str3 <- paste("y.ticks = ", input$yticks, ",", sep = "")
-    str4 <- paste("centrality = '",input$centrality,"',", sep = "")
-
- 
-    str7 <- paste("plot.ratio = ",input$p.ratio,",", sep = "")
-    str8 <- paste("central.value = ",input$centValue, ",", sep = "")
-    str9 <- paste("log.z = ",input$logz, ",", sep = "")
-    str10 <- paste("summary = ",verb.summary,",", sep = "")
-    str11 <- paste("col = c('",color,"','",color2,"'),", sep = "")
-    str12 <- paste("pch = c(",pch,",",pch2,"),", sep = "")
-    str13 <- paste("zlab = '",input$zlab,"',", sep = "")
-    str14 <- paste("main = '",input$main,"',", sep = "")
-    str15 <- paste("zlim = c(",input$zlim[1],",",input$zlim[2],"),", sep = "")
-    str16 <- paste("cex = ", input$cex, ",", sep = "")
-    str17 <- paste("mtext = '",input$mtext,"',", sep = "")
-    str18 <- paste("stats = ",verb.stats,",", sep = "")
-
-    str20 <- paste("line = ",verb.line,",", sep = "")
-    str21 <- paste("line.col = ",verb.line.col,",", sep = "")
-    str22 <- paste("line.label = ",verb.line.label,",", sep = "")
-    
-    str24 <- paste("bar.col = c('",bar.col,"','",bar.col2,"'),", sep = "")
-    str25 <- paste("grid.col = '",grid.col,"',", sep = "")
-    str26 <- paste("legend = c('",legend[1],"','",legend[2],"'),", sep = "")
-    str27 <- paste("legend.pos = ",verb.legend.pos,",", sep = "")
-    str28 <- paste("na.rm = ",input$naExclude,",", sep = "")
-    str29 <- paste("lwd = c(",input$lwd,",",input$lwd2,"),", sep = "")
-    str30 <- paste("xlab = c('", input$xlab1,"','",input$xlab2,"'),", sep="")
-    str31 <- paste("ylab = '",input$ylab,"',",sep ="")
-    str32 <- paste("lty = c(",as.integer(input$lty),",",as.integer(input$lty2),"),", sep ="")
-    str33 <- paste("xlim = c(", input$xlim[1],",",input$xlim[2],"))", sep="")
-    
-    if(input$sep == "\t") { verb.sep<-  "\\t"}
-    else {
+    if(input$sep == "\t")
+      verb.sep<-  "\\t"
+    else
       verb.sep<- input$sep
-    }
     
-    str0.1 <- paste("data <- read.delim(file, header = ",input$headers, ", sep= '", verb.sep,"')",
-                    sep = "")
+    str1 <- paste("data <- read.delim(file, header = ",input$headers, ", sep= '", verb.sep,"')",
+                  sep = "")
+    
     if(!is.null(datGet2())) {
-      str0.2.0 <- "file2<- file.choose()"
-      str0.2.1 <- paste("data2 <- read.delim(file2, header = ",input$headers, ", sep= '", verb.sep,"')",
-                        sep= "")
-      str0.2.2 <- "data<- list(data, data2)"
-      str0.1 <- paste(str0.1, str0.2.0, str0.2.1, str0.2.2, sep = "\n")
+      str2 <- "file2<- file.choose()"
+      str3 <- paste("data2 <- read.delim(file2, header = ",input$headers, ", sep= '", verb.sep,"')",
+                    sep= "")
+      str4 <- "data<- list(data, data2)"
+      str1 <- paste(str1, str2, str3, str4, sep = "\n")
     }
     
-    str0 <- paste("# To reproduce the plot in your local R environment",
-                  "# copy and run the following code to your R console.",
-                  "library(Luminescence)",
-                  "file<- file.choose()",
-                  str0.1,
-                  "\n",
-                  str1,
-                  sep = "\n")
+    header <- paste("# To reproduce the plot in your local R environment",
+                    "# copy and run the following code to your R console.",
+                    "library(Luminescence)",
+                    "file<- file.choose()",
+                    str1,
+                    "\n",
+                    sep = "\n")
     
-    code.output<- paste(str0,
-                        str2, str3, str4, str7, str8, str9, str10, 
-                        str11, str12, str13, str14, str15, str16, str17, str18, str20, 
-                        str21, str22, str24, str25, str26, str27, str28, str29, str30,
-                        str31, str32, str33,
-                        sep="\n   ")
+    names <- names(args)
+    
+    verb.arg <- paste(mapply(function(name, arg) {
+      if (all(inherits(arg, "character")))
+        arg <- paste0("'", arg, "'")
+      if (length(arg) > 1)
+        arg <- paste0("c(", paste(arg, collapse = ", "), ")")
+      if (is.null(arg))
+        arg <- "NULL"
+      paste(name, "=", arg) 
+    }, names[-1], args[-1]), collapse = ",\n")
+    
+    funCall <- paste0("plot_RadialPlot(data = data,\n", verb.arg, ")")
+    
+    code.output <- paste0(header, funCall, collapse = "\n")
     
     # nested renderText({}) for code output on "R plot code" tab
     output$plotCode<- renderText({
