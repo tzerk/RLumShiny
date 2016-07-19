@@ -208,7 +208,7 @@ shinyServer(function(input, output, session) {
       # if custom datapoint color get RGB code from separate input panel
       if(input$color2 == "custom") {
         if(input$jscol2 == "") {
-          color<- "black"
+          color2<- "black"
         } else {
           color2<- input$jscol2
         }
@@ -216,7 +216,7 @@ shinyServer(function(input, output, session) {
         color2<- input$color2
       }
     } else {
-      color2<- adjustcolor("white", alpha.f = 0)
+      color2<- "black" #adjustcolor("white", alpha.f = 0)
     }
     
     # if custom datapoint style get char from separate input panel

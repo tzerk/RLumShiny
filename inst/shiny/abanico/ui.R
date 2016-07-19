@@ -196,7 +196,7 @@ pageWithSidebar(
                                     
                                     conditionalPanel(condition = "input.dispersion == 'custom'",
                                                      numericInput(inputId = "cinn",
-                                                                  label = "x% quartile",
+                                                                  label = "x % percentile",
                                                                   value = 25,
                                                                   min = 0, 
                                                                   max = 100, 
