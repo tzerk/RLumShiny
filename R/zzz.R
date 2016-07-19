@@ -8,7 +8,5 @@
   x <- TRUE
   if (x) return(x)
   Luminescence::sTeve()
-  RCurl::reset()
   googleVis::renderGvis()
-  digest::digest(".")
 }

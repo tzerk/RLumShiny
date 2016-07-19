@@ -26,9 +26,7 @@ Depends:
 Imports:
     Luminescence (>= 0.6.1),
     shiny (>= 0.13.0),
-    digest,
-    googleVis,
-    RCurl
+    googleVis
 URL: https://github.com/tzerk/RLumShiny
 BugReports: https://github.com/tzerk/RLumShiny/issues
 Collate:
