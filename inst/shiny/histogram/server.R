@@ -140,71 +140,59 @@ shinyServer(function(input, output, session) {
     progress$set(message = "Calculation in progress",
                  detail = "Ready to plot")
     
-    plot_Histogram(data = data,
-                   na.rm = input$naExclude, 
-                   cex.global = input$cex, 
-                   pch = pch,
-                   xlim = input$xlim,
-                   summary.pos = input$sumpos, 
-                   mtext = input$mtext, 
-                   main = input$main,
-                   rug = input$rugs, 
-                   se = input$errorBars, 
-                   normal_curve = input$norm, 
-                   summary = summary,
-                   xlab = input$xlab,
-                   ylab = c(input$ylab1, input$ylab2),
-                   colour = colors)
+    args <- list(data = data,
+                 na.rm = input$naExclude, 
+                 cex.global = input$cex, 
+                 pch = pch,
+                 xlim = input$xlim,
+                 summary.pos = input$sumpos, 
+                 mtext = input$mtext, 
+                 main = input$main,
+                 rug = input$rugs, 
+                 se = input$errorBars, 
+                 normal_curve = input$norm, 
+                 summary = summary,
+                 xlab = input$xlab,
+                 ylab = c(input$ylab1, input$ylab2),
+                 colour = colors)
     
+    do.call(plot_Histogram, args = args)
     
-    # char vector for code output
-    verb.summary<- "c('"
-    for(i in 1:length(summary)){
-      verb.summary<- paste(verb.summary, summary[i], "','", sep="")
-      if(i == length(summary)) {
-        verb.summary<- substr(verb.summary, 1, nchar(verb.summary)-2)
-        verb.summary<- paste(verb.summary, ")", sep="")
-      }
-    }
+    # prepare code as text output
+    if (is.null(input$sep)) 
+      updateRadioButtons(session, "fileformat", selected = "\t")
     
-    # char vectors for code output
-    str1 <- paste("plot_Histogram(data = data, ", sep = "")          
-    str2 <- paste("summary.pos = '", input$sumpos,"',", sep = "")      
-    str3 <- paste("summary = ",verb.summary,",", sep = "")            
-    str4 <- paste("colour = c('",colors[1],"','",colors[2],"','",colors[3],"','",colors[4],"'),", sep = "") 
-    str5 <- paste("pch = ",pch,",", sep = "")                         
-    str6<- paste("normal_curve = ",input$norm,",", sep = "")            
-    str7<- paste("se = ", input$errorBars, ",", sep = "")                      
-    str8<- paste("rug = ", input$rugs, ",", sep = "")                   
-    str9 <- paste("main = '",input$main,"',", sep = "")               
-    str10 <- paste("cex.global = ", input$cex, ",", sep = "")          
-    str11 <- paste("mtext = '",input$mtext,"',", sep = "")             
-    str12 <- paste("na.rm = ",input$naExclude,",", sep = "")     
-    str13 <- paste("xlab = '", input$xlab,"',", sep="")                
-    str14 <- paste("ylab = c('",input$ylab1,"','", input$ylab2,"'),",sep ="") 
-    str15 <- paste("xlim = c(", input$xlim[1],",",input$xlim[2],"))", sep="") 
-    
-    if(input$sep == "\t") { verb.sep<-  "\\t"}
-    else {
+    if(input$sep == "\t")
+      verb.sep<-  "\\t"
+    else
       verb.sep<- input$sep
-    }
     
-    str0.1 <- paste("data <- read.delim(file, header = ",input$headers, ", sep= '", verb.sep,"')",
-                    sep = "")
+    str1 <- paste("data <- read.delim(file, header = ",input$headers, ", sep= '", verb.sep,"')",
+                  sep = "")
     
-    str0 <- paste("# To reproduce the plot in your local R environment",
-                  "# copy and run the following code to your R console.",
-                  "library(Luminescence)",
-                  "file<- file.choose()",
-                  str0.1,
-                  "\n",
-                  str1,
-                  sep = "\n")
+    header <- paste("# To reproduce the plot in your local R environment",
+                    "# copy and run the following code to your R console.",
+                    "library(Luminescence)",
+                    "file<- file.choose()",
+                    str1,
+                    "\n",
+                    sep = "\n")
     
-    code.output<- paste(str0,
-                        str2, str3, str4, str5, str6, str7, str8, str9, str10, 
-                        str11, str12, str13, str14, str15,
-                        sep="\n   ")
+    names <- names(args)
+    
+    verb.arg <- paste(mapply(function(name, arg) {
+      if (all(inherits(arg, "character")))
+        arg <- paste0("'", arg, "'")
+      if (length(arg) > 1)
+        arg <- paste0("c(", paste(arg, collapse = ", "), ")")
+      if (is.null(arg))
+        arg <- "NULL"
+      paste(name, "=", arg) 
+    }, names[-1], args[-1]), collapse = ",\n")
+    
+    funCall <- paste0("plot_Histogram(data = data,\n", verb.arg, ")")
+    
+    code.output <- paste0(header, funCall, collapse = "\n")
     
     # nested renderText({}) for code output on "R plot code" tab
     output$plotCode<- renderText({
