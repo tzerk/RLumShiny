@@ -273,7 +273,7 @@ pageWithSidebar(
                                                              "EPS   (Encapsulated Postscript)" = "eps")),
                                     textInput(inputId = "filename", 
                                               label = "Filename", 
-                                              value = "Abanico Plot"),
+                                              value = "KDE Plot"),
                                     fluidRow(
                                       column(width = 6,
                                              numericInput(inputId = "imgheight",
