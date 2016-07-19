@@ -93,14 +93,14 @@ shinyServer(function(input, output, session) {
       t<- get_results()
       HTML(
         if(input$mode=="xAsS") { 
-          paste("<font size='2'>","Sample depth: ", "<code>", 
+          paste("Sample depth: ","<font size='3'>", "<code>", 
                 sum(na.omit(input$depth_1), na.omit(input$depth_2), na.omit(input$depth_3), na.omit(input$depth_4), na.omit(input$depth_5)),
                 "m", "</code>", "</font>", "<br>")
         },
-        "<font size='2'>","Total absorber: ", "<code>", t$total_absorber.gcm2, "g/cm\u00b2", "</code>", "</font>", "<br>", 
-        "<font size='2'>","Cosmic dose rate (uncorrected): ", "<code>", round(t$d0, 3), "Gy/ka", "</code>", "</font>", "<br>", 
-        "<font size='2'>","Geomagnetic latitude: ", "<code>", round(t$geom_lat, 2), "\u00b0", "</code>", "</font>", "<br>", 
-        "<font size='2'>","Cosmic dose rate (corrected): ", "<code>", round(t$dc, 3),"\u00b1", round(t$dc/100*input$error, 3), "Gy/ka", "</code>", "<br> ", "</font>"
+        "Total absorber: ","<font size='3'>", "<code>", t$total_absorber.gcm2, "g/cm\u00b2", "</code>", "</font>", "<br>", 
+        "Cosmic dose rate (uncorrected): ","<font size='3'>", "<code>", round(t$d0, 3), "Gy/ka", "</code>", "</font>", "<br>", 
+        "Geomagnetic latitude: ","<font size='3'>", "<code>", round(t$geom_lat, 2), "\u00b0", "</code>", "</font>", "<br>", 
+        "Cosmic dose rate (corrected): ","<font size='3'>", "<code>", round(t$dc, 3),"\u00b1", round(t$dc/100*input$error, 3), "Gy/ka", "</code>", "<br> ", "</font>"
         
       )
     } 
