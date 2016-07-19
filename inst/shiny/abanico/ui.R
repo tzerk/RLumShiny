@@ -299,6 +299,8 @@ pageWithSidebar(
                                              tooltip(refId = "rotate", text = "Option to rotate the plot by 90&deg;.")
                                       )
                                     ),
+                                    checkboxInput(inputId = "boxplot", label = "Boxplot", value = FALSE),
+                                    tooltip(refId = "boxplot", text = "Option to add a boxplot to the dispersion part."),
                                     checkboxInput(inputId = "kde", label = "KDE", value = TRUE),
                                     tooltip(refId = "kde", text = "Option to add a KDE plot to the dispersion part."),
                                     checkboxInput(inputId = "histogram", label = "Histogram", value = TRUE),

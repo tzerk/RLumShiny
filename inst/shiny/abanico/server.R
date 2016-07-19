@@ -393,6 +393,7 @@ shinyServer(function(input, output, session) {
                 rug = input$rug,
                 layout = input$layout,
                 rotate = input$rotate,
+                boxplot = input$boxplot,
                 kde = input$kde,
                 hist = input$histogram,
                 dots = input$dots,
