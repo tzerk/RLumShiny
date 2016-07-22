@@ -95,20 +95,10 @@ shinyUI(fluidPage(
                                      "x absorber, 1 sample" = "xAsS",
                                      "1 absorber, x samples" = "sAxS"))
            ),
-           fluidRow(
-             column(width = 3, 
-                    actionButton(inputId = "refresh", label = "", icon = icon("refresh")),
-                    tooltip(refId = "refresh", text = "Reload app")
-             ),
-             column(width = 3,
-                    actionButton(inputId = "exit", label = "Exit", class = "btn btn-danger")
-             ),
-             column(width = 3, offset = 1,
-                    popover(title = "?", content = "...", header = "Unter construction...",
-                            placement='left',
-                            trigger='click')
-             )
-           )
+           
+           actionButton(inputId = "refresh", label = "", icon = icon("refresh")),
+           tooltip(refId = "refresh", text = "Reload app")
+           
     )
   ),
   fluidRow(

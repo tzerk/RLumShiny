@@ -9,10 +9,6 @@ data <- list(ExampleData.DeValues$CA1, ExampleData.DeValues$CA1)
 ## MAIN FUNCTION
 shinyServer(function(input, output, session) {
   
-  observeEvent(input$exit, {
-    stopApp(message("Goodbye!"))
-  })
-  
   # check and read in file (DATA SET 1)
   datGet<- reactive({
     inFile<- input$file1
@@ -158,38 +154,11 @@ shinyServer(function(input, output, session) {
       logx<- ""
     }
     
-    # if custom polygon color get RGB from separate input panel or "none"
-    if(input$polygon == "custom") {
-      polygon.col<- adjustcolor(col = input$rgbPolygon, 
-                                alpha.f = input$alpha.polygon/100)
-    } else {
-      if(input$polygon == "none") {
-        polygon.col<- "white"
-      } else {
-        polygon.col<- adjustcolor(col = input$polygon, 
-                                  alpha.f = input$alpha.polygon/100) 
-      }
-    }
-    
-    # if custom polygon color get RGB from separate input panel or "none"
-    if(input$polygon2 == "custom") {
-      polygon.col2<- adjustcolor(col = input$rgbPolygon2, 
-                                 alpha.f = input$alpha.polygon/100)
-    } else {
-      if(input$polygon2 == "none") {
-        polygon.col2<- "white"
-      } else {
-        polygon.col2<- adjustcolor(col = input$polygon2, 
-                                   alpha.f = input$alpha.polygon/100) 
-      }
-    }
     
     # update progress bar
     progress$set(value = 2)
     progress$set(message = "Calculation in progress",
                  detail = "Combine values")
-    
-    poly.col<- c(polygon.col, polygon.col2)
     
     # if custom datapoint color get RGB code from separate input panel
     if(input$color == "custom") {
@@ -221,79 +190,71 @@ shinyServer(function(input, output, session) {
     progress$set(message = "Calculation in progress",
                  detail = "Ready to plot")    
     
-    plot_KDE(data = data, 
-             centrality = input$centrality, 
-             cex = input$cex, 
-             log = logx,
-             xlab = input$xlab,
-             ylab = c(input$ylab1, input$ylab2),
-             main = input$main,
-             weights = input$weights,
-             values.cumulative = input$cumulative,
-             na.rm = input$naExclude, 
-             dispersion = input$dispersion, 
-             summary = summary,
-             summary.pos = input$sumpos,
-             bw = input$bw,
-             xlim = input$xlim,
-             polygon.col = poly.col,
-             col = c(color, color2))
+    args <- list(data = data, 
+                 cex = input$cex, 
+                 log = logx,
+                 xlab = input$xlab,
+                 ylab = c(input$ylab1, input$ylab2),
+                 main = input$main,
+                 values.cumulative = input$cumulative,
+                 na.rm = input$naExclude, 
+                 rug = input$rug,
+                 boxplot = input$boxplot,
+                 summary = summary,
+                 summary.pos = input$sumpos,
+                 summary.method = input$summary.method,
+                 bw = input$bw,
+                 xlim = input$xlim,
+                 col = c(color, color2))
+    
+    do.call(plot_KDE, args = args)
     
     
-    # char vector for code output
-    verb.summary<- "c('"
-    for(i in 1:length(summary)){
-      verb.summary<- paste(verb.summary, summary[i], "','", sep="")
-      if(i == length(summary)) {
-        verb.summary<- substr(verb.summary, 1, nchar(verb.summary)-2)
-        verb.summary<- paste(verb.summary, ")", sep="")
-      }
-    }
+    # prepare code as text output
+    if (is.null(input$sep)) 
+      updateRadioButtons(session, "fileformat", selected = "\t")
     
-    # char vectors for code output
-    str1 <- paste("plot_KDE(data = data, ", sep = "")
-    str2 <- paste("centrality = '",input$centrality,"',", sep = "")
-    str3 <- paste("bw = ",input$bw,",", sep = "")
-    str4 <- paste("dispersion = '",input$dispersion,"',", sep = "")
-    str5 <- paste("log = '",logx, "',", sep = "")
-    str6 <- paste("col = c('",color2,"','",color,"'),", sep = "")
-    str7 <- paste("main = '",input$main,"',", sep = "")
-    str8 <- paste("cex = ", input$cex, ",", sep = "")
-    str9 <- paste("summary = ",verb.summary,",", sep = "")
-    str10 <- paste("polygon.col = c('",polygon.col,"','",polygon.col2,"'),", sep = "")
-    str11 <- paste("na.rm = ",input$naExclude,",", sep = "")
-    str12 <- paste("ylab = c('", input$ylab1,"','",input$ylab2,"'),", sep="")
-    str13 <- paste("xlab = '",input$xlab,"',",sep ="")
-    str14 <- paste("xlim = c(", input$xlim[1],",",input$xlim[2],"),", sep="")
-    str15 <- paste("weights = ", input$weights, ",", sep = "")
-    str16 <- paste("values.cumulative = ", input$cumulative, ",", sep = "")
-    str17 <- paste("summary.pos = '", input$sumpos, "')", sep = "")
+    if(input$sep == "\t")
+      verb.sep<-  "\\t"
+    else
+      verb.sep<- input$sep
     
-    verb.sep<- ifelse(input$sep == "\t", "\\t", ifelse(is.null(input$sep), "\\t", input$sep))
+    str1 <- paste("data <- read.delim(file, header = ",input$headers, ", sep= '", verb.sep,"')",
+                  sep = "")
     
-    str0.1 <- paste("data <- read.delim(file, header = ",input$headers, ", sep= '", verb.sep,"')",
-                    sep = "")
     if(!is.null(datGet2())) {
-      str0.2.0 <- "file2<- file.choose()"
-      str0.2.1 <- paste("data2 <- read.delim(file2, header = ",input$headers, ", sep= '", verb.sep,"')",
-                        sep= "")
-      str0.2.2 <- "data<- list(data, data2)"
-      str0.1 <- paste(str0.1, str0.2.0, str0.2.1, str0.2.2, sep = "\n")
+      str2 <- "file2<- file.choose()"
+      str3 <- paste("data2 <- read.delim(file2, header = ",input$headers, ", sep= '", verb.sep,"')",
+                    sep= "")
+      str4 <- "data<- list(data, data2)"
+      str1 <- paste(str1, str2, str3, str4, sep = "\n")
     }
     
-    str0 <- paste("# To reproduce the plot in your local R environment",
-                  "# copy and run the following code to your R console.",
-                  "library(Luminescence)",
-                  "file<- file.choose()",
-                  str0.1,
-                  "\n",
-                  str1,
-                  sep = "\n")
+    header <- paste("# To reproduce the plot in your local R environment",
+                    "# copy and run the following code to your R console.",
+                    "library(Luminescence)",
+                    "file<- file.choose()",
+                    str1,
+                    "\n",
+                    sep = "\n")
     
-    code.output<- paste(str0, str2, str3, str4, str5, 
-                        str6, str7, str8, str9, str10, str11, str12,
-                        str13, str14, str15, str16, str17,
-                        sep="\n   ")
+    names <- names(args)
+    
+    verb.arg <- paste(mapply(function(name, arg) {
+      if (all(inherits(arg, "character")))
+        arg <- paste0("'", arg, "'")
+      if (length(arg) > 1)
+        arg <- paste0("c(", paste(arg, collapse = ", "), ")")
+      if (is.null(arg))
+        arg <- "NULL"
+      paste(name, "=", arg) 
+    }, names[-1], args[-1]), collapse = ",\n")
+    
+    funCall <- paste0("plot_KDE(data = data,\n", verb.arg, ")")
+    
+    code.output <- paste0(header, funCall, collapse = "\n")
+    
+    
     
     # nested renderText({}) for code output on "R plot code" tab
     output$plotCode<- renderText({
@@ -342,23 +303,7 @@ shinyServer(function(input, output, session) {
                      family = input$fontfamily)
         }
         
-        plot_KDE(data = data, 
-                 centrality = input$centrality, 
-                 cex = input$cex, 
-                 log = logx,
-                 xlab = input$xlab,
-                 ylab = c(input$ylab1, input$ylab2),
-                 main = input$main,
-                 weights = input$weights,
-                 values.cumulative = input$cumulative,
-                 na.rm = input$naExclude, 
-                 dispersion = input$dispersion, 
-                 summary = summary,
-                 summary.pos = input$sumpos,
-                 bw = input$bw,
-                 xlim = input$xlim,
-                 polygon.col = poly.col,
-                 col = c(color2, color))
+        do.call(plot_KDE, args = args)
         
         dev.off()
         

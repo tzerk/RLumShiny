@@ -41,51 +41,61 @@ pageWithSidebar(
                                                    "Semicolon" = ";")),
                                     tooltip(refId = "sep", text = tags$img(src='file_sep.png', width='400px'), placement = "auto left"),
                                     hr(),
-                                    fluidRow(
-                                      column(width = 6,
-                                             actionButton(inputId = "refresh", label = "Refresh", icon = icon("refresh")),
-                                             tooltip(refId = "refresh", text = "Redraw the plot")
-                                      ),
-                                      column(width = 6,
-                                             actionButton(inputId = "exit", label = "Exit", class = "btn btn-danger")
-                                      )
-                                    )
+                                    actionButton(inputId = "refresh", label = "Refresh", icon = icon("refresh")),
+                                    tooltip(refId = "refresh", text = "Redraw the plot")
                            ),##EndOf::Tab_1
                            
                            # Tab 2: Statistical information
                            tabPanel("Statistics",                             
-                                    div(align = "center", h5("Summary")),
-                                    checkboxInput(inputId = "summary",
-                                                  label = "Show summary",
-                                                  value = FALSE),
-                                    tooltip(refId = "summary", text = "Adds numerical output to the plot"),
-                                    selectInput(inputId = "sumpos",
-                                                label = "Summary position",
-                                                selected = "topleft",
-                                                choices = c("Top" = "top",
-                                                            "Top left" = "topleft",
-                                                            "Top right"= "topright",
-                                                            "Center" = "center",
-                                                            "Bottom" = "bottom",
-                                                            "Bottom left" = "bottomleft",
-                                                            "Bottom right" = "bottomright")),
-                                    tooltip(refId = "sumpos", attr = "for", text = "Position of the statistical summary. The keyword \"Subtitle\" will only work if no plot subtitle is used."),
-                                    checkboxGroupInput(inputId = "stats", 
+                                    fluidRow(
+                                      column(width = 6,
+                                             checkboxInput(inputId = "summary",
+                                                           label = "Show summary",
+                                                           value = FALSE),
+                                             tooltip(refId = "summary", text = "Adds numerical output to the plot")
+                                      ),
+                                      column(width = 6,
+                                             selectInput(inputId = "sumpos",
+                                                         label = "Summary position",
+                                                         selected = "topleft",
+                                                         choices = list("Subtitle" = "sub",
+                                                                        "Center" = "center",
+                                                                        Top=c("Top" = "top",
+                                                                              "Top left" = "topleft",
+                                                                              "Top right"= "topright"),
+                                                                        Bottom=c("Bottom" = "bottom",
+                                                                                 "Bottom left" = "bottomleft",
+                                                                                 "Bottom right" = "bottomright")
+                                                         )),
+                                             tooltip(refId = "sumpos", attr = "for", text = "Position of the statistical summary. The keyword \"Subtitle\" will only work if no plot subtitle is used.")
+                                      )
+                                    ),
+                                    
+                                    ## ARG 'SUMMARY.METHOD' NOT YET IMPLEMENTED
+                                    ##
+                                    # selectInput(inputId = "summary.method",
+                                    #             label = "Summary method",
+                                    #             selected = "unweighted",
+                                    #             choices = list("Unweighted" = "unweighted",
+                                    #                            "Weighted" = "weighted",
+                                    #                            "Monte Carlo" = "MCM")),
+                                    # tooltip(refId = "summary.method", attr = "for", text = "Keyword indicating the method used to calculate the statistic summary. See calc_Statistics for details."),
+                                    
+                                    checkboxGroupInput(inputId = "stats",
                                                        label = "Parameters", 
                                                        selected = c("n","mean"),
                                                        choices = c("n" = "n",
                                                                    "Mean" = "mean",
                                                                    "Median" = "median",
-                                                                   "weighted Mean" = "mean.weighted",
-                                                                   "KDEmax" = "kdemax",
                                                                    "rel. Standard deviation" = "sdrel",
-                                                                   "abs. Standard deviation" = "sdabs", 
+                                                                   "abs. Standard deviation" = "sdabs",
                                                                    "rel. Standard error" = "serel",
                                                                    "abs. Standard error" = "seabs",
-                                                                   "weighted Median" = "median.weighted",
                                                                    "Skewness" = "skewness",
-                                                                   "Kurtosis" = "kurtosis",
-                                                                   "Confidence interval" = "in.ci")),
+                                                                   "Kurtosis" = "kurtosis"
+                                                                   # "% in 2 sigma range" = "in.2s"
+                                                                   )
+                                                       ),
                                     tooltip(refId = "stats", text = "Statistical parameters to be shown in the summary"),
                                     div(align = "center", h5("Error bars")),
                                     checkboxInput(inputId = "errorBars",

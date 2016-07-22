@@ -1,17 +1,7 @@
-## Resubmission
-This is a resubmission. In this version I have:
-
-* Referred in the DESCRIPTION to other packages and external libraries in single quotes.
-
-* Made clear in the DESCRIPTION that this package includes the 'jscolor.js' library.
-
-* Removed the LICENSE file and the reference in the DESCRIPTION
-
-* Added a LICENSE.note file to include comments on the licensing
-
 ## Test environments
-* local Windows 8 x64 install, R-devel (2015-03-27 r68108)
-* ubuntu 14.04 (VM), R 3.1.3
+* local Windows 10 x64 install, R-devel (2016-07-16 r70929)
+* Ubuntu 12.04 (on Travis-CI), R 3.3.1
+* win-builder (devel and release)
 
 ## R CMD check results
 There were no ERRORs or WARNINGs.
@@ -19,7 +9,16 @@ There were no ERRORs or WARNINGs.
 There was 1 NOTE:
 
 * checking CRAN incoming feasibility ... NOTE
-  Maintainer: 'Christoph Burow <christoph.burow@uni-koeln.de>'
-  New submission
+Maintainer: 'Christoph Burow <christoph.burow@uni-koeln.de>'
 
-  This is a new submission.
+Possibly mis-spelled words in DESCRIPTION:
+  chronometric (19:14)
+  tooltip (20:43)
+  
+These are spelled correctly.
+  
+## Downstream dependencies
+I have also run R CMD check on downstream dependencies of RLumShiny using
+devtools::revdep_check() (https://github.com/tzerk/RLumShiny/tree/master/revdep).
+
+All packages passed.

@@ -44,10 +44,7 @@ pageWithSidebar(
                                                    "Space" = " ",
                                                    "Comma" = ",",
                                                    "Semicolon" = ";")),
-                                    tooltip(refId = "sep", text = tags$img(src='file_sep.png', width='400px'), placement = "auto left"),
-                                    hr(),
-                                    
-                                    actionButton(inputId = "exit", label = "Exit", class = "btn btn-danger")
+                                    tooltip(refId = "sep", text = tags$img(src='file_sep.png', width='400px'), placement = "auto left")
                            ),##EndOf::Tab_1
                            
                            tabPanel("Method",

@@ -17,5 +17,5 @@
 #' @name RLumShiny-package
 #' @aliases RLumShiny
 #' @docType package
-#' @import Luminescence shiny digest googleVis RCurl
+#' @import Luminescence shiny googleVis
 NULL

@@ -12,10 +12,6 @@ ExampleData.DeValues <- ExampleData.DeValues$BT998
 
 shinyServer(function(input, output, session) {
   
-  observeEvent(input$exit, {
-    stopApp(message("Goodbye!"))
-  })
-  
   # check and read in file (DATA SET 1)
   datGet<- reactive({
     inFile<- input$file1
@@ -156,8 +152,61 @@ shinyServer(function(input, output, session) {
       
     }
     
-    # plot Abanico Plot 
+    # plot DRT Results
     do.call(what = plot_DRTResults, args = args)
+    
+    
+    # prepare code as text output
+    if (is.null(input$sep)) 
+      updateRadioButtons(session, "fileformat", selected = "\t")
+    
+    if(input$sep == "\t")
+      verb.sep<-  "\\t"
+    else
+      verb.sep<- input$sep
+    
+    str1 <- paste("data <- read.delim(file, header = ",input$headers, ", sep= '", verb.sep,"')",
+                  sep = "")
+    
+    if(!is.null(datGet2())) {
+      str2 <- "file2<- file.choose()"
+      str3 <- paste("data2 <- read.delim(file2, header = ",input$headers, ", sep= '", verb.sep,"')",
+                    sep= "")
+      str4 <- "data<- list(data, data2)"
+      str1 <- paste(str1, str2, str3, str4, sep = "\n")
+    }
+    
+    header <- paste("# To reproduce the plot in your local R environment",
+                    "# copy and run the following code to your R console.",
+                    "library(Luminescence)",
+                    "file<- file.choose()",
+                    str1,
+                    "\n",
+                    sep = "\n")
+    
+    names <- names(args)
+    
+    verb.arg <- paste(mapply(function(name, arg) {
+      if (all(inherits(arg, "character")))
+        arg <- paste0("'", arg, "'")
+      if (length(arg) > 1)
+        arg <- paste0("c(", paste(arg, collapse = ", "), ")")
+      if (is.null(arg))
+        arg <- "NULL"
+      paste(name, "=", arg) 
+    }, names[-1], args[-1]), collapse = ",\n")
+    
+    funCall <- paste0("plot_DRTResults(values = data,\n", verb.arg, ")")
+    
+    code.output <- paste0(header, funCall, collapse = "\n")
+    
+    # nested renderText({}) for code output on "R plot code" tab
+    output$plotCode<- renderText({
+      
+      code.output
+      
+    })##EndOf::renderText({})
+    
     
     # nested downloadHandler() to print plot to file
     output$exportFile <- downloadHandler(

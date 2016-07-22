@@ -129,7 +129,7 @@ shinyServer(function(input, output, session) {
                      family = input$fontfamily)
         }
         
-        # plot Abanico Plot 
+        # plot curve 
         do.call(plot, args = pargs)
         
         dev.off()
@@ -150,14 +150,5 @@ shinyServer(function(input, output, session) {
     }
   })
   
-  output$plotCode <- renderText({
-    
-  })
-  
-  observeEvent(input$exit, {
-    if (exists("tdata"))
-      rm(tdata)
-    stopApp(message("Goodbye!"))
-  })
-  
+
 })##EndOf::shinyServer(function(input, output)

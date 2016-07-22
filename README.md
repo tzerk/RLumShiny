@@ -1,5 +1,11 @@
 # RLumShiny
 
+[![CRAN](http://www.r-pkg.org/badges/version/RLumShiny)](http://cran.rstudio.com/package=RLumShiny)
+[![Downloads](http://cranlogs.r-pkg.org/badges/grand-total/RLumShiny)](http://www.r-pkg.org/pkg/RLumShiny)
+[![Downloads](http://cranlogs.r-pkg.org/badges/RLumShiny)](http://www.r-pkg.org/pkg/RLumShiny)
+[![Downloads](http://cranlogs.r-pkg.org/badges/last-week/RLumShiny)](http://www.r-pkg.org/pkg/RLumShiny)
+[![Downloads](http://cranlogs.r-pkg.org/badges/last-day/RLumShiny)](http://www.r-pkg.org/pkg/RLumShiny)
+
 [![Build status](https://ci.appveyor.com/api/projects/status/jp8ueedudbuhvtfe/branch/master?svg=true)](https://ci.appveyor.com/project/tzerk/rlumshiny/branch/master)
 [![Build Status](https://travis-ci.org/tzerk/RLumShiny.svg?branch=master)](https://travis-ci.org/tzerk/RLumShiny)
 
@@ -37,11 +43,10 @@ The RLumShiny package provides a single function from which all apps can be star
 | Radial Plot | radialplot | `plot_RadialPlot` |
 | Dose Recovery Test | doserecovery | `plot_DRTResults` |
 | Cosmic Dose Rate | cosmicdose | `calc_CosmicDoseRate`|
-| CW Curve Transformation* | transformCW | `CW2pHMi`, `CW2pLM`, `CW2pLMi`, `CW2pPMi` |
+| CW Curve Transformation | transformCW | `CW2pHMi`, `CW2pLM`, `CW2pLMi`, `CW2pPMi` |
 
 The `app_RLum()` function is just a wrapper for `shiny::runApp()`. Via the `...` argument further arguments can be directly passed to `shiny::runApp()`. See `?shiny::runApp` for further details on valid arguments.
 
-> \* not yet available on CRAN
 
 ## Extending Shiny
 
@@ -83,3 +88,8 @@ the package on [CRAN 'RLumShiny'](http://cran.r-project.org/web/packages/RLumShi
 The RLumShiny package is licensed under the GPLv3. See these files in the main directory for additional details: 
 
 - LICENSE.note
+
+## Related projects 
+
+* [RLumModel](https://github.com/R-Lum/RLumModel)
+* [Luminescence](https://github.com/R-Lum/Luminescence)
