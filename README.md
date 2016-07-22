@@ -1,5 +1,11 @@
 # RLumShiny
 
+[![CRAN](http://www.r-pkg.org/badges/version/RLumShiny)](http://cran.rstudio.com/package=RLumShiny)
+[![Downloads](http://cranlogs.r-pkg.org/badges/grand-total/RLumShiny)](http://www.r-pkg.org/pkg/RLumShiny)
+[![Downloads](http://cranlogs.r-pkg.org/badges/RLumShiny)](http://www.r-pkg.org/pkg/RLumShiny)
+[![Downloads](http://cranlogs.r-pkg.org/badges/last-week/RLumShiny)](http://www.r-pkg.org/pkg/RLumShiny)
+[![Downloads](http://cranlogs.r-pkg.org/badges/last-day/RLumShiny)](http://www.r-pkg.org/pkg/RLumShiny)
+
 [![Build status](https://ci.appveyor.com/api/projects/status/jp8ueedudbuhvtfe/branch/master?svg=true)](https://ci.appveyor.com/project/tzerk/rlumshiny/branch/master)
 [![Build Status](https://travis-ci.org/tzerk/RLumShiny.svg?branch=master)](https://travis-ci.org/tzerk/RLumShiny)
 
