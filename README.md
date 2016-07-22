@@ -37,11 +37,10 @@ The RLumShiny package provides a single function from which all apps can be star
 | Radial Plot | radialplot | `plot_RadialPlot` |
 | Dose Recovery Test | doserecovery | `plot_DRTResults` |
 | Cosmic Dose Rate | cosmicdose | `calc_CosmicDoseRate`|
-| CW Curve Transformation* | transformCW | `CW2pHMi`, `CW2pLM`, `CW2pLMi`, `CW2pPMi` |
+| CW Curve Transformation | transformCW | `CW2pHMi`, `CW2pLM`, `CW2pLMi`, `CW2pPMi` |
 
 The `app_RLum()` function is just a wrapper for `shiny::runApp()`. Via the `...` argument further arguments can be directly passed to `shiny::runApp()`. See `?shiny::runApp` for further details on valid arguments.
 
-> \* not yet available on CRAN
 
 ## Extending Shiny
 
