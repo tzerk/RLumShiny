@@ -88,3 +88,8 @@ the package on [CRAN 'RLumShiny'](http://cran.r-project.org/web/packages/RLumShi
 The RLumShiny package is licensed under the GPLv3. See these files in the main directory for additional details: 
 
 - LICENSE.note
+
+## Related projects 
+
+* [RLumModel](https://github.com/R-Lum/RLumModel)
+* [Luminescence](https://github.com/R-Lum/Luminescence)
