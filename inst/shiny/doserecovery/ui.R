@@ -1,6 +1,6 @@
 function(request) {
   fluidPage(
-    titlePanel(NULL, windowTitle = "RLumShiny - transformCW"),
+    titlePanel(NULL, windowTitle = "RLumShiny - DRT"),
     sidebarLayout(
       sidebarPanel(width = 5,
                    

@@ -1,5 +1,6 @@
 function(request) {
   fluidPage(
+    titlePanel(NULL, windowTitle = "RLumShiny - CosmicDose"),
     includeCSS("./www/style.css"),
     fluidRow(
       column(width = 3,
