@@ -1,13 +1,6 @@
 ## Server.R
-library(Luminescence)
-library(shiny)
-
-# load example data
-data(ExampleData.DeValues)
-data <- ExampleData.DeValues$CA1
-
 ## MAIN FUNCTION
-shinyServer(function(input, output, session) {
+function(input, output, session) {
   
   # check and read in file (DATA SET 1)
   datGet<- reactive({
@@ -297,4 +290,4 @@ shinyServer(function(input, output, session) {
   t
 })##EndOf::renterTable()
 
-})##EndOf::shinyServer(function(input, output)
+}##EndOf::function(input, output)
