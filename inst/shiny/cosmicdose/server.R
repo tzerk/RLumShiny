@@ -1,10 +1,6 @@
 ## Server.R
-library(Luminescence)
-library(shiny)
-library(googleVis)
-
 ## MAIN FUNCTION
-shinyServer(function(input, output, session) {
+function(input, output, session) {
   
   # function to convert coordinates to degree decimal format
   coord_conv<- function(x, id) {
@@ -121,4 +117,4 @@ shinyServer(function(input, output, session) {
       table
     }
   }, options=list(autoWidth = FALSE, paging = FALSE, processing = TRUE)) # jQuery DataTables options (http://datatables.net)  
-})
+}
