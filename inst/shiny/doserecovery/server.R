@@ -1,16 +1,7 @@
-## Server.R
-library(Luminescence)
-library(shiny)
-
-## read example data set and misapply them for this plot type
-data(ExampleData.DeValues, envir = environment())
-ExampleData.DeValues <- ExampleData.DeValues$BT998
-
 ##############################################################################
 ###                        MAIN PROGRAM                                    ###
 ##############################################################################
-
-shinyServer(function(input, output, session) {
+function(input, output, session) {
   
   # check and read in file (DATA SET 1)
   datGet<- reactive({
@@ -279,4 +270,4 @@ output$dataset2<- renderDataTable(
   }
 })##EndOf::renterTable()
 
-})
+}
