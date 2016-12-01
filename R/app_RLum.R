@@ -38,6 +38,7 @@
 #' 
 #' # Further apps
 #' app_RLum("cosmicdose")
+#' app_RLum("transformCW")
 #' }
 #' 
 #' @export app_RLum
