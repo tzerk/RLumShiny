@@ -9,6 +9,8 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/jp8ueedudbuhvtfe/branch/master?svg=true)](https://ci.appveyor.com/project/tzerk/rlumshiny/branch/master)
 [![Build Status](https://travis-ci.org/tzerk/RLumShiny.svg?branch=master)](https://travis-ci.org/tzerk/RLumShiny)
 
+> Visit the <a href="https://tzerk.github.io/RLumShiny/" target="_blank">project page</a>!
+
 > Follow us on [![alt text][1.1]][1] <a href="http://www.twitter.com/RLuminescence" target="_blank">@RLuminescence</a>
 [1.1]: http://i.imgur.com/wWzX9uB.png (twitter icon without padding)
 [1]: http://www.twitter.com/RLuminescence
