@@ -51,7 +51,7 @@ app_RLum <- function(app, ...) {
                   "radialplot",
                   "transformCW")
   
-  if (!app %in% valid_apps) 
+  if (!any(grepl("kde", valid_apps, ignore.case = TRUE))) 
     return(message(paste0("Invalid app name: ", app, " \n Valid options are: ", paste(valid_apps, collapse = ", "))))
   
   app <- shiny::runApp(system.file(paste0("shiny/", app), package = "RLumShiny"), launch.browser = TRUE,  ...)
