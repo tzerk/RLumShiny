@@ -1,13 +1,6 @@
 ## Server.R
-library(Luminescence)
-library(RLumShiny)
-library(shiny)
-
-data("ExampleData.CW_OSL_Curve", envir = environment())
-data <- ExampleData.CW_OSL_Curve
-
 ## MAIN FUNCTION
-shinyServer(function(input, output, session) {
+function(input, output, session) {
   
   # RECEIVE USER DATA ----
   datGet<- reactive({
@@ -151,4 +144,4 @@ shinyServer(function(input, output, session) {
   })
   
 
-})##EndOf::shinyServer(function(input, output)
+}##EndOf::function(input, output)

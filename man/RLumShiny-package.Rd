@@ -2,7 +2,6 @@
 % Please edit documentation in R/RLumShiny.R
 \docType{package}
 \name{RLumShiny-package}
-\alias{RLumShiny}
 \alias{RLumShiny-package}
 \title{Shiny Applications for the R Package Luminescence}
 \description{

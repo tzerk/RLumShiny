@@ -1,3 +1,17 @@
+RLumShiny 0.1.2 (Release date: xxxx-xx-xx)
+==============
+
+* New Dashboard addin added. The dashboard provides access to all available
+  applications in the package and can be accessed either (i) through the
+  addin dropdown menu in the RStudio IDE or (ii) by running 'app_RLum()' without
+  any keyword.
+
+* Implemented newest shiny feature (v0.14) to bookmark the current app state. 
+  All apps now include a bookmark button, which returns a URL query string that
+  can be used to restore the app's state at any later time.
+  
+* Several minor bugfixes.
+
 RLumShiny 0.1.1 (Release date: 2016-07-20)
 ==============
 

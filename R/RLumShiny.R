@@ -15,7 +15,7 @@
 #' directly used in R's base plotting functions without the need of any format conversion.
 #'
 #' @name RLumShiny-package
-#' @aliases RLumShiny
 #' @docType package
-#' @import Luminescence shiny googleVis
+#' @import Luminescence shiny googleVis shinydashboard
+#' @importFrom utils citation
 NULL
