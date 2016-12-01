@@ -27,7 +27,7 @@ Imports:
     shiny (>= 0.14.0),
     googleVis,
     shinydashboard
-URL: https://github.com/tzerk/RLumShiny
+URL: https://tzerk.github.io/RLumShiny/
 BugReports: https://github.com/tzerk/RLumShiny/issues
 Collate:
     'app_RLum.R'
