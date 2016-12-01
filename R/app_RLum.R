@@ -4,7 +4,8 @@
 #' 
 #' The RLumShiny package provides a single function from which all shiny apps can be started: \code{app_RLum()}. 
 #' It essentially only takes one argument, which is a unique keyword specifying which application to start. 
-#' See the table below for a list of available shiny apps and which keywords to use.
+#' See the table below for a list of available shiny apps and which keywords to use. If no keyword is used
+#' a dashboard will be started instead, from which an application can be started.
 #' 
 #' \tabular{lcl}{
 #' \bold{Application name:} \tab  \bold{Keyword:}  \tab \bold{Function:} \cr
@@ -29,6 +30,9 @@
 #' @examples 
 #' 
 #' \dontrun{
+#' # Dashboard
+#' app_RLum()
+#' 
 #' # Plotting apps
 #' app_RLum("abanico")
 #' app_RLum("histogram")
@@ -42,7 +46,7 @@
 #' }
 #' 
 #' @export app_RLum
-app_RLum <- function(app, ...) {
+app_RLum <- function(app = NULL, ...) {
   
   valid_apps <- c("abanico",
                   "cosmicdose",
@@ -52,9 +56,19 @@ app_RLum <- function(app, ...) {
                   "radialplot",
                   "transformCW")
   
-  if (!any(grepl("kde", valid_apps, ignore.case = TRUE))) 
-    return(message(paste0("Invalid app name: ", app, " \n Valid options are: ", paste(valid_apps, collapse = ", "))))
-  
-  app <- shiny::runApp(system.file(paste0("shiny/", app), package = "RLumShiny"), launch.browser = TRUE,  ...)
+  if (is.null(app)) {
+    
+    # start the RLumShiny Dashboard Addin
+    RLumShinyAddin()
+    
+  } else {
+    
+    # check if keyword is valid
+    if (!any(grepl(app, valid_apps, ignore.case = TRUE))) 
+      return(message(paste0("Invalid app name: ", app, " \n Valid options are: ", paste(valid_apps, collapse = ", "))))
+    
+    # start application
+    app <- shiny::runApp(system.file(paste0("shiny/", app), package = "RLumShiny"), launch.browser = TRUE,  ...)
+  }
   
 }

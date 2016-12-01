@@ -4,7 +4,7 @@
 \alias{app_RLum}
 \title{Run Luminescence shiny apps}
 \usage{
-app_RLum(app, ...)
+app_RLum(app = NULL, ...)
 }
 \arguments{
 \item{app}{\code{\link{character}} (required): name of the application to start. See details for a list
@@ -18,7 +18,8 @@ A wrapper for \code{\link{runApp}} to start interactive shiny apps for the R pac
 \details{
 The RLumShiny package provides a single function from which all shiny apps can be started: \code{app_RLum()}. 
 It essentially only takes one argument, which is a unique keyword specifying which application to start. 
-See the table below for a list of available shiny apps and which keywords to use.
+See the table below for a list of available shiny apps and which keywords to use. If no keyword is used
+a dashboard will be started instead, from which an application can be started.
 
 \tabular{lcl}{
 \bold{Application name:} \tab  \bold{Keyword:}  \tab \bold{Function:} \cr
@@ -38,6 +39,9 @@ See \code{?shiny::runApp} for further details on valid arguments.
 \examples{
 
 \dontrun{
+# Dashboard
+app_RLum()
+
 # Plotting apps
 app_RLum("abanico")
 app_RLum("histogram")
@@ -47,6 +51,7 @@ app_RLum("doserecovery")
 
 # Further apps
 app_RLum("cosmicdose")
+app_RLum("transformCW")
 }
 
 }
