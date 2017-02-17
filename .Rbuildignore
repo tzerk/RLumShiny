@@ -8,3 +8,4 @@ cran-comments.md$
 .travis.yml$
 appveyor.yml$
 revdep
+RLum.Experiment
