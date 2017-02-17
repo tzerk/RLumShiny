@@ -20,4 +20,3 @@ Offering access to most options provided by the JSColor API the function \code{\
 is easily implemented in a shiny app. RGB colors are returned as hex values and can be 
 directly used in R's base plotting functions without the need of any format conversion.
 }
-

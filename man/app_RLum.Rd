@@ -55,10 +55,9 @@ app_RLum("transformCW")
 }
 
 }
-\author{
-Christoph Burow, University of Cologne (Germany)
-}
 \seealso{
 \code{\link{runApp}}
 }
-
+\author{
+Christoph Burow, University of Cologne (Germany)
+}
