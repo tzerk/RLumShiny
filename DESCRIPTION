@@ -2,7 +2,7 @@ Package: RLumShiny
 Type: Package
 Title: 'Shiny' Applications for the R Package 'Luminescence'
 Version: 0.1.2
-Date: 2016-12-01
+Date: 2017-02-17
 Author: Christoph Burow [aut, cre],
     R Luminescence Package Team [ctb],
     Jan Odvarko [cph] (jscolor.js in www/jscolor),
@@ -23,8 +23,9 @@ License: GPL-3
 Depends:
     R (>= 3.3.0)
 Imports:
-    Luminescence (>= 0.6.4),
+    Luminescence (>= 0.7.3),
     shiny (>= 0.14.0),
+    rhandsontable,
     googleVis,
     shinydashboard
 URL: https://tzerk.github.io/RLumShiny/

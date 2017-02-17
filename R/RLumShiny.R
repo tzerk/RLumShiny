@@ -16,6 +16,6 @@
 #'
 #' @name RLumShiny-package
 #' @docType package
-#' @import Luminescence shiny googleVis shinydashboard
+#' @import Luminescence shiny googleVis shinydashboard rhandsontable
 #' @importFrom utils citation
 NULL
