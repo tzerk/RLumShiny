@@ -21,13 +21,14 @@ Description: A collection of 'shiny' applications for the R package
     contains the 'jscolor.js' library with a custom 'shiny' output binding.
 License: GPL-3
 Depends:
-    R (>= 3.3.0)
+    R (>= 3.3.2)
 Imports:
     Luminescence (>= 0.7.3),
     shiny (>= 0.14.0),
-    rhandsontable,
-    googleVis,
-    shinydashboard
+    rhandsontable (>= 0.3.4),
+    data.table (>= 1.10.4),
+    googleVis (>= 0.6.2),
+    shinydashboard (>= 0.5.3)
 URL: https://tzerk.github.io/RLumShiny/
 BugReports: https://github.com/tzerk/RLumShiny/issues
 Collate:
