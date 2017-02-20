@@ -2,6 +2,8 @@
 library(Luminescence)
 library(shiny)
 library(RLumShiny)
+library(rhandsontable)
+library(data.table)
 
 # load example data
 data(ExampleData.DeValues)
