@@ -54,4 +54,3 @@ Other input.elements: \code{\link{animationOptions}}, \code{\link{sliderInput}};
 \code{\link{passwordInput}}; \code{\link{radioButtons}}; \code{\link{selectInput}}, 
 \code{\link{selectizeInput}}; \code{\link{submitButton}}; \code{\link{textInput}}
 }
-

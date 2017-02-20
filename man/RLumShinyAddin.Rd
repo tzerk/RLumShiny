@@ -9,4 +9,3 @@ RLumShinyAddin()
 \description{
 RLumShiny dashboard
 }
-

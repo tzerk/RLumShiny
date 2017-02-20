@@ -229,7 +229,8 @@ function(request) {
                 # divide output in separate tabs via tabsetPanel
                 tabsetPanel(
                   tabPanel("Plot", plotOutput(outputId = "main_plot", height = "500px")),
-                  tabPanel("Output table", fluidRow(column(width = 12, dataTableOutput("dataset"))))
+                  tabPanel("Input table", fluidRow(column(width = 12, rHandsontableOutput("inputdata")))),
+                  tabPanel("Output table", fluidRow(column(width = 12, rHandsontableOutput("dataset"))))
                 )###EndOf::tabsetPanel
       )##EndOf::mainPanel
     ),##EndOf::sideBarLayout

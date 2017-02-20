@@ -15,23 +15,13 @@ function(request) {
                                                   label = strong("Primary data set"),
                                                   accept="text/plain"),
                                         tooltip(refId = "file1", text = tags$img(src='file_structure.png', width='250px')),
-                                        # logical: should NA values be excluded?
-                                        checkboxInput(inputId = "naExclude", 
-                                                      label = "Exclude NA values",
-                                                      value = TRUE),
-                                        tooltip(refId = "naExclude", text = "Exclude NA values from the data set prior to any further operations."),
-                                        # logical: file contains headers?
-                                        checkboxInput(inputId = "headers", 
-                                                      label = "File contains headers", 
-                                                      value = FALSE),
-                                        tooltip(refId = "headers", text = tags$img(src='file_containsHeader.png', width='250px')),
-                                        # char: columns separated by tab, space, comma
-                                        radioButtons("sep", "Separator", selected = "\t", inline = TRUE,
-                                                     c("Tab" = "\t",
-                                                       "Space" = " ",
-                                                       "Comma" = ",",
-                                                       "Semicolon" = ";")),
-                                        tooltip(refId = "sep", text = tags$img(src='file_sep.png', width='400px'), placement = "auto left"),
+                                        # rhandsontable input/output
+                                        fluidRow(
+                                          column(width = 6,
+                                            rHandsontableOutput(outputId = "table_in_primary")
+                                        ),
+                                          column(width = 6)
+                                        ),
                                         hr(),
                                         actionButton(inputId = "refresh", label = "Refresh", icon = icon("refresh")),
                                         tooltip(refId = "refresh", text = "Redraw the plot")
