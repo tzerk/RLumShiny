@@ -6,21 +6,21 @@ function(input, output, session) {
   # check and read in file (DATA SET 1)
   datGet<- reactive({
     inFile<- input$file1
-    if(is.null(inFile)) return(NULL) # if no file was uploaded return NULL
-    return(read.table(file = inFile$datapath, # inFile[1] contains filepath 
-                      sep = input$sep, 
-                      quote = "", 
-                      header = input$headers)) # else return file
+    
+    if(is.null(inFile)) 
+      return(NULL) # if no file was uploaded return NULL
+    
+    return(fread(file = inFile$datapath, data.table = FALSE)) # inFile[1] contains filepath 
   })
   
   # check and read in file (DATA SET 2)
   datGet2<- reactive({
-    inFile2<- input$file2
-    if(is.null(inFile2)) return(NULL) # if no file was uploaded return NULL
-    return(read.table(file = inFile2$datapath, # inFile[1] contains filepath 
-                      sep = input$sep, 
-                      quote = "", 
-                      header = input$headers)) # else return file
+    inFile<- input$file2
+    
+    if(is.null(inFile)) 
+      return(NULL) # if no file was uploaded return NULL
+    
+    return(fread(file = inFile$datapath, data.table = FALSE)) # inFile[1] contains filepath 
   })
   
   ### GET DATA SETS
@@ -148,22 +148,12 @@ function(input, output, session) {
     
     
     # prepare code as text output
-    if (is.null(input$sep)) 
-      updateRadioButtons(session, "fileformat", selected = "\t")
-    
-    if(input$sep == "\t")
-      verb.sep<-  "\\t"
-    else
-      verb.sep<- input$sep
-    
-    str1 <- paste("data <- read.delim(file, header = ",input$headers, ", sep= '", verb.sep,"')",
-                  sep = "")
+    str1 <- "data <- data.table::fread(file, data.table = FALSE)"
     
     if(!is.null(datGet2())) {
-      str2 <- "file2<- file.choose()"
-      str3 <- paste("data2 <- read.delim(file2, header = ",input$headers, ", sep= '", verb.sep,"')",
-                    sep= "")
-      str4 <- "data<- list(data, data2)"
+      str2 <- "file2 <- file.choose()"
+      str3 <- "data2 <- data.table::fread(file2, data.table = FALSE)"
+      str4 <- "data <- list(data, data2)"
       str1 <- paste(str1, str2, str3, str4, sep = "\n")
     }
     

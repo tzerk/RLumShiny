@@ -5,24 +5,11 @@ function(input, output, session) {
   # RECEIVE USER DATA ----
   datGet<- reactive({
     inFile<- input$file
+    
     if(is.null(inFile)) 
-      return(NULL) 
+      return(NULL) # if no file was uploaded return NULL
     
-    t <- tryCatch(read.table(file = inFile$datapath,
-                             sep = input$sep, 
-                             quote = "", 
-                             header = input$headers),
-                  error = function(e) {
-                    return(NULL)
-                  })
-    
-    if (is.null(t))
-      return(NULL)
-    
-    if (ncol(t) == 1)
-      return(NULL)
-    
-    return(t)
+    return(fread(file = inFile$datapath, data.table = FALSE)) # inFile[1] contains filepath 
   })
   
   # TRANSFORM DATA
