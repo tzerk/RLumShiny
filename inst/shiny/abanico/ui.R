@@ -23,9 +23,15 @@ function(request) {
                                                   label = strong("Secondary data set"), 
                                                   accept="text/plain"),
                                         tooltip(refId = "file2", text = tags$img(src='file_structure.png', width='250px')),
-                                      
+                                        # rhandsontable input/output
+                                        fluidRow(
+                                          column(width = 6,
+                                                 rHandsontableOutput(outputId = "table_in_primary")
+                                          ),
+                                          column(width = 6,
+                                                 rHandsontableOutput(outputId = "table_in_secondary"))
+                                        ),
                                         hr(),
-                                        
                                         actionButton(inputId = "refresh", label = "Refresh", icon = icon("refresh")),
                                         tooltip(refId = "refresh", text = "Redraw the plot")
                                         
