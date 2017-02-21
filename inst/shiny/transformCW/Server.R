@@ -3,8 +3,7 @@
 function(input, output, session) {
   
   # RECEIVE USER DATA ----
-  observeEvent(input$file, {
-    
+  datGet<- reactive({
     inFile<- input$file
     if(is.null(inFile)) 
       return(NULL) 
@@ -23,15 +22,13 @@ function(input, output, session) {
     if (ncol(t) == 1)
       return(NULL)
     
-    data <<- t
+    return(t)
   })
   
   # TRANSFORM DATA
   observe({
-    
-    # be reactive to..
-    input$file
-    input$inputdata
+    if (!is.null(datGet()))
+      data <- datGet()
     
     P <- input$p
     delta <- input$delta
@@ -56,6 +53,7 @@ function(input, output, session) {
       P <- 1
     }
 
+      
     args <- list(data)
     if (input$method == "CW2pHMi")
       if (delta >= 1)
@@ -64,48 +62,28 @@ function(input, output, session) {
       if (P >= 1)
         args <- append(args, P)
     
-    tdata <<- tryCatch({
-      do.call(input$method, args)
-    },
-    error = function(e) {
-      return(NULL)
-    })
-  })
-  
-  # Observe changes in output table and update the data set
-  observeEvent(input$inputdata ,{
-    if(exists("tdata") && !is.null(input$inputdata)) {
-      data <<- hot_to_r(input$inputdata)
-    }
+    tdata <<- do.call(input$method, args)
   })
   
   output$main_plot <- renderPlot({
     
     # be reactive on method changes
-    input$file
-    input$inputdata
+    datGet()
     input$method
     input$delta
     input$p
     
-    # plot settings
-    pargs <- list(NA, NA, 
+    pargs <- list(tdata[ ,1], tdata[ ,2], 
                   log = paste0(ifelse(input$logx, "x", ""), ifelse(input$logy, "y", "")),
                   main = input$main,
                   xlab = input$xlab,
                   ylab = input$ylab,
                   cex = input$cex,
-                  xlim = c(min(c(tdata[,1], data[,1])), max(c(tdata[,1], data[,1]))),
-                  ylim = c(min(c(tdata[,2], data[,2])), max(c(tdata[,2], data[,2]))),
                   type = input$type,
                   pch = ifelse(input$pch != "custom", as.integer(input$pch) - 1, input$custompch),
                   col = ifelse(input$color != "custom", input$color, input$jscol1))
     
-    # create empty plot and add both input and output curves
     do.call(plot, pargs)
-    lines(tdata[,1:2])
-    lines(data, col = "red")
-    legend(x = "topright", legend = c("CW-OSL (input)", "pseudo-OSL (output)"), lty = c(1,1), col = c("red", "black"))
     
     output$exportScript <- downloadHandler(
       filename = function() { paste(input$filename, ".", "txt", sep="") },
@@ -146,9 +124,6 @@ function(input, output, session) {
         
         # plot curve 
         do.call(plot, args = pargs)
-        lines(tdata[,1:2])
-        lines(data, col = "red")
-        legend(x = "topright", legend = c("CW-OSL (input)", "pseudo-OSL (output)"), lty = c(1,1), col = c("red", "black"))
         
         dev.off()
       },#EO content =,
@@ -156,29 +131,16 @@ function(input, output, session) {
     )#EndOf::dowmloadHandler()
   })
   
-  output$dataset <- renderRHandsontable({
+  output$dataset <- renderDataTable({
     # be reactive on method changes
-    input$file
-    input$inputdata
+    datGet()
     input$method
     input$delta
     input$p
     
     if (exists("tdata")){
-      rhandsontable(tdata, readOnly = TRUE)
+      tdata
     }
-  })
-  
-  output$inputdata <- renderRHandsontable({
-    
-    input$inputdata
-    input$file
-    
-    # be reactive on method changes
-    if (!is.null(data))
-      rhandsontable(data)
-    else
-      rhandsontable(data)
   })
   
 
