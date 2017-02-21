@@ -2,25 +2,21 @@
 ## MAIN FUNCTION
 function(input, output, session) {
   
+  # input data (with default)
+  values <- reactiveValues(data_primary = ExampleData.DeValues$CA1,
+                           data_secondary = NULL)
+  
   ### GET DATA SETS
   Data<- reactive({
 
-      ### GET DATA
-      if(!is.null(datGet())) {
-        if(!is.null(datGet2())) {
-          data<- list(datGet(), datGet2())
-        } else {
-          data<- list(datGet())
-        }
-      } else {
-        data<- list(data)
-      }
-
+    ### GET DATA
+    data <- list(values$data_primary, values$data_secondary)
+    data <- data[!sapply(data, is.null)]
     
     ### DATA FILTER
     input$exclude
     
-    sub<- data
+    sub <- data
     
     isolate({
       filter.prim<- input$filter.prim
@@ -49,28 +45,30 @@ function(input, output, session) {
   })
   
   # check and read in file (DATA SET 1)
-  datGet<- reactive({
+  observeEvent(input$file1, {
     inFile<- input$file1
     
     if(is.null(inFile)) 
       return(NULL) # if no file was uploaded return NULL
     
-    return(fread(file = inFile$datapath, data.table = FALSE)) # inFile[1] contains filepath 
+    values$data_primary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath 
   })
   
   # check and read in file (DATA SET 2)
-  datGet2<- reactive({
+  observeEvent(input$file2, {
     inFile<- input$file2
     
     if(is.null(inFile)) 
       return(NULL) # if no file was uploaded return NULL
     
-    return(fread(file = inFile$datapath, data.table = FALSE)) # inFile[1] contains filepath 
+    values$data_secondary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath 
   })
   
   # dynamically inject sliderInput for x-axis range
   output$xlim<- renderUI({
+    
     data<- Data()
+    
     if(input$logz == TRUE) {
       sd<- unlist(lapply(data, function(x) x[,2]/x[,1]))
     } else {
@@ -86,7 +84,9 @@ function(input, output, session) {
   
   # dynamically inject sliderInput for z-axis range
   output$zlim<- renderUI({
+    
     data<- unlist(lapply(Data(), function(x) x[,1]))
+    
     min<- min(data)
     max<- max(data)
     sliderInput(inputId = "zlim",  sep="",
@@ -144,13 +144,10 @@ function(input, output, session) {
   
   
   output$centralityNumeric<- renderUI({
-    #update_centrality()
-    if(!is.null(datGet())){
-      data<- datGet()
-    }
+
     numericInput(inputId = "centralityNumeric", 
                  label = "Value", 
-                 value = round(mean(data[,1]), 2),
+                 value = round(mean(values$data_primary[,1]), 2),
                  step = 0.01)
   })
   
@@ -193,7 +190,7 @@ function(input, output, session) {
       color<- input$color
     }
     
-    if(!is.null(datGet2())) {
+    if(!is.null(values$data_secondary)) {
       # if custom datapoint color get RGB code from separate input panel
       if(input$color2 == "custom") {
         if(input$jscol2 == "") {
@@ -309,7 +306,7 @@ function(input, output, session) {
       legend<- c(NA,NA)
       legend.pos<- c(-999,-999)
     } else {
-      if(!is.null(datGet2()))
+      if(!is.null(values$data_secondary))
       {
         legend<- c(input$legendname, input$legendname2)
         legend.pos<- input$legend.pos
@@ -397,14 +394,14 @@ function(input, output, session) {
     progress$set(value = 5)
     progress$set(message = "Calculation in progress",
                  detail = "Ready to plot")
-    
+
     # plot Abanico Plot 
     do.call(what = plot_AbanicoPlot, args = args)
     
     # prepare code as text output
     str1 <- "data <- data.table::fread(file, data.table = FALSE)"
     
-    if(!is.null(datGet2())) {
+    if(!is.null(values$data_secondary)) {
       str2 <- "file2 <- file.choose()"
       str3 <- "data2 <- data.table::fread(file2, data.table = FALSE)"
       str4 <- "data <- list(data, data2)"
@@ -505,16 +502,10 @@ function(input, output, session) {
       });
     }",
 {
-  if(!is.null(datGet())) {
-    data<- datGet()
-    colnames(data)<- c("De","De error")
-    data
-    
-  } else {
-    colnames(data)<- c("De","De error")
-    Selected()
-    data
-  }
+  data <- Data()
+  colnames(data[[1]])<- c("De","De error")
+  data[[1]]
+  
 })##EndOf::renterTable()
   
   # renderTable() that prints the secondary data to the second tab
@@ -528,12 +519,11 @@ function(input, output, session) {
       });
     }",
 {
-  if(!is.null(datGet2())) {
-    data<- datGet2()
-    colnames(data)<- c("De","De error")
-    data
-  } else {
-  }
+  if(!is.null(values$data_secondary)) {
+    data <- Data()
+    colnames(data[[2]])<- c("De","De error")
+    data[[2]]
+  } 
 })##EndOf::renterTable()
   
   # renderTable() to print the results of the

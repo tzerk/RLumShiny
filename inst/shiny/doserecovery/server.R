@@ -3,45 +3,49 @@
 ##############################################################################
 function(input, output, session) {
   
+  # input data (with default)
+  values <- reactiveValues(data_primary =  ExampleData.DeValues$BT998[7:11,],
+                           data_secondary =  NULL)
+  
   # check and read in file (DATA SET 1)
-  datGet<- reactive({
+  observeEvent(input$file1, {
     inFile<- input$file1
     
     if(is.null(inFile)) 
       return(NULL) # if no file was uploaded return NULL
     
-    return(fread(file = inFile$datapath, data.table = FALSE)) # inFile[1] contains filepath 
+    values$data_primary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath 
   })
   
   # check and read in file (DATA SET 2)
-  datGet2<- reactive({
+  observeEvent(input$file2, {
     inFile<- input$file2
     
     if(is.null(inFile)) 
       return(NULL) # if no file was uploaded return NULL
     
-    return(fread(file = inFile$datapath, data.table = FALSE)) # inFile[1] contains filepath 
+    values$data_secondary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath 
   })
   
   ### GET DATA SETS
   Data<- reactive({
-    if(!is.null(datGet())) {
-      if(!is.null(datGet2())) {
-        data<- list(datGet(), datGet2())
-      } else {
-        data<- list(datGet())
-      }
-    } else {
-      x.1 <- ExampleData.DeValues[7:11,]
-      x.2 <- ExampleData.DeValues[7:11,] * c(runif(5, 0.9, 1.1), 1)
-      data<- list(x.1, x.2)
-    }
+
+    data <- list(values$data_primary, values$data_secondary)
+    
+    data <- data[!sapply(data, is.null)]
+    
+    return(data)
   })
   
   
   output$xlim<- renderUI({
+    
     data<- Data()
-    n<- nrow(data[[1]])
+
+    print(values$data_primary)
+    print(data)
+    
+    n <- nrow(data[[1]])
     
     sliderInput(inputId = "xlim", label = "Range x-axis", 
                 min = 0, max = n*2, 
@@ -150,7 +154,7 @@ function(input, output, session) {
     # prepare code as text output
     str1 <- "data <- data.table::fread(file, data.table = FALSE)"
     
-    if(!is.null(datGet2())) {
+    if(!is.null(values$data_secondary)) {
       str2 <- "file2 <- file.choose()"
       str3 <- "data2 <- data.table::fread(file2, data.table = FALSE)"
       str4 <- "data <- list(data, data2)"
@@ -160,7 +164,7 @@ function(input, output, session) {
     header <- paste("# To reproduce the plot in your local R environment",
                     "# copy and run the following code to your R console.",
                     "library(Luminescence)",
-                    "file<- file.choose()",
+                    "file <- file.choose()",
                     str1,
                     "\n",
                     sep = "\n")

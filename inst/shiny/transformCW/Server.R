@@ -2,21 +2,23 @@
 ## MAIN FUNCTION
 function(input, output, session) {
   
-  # RECEIVE USER DATA ----
-  datGet<- reactive({
+  # input data (with default)
+  values <- reactiveValues(data_primary = ExampleData.CW_OSL_Curve,
+                           tdata = NULL)
+  
+  # check and read in file (DATA SET 1)
+  observeEvent(input$file, {
     inFile<- input$file
     
     if(is.null(inFile)) 
       return(NULL) # if no file was uploaded return NULL
     
-    return(fread(file = inFile$datapath, data.table = FALSE)) # inFile[1] contains filepath 
+    values$data_primary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath 
   })
   
   # TRANSFORM DATA
   observe({
-    if (!is.null(datGet()))
-      data <- datGet()
-    
+
     P <- input$p
     delta <- input$delta
     
@@ -41,7 +43,7 @@ function(input, output, session) {
     }
 
       
-    args <- list(data)
+    args <- list(values$data_primary)
     if (input$method == "CW2pHMi")
       if (delta >= 1)
         args <- append(args, delta)
@@ -49,18 +51,17 @@ function(input, output, session) {
       if (P >= 1)
         args <- append(args, P)
     
-    tdata <<- do.call(input$method, args)
+    values$tdata <-  do.call(input$method, args)
   })
   
   output$main_plot <- renderPlot({
     
     # be reactive on method changes
-    datGet()
     input$method
     input$delta
     input$p
     
-    pargs <- list(tdata[ ,1], tdata[ ,2], 
+    pargs <- list(values$tdata[,1], values$tdata[ ,2], 
                   log = paste0(ifelse(input$logx, "x", ""), ifelse(input$logy, "y", "")),
                   main = input$main,
                   xlab = input$xlab,
@@ -75,7 +76,7 @@ function(input, output, session) {
     output$exportScript <- downloadHandler(
       filename = function() { paste(input$filename, ".", "txt", sep="") },
       content = function(file) {
-        write.table(tdata, file, sep = ",", quote = FALSE, row.names = FALSE)
+        write.table(values$tdata, file, sep = ",", quote = FALSE, row.names = FALSE)
       },#EO content =,
       contentType = "text"
     )#EndOf::dowmloadHandler()
@@ -119,15 +120,8 @@ function(input, output, session) {
   })
   
   output$dataset <- renderDataTable({
-    # be reactive on method changes
-    datGet()
-    input$method
-    input$delta
-    input$p
-    
-    if (exists("tdata")){
-      tdata
-    }
+    if (!is.null(values$tdata))
+      values$tdata
   })
   
 
