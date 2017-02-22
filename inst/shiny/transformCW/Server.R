@@ -94,9 +94,17 @@ function(input, output, session) {
                   cex = input$cex,
                   type = input$type,
                   pch = ifelse(input$pch != "custom", as.integer(input$pch) - 1, input$custompch),
-                  col = ifelse(input$color != "custom", input$color, input$jscol1))
+                  col = ifelse(input$color != "custom", input$color, input$jscol1),
+                  bty = "n")
     
+    par(mar=c(5,4,4,5)+.1)
     do.call(plot, pargs)
+    
+    par(new = TRUE)
+
+    plot(values$data_primary, axes = FALSE, xlab = NA, ylab = NA, col = "red", type = input$type)
+    axis(side = 4, col = "red", col.axis = "red")
+    mtext("CW-OSL [cts/s]", side = 4, line = 3, col = "red")
     
     output$exportScript <- downloadHandler(
       filename = function() { paste(input$filename, ".", "txt", sep="") },
