@@ -3,7 +3,7 @@ function(input, output, session) {
   
   # input data (with default)
   values <- reactiveValues(data_primary = ExampleData.DeValues$CA1,
-                           data_secondary = NULL)
+                           data_secondary = setNames(as.data.frame(matrix(NA_real_, nrow = 5, ncol = 2)), c("x", "y")))
   
   # check and read in file (DATA SET 1)
   observeEvent(input$file1, {
@@ -31,10 +31,70 @@ function(input, output, session) {
     
     ### GET DATA
     data <- list(values$data_primary, values$data_secondary)
+    data <- lapply(data, function(x) { 
+      x_tmp <- x[complete.cases(x), ]
+      if (nrow(x_tmp) == 0) return(NULL)
+      else return(x_tmp)
+    })
     data <- data[!sapply(data, is.null)]
+    data <- lapply(data, function(x) setNames(x, c("Dose", "Error")))
     
     return(data)
   })
+  
+  output$table_in_primary <- renderRHandsontable({
+    rhandsontable(values$data_primary, 
+                  height = 300, 
+                  colHeaders = c("Dose", "Error"), 
+                  rowHeaders = NULL)
+  })
+  
+  observeEvent(input$table_in_primary, {
+    
+    # Workaround for rhandsontable issue #138 
+    # https://github.com/jrowen/rhandsontable/issues/138
+    df_tmp <- input$table_in_primary
+    row_names <-  as.list(as.character(seq_len(length(df_tmp$data))))
+    
+    df_tmp$params$rRowHeaders <- row_names
+    df_tmp$params$rowHeaders <- row_names
+    df_tmp$params$rDataDim <- as.list(c(length(row_names),
+                                        length(df_tmp$params$columns)))
+    
+    if (df_tmp$changes$event == "afterRemoveRow")
+      df_tmp$changes$event <- "afterChange"
+    
+    if (!is.null(hot_to_r(df_tmp)))
+      values$data_primary <- hot_to_r(df_tmp)
+  })
+  
+  output$table_in_secondary <- renderRHandsontable({
+    
+    rhandsontable(values$data_secondary, 
+                  height = 300,
+                  colHeaders = c("Dose", "Error"), 
+                  rowHeaders = NULL)
+  })
+  
+  
+  observeEvent(input$table_in_secondary, {
+    
+    # Workaround for rhandsontable issue #138 
+    # https://github.com/jrowen/rhandsontable/issues/138
+    df_tmp <- input$table_in_secondary
+    row_names <-  as.list(as.character(seq_len(length(df_tmp$data))))
+    df_tmp$params$rRowHeaders <- row_names
+    df_tmp$params$rowHeaders <- row_names
+    df_tmp$params$rDataDim <- as.list(c(length(row_names),
+                                        length(df_tmp$params$columns)))
+    if (df_tmp$changes$event == "afterRemoveRow")
+      df_tmp$changes$event <- "afterChange"
+    
+    if (!is.null(hot_to_r(df_tmp)))
+      values$data_secondary <- hot_to_r(df_tmp)
+    
+  })
+  
   
   # dynamically inject sliderInput for x-axis range
   output$xlim<- renderUI({
@@ -114,7 +174,7 @@ function(input, output, session) {
       color<- input$color
     }
     
-    if(!is.null(values$data_secondary)) {
+    if(!all(is.na(unlist(values$data_secondary)))) {
       # if custom datapoint color get RGB code from separate input panel
       if(input$color2 == "custom") {
         color2<- input$rgb2
@@ -160,7 +220,7 @@ function(input, output, session) {
     # prepare code as text output
     str1 <- "data <- data.table::fread(file, data.table = FALSE)"
     
-    if(!is.null(values$data_secondary)) {
+    if(!all(is.na(unlist(values$data_secondary)))) {
       str2 <- "file2 <- file.choose()"
       str3 <- "data2 <- data.table::fread(file2, data.table = FALSE)"
       str4 <- "data <- list(data, data2)"
@@ -279,7 +339,7 @@ output$dataset2<- renderDataTable(
   });
   }",
 {
-  if(!is.null(values$data_secondary)) {
+  if(!all(is.na(unlist(values$data_secondary)))) {
     
     data <- Data()[[2]]
     colnames(data) <- c("De","De error")
