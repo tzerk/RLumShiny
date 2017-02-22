@@ -17,6 +17,7 @@ function(input, output, session) {
       else return(x_tmp)
     })
     data <- data[!sapply(data, is.null)]
+    data <- lapply(data, function(x) setNames(x, c("Dose", "Error")))
     
     ### DATA FILTER
     input$exclude
