@@ -156,7 +156,20 @@ function(input, output, session) {
         }
         
         # plot curve 
+        par(mar=c(5,4,4,5)+.1, cex = input$cex)
         do.call(plot, args = pargs)
+        if (input$showCW) {
+          par(new = TRUE)
+          plot(values$data_primary, 
+               axes = FALSE, 
+               xlab = NA, 
+               ylab = NA, 
+               col = "red", 
+               type = input$type,
+               log = paste0(ifelse(input$logx, "x", ""), ifelse(input$logy, "y", "")))
+          axis(side = 4, col = "red", col.axis = "red")
+          mtext(input$ylab2, side = 4, line = 3, col = "red")
+        }
         
         dev.off()
       },#EO content =,
