@@ -42,9 +42,6 @@ function(input, output, session) {
     
     data<- Data()
 
-    print(values$data_primary)
-    print(data)
-    
     n <- nrow(data[[1]])
     
     sliderInput(inputId = "xlim", label = "Range x-axis", 
