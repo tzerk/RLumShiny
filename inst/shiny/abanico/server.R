@@ -11,8 +11,12 @@ function(input, output, session) {
 
     ### GET DATA
     data <- list(values$data_primary, values$data_secondary)
+    data <- lapply(data, function(x) { 
+      x_tmp <- x[complete.cases(x), ]
+      if (nrow(x_tmp) == 0) return(NULL)
+      else return(x_tmp)
+    })
     data <- data[!sapply(data, is.null)]
-    data <- lapply(data, function(x) x[complete.cases(x), ])
     
     ### DATA FILTER
     input$exclude
