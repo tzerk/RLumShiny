@@ -76,7 +76,7 @@ function(input, output, session) {
       if (P >= 1)
         args <- append(args, P)
     
-    values$tdata <-  do.call(input$method, args)
+    values$tdata <- try(do.call(input$method, args))
   })
   
   output$main_plot <- renderPlot({
@@ -85,6 +85,12 @@ function(input, output, session) {
     input$method
     input$delta
     input$p
+    
+    if (inherits(values$tdata, "try-error")) {
+      plot(1, type="n", axes=F, xlab="", ylab="")
+      text(1, labels = paste(values$tdata, collapse = "\n"))
+      return()
+    }
     
     pargs <- list(values$tdata[,1], values$tdata[ ,2], 
                   log = paste0(ifelse(input$logx, "x", ""), ifelse(input$logy, "y", "")),
