@@ -1,8 +1,8 @@
 Package: RLumShiny
 Type: Package
 Title: 'Shiny' Applications for the R Package 'Luminescence'
-Version: 0.1.2
-Date: 2017-02-17
+Version: 0.2.0
+Date: 2017-02-22
 Author: Christoph Burow [aut, cre],
     R Luminescence Package Team [ctb],
     Jan Odvarko [cph] (jscolor.js in www/jscolor),

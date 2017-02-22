@@ -1,5 +1,14 @@
-RLumShiny 0.1.2 (Release date: xxxx-xx-xx)
+RLumShiny 0.2.0 (Release date: xxxx-xx-xx)
 ==============
+
+* Major overhaul of the data input panel for most applications. Uploaded text
+  files are now imported via 'data.table::fread()', which automatically
+  detects the delimiter and potential headers. Hence, all widgets related to
+  data import were no longer required and removed (#14).
+
+* The input data can now be directly manipulated in the newly added spreadsheet(s)
+  in the data input panels. The spreadsheets also allow copy and pasting of data,
+  so uploading a file is no longer the only way to provide user data (#12).
 
 * New Dashboard addin added. The dashboard provides access to all available
   applications in the package and can be accessed either (i) through the
@@ -9,6 +18,10 @@ RLumShiny 0.1.2 (Release date: xxxx-xx-xx)
 * Implemented newest shiny feature (v0.14) to bookmark the current app state. 
   All apps now include a bookmark button, which returns a URL query string that
   can be used to restore the app's state at any later time.
+  
+* transformCW-app: 
+    + the plot now also shows the CW-OSL data curve
+    + improved error handling
   
 * Several minor bugfixes.
 
