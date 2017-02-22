@@ -111,6 +111,9 @@ function(request) {
                                         
                                         
                                         br(),
+                                        checkboxInput(inputId = "showCW", 
+                                                      label = "Show CW-OSL curve",
+                                                      value = TRUE),
                                         div(align = "center", h5("Scaling")),
                                         sliderInput(inputId = "cex", 
                                                     label = "Scaling factor",
@@ -133,9 +136,12 @@ function(request) {
                                         checkboxInput(inputId = "logy",
                                                       label = "Logarithmic y-axis",
                                                       value = FALSE),
-                                        textInput(inputId = "ylab", 
+                                        textInput(inputId = "ylab1", 
                                                   label = "Label y-axis (left)",
-                                                  value = "pseudo OSL [cts/s]")
+                                                  value = "pseudo OSL [cts/s]"),
+                                        textInput(inputId = "ylab2", 
+                                                  label = "Label y-axis (right)",
+                                                  value = "CW-OSL [cts/s]")
                                ),##EndOf::Tab_4
                                
                                # Tab 10: save plot as pdf, wmf or eps

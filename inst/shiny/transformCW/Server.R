@@ -96,21 +96,27 @@ function(input, output, session) {
                   log = paste0(ifelse(input$logx, "x", ""), ifelse(input$logy, "y", "")),
                   main = input$main,
                   xlab = input$xlab,
-                  ylab = input$ylab,
-                  cex = input$cex,
+                  ylab = input$ylab1,
                   type = input$type,
                   pch = ifelse(input$pch != "custom", as.integer(input$pch) - 1, input$custompch),
                   col = ifelse(input$color != "custom", input$color, input$jscol1),
                   bty = "n")
     
-    par(mar=c(5,4,4,5)+.1)
+    par(mar=c(5,4,4,5)+.1, cex = input$cex)
     do.call(plot, pargs)
     
-    par(new = TRUE)
-
-    plot(values$data_primary, axes = FALSE, xlab = NA, ylab = NA, col = "red", type = input$type)
-    axis(side = 4, col = "red", col.axis = "red")
-    mtext("CW-OSL [cts/s]", side = 4, line = 3, col = "red")
+    if (input$showCW) {
+      par(new = TRUE)
+      plot(values$data_primary, 
+           axes = FALSE, 
+           xlab = NA, 
+           ylab = NA, 
+           col = "red", 
+           type = input$type,
+           log = paste0(ifelse(input$logx, "x", ""), ifelse(input$logy, "y", "")))
+      axis(side = 4, col = "red", col.axis = "red")
+      mtext(input$ylab2, side = 4, line = 3, col = "red")
+    }
     
     output$exportScript <- downloadHandler(
       filename = function() { paste(input$filename, ".", "txt", sep="") },
