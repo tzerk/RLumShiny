@@ -10,3 +10,4 @@ appveyor.yml$
 revdep
 RLum.Experiment
 RLum.BuildResults
+RLum.BuildScripts
