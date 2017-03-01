@@ -17,7 +17,7 @@ function(request) {
                                         # file upload button (data set 1)
                                         fileInput(inputId = "file", 
                                                   label = strong("Primary data set"),
-                                                  accept="text/plain"),
+                                                  accept="text/plain, .csv"),
                                         tooltip(refId = "file1", text = tags$img(src='file_structure.png', width='250px')),
                                         # rhandsontable input/output
                                         fluidRow(

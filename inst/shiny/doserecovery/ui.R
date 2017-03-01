@@ -13,12 +13,12 @@ function(request) {
                                         # file upload button (data set 1)
                                         fileInput(inputId = "file1", 
                                                   label = strong("Primary data set"),
-                                                  accept="text/plain"),
+                                                  accept="text/plain, .csv"),
                                         tooltip(refId = "file1", text = tags$img(src='file_structure.png', width='250px')),
                                         # file upload button (data set 2)
                                         fileInput(inputId = "file2", 
                                                   label = strong("Secondary data set"), 
-                                                  accept="text/plain"),
+                                                  accept="text/plain, .csv"),
                                         tooltip(refId = "file2", text = tags$img(src='file_structure.png', width='250px')),
                                         # rhandsontable input/output
                                         fluidRow(
