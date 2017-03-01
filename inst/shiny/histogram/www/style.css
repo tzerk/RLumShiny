@@ -20,7 +20,6 @@
 
 h5, h6 {
  color: #428bca;
- font-weight: 700;
 }
 
 .tooltip-inner {
@@ -38,7 +37,6 @@ h5, h6 {
 
 label, body, input {
 	font-size: 12px;
-	font-weight: 100 !important;
 }
 
 .label, .badge {
@@ -46,7 +44,6 @@ label, body, input {
 	padding: 4px 20px;
 	margin: 10px;
 	line-height: 18px;
-	font-weight: 100 !important;
 }
 
 .label-info, .badge-info {

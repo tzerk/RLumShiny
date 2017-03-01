@@ -21,7 +21,6 @@
 h5 {
  color: #428bca;
  font-family:"Lucida Console", Monaco, monospace;
- font-weight: 700;
 }
 
 h6 {
@@ -55,7 +54,6 @@ h6 {
 	padding: 4px 20px;
 	margin: 10px;
 	line-height: 36px;
-	font-weight: 100 !important;
 }
 
 .label-info, .badge-info {
