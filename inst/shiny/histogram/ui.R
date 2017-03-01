@@ -13,8 +13,7 @@ function(request) {
                                         # file upload button (data set 1)
                                         fileInput(inputId = "file1", 
                                                   label = strong("Primary data set"),
-                                                  accept="text/plain, .csv"),
-                                        tooltip(refId = "file1", text = tags$img(src='file_structure.png', width='250px')),
+                                                  accept="text/plain, .csv, text/csv"),
                                         # rhandsontable input/output
                                         fluidRow(
                                           column(width = 6,
