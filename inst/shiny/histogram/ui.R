@@ -14,7 +14,6 @@ function(request) {
                                         fileInput(inputId = "file1", 
                                                   label = strong("Primary data set"),
                                                   accept="text/plain, .csv, text/csv"),
-                                        tooltip(refId = "file1", text = tags$img(src='file_structure.png', width='250px')),
                                         # rhandsontable input/output
                                         fluidRow(
                                           column(width = 6,
