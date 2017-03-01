@@ -3,45 +3,105 @@
 ##############################################################################
 function(input, output, session) {
   
+  # input data (with default)
+  values <- reactiveValues(data_primary =  ExampleData.DeValues$BT998[7:11,],
+                           data_secondary =  setNames(as.data.frame(matrix(NA_real_, nrow = 5, ncol = 2)), c("x", "y")))
+  
   # check and read in file (DATA SET 1)
-  datGet<- reactive({
+  observeEvent(input$file1, {
     inFile<- input$file1
-    if(is.null(inFile)) return(NULL) # if no file was uploaded return NULL
-    return(read.table(file = inFile$datapath, # inFile[1] contains filepath 
-                      sep = input$sep, 
-                      quote = "", 
-                      header = input$headers)) # else return file
+    
+    if(is.null(inFile)) 
+      return(NULL) # if no file was uploaded return NULL
+    
+    values$data_primary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath 
   })
   
   # check and read in file (DATA SET 2)
-  datGet2<- reactive({
-    inFile2<- input$file2
-    if(is.null(inFile2)) return(NULL) # if no file was uploaded return NULL
-    return(read.table(file = inFile2$datapath, # inFile[1] contains filepath 
-                      sep = input$sep, 
-                      quote = "", 
-                      header = input$headers)) # else return file
+  observeEvent(input$file2, {
+    inFile<- input$file2
+    
+    if(is.null(inFile)) 
+      return(NULL) # if no file was uploaded return NULL
+    
+    values$data_secondary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath 
   })
   
   ### GET DATA SETS
   Data<- reactive({
-    if(!is.null(datGet())) {
-      if(!is.null(datGet2())) {
-        data<- list(datGet(), datGet2())
-      } else {
-        data<- list(datGet())
-      }
-    } else {
-      x.1 <- ExampleData.DeValues[7:11,]
-      x.2 <- ExampleData.DeValues[7:11,] * c(runif(5, 0.9, 1.1), 1)
-      data<- list(x.1, x.2)
-    }
+
+    data <- list(values$data_primary, values$data_secondary)
+    data <- lapply(data, function(x) { 
+      x_tmp <- x[complete.cases(x), ]
+      if (nrow(x_tmp) == 0) return(NULL)
+      else return(x_tmp)
+      })
+    data <- data[!sapply(data, is.null)]
+    data <- lapply(data, function(x) setNames(x, c("Dose", "Error")))
+    
+    return(data)
+  })
+  
+  output$table_in_primary <- renderRHandsontable({
+    rhandsontable(values$data_primary, 
+                  height = 300, 
+                  colHeaders = c("Dose", "Error"), 
+                  rowHeaders = NULL)
+  })
+  
+  observeEvent(input$table_in_primary, {
+    
+    # Workaround for rhandsontable issue #138 
+    # https://github.com/jrowen/rhandsontable/issues/138
+    df_tmp <- input$table_in_primary
+    row_names <-  as.list(as.character(seq_len(length(df_tmp$data))))
+    
+    df_tmp$params$rRowHeaders <- row_names
+    df_tmp$params$rowHeaders <- row_names
+    df_tmp$params$rDataDim <- as.list(c(length(row_names),
+                                        length(df_tmp$params$columns)))
+    
+    if (df_tmp$changes$event == "afterRemoveRow")
+      df_tmp$changes$event <- "afterChange"
+    
+    if (!is.null(hot_to_r(df_tmp)))
+      values$data_primary <- hot_to_r(df_tmp)
+  })
+  
+  
+  output$table_in_secondary <- renderRHandsontable({
+    
+    rhandsontable(values$data_secondary, 
+                  height = 300,
+                  colHeaders = c("Dose", "Error"), 
+                  rowHeaders = NULL)
+  })
+  
+  observeEvent(input$table_in_secondary, {
+    
+    # Workaround for rhandsontable issue #138 
+    # https://github.com/jrowen/rhandsontable/issues/138
+    # See detailed explanation above
+    df_tmp <- input$table_in_secondary
+    row_names <-  as.list(as.character(seq_len(length(df_tmp$data))))
+    df_tmp$params$rRowHeaders <- row_names
+    df_tmp$params$rowHeaders <- row_names
+    df_tmp$params$rDataDim <- as.list(c(length(row_names),
+                                        length(df_tmp$params$columns)))
+    if (df_tmp$changes$event == "afterRemoveRow")
+      df_tmp$changes$event <- "afterChange"
+    
+    if (!is.null(hot_to_r(df_tmp)))
+      values$data_secondary <- hot_to_r(df_tmp)
+    
   })
   
   
   output$xlim<- renderUI({
+    
     data<- Data()
-    n<- nrow(data[[1]])
+
+    n <- max(sapply(data, nrow))
     
     sliderInput(inputId = "xlim", label = "Range x-axis", 
                 min = 0, max = n*2, 
@@ -148,29 +208,19 @@ function(input, output, session) {
     
     
     # prepare code as text output
-    if (is.null(input$sep)) 
-      updateRadioButtons(session, "fileformat", selected = "\t")
+    str1 <- "data <- data.table::fread(file, data.table = FALSE)"
     
-    if(input$sep == "\t")
-      verb.sep<-  "\\t"
-    else
-      verb.sep<- input$sep
-    
-    str1 <- paste("data <- read.delim(file, header = ",input$headers, ", sep= '", verb.sep,"')",
-                  sep = "")
-    
-    if(!is.null(datGet2())) {
-      str2 <- "file2<- file.choose()"
-      str3 <- paste("data2 <- read.delim(file2, header = ",input$headers, ", sep= '", verb.sep,"')",
-                    sep= "")
-      str4 <- "data<- list(data, data2)"
+    if(!all(is.na(unlist(values$data_secondary)))) {
+      str2 <- "file2 <- file.choose()"
+      str3 <- "data2 <- data.table::fread(file2, data.table = FALSE)"
+      str4 <- "data <- list(data, data2)"
       str1 <- paste(str1, str2, str3, str4, sep = "\n")
     }
     
     header <- paste("# To reproduce the plot in your local R environment",
                     "# copy and run the following code to your R console.",
                     "library(Luminescence)",
-                    "file<- file.choose()",
+                    "file <- file.choose()",
                     str1,
                     "\n",
                     sep = "\n")

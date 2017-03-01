@@ -16,37 +16,21 @@ function(request) {
                                         # file upload button (data set 1)
                                         fileInput(inputId = "file1", 
                                                   label = strong("Primary data set"),
-                                                  accept="text/plain"),
+                                                  accept="text/plain, .csv"),
                                         tooltip(refId = "file1", text = tags$img(src='file_structure.png', width='250px')),
                                         # file upload button (data set 2)
                                         fileInput(inputId = "file2", 
                                                   label = strong("Secondary data set"), 
-                                                  accept="text/plain"),
+                                                  accept="text/plain, .csv"),
                                         tooltip(refId = "file2", text = tags$img(src='file_structure.png', width='250px')),
-                                        # informational text
-                                        div(align = "center", h5("Settings")),
+                                        # rhandsontable input/output
                                         fluidRow(
                                           column(width = 6,
-                                                 # logical: should NA values be excluded?
-                                                 checkboxInput(inputId = "naExclude", 
-                                                               label = "Exclude NA values",
-                                                               value = TRUE),
-                                                 tooltip(refId = "naExclude", text = "Exclude NA values from the data set prior to any further operations.")
+                                                 rHandsontableOutput(outputId = "table_in_primary")
                                           ),
                                           column(width = 6,
-                                                 # logical: file contains headers?
-                                                 checkboxInput(inputId = "headers", 
-                                                               label = "File contains headers", 
-                                                               value = FALSE),
-                                                 tooltip(refId = "headers", text = tags$img(src='file_containsHeader.png', width='250px'))
-                                          )),
-                                        # char: columns separated by tab, space, comma
-                                        radioButtons("sep", "Separator", selected = "\t", inline = TRUE,
-                                                     c("Tab" = "\t",
-                                                       "Space" = " ",
-                                                       "Comma" = ",",
-                                                       "Semicolon" = ";")),
-                                        tooltip(refId = "sep", text = tags$img(src='file_sep.png', width='400px'), placement = "auto left"),
+                                                 rHandsontableOutput(outputId = "table_in_secondary"))
+                                        ),
                                         hr(),
                                         actionButton(inputId = "refresh", label = "Refresh", icon = icon("refresh")),
                                         tooltip(refId = "refresh", text = "Redraw the plot")

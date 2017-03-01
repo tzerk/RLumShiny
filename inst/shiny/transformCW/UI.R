@@ -17,33 +17,16 @@ function(request) {
                                         # file upload button (data set 1)
                                         fileInput(inputId = "file", 
                                                   label = strong("Primary data set"),
-                                                  accept="text/plain"),
+                                                  accept="text/plain, .csv"),
                                         tooltip(refId = "file1", text = tags$img(src='file_structure.png', width='250px')),
-                                        # informational text
-                                        div(align = "center", h5("Settings")),
+                                        # rhandsontable input/output
                                         fluidRow(
                                           column(width = 6,
-                                                 # logical: should NA values be excluded?
-                                                 checkboxInput(inputId = "naExclude", 
-                                                               label = "Exclude NA values",
-                                                               value = TRUE),
-                                                 tooltip(refId = "naExclude", text = "Exclude NA values from the data set prior to any further operations.")
+                                                 rHandsontableOutput(outputId = "table_in_primary")
                                           ),
-                                          column(width = 6,
-                                                 # logical: file contains headers?
-                                                 checkboxInput(inputId = "headers", 
-                                                               label = "File contains headers", 
-                                                               value = FALSE),
-                                                 tooltip(refId = "headers", text = tags$img(src='file_containsHeader.png', width='250px'))
-                                          )
-                                        ),
-                                        # char: columns separated by tab, space, comma
-                                        radioButtons("sep", "Separator", selected = "\t", inline = TRUE,
-                                                     c("Tab" = "\t",
-                                                       "Space" = " ",
-                                                       "Comma" = ",",
-                                                       "Semicolon" = ";")),
-                                        tooltip(refId = "sep", text = tags$img(src='file_sep.png', width='400px'), placement = "auto left")
+                                          column(width = 6)
+                                        )
+                                        
                                ),##EndOf::Tab_1
                                
                                tabPanel("Method",
@@ -128,6 +111,9 @@ function(request) {
                                         
                                         
                                         br(),
+                                        checkboxInput(inputId = "showCW", 
+                                                      label = "Show CW-OSL curve",
+                                                      value = TRUE),
                                         div(align = "center", h5("Scaling")),
                                         sliderInput(inputId = "cex", 
                                                     label = "Scaling factor",
@@ -150,9 +136,12 @@ function(request) {
                                         checkboxInput(inputId = "logy",
                                                       label = "Logarithmic y-axis",
                                                       value = FALSE),
-                                        textInput(inputId = "ylab", 
+                                        textInput(inputId = "ylab1", 
                                                   label = "Label y-axis (left)",
-                                                  value = "pseudo OSL [cts/s]")
+                                                  value = "pseudo OSL [cts/s]"),
+                                        textInput(inputId = "ylab2", 
+                                                  label = "Label y-axis (right)",
+                                                  value = "CW-OSL [cts/s]")
                                ),##EndOf::Tab_4
                                
                                # Tab 10: save plot as pdf, wmf or eps
@@ -229,8 +218,7 @@ function(request) {
                 # divide output in separate tabs via tabsetPanel
                 tabsetPanel(
                   tabPanel("Plot", plotOutput(outputId = "main_plot", height = "500px")),
-                  tabPanel("Input table", fluidRow(column(width = 12, rHandsontableOutput("inputdata")))),
-                  tabPanel("Output table", fluidRow(column(width = 12, rHandsontableOutput("dataset"))))
+                  tabPanel("Output table", fluidRow(column(width = 12, dataTableOutput("dataset"))))
                 )###EndOf::tabsetPanel
       )##EndOf::mainPanel
     ),##EndOf::sideBarLayout

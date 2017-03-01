@@ -4,33 +4,41 @@
 
 |setting  |value                                              |
 |:--------|:--------------------------------------------------|
-|version  |R Under development (unstable) (2016-07-16 r70929) |
+|version  |R Under development (unstable) (2017-02-12 r72161) |
 |system   |x86_64, mingw32                                    |
-|ui       |RStudio (0.99.1258)                                |
+|ui       |RStudio (1.0.136)                                  |
 |language |(EN)                                               |
 |collate  |English_United Kingdom.1252                        |
 |tz       |Europe/Berlin                                      |
-|date     |2016-07-20                                         |
+|date     |2017-02-22                                         |
 
 ## Packages
 
 |package      |*  |version |date       |source           |
 |:------------|:--|:-------|:----------|:----------------|
-|googleVis    |   |0.6.0   |2016-07-05 |CRAN (R 3.3.1)   |
-|Luminescence |   |0.6.1   |2016-07-05 |CRAN (R 3.3.1)   |
-|RLumShiny    |   |0.1.1   |2016-07-20 |local (NA/NA@NA) |
-|shiny        |   |0.13.2  |2016-03-28 |CRAN (R 3.3.1)   |
+|data.table   |   |1.10.4  |2017-02-01 |CRAN (R 3.3.2)   |
+|googleVis    |   |0.6.2   |2017-01-01 |CRAN (R 3.3.2)   |
+|Luminescence |   |0.7.3   |2017-02-08 |CRAN (R 3.3.2)   |
+|RLumShiny    |   |0.1.2   |2017-02-22 |local (NA/NA@NA) |
+|shiny        |   |1.0.0   |2017-01-12 |CRAN (R 3.3.2)   |
 
 # Check results
 2 packages
 
-## Luminescence (0.6.1)
-Maintainer: Sebastian Kreutzer <sebastian.kreutzer@u-bordeaux-montaigne.fr>
+## Luminescence (0.7.3)
+Maintainer: Sebastian Kreutzer <sebastian.kreutzer@u-bordeaux-montaigne.fr>  
+Bug reports: https://github.com/R-Lum/Luminescence/issues
 
 0 errors | 0 warnings | 0 notes
 
-## treescape (1.9.17)
+## treescape (1.10.18)
 Maintainer: Michelle Kendall <m.kendall@imperial.ac.uk>
 
-0 errors | 0 warnings | 0 notes
+1 error  | 0 warnings | 0 notes
+
+```
+checking whether package 'treescape' can be installed ... ERROR
+Installation failed.
+See 'D:/R/Github/Packages/RLumShiny/revdep/checks/treescape.Rcheck/00install.out' for details.
+```
 

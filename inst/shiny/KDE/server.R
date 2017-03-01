@@ -1,101 +1,127 @@
 ## MAIN FUNCTION
 function(input, output, session) {
   
+  # input data (with default)
+  values <- reactiveValues(data_primary = ExampleData.DeValues$CA1,
+                           data_secondary = setNames(as.data.frame(matrix(NA_real_, nrow = 5, ncol = 2)), c("x", "y")))
+  
   # check and read in file (DATA SET 1)
-  datGet<- reactive({
+  observeEvent(input$file1, {
     inFile<- input$file1
-    if(is.null(inFile)) return(NULL) # if no file was uploaded return NULL
-    return(read.table(file = inFile$datapath, # inFile[1] contains filepath 
-                      sep = input$sep, 
-                      quote = "", 
-                      header = input$headers)) # else return file
+    
+    if(is.null(inFile)) 
+      return(NULL) # if no file was uploaded return NULL
+    
+    values$data_primary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath 
   })
   
   # check and read in file (DATA SET 2)
-  datGet2<- reactive({
-    inFile2<- input$file2
-    if(is.null(inFile2)) return(NULL) # if no file was uploaded return NULL
-    return(read.table(file = inFile2$datapath, # inFile[1] contains filepath 
-                      sep = input$sep, 
-                      quote = "", 
-                      header = input$headers)) # else return file
+  observeEvent(input$file2, {
+    inFile<- input$file2
+    
+    if(is.null(inFile)) 
+      return(NULL) # if no file was uploaded return NULL
+    
+    values$data_secondary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath 
+  })
+  
+  
+  ### GET DATA SETS
+  Data<- reactive({
+    
+    ### GET DATA
+    data <- list(values$data_primary, values$data_secondary)
+    data <- lapply(data, function(x) { 
+      x_tmp <- x[complete.cases(x), ]
+      if (nrow(x_tmp) == 0) return(NULL)
+      else return(x_tmp)
+    })
+    data <- data[!sapply(data, is.null)]
+    data <- lapply(data, function(x) setNames(x, c("Dose", "Error")))
+    
+    return(data)
+  })
+  
+  output$table_in_primary <- renderRHandsontable({
+    rhandsontable(values$data_primary, 
+                  height = 300, 
+                  colHeaders = c("Dose", "Error"), 
+                  rowHeaders = NULL)
+  })
+  
+  observeEvent(input$table_in_primary, {
+    
+    # Workaround for rhandsontable issue #138 
+    # https://github.com/jrowen/rhandsontable/issues/138
+    df_tmp <- input$table_in_primary
+    row_names <-  as.list(as.character(seq_len(length(df_tmp$data))))
+    
+    df_tmp$params$rRowHeaders <- row_names
+    df_tmp$params$rowHeaders <- row_names
+    df_tmp$params$rDataDim <- as.list(c(length(row_names),
+                                        length(df_tmp$params$columns)))
+    
+    if (df_tmp$changes$event == "afterRemoveRow")
+      df_tmp$changes$event <- "afterChange"
+    
+    if (!is.null(hot_to_r(df_tmp)))
+      values$data_primary <- hot_to_r(df_tmp)
+  })
+  
+  output$table_in_secondary <- renderRHandsontable({
+    
+    rhandsontable(values$data_secondary, 
+                  height = 300,
+                  colHeaders = c("Dose", "Error"), 
+                  rowHeaders = NULL)
+  })
+  
+  
+  observeEvent(input$table_in_secondary, {
+    
+    # Workaround for rhandsontable issue #138 
+    # https://github.com/jrowen/rhandsontable/issues/138
+    df_tmp <- input$table_in_secondary
+    row_names <-  as.list(as.character(seq_len(length(df_tmp$data))))
+    df_tmp$params$rRowHeaders <- row_names
+    df_tmp$params$rowHeaders <- row_names
+    df_tmp$params$rDataDim <- as.list(c(length(row_names),
+                                        length(df_tmp$params$columns)))
+    if (df_tmp$changes$event == "afterRemoveRow")
+      df_tmp$changes$event <- "afterChange"
+    
+    if (!is.null(hot_to_r(df_tmp)))
+      values$data_secondary <- hot_to_r(df_tmp)
+    
   })
   
   
   # dynamically inject sliderInput for x-axis range
   output$xlim<- renderUI({
     
-    # check if file is loaded
-    # # case 1: yes -> slinderInput with custom values
-    if(!is.null(datGet())) {
-      if(!is.null(datGet2())) {
-        
-        data<- rbind(datGet(),datGet2())
-        
-        sliderInput(inputId = "xlim", 
-                    label = "Range x-axis",
-                    min = min(data[,1])*0.25,
-                    max = max(data[,1])*1.75,
-                    value = c(min(data[,1])*0.9, max(data[,1])*1.1))
-        
-      } else {
-        data<- datGet()
-        
-        sliderInput(inputId = "xlim", 
-                    label = "Range x-axis",
-                    min = min(data[,1])*0.25,
-                    max = max(data[,1])*1.75,
-                    value = c(min(data[,1])*0.9, max(data[,1])*1.1))
-      }
-    }
+    data <- do.call(rbind, Data())
     
-    else { #case 2: no -> sliderInput for example data
-      
-      sliderInput(inputId = "xlim", 
-                  label = "Range x-axis",
-                  min = min(data[[1]][,1])*0.25, 
-                  max = max(data[[1]][,1])*1.75,
-                  value = c(min(data[[1]][,1])*0.9, max(data[[1]][,1]))*1.05,
-                  step = 1, round = 0)
-    }
+    sliderInput(inputId = "xlim", 
+                label = "Range x-axis",
+                min = min(data[,1])*0.25,
+                max = max(data[,1])*1.75,
+                value = c(min(data[,1])*0.9, max(data[,1])*1.1))
+    
   })## EndOf::renderUI()
   
   # dynamically inject sliderInput for KDE bandwidth
   output$bw<- renderUI({
     
-    # check if file is loaded
-    # # case 1: yes -> slinderInput with custom values
-    if(!is.null(datGet())) {
-      if(!is.null(datGet2())) {
-        data<- rbind(datGet(),datGet2())
-        
-        sliderInput(inputId = "bw", 
-                    label = "KDE bandwidth", 
-                    min = bw.nrd0(data[,1])/4, 
-                    max = bw.nrd0(data[,1])*4,
-                    value = bw.nrd0(data[,1]))
-        
-      } else {
-        
-        data<- datGet()
-        
-        sliderInput(inputId = "bw", 
-                    label = "KDE bandwidth", 
-                    min = bw.nrd0(data[,1])/4, 
-                    max = bw.nrd0(data[,1])*4,
-                    value = bw.nrd0(data[,1]))
-      }
-    }
+    data <- do.call(rbind, Data())
     
-    else { #case 2: no -> sliderInput for example data
-      # logged data
-      
-      sliderInput(inputId = "bw", 
-                  label = "KDE bandwidth", 
-                  min = 1, max = 100,
-                  value = 15, step = 1)
-    }
+    sliderInput(inputId = "bw", 
+                label = "KDE bandwidth", 
+                min = bw.nrd0(data[,1])/4, 
+                max = bw.nrd0(data[,1])*4,
+                value = bw.nrd0(data[,1]))
+    
   })## EndOf::renderUI()
+  
   
   output$main_plot <- renderPlot({
     
@@ -115,18 +141,7 @@ function(input, output, session) {
     outputOptions(x = output, name = "bw", suspendWhenHidden = FALSE)
     
     # check if file is loaded and overwrite example data
-    if(!is.null(datGet())) {
-      data<- list(datGet(), datGet())
-    }
-    if(!is.null(datGet2())) {
-      data2<- datGet2()
-    }
-    
-    if(is.null(datGet()) == FALSE && is.null(datGet2()) == FALSE) {
-      data<- datGet()
-      data2<- datGet2()
-      data<- list(data, data2)
-    }
+    data <- Data()
     
     progress$set(value = 1)
     progress$set(message = "Calculation in progress",
@@ -159,7 +174,7 @@ function(input, output, session) {
       color<- input$color
     }
     
-    if(!is.null(datGet2())) {
+    if(!all(is.na(unlist(values$data_secondary)))) {
       # if custom datapoint color get RGB code from separate input panel
       if(input$color2 == "custom") {
         color2<- input$rgb2
@@ -189,7 +204,7 @@ function(input, output, session) {
                  ylab = c(input$ylab1, input$ylab2),
                  main = input$main,
                  values.cumulative = input$cumulative,
-                 na.rm = input$naExclude, 
+                 na.rm = TRUE, 
                  rug = input$rug,
                  boxplot = input$boxplot,
                  summary = summary,
@@ -203,22 +218,12 @@ function(input, output, session) {
     
     
     # prepare code as text output
-    if (is.null(input$sep)) 
-      updateRadioButtons(session, "fileformat", selected = "\t")
+    str1 <- "data <- data.table::fread(file, data.table = FALSE)"
     
-    if(input$sep == "\t")
-      verb.sep<-  "\\t"
-    else
-      verb.sep<- input$sep
-    
-    str1 <- paste("data <- read.delim(file, header = ",input$headers, ", sep= '", verb.sep,"')",
-                  sep = "")
-    
-    if(!is.null(datGet2())) {
-      str2 <- "file2<- file.choose()"
-      str3 <- paste("data2 <- read.delim(file2, header = ",input$headers, ", sep= '", verb.sep,"')",
-                    sep= "")
-      str4 <- "data<- list(data, data2)"
+    if(!all(is.na(unlist(values$data_secondary)))) {
+      str2 <- "file2 <- file.choose()"
+      str3 <- "data2 <- data.table::fread(file2, data.table = FALSE)"
+      str4 <- "data <- list(data, data2)"
       str1 <- paste(str1, str2, str3, str4, sep = "\n")
     }
     
@@ -316,16 +321,11 @@ function(input, output, session) {
     });
 }",
 {
-  if(!is.null(datGet())) {
-    data<- datGet()
-    colnames(data)<- c("De","De error")
+
+    data <- Data()[[1]]
+    colnames(data) <- c("De","De error")
     data
     
-  } else {
-    data<- data[[1]]
-    colnames(data)<- c("De","De error")
-    data
-  }
 })##EndOf::renterTable()
 
 # renderTable() that prints the secondary data to the second tab
@@ -339,10 +339,12 @@ output$dataset2<- renderDataTable(
   });
   }",
 {
-  if(!is.null(datGet2())) {
-    data<- datGet2()
-    colnames(data)<- c("De","De error")
+  if(!all(is.na(unlist(values$data_secondary)))) {
+    
+    data <- Data()[[2]]
+    colnames(data) <- c("De","De error")
     data
+    
   } else {
   }
 })##EndOf::renterTable()
@@ -353,15 +355,9 @@ output$dataset2<- renderDataTable(
 output$CAM<- renderDataTable(
   options = list(pageLength = 10, autoWidth = FALSE),
 {
-  if(!is.null(datGet())) {
-    if(!is.null(datGet2())) {
-      data<- list(datGet(), datGet2())
-    } else {
-      data<- list(datGet())
-    }
-  } else {
-    data<- list(data[[1]])
-  }
+ 
+  data <- Data()
+  
   t<- as.data.frame(matrix(nrow = length(data), ncol = 7))
   colnames(t)<- c("Data set","n", "log data", "Central dose", "SE abs.", "OD (%)", "OD error (%)")
   res<- lapply(data, function(x) { calc_CentralDose(x, verbose = FALSE, plot = FALSE) })

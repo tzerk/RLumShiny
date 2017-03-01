@@ -2,25 +2,27 @@
 ## MAIN FUNCTION
 function(input, output, session) {
   
+  # input data (with default)
+  values <- reactiveValues(data_primary = ExampleData.DeValues$CA1,
+                           data_secondary = setNames(as.data.frame(matrix(NA_real_, nrow = 5, ncol = 2)), c("x", "y")))
+  
   ### GET DATA SETS
   Data<- reactive({
 
-      ### GET DATA
-      if(!is.null(datGet())) {
-        if(!is.null(datGet2())) {
-          data<- list(datGet(), datGet2())
-        } else {
-          data<- list(datGet())
-        }
-      } else {
-        data<- list(data)
-      }
-
+    ### GET DATA
+    data <- list(values$data_primary, values$data_secondary)
+    data <- lapply(data, function(x) { 
+      x_tmp <- x[complete.cases(x), ]
+      if (nrow(x_tmp) == 0) return(NULL)
+      else return(x_tmp)
+    })
+    data <- data[!sapply(data, is.null)]
+    data <- lapply(data, function(x) setNames(x, c("Dose", "Error")))
     
     ### DATA FILTER
     input$exclude
     
-    sub<- data
+    sub <- data
     
     isolate({
       filter.prim<- input$filter.prim
@@ -48,29 +50,96 @@ function(input, output, session) {
     return(data)
   })
   
+  output$table_in_primary <- renderRHandsontable({
+    rhandsontable(values$data_primary, 
+                  height = 300, 
+                  colHeaders = c("Dose", "Error"), 
+                  rowHeaders = NULL)
+  })
+  
+  observeEvent(input$table_in_primary, {
+    
+    # Workaround for rhandsontable issue #138 
+    # https://github.com/jrowen/rhandsontable/issues/138
+    # Desc.: the rownames are not updated when copying values in the table
+    # that exceed the current number of rows; hence, we have to manually 
+    # update the rownames before running hot_to_r(), which would crash otherwise
+    
+    # to modify the rhandsontable we need to create a local non-reactive variable
+    df_tmp <- input$table_in_primary
+    row_names <-  as.list(as.character(seq_len(length(df_tmp$data))))
+    
+    # now overwrite the erroneous entries in the list: 'rRowHeaders', 'rowHeaders'
+    # and 'rDataDim'
+    df_tmp$params$rRowHeaders <- row_names
+    df_tmp$params$rowHeaders <- row_names
+    df_tmp$params$rDataDim <- as.list(c(length(row_names),
+                                        length(df_tmp$params$columns)))
+    
+    # With the above workaround we run into the problem that the 'afterRemoveRow'
+    # event checked in rhandsontable:::toR also tries to remove the surplus rowname(s)
+    # For now, we can overwrite the event and handle the 'afterRemoveRow' as a usual
+    # 'afterChange' event
+    if (df_tmp$changes$event == "afterRemoveRow")
+      df_tmp$changes$event <- "afterChange"
+    
+    if (!is.null(hot_to_r(df_tmp)))
+      values$data_primary <- hot_to_r(df_tmp)
+  })
+  
+  output$table_in_secondary <- renderRHandsontable({
+    
+    rhandsontable(values$data_secondary, 
+                  height = 300,
+                  colHeaders = c("Dose", "Error"), 
+                  rowHeaders = NULL)
+  })
+  
+  
+  observeEvent(input$table_in_secondary, {
+    
+    # Workaround for rhandsontable issue #138 
+    # https://github.com/jrowen/rhandsontable/issues/138
+    # See detailed explanation above
+    df_tmp <- input$table_in_secondary
+    row_names <-  as.list(as.character(seq_len(length(df_tmp$data))))
+    df_tmp$params$rRowHeaders <- row_names
+    df_tmp$params$rowHeaders <- row_names
+    df_tmp$params$rDataDim <- as.list(c(length(row_names),
+                                        length(df_tmp$params$columns)))
+    if (df_tmp$changes$event == "afterRemoveRow")
+      df_tmp$changes$event <- "afterChange"
+    
+    if (!is.null(hot_to_r(df_tmp)))
+      values$data_secondary <- hot_to_r(df_tmp)
+    
+  })
+  
   # check and read in file (DATA SET 1)
-  datGet<- reactive({
+  observeEvent(input$file1, {
     inFile<- input$file1
-    if(is.null(inFile)) return(NULL) # if no file was uploaded return NULL
-    return(read.table(file = inFile$datapath, # inFile[1] contains filepath 
-                      sep = input$sep, 
-                      quote = "", 
-                      header = input$headers)) # else return file
+    
+    if(is.null(inFile)) 
+      return(NULL) # if no file was uploaded return NULL
+    
+    values$data_primary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath 
   })
   
   # check and read in file (DATA SET 2)
-  datGet2<- reactive({
-    inFile2<- input$file2
-    if(is.null(inFile2)) return(NULL) # if no file was uploaded return NULL
-    return(read.table(file = inFile2$datapath, # inFile[1] contains filepath 
-                      sep = input$sep, 
-                      quote = "", 
-                      header = input$headers)) # else return file
+  observeEvent(input$file2, {
+    inFile<- input$file2
+    
+    if(is.null(inFile)) 
+      return(NULL) # if no file was uploaded return NULL
+    
+    values$data_secondary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath 
   })
   
   # dynamically inject sliderInput for x-axis range
   output$xlim<- renderUI({
+    
     data<- Data()
+    
     if(input$logz == TRUE) {
       sd<- unlist(lapply(data, function(x) x[,2]/x[,1]))
     } else {
@@ -86,7 +155,9 @@ function(input, output, session) {
   
   # dynamically inject sliderInput for z-axis range
   output$zlim<- renderUI({
+    
     data<- unlist(lapply(Data(), function(x) x[,1]))
+    
     min<- min(data)
     max<- max(data)
     sliderInput(inputId = "zlim",  sep="",
@@ -144,13 +215,12 @@ function(input, output, session) {
   
   
   output$centralityNumeric<- renderUI({
-    #update_centrality()
-    if(!is.null(datGet())){
-      data<- datGet()
-    }
+    
+    data <- Data()
+    
     numericInput(inputId = "centralityNumeric", 
                  label = "Value", 
-                 value = round(mean(data[,1]), 2),
+                 value = round(mean(data[[1]][,1]), 2),
                  step = 0.01)
   })
   
@@ -193,7 +263,7 @@ function(input, output, session) {
       color<- input$color
     }
     
-    if(!is.null(datGet2())) {
+    if(!all(is.na(unlist(values$data_secondary)))) {
       # if custom datapoint color get RGB code from separate input panel
       if(input$color2 == "custom") {
         if(input$jscol2 == "") {
@@ -309,7 +379,7 @@ function(input, output, session) {
       legend<- c(NA,NA)
       legend.pos<- c(-999,-999)
     } else {
-      if(!is.null(datGet2()))
+      if(!all(is.na(unlist(values$data_secondary))))
       {
         legend<- c(input$legendname, input$legendname2)
         legend.pos<- input$legend.pos
@@ -378,7 +448,7 @@ function(input, output, session) {
                 grid.col = grid.col,
                 legend = legend,
                 legend.pos = legend.pos,
-                na.rm = input$naExclude,
+                na.rm = TRUE,
                 lwd = c(input$lwd, input$lwd2),
                 xlab = c(input$xlab1, input$xlab2),
                 ylab = input$ylab,
@@ -397,34 +467,24 @@ function(input, output, session) {
     progress$set(value = 5)
     progress$set(message = "Calculation in progress",
                  detail = "Ready to plot")
-    
+
     # plot Abanico Plot 
     do.call(what = plot_AbanicoPlot, args = args)
     
     # prepare code as text output
-    if (is.null(input$sep)) 
-      updateRadioButtons(session, "fileformat", selected = "\t")
+    str1 <- "data <- data.table::fread(file, data.table = FALSE)"
     
-    if(input$sep == "\t")
-      verb.sep<-  "\\t"
-    else
-      verb.sep<- input$sep
-    
-    str1 <- paste("data <- read.delim(file, header = ",input$headers, ", sep= '", verb.sep,"')",
-                    sep = "")
-    
-    if(!is.null(datGet2())) {
-      str2 <- "file2<- file.choose()"
-      str3 <- paste("data2 <- read.delim(file2, header = ",input$headers, ", sep= '", verb.sep,"')",
-                        sep= "")
-      str4 <- "data<- list(data, data2)"
+    if(!all(is.na(unlist(values$data_secondary)))) {
+      str2 <- "file2 <- file.choose()"
+      str3 <- "data2 <- data.table::fread(file2, data.table = FALSE)"
+      str4 <- "data <- list(data, data2)"
       str1 <- paste(str1, str2, str3, str4, sep = "\n")
     }
     
     header <- paste("# To reproduce the plot in your local R environment",
                   "# copy and run the following code to your R console.",
                   "library(Luminescence)",
-                  "file<- file.choose()",
+                  "file <- file.choose()",
                   str1,
                   "\n",
                   sep = "\n")
@@ -515,16 +575,10 @@ function(input, output, session) {
       });
     }",
 {
-  if(!is.null(datGet())) {
-    data<- datGet()
-    colnames(data)<- c("De","De error")
-    data
-    
-  } else {
-    colnames(data)<- c("De","De error")
-    Selected()
-    data
-  }
+  data <- Data()
+  colnames(data[[1]])<- c("De","De error")
+  data[[1]]
+  
 })##EndOf::renterTable()
   
   # renderTable() that prints the secondary data to the second tab
@@ -538,12 +592,11 @@ function(input, output, session) {
       });
     }",
 {
-  if(!is.null(datGet2())) {
-    data<- datGet2()
-    colnames(data)<- c("De","De error")
-    data
-  } else {
-  }
+  if(!all(is.na(unlist(values$data_secondary)))) {
+    data <- Data()
+    colnames(data[[2]])<- c("De","De error")
+    data[[2]]
+  } 
 })##EndOf::renterTable()
   
   # renderTable() to print the results of the
