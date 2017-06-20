@@ -42,7 +42,12 @@ RLumShinyAddin <- function() {
     "transformCW" = list(title = "Transform CW-OSL curves",
                          keyword = "transformCW",
                          category = "misc",
-                         description = "Transform a conventionally measured continuous-wave (CW) OSL-curve to a pseudo parabolic/hyperbolic/linearly modulated curve.")
+                         description = "Transform a conventionally measured continuous-wave (CW) OSL-curve to a pseudo parabolic/hyperbolic/linearly modulated curve."),
+    
+    "filter" = list(title = "Filter Combinations",
+                    keyword = "filter",
+                    category = "misc",
+                    description = "Plot filter combinations along with the (optional) net transmission window.")
     
   )
   
@@ -165,7 +170,7 @@ Shiny.onInputChange('linkClicked', link);
         color <- switch(cat,
                         "plot" = "red",
                         "calc" = "light-blue",
-                        "misc" = "navy",
+                        "misc" = "green",
                         "stat" = "black")
         
         icon <- switch(cat,

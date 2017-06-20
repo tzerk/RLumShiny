@@ -29,7 +29,8 @@ Kernel Density Estimate Plot \tab \emph{KDE} \tab \code{\link{plot_KDE}} \cr
 Radial Plot \tab \emph{radialplot} \tab \code{\link{plot_RadialPlot}} \cr
 Dose Recovery Test \tab \emph{doserecovery} \tab \code{\link{plot_DRTResults}} \cr
 Cosmic Dose Rate \tab \emph{cosmicdose}  \tab \code{\link{calc_CosmicDoseRate}} \cr
-CW Curve Transformation \tab \emph{transformCW} \tab \code{\link{CW2pHMi}, \link{CW2pLM}, \link{CW2pLMi}, \link{CW2pPMi}}
+CW Curve Transformation \tab \emph{transformCW} \tab \code{\link{CW2pHMi}, \link{CW2pLM}, \link{CW2pLMi}, \link{CW2pPMi}} \cr
+Filter Combinations \tab \emph{filter} \tab \code{\link{plot_FilterCombinations}}
 }
 
 The \code{app_RLum()} function is just a wrapper for \code{\link{runApp}}. 
@@ -52,6 +53,7 @@ app_RLum("doserecovery")
 # Further apps
 app_RLum("cosmicdose")
 app_RLum("transformCW")
+app_RLum("filter")
 }
 
 }
