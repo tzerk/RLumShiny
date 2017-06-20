@@ -3,31 +3,31 @@
 ## Authors: Urs Tilmann Wolpert, Department of Geography, Justus-Liebig-University Giessen
 ##          Sebastian Kreutzer, IRAMAT-CRP2A, Universite Bordeaux Montaigne (France)
 ## Contact: urs.t.wolpert@geogr.uni-giessen.de
-## Date:    Mo June 19 2017
+## Date:    Tue June 20 2017
 ##+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 shinyUI(
  navbarPage("Filter_app",
   tabPanel("Transmission",
    sidebarLayout(
-    sidebarPanel( 
+    sidebarPanel(
         # tabs on sidebar panel
         tabsetPanel(type = "pills", selected = "Data",
             # Tab 1: Data Transmission
             tabPanel("Data",
                   tags$hr(),
                   strong("Select filters"),
-                  RLumShiny:::chooserInput("filterInput", "Filters available:", "Filters chosen:", filters, c(),
-                               multiple = TRUE,  size = 5),
+                  uiOutput(outputId = "filters"),
                   tags$hr(),
                   radioButtons(
                     "stimulationInput",
                     label = "Show stimulation wavelength",
                     choices =
                       c("None" = "NA",
-                        "Violet: 405 ∆ 3 nm " = "violett",
-                        "Blue: 458 ∆ 3 nm" = "blue",
-                        "Green: 525 ∆ 20 nm" = "green",
-                        "Infrared: 850 ∆ 3 nm" = "infrared")
+                        "Violet: 405 \u0394 3 nm " = "violett",
+                        "Blue: 458 \u0394 3 nm" = "blue",
+                        "Green: 525 \u0394 20 nm" = "green",
+                        "Infrared: 850 \u0394 3 nm" = "infrared")
                     )
             ), # End Tab 1
 
@@ -140,11 +140,23 @@ shinyUI(
      ),
     mainPanel(span(textOutput("warningtextOD"), style = "color:red; font-size:15px", align = "center"),
       plotOutput("densityPlot")
+
     )
    )
   ),
 
-  tabPanel("Downloads", downloadLink("MasterFile",label = "Download Filterdatabase", icon = "download")),
+  tabPanel("Advanced",
+           fileInput("own_file", accept = "*.xlsx", label = "Upload individual filter data"),
+           helpText("A '.xlsx' file containing one's individual filter data can be temporarily uploaded here."),
+           helpText(strong("Note to keep the exact same data structure as in the template '.xlsx' file, which can be downloaded below.")),
+           tags$hr(),
+           downloadButton("MasterFile",label = "Download Filterdatabase", icon = "download"),
+           br(),
+           br(),
+           helpText("The currently used '.xlsx' file of the app (template or individual) can be downloaded here.")
+
+
+           ),
 
   tabPanel("About",
            h5("Authors"),

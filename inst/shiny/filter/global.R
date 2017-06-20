@@ -3,7 +3,7 @@
 ## Authors: Urs Tilmann Wolpert, Department of Geography, Justus-Liebig-University Giessen
 ##          Sebastian Kreutzer, IRAMAT-CRP2A, Universite Bordeaux Montaigne (France)
 ## Contact: urs.t.wolpert@geogr.uni-giessen.de
-## Date:    Mo June 19 2017
+## Date:    Tue June 20 2017
 ##+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 library(shiny)
 library(Luminescence)
@@ -26,10 +26,7 @@ if(dir.exists("Data")){
 
 }
 
-
-# ##load data
+# ##load data and cleanup filter list
 filters <- readxl::excel_sheets(database_path)
-remove <- "Main List"
-filters <- setdiff(filters, remove)
-
+filters <- filters[!grepl(pattern = "Main List", x = filters, fixed = TRUE)]
 

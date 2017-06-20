@@ -3,12 +3,41 @@
 ## Authors: Urs Tilmann Wolpert, Department of Geography, Justus-Liebig-University Giessen
 ##          Sebastian Kreutzer, IRAMAT-CRP2A, Universite Bordeaux Montaigne (France)
 ## Contact: urs.t.wolpert@geogr.uni-giessen.de
-## Date:    Mo June 19 2017
+## Date:    Tue June 20 2017
 ##+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-shinyServer(function(input, output) {
+
+shinyServer(function(input, output, session) {
+
+  #check for own set filter dataset
+  output$filters <- renderUI({
+
+    if(!is.null(input$own_file)){
+
+      ##rename file in path
+      file.rename(
+        from = input$own_file$datapath,
+        to = paste0(input$own_file$datapath,input$own_file$name))
+
+      ##set new datapath
+      database_path <<- paste0(input$own_file$datapath,input$own_file$name)
+
+      ##set new filter list ... and do not filter them, we have no idea
+      filters <- readxl::excel_sheets(database_path)
+
+      ##update input for optical density
+      updateSelectInput(session, "opticaldensity", choices = filters)
+
+    }
+
+    ##create chooser output
+    RLumShiny:::chooserInput("filterInput", "Filters available:", "Filters chosen:", filters, c(),
+                 multiple = TRUE,  size = 5)
+
+  })
 
   # Transmission: Prepare data + plot
   output$filterPlot <- renderPlot({
+
     if (length(input$filterInput$right) != 0) {
       data <- lapply(input$filterInput$right, function(x) {
         as.matrix(readxl::read_excel(
