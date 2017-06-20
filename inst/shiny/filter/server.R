@@ -229,15 +229,44 @@ output$MasterFile <- downloadHandler(
 
   })
 
- #
- if(grepl(pattern = "template", x = database_path, fixed = TRUE)){
-   output$warningtext <- renderText(
-     "Attention: Template data set. No real filter data!"
-   )
-   output$warningtextOD <- renderText(
-     "Attention: Template data set. No real filter data!"
-   )
- }
+  ##set warning for template data
+    ##Transmission Tab
+    output$warningtext <- renderUI({
 
-})
+        if(is.null(input$own_file)){
+         if (grepl(pattern = "template", x = database_path, fixed = TRUE)){
+            div(
+              "Attention: Template data set. No real filter data!",
+              style = "color:red; font-size:15px",
+              align = "center"
+            )
+         }
+
+        }else{
+          div(paste0("Using custom filter database: ", basename(database_path)), align = "center")
+
+         }
+      })
+
+    ##Optical Density Tab
+    output$warningtextOD <- renderUI({
+
+      if(is.null(input$own_file)){
+        if (grepl(pattern = "template", x = database_path, fixed = TRUE)){
+          div(
+            "Attention: Template data set. No real filter data!",
+            style = "color:red; font-size:15px",
+            align = "center"
+          )
+        }
+
+      }else{
+        div(paste0("Using custom filter database: ", basename(database_path)), align = "center")
+
+      }
+    })
+
+
+}
+)
 

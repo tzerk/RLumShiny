@@ -82,7 +82,7 @@ shinyUI(
 
 
 
-    mainPanel(span(textOutput("warningtext"), style = "color:red; font-size:15px", align = "center"),
+    mainPanel(uiOutput(outputId = "warningtext"),
               plotOutput("filterPlot"),
               tableOutput("metadata")
               )
@@ -138,7 +138,8 @@ shinyUI(
         )
        )
      ),
-    mainPanel(span(textOutput("warningtextOD"), style = "color:red; font-size:15px", align = "center"),
+    mainPanel(
+      uiOutput(outputId = "warningtextOD"),
       plotOutput("densityPlot")
 
     )
