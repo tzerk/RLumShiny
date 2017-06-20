@@ -12,6 +12,7 @@
 > Visit the <a href="https://tzerk.github.io/RLumShiny/" target="_blank">project page</a>!
 
 > Follow us on [![alt text][1.1]][1] <a href="http://www.twitter.com/RLuminescence" target="_blank">@RLuminescence</a>
+
 [1.1]: http://i.imgur.com/wWzX9uB.png (twitter icon without padding)
 [1]: http://www.twitter.com/RLuminescence
 
