@@ -4,7 +4,7 @@ RLumShiny 0.2.0 (Release date: xxxx-xx-xx)
 * Major overhaul of the data input panel for most applications. Uploaded text
   files are now imported via 'data.table::fread()', which automatically
   detects the delimiter and potential headers. Hence, all widgets related to
-  data import were no longer required and removed (#14).
+  data import are no longer required and were removed (#14).
 
 * The input data can now be directly manipulated in the newly added spreadsheet(s)
   in the data input panels. The spreadsheets also allow copy and pasting of data,
@@ -18,6 +18,14 @@ RLumShiny 0.2.0 (Release date: xxxx-xx-xx)
 * Implemented newest shiny feature (v0.14) to bookmark the current app state. 
   All apps now include a bookmark button, which returns a URL query string that
   can be used to restore the app's state at any later time.
+
+* New application to plot filter combinations along with the optional
+  net transmission. Base function: `Luminescence::plot_FilterCombinations()`.
+  Keyword for `app_RLum()`: 'filter'. External contribution by Urs Tilmann
+  Wolpert (Justus-Liebig-University Giessen) and Sebastian Kreutzer
+  (Universite Bordeaux Montaigne).
+  
+* New package dependencies: 'readxl'
   
 * transformCW-app: 
     + the plot now also shows the CW-OSL data curve
