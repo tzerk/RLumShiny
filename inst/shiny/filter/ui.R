@@ -5,7 +5,6 @@
 ## Contact: urs.t.wolpert@geogr.uni-giessen.de
 ## Date:    Thu June 22 2017
 ##+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 shinyUI(
  navbarPage("Filter_app",
   tabPanel("Transmission",
@@ -183,8 +182,6 @@ shinyUI(
            p("The 'chooser.R' R-script and 'chooser-binding.js' Java Script used in this program are taken from the",
              a("shiny-example", href = "https://github.com/rstudio/shiny-examples"),
              "repository under the", a("MIT License", href = "https://github.com/rstudio/shiny-examples/blob/master/LICENSE"), ".")
-
-
            )
 )
 )

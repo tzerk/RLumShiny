@@ -5,7 +5,6 @@
 ## Contact: urs.t.wolpert@geogr.uni-giessen.de
 ## Date:    Thu June 22 2017
 ##+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 library(shiny)
 library(Luminescence)
 library(readxl)

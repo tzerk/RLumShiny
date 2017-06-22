@@ -5,7 +5,6 @@
 ## Contact: urs.t.wolpert@geogr.uni-giessen.de
 ## Date:    Thu June 22 2017
 ##+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 shinyServer(function(input, output, session) {
 
   #check for own set filter dataset
@@ -271,8 +270,7 @@ output$MasterFile <- downloadHandler(
 
       }else{
         div(paste0("Using custom filter database: ", basename(database_path)), align = "center")
-
-      }
+    }
     })
 
 
