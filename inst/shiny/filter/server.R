@@ -1,4 +1,4 @@
-## +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+## +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## Title:   Filter_app
 ## Authors: Urs Tilmann Wolpert, Department of Geography, Justus-Liebig-University Giessen
 ##          Sebastian Kreutzer, IRAMAT-CRP2A, Universite Bordeaux Montaigne (France)
