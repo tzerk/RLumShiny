@@ -3,7 +3,7 @@
 ## Authors: Urs Tilmann Wolpert, Department of Geography, Justus-Liebig-University Giessen
 ##          Sebastian Kreutzer, IRAMAT-CRP2A, Universite Bordeaux Montaigne (France)
 ## Contact: urs.t.wolpert@geogr.uni-giessen.de
-## Date:    Tue June 20 2017
+## Date:    Thu June 22 2017
 ##+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 shinyServer(function(input, output, session) {
@@ -48,7 +48,7 @@ shinyServer(function(input, output, session) {
 
       })
 
-      plot_FilterCombinations(filters = data,
+   filter.matrix <- plot_FilterCombinations(filters = data,
                               xlim = input$range,
                               main = input$main,
                               legend = input$legend,
@@ -65,7 +65,7 @@ shinyServer(function(input, output, session) {
       if(input$stimulationInput == "infrared"){
         rect(847, 0, 853, 1, col = "red", lty = 0)}
 
-
+print(filter.matrix)
     }
   })
 
@@ -169,10 +169,19 @@ shinyServer(function(input, output, session) {
           as.matrix(readxl::read_excel(
             path = database_path,
             sheet = x,
-            skip = 14))
+            skip = 14
+          ))
+
         })
 
-        write.csv(data, file)
+        filter.matrix <- plot_FilterCombinations(filters = data,
+                                                 xlim = input$range,
+                                                 main = input$main,
+                                                 legend = input$legend,
+                                                 legend.text = input$filterInput$right,
+                                                 interactive = FALSE)
+
+        write.csv(filter.matrix$filter_matrix, file)
       }
     }
   )
@@ -192,7 +201,7 @@ shinyServer(function(input, output, session) {
         sheet = input$opticaldensity,
         skip = 14
       ))
-
+      data[is.na(data[,3]),3] <- max(data[,3],na.rm = TRUE)
         plot(data[,c(1,3)], type = "l",
              xlim = input$rangeOD,
              xlab = "Wavelength [nm]",
