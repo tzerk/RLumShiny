@@ -64,7 +64,6 @@ shinyServer(function(input, output, session) {
       if(input$stimulationInput == "infrared"){
         rect(847, 0, 853, 1, col = "red", lty = 0)}
 
-print(filter.matrix)
     }
   })
 
