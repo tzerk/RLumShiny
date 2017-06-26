@@ -1,5 +1,5 @@
 ## Test environments
-* local Windows 10 x64 install, R-devel (2016-07-16 r70929)
+* local Windows 10 x64 install, R-devel (2017-06-24 r72853)
 * Ubuntu 12.04 (on Travis-CI), R 3.3.1
 * win-builder (devel and release)
 

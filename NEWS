@@ -30,6 +30,8 @@ RLumShiny 0.2.0 (Release date: xxxx-xx-xx)
 * transformCW-app: 
     + the plot now also shows the CW-OSL data curve
     + improved error handling
+    
+* Internal: R dcoumentation re-written in Markdown using 'roxygen2 >=6.0.0'
   
 * Several minor bugfixes.
 

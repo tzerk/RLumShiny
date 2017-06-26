@@ -6,11 +6,11 @@
 #' bootstraps tooltip and popover functionality as well as a binding to JSColor.
 #'
 #' In addition to its main purpose of providing convenient access to the Luminescence
-#' shiny applications (see \code{\link{app_RLum}}) this package also provides further functions to extend the 
+#' shiny applications (see [`app_RLum`]) this package also provides further functions to extend the 
 #' functionality of shiny. From the Bootstrap framework the JavaScript tooltip and popover
-#' components can be added to any shiny application via \code{\link{tooltip}} and \code{\link{popover}}.
+#' components can be added to any shiny application via [`tooltip`] and [`popover`].
 #' It further provides a custom input binding to the JavaScript/HTML color picker JSColor.
-#' Offering access to most options provided by the JSColor API the function \code{\link{jscolorInput}}
+#' Offering access to most options provided by the JSColor API the function [`jscolorInput`]
 #' is easily implemented in a shiny app. RGB colors are returned as hex values and can be 
 #' directly used in R's base plotting functions without the need of any format conversion.
 #'
@@ -18,4 +18,6 @@
 #' @docType package
 #' @import Luminescence shiny googleVis shinydashboard rhandsontable data.table readxl
 #' @importFrom utils citation
+#' 
+#' @md
 NULL

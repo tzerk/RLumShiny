@@ -1,33 +1,38 @@
 #' Run Luminescence shiny apps
 #' 
-#' A wrapper for \code{\link{runApp}} to start interactive shiny apps for the R package Luminescence.
+#' A wrapper for [`runApp`] to start interactive shiny apps for the R package Luminescence.
 #' 
-#' The RLumShiny package provides a single function from which all shiny apps can be started: \code{app_RLum()}. 
+#' The RLumShiny package provides a single function from which all shiny apps can be started: `app_RLum()`. 
 #' It essentially only takes one argument, which is a unique keyword specifying which application to start. 
 #' See the table below for a list of available shiny apps and which keywords to use. If no keyword is used
 #' a dashboard will be started instead, from which an application can be started.
 #' 
 #' \tabular{lcl}{
-#' \bold{Application name:} \tab  \bold{Keyword:}  \tab \bold{Function:} \cr
-#' Abanico Plot \tab \emph{abanico} \tab \code{\link{plot_AbanicoPlot}} \cr
-#' Histogram \tab \emph{histogram} \tab \code{\link{plot_Histogram}} \cr
-#' Kernel Density Estimate Plot \tab \emph{KDE} \tab \code{\link{plot_KDE}} \cr
-#' Radial Plot \tab \emph{radialplot} \tab \code{\link{plot_RadialPlot}} \cr
-#' Dose Recovery Test \tab \emph{doserecovery} \tab \code{\link{plot_DRTResults}} \cr
-#' Cosmic Dose Rate \tab \emph{cosmicdose}  \tab \code{\link{calc_CosmicDoseRate}} \cr
-#' CW Curve Transformation \tab \emph{transformCW} \tab \code{\link{CW2pHMi}, \link{CW2pLM}, \link{CW2pLMi}, \link{CW2pPMi}} \cr
-#' Filter Combinations \tab \emph{filter} \tab \code{\link{plot_FilterCombinations}}
+#' **Application name:** \tab  **Keyword:**  \tab **Function:** \cr
+#' Abanico Plot \tab *abanico* \tab [`plot_AbanicoPlot`] \cr
+#' Histogram \tab *histogram* \tab [`plot_Histogram`] \cr
+#' Kernel Density Estimate Plot \tab *KDE* \tab [`plot_KDE`] \cr
+#' Radial Plot \tab *radialplot* \tab [`plot_RadialPlot`] \cr
+#' Dose Recovery Test \tab *doserecovery* \tab [`plot_DRTResults`] \cr
+#' Cosmic Dose Rate \tab *cosmicdose*  \tab [`calc_CosmicDoseRate`] \cr
+#' CW Curve Transformation \tab *transformCW* \tab [`CW2pHMi`], [`CW2pLM`], [`CW2pLMi`], [`CW2pPMi`] \cr
+#' Filter Combinations \tab *filter* \tab [`plot_FilterCombinations`]
 #' }
 #' 
-#' The \code{app_RLum()} function is just a wrapper for \code{\link{runApp}}. 
-#' Via the \code{...} argument further arguments can be directly passed to \code{\link{runApp}}. 
-#' See \code{?shiny::runApp} for further details on valid arguments.
+#' The `app_RLum()` function is just a wrapper for [`runApp`]. 
+#' Via the `...` argument further arguments can be directly passed to [`runApp`]. 
+#' See `?shiny::runApp` for further details on valid arguments.
 #' 
-#' @param app \code{\link{character}} (required): name of the application to start. See details for a list
-#' of available apps.
-#' @param ... further arguments to pass to \code{\link{runApp}}
+#' 
+#' @param app [`character`] (**required**): 
+#' name of the application to start. See details for a list of available apps.
+#' 
+#' @param ... further arguments to pass to [`runApp`]
+#' 
 #' @author Christoph Burow, University of Cologne (Germany)
-#' @seealso \code{\link{runApp}}
+#' 
+#' @seealso [`runApp`]
+#' 
 #' @examples 
 #' 
 #' \dontrun{
@@ -47,6 +52,7 @@
 #' app_RLum("filter")
 #' }
 #' 
+#' @md
 #' @export app_RLum
 app_RLum <- function(app = NULL, ...) {
   

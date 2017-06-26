@@ -8,21 +8,29 @@ jscolorInput(inputId, label, value, position = "bottom",
   color = "transparent", mode = "HSV", slider = TRUE, close = FALSE)
 }
 \arguments{
-\item{inputId}{\code{\link{character}} (required): Specifies the input slot that will be used to access the value.}
+\item{inputId}{\code{\link{character}} (\strong{required}):
+Specifies the input slot that will be used to access the value.}
 
-\item{label}{\code{\link{character}}: Display label for the control, or NULL for no label.}
+\item{label}{\code{\link{character}} (\emph{optional}):
+Display label for the control, or NULL for no label.}
 
-\item{value}{\code{\link{character}}: Initial RGB value of the color picker. Default is black ('#000000').}
+\item{value}{\code{\link{character}} (\emph{optional}):
+Initial RGB value of the color picker. Default is black ('#000000').}
 
-\item{position}{\code{\link{character}}: Position of the picker relative to the text input ('bottom', 'left', 'top', 'right').}
+\item{position}{\code{\link{character}} (\strong{with default}):
+Position of the picker relative to the text input ('bottom', 'left', 'top', 'right').}
 
-\item{color}{\code{\link{character}}: Picker color scheme ('transparent' by default). Use RGB color coding ('000000').}
+\item{color}{\code{\link{character}} (\strong{with default}):
+Picker color scheme ('transparent' by default). Use RGB color coding ('000000').}
 
-\item{mode}{\code{\link{character}}: Mode of hue, saturation and value. Can either be 'HSV' or 'HVS'.}
+\item{mode}{\code{\link{character}} (\strong{with default}):
+Mode of hue, saturation and value. Can either be 'HSV' or 'HVS'.}
 
-\item{slider}{\code{\link{logical}}: Show or hide the slider.}
+\item{slider}{\code{\link{logical}} (\strong{with default}):
+Show or hide the slider.}
 
-\item{close}{\code{\link{logical}}: Show or hide a close button.}
+\item{close}{\code{\link{logical}} (\strong{with default}):
+Show or hide a close button.}
 }
 \description{
 Creates a JSColor (Javascript/HTML Color Picker) widget to be used in shiny applications.
@@ -48,9 +56,9 @@ server = function(input, output) {
 }
 }
 \seealso{
-Other input.elements: \code{\link{animationOptions}}, \code{\link{sliderInput}}; 
-\code{\link{checkboxGroupInput}}; \code{\link{checkboxInput}}; \code{\link{dateInput}}; 
-\code{\link{dateRangeInput}}; \code{\link{fileInput}}; \code{\link{numericInput}}; 
-\code{\link{passwordInput}}; \code{\link{radioButtons}}; \code{\link{selectInput}}, 
+Other input.elements: \code{\link{animationOptions}}, \code{\link{sliderInput}};
+\code{\link{checkboxGroupInput}}; \code{\link{checkboxInput}}; \code{\link{dateInput}};
+\code{\link{dateRangeInput}}; \code{\link{fileInput}}; \code{\link{numericInput}};
+\code{\link{passwordInput}}; \code{\link{radioButtons}}; \code{\link{selectInput}},
 \code{\link{selectizeInput}}; \code{\link{submitButton}}; \code{\link{textInput}}
 }
