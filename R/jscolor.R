@@ -11,19 +11,19 @@
 #' @param value [`character`] (*optional*): 
 #' Initial RGB value of the color picker. Default is black ('#000000').
 #' 
-#' @param position [`character`] (**with default**): 
+#' @param position [`character`] (*with default*): 
 #' Position of the picker relative to the text input ('bottom', 'left', 'top', 'right').
 #' 
-#' @param color [`character`] (**with default**): 
+#' @param color [`character`] (*with default*): 
 #' Picker color scheme ('transparent' by default). Use RGB color coding ('000000').
 #' 
-#' @param mode [`character`] (**with default**): 
+#' @param mode [`character`] (*with default*): 
 #' Mode of hue, saturation and value. Can either be 'HSV' or 'HVS'.
 #' 
-#' @param slider [`logical`] (**with default**): 
+#' @param slider [`logical`] (*with default*): 
 #' Show or hide the slider.
 #' 
-#' @param close [`logical`] (**with default**): 
+#' @param close [`logical`] (*with default*): 
 #' Show or hide a close button.
 #'  
 #' @seealso Other input.elements: [`animationOptions`], [`sliderInput`]; 

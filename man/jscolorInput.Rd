@@ -17,19 +17,19 @@ Display label for the control, or NULL for no label.}
 \item{value}{\code{\link{character}} (\emph{optional}):
 Initial RGB value of the color picker. Default is black ('#000000').}
 
-\item{position}{\code{\link{character}} (\strong{with default}):
+\item{position}{\code{\link{character}} (\emph{with default}):
 Position of the picker relative to the text input ('bottom', 'left', 'top', 'right').}
 
-\item{color}{\code{\link{character}} (\strong{with default}):
+\item{color}{\code{\link{character}} (\emph{with default}):
 Picker color scheme ('transparent' by default). Use RGB color coding ('000000').}
 
-\item{mode}{\code{\link{character}} (\strong{with default}):
+\item{mode}{\code{\link{character}} (\emph{with default}):
 Mode of hue, saturation and value. Can either be 'HSV' or 'HVS'.}
 
-\item{slider}{\code{\link{logical}} (\strong{with default}):
+\item{slider}{\code{\link{logical}} (\emph{with default}):
 Show or hide the slider.}
 
-\item{close}{\code{\link{logical}} (\strong{with default}):
+\item{close}{\code{\link{logical}} (\emph{with default}):
 Show or hide a close button.}
 }
 \description{
