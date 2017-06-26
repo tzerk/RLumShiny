@@ -25,7 +25,7 @@ RLumShiny 0.2.0 (Release date: 2017-06-26)
   Wolpert (Justus-Liebig-University Giessen) and Sebastian Kreutzer
   (Universite Bordeaux Montaigne).
   
-* New package dependencies: 'readxl'
+* New package dependencies: 'shinydashboard', 'rhandsontable', 'data.table', 'readxl'
   
 * transformCW-app: 
     + the plot now also shows the CW-OSL data curve
