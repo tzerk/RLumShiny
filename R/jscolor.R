@@ -2,20 +2,35 @@
 #' 
 #' Creates a JSColor (Javascript/HTML Color Picker) widget to be used in shiny applications. 
 #' 
-#' @param inputId \code{\link{character}} (required): Specifies the input slot that will be used to access the value.
-#' @param label \code{\link{character}}: Display label for the control, or NULL for no label.
-#' @param value \code{\link{character}}: Initial RGB value of the color picker. Default is black ('#000000').
-#' @param position \code{\link{character}}: Position of the picker relative to the text input ('bottom', 'left', 'top', 'right').
-#' @param color \code{\link{character}}: Picker color scheme ('transparent' by default). Use RGB color coding ('000000').
-#' @param mode \code{\link{character}}: Mode of hue, saturation and value. Can either be 'HSV' or 'HVS'.
-#' @param slider \code{\link{logical}}: Show or hide the slider.
-#' @param close \code{\link{logical}}: Show or hide a close button.
+#' @param inputId [`character`] (**required**): 
+#' Specifies the input slot that will be used to access the value.
+#' 
+#' @param label [`character`] (*optional*): 
+#' Display label for the control, or NULL for no label.
+#' 
+#' @param value [`character`] (*optional*): 
+#' Initial RGB value of the color picker. Default is black ('#000000').
+#' 
+#' @param position [`character`] (*with default*): 
+#' Position of the picker relative to the text input ('bottom', 'left', 'top', 'right').
+#' 
+#' @param color [`character`] (*with default*): 
+#' Picker color scheme ('transparent' by default). Use RGB color coding ('000000').
+#' 
+#' @param mode [`character`] (*with default*): 
+#' Mode of hue, saturation and value. Can either be 'HSV' or 'HVS'.
+#' 
+#' @param slider [`logical`] (*with default*): 
+#' Show or hide the slider.
+#' 
+#' @param close [`logical`] (*with default*): 
+#' Show or hide a close button.
 #'  
-#' @seealso Other input.elements: \code{\link{animationOptions}}, \code{\link{sliderInput}}; 
-#' \code{\link{checkboxGroupInput}}; \code{\link{checkboxInput}}; \code{\link{dateInput}}; 
-#' \code{\link{dateRangeInput}}; \code{\link{fileInput}}; \code{\link{numericInput}}; 
-#' \code{\link{passwordInput}}; \code{\link{radioButtons}}; \code{\link{selectInput}}, 
-#' \code{\link{selectizeInput}}; \code{\link{submitButton}}; \code{\link{textInput}}
+#' @seealso Other input.elements: [`animationOptions`], [`sliderInput`]; 
+#' [`checkboxGroupInput`]; [`checkboxInput`]; [`dateInput`]; 
+#' [`dateRangeInput`]; [`fileInput`]; [`numericInput`]; 
+#' [`passwordInput`]; [`radioButtons`]; [`selectInput`], 
+#' [`selectizeInput`]; [`submitButton`]; [`textInput`]
 #'  
 #' @examples 
 #' # html code
@@ -37,6 +52,8 @@
 #' })
 #' }
 #' @import shiny
+#' 
+#' @md
 #' @export
 jscolorInput <- function(inputId, label, value, position = 'bottom', color = 'transparent', mode = 'HSV', slider = TRUE, close = FALSE) {
   tagList(        

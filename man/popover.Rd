@@ -9,19 +9,29 @@ popover(title, content, header = NULL, html = TRUE,
   "bottom"), trigger = c("click", "hover", "focus", "manual"))
 }
 \arguments{
-\item{title}{\code{\link{character}} (required): Title of the button.}
+\item{title}{\code{\link{character}} (\strong{required}):
+Title of the button.}
 
-\item{content}{\code{\link{character}}: Text to be displayed in the popover.}
+\item{content}{\code{\link{character}} (\strong{required}):
+Text to be displayed in the popover.}
 
-\item{header}{\code{\link{character}}: Optional header in the popover.}
+\item{header}{\code{\link{character}} (\emph{optional}):
+Optional header in the popover.}
 
-\item{html}{\code{\link{logical}} Insert HTML into the popover.}
+\item{html}{\code{\link{logical}} (\emph{with default}):
+Insert HTML into the popover.}
 
-\item{class}{\code{\link{logical}} Bootstrap button class (e.g. "btn btn-danger").}
+\item{class}{\code{\link{logical}} (\emph{with default}):
+Bootstrap button class (e.g. "btn btn-danger").}
 
-\item{placement}{\code{\link{character}}: How to position the popover - top | bottom | left | right | auto. When "auto" is specified, it will dynamically reorient the popover. For example, if placement is "auto left", the popover will display to the left when possible, otherwise it will display right.}
+\item{placement}{\code{\link{character}} (\emph{with default}):
+How to position the popover - top | bottom | left | right | auto.
+When "auto" is specified, it will dynamically reorient the popover.
+For example, if placement is "auto left", the popover will display to the
+left when possible, otherwise it will display right.}
 
-\item{trigger}{\code{\link{character}}: How popover is triggered - click | hover | focus | manual.}
+\item{trigger}{\code{\link{character}} (\emph{with default}):
+How popover is triggered - click | hover | focus | manual.}
 }
 \description{
 Add small overlays of content for housing secondary information.

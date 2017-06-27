@@ -8,21 +8,33 @@ tooltip(refId, text, attr = NULL, animation = TRUE, delay = 100,
   html = TRUE, placement = "auto", trigger = "hover")
 }
 \arguments{
-\item{refId}{\code{\link{character}} (required): id of the element the tooltip is to be attached to.}
+\item{refId}{\code{\link{character}} (\strong{required}):
+id of the element the tooltip is to be attached to.}
 
-\item{text}{\code{\link{character}}: Text to be displayed in the tooltip.}
+\item{text}{\code{\link{character}} (\strong{required}):
+Text to be displayed in the tooltip.}
 
-\item{attr}{\code{\link{character}}: Attach tooltip to all elements with attribute \code{attr='refId'}.}
+\item{attr}{\code{\link{character}} (\emph{optional}):
+Attach tooltip to all elements with attribute \code{attr='refId'}.}
 
-\item{animation}{\code{\link{logical}}: Apply a CSS fade transition to the tooltip.}
+\item{animation}{\code{\link{logical}} (\emph{with default}):
+Apply a CSS fade transition to the tooltip.}
 
-\item{delay}{\code{\link{numeric}}: Delay showing and hiding the tooltip (ms).}
+\item{delay}{\code{\link{numeric}} (\emph{with default}):
+Delay showing and hiding the tooltip (ms).}
 
-\item{html}{\code{\link{logical}}: Insert HTML into the tooltip.}
+\item{html}{\code{\link{logical}} (\emph{with default}):
+Insert HTML into the tooltip.}
 
-\item{placement}{\code{\link{character}}: How to position the tooltip - top | bottom | left | right | auto. When 'auto' is specified, it will dynamically reorient the tooltip. For example, if placement is 'auto left', the tooltip will display to the left when possible, otherwise it will display right.}
+\item{placement}{\code{\link{character}} (\emph{with default}):
+How to position the tooltip - \code{top} | \code{bottom} | \code{left} | \code{right} | \code{auto}.
+When 'auto' is specified, it will dynamically reorient the tooltip.
+For example, if placement is 'auto left', the tooltip will display to the
+left when possible, otherwise it will display right.}
 
-\item{trigger}{\code{\link{character}}: How tooltip is triggered - click | hover | focus | manual. You may pass multiple triggers; separate them with a space.}
+\item{trigger}{\code{\link{character}} (\emph{with default}):
+How tooltip is triggered - \code{click} | \code{hover} | \code{focus} | \code{manual}.
+You may pass multiple triggers; separate them with a space.}
 }
 \description{
 Create bootstrap tooltips for any HTML element to be used in shiny applications.

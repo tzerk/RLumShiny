@@ -12,6 +12,7 @@
 > Visit the <a href="https://tzerk.github.io/RLumShiny/" target="_blank">project page</a>!
 
 > Follow us on [![alt text][1.1]][1] <a href="http://www.twitter.com/RLuminescence" target="_blank">@RLuminescence</a>
+
 [1.1]: http://i.imgur.com/wWzX9uB.png (twitter icon without padding)
 [1]: http://www.twitter.com/RLuminescence
 
@@ -38,7 +39,7 @@ devtools::install_github("tzerk/RLumShiny@master")
 The RLumShiny package provides a single function from which all apps can be started: `app_RLum()`. It essentially only takes one argument, which is a unique keyword to specify which app to start. See the table below for a list of available apps and which keywords to use.
 
 | Application | Keyword | Function |
-|-------------|---------|----------|
+|-------------|:---------:|----------|
 | Abanico Plot | abanico | `plot_AbanicoPlot` |
 | Histogram | histogram | `plot_Histogram` |
 | Kernel Density Estimate Plot | KDE | `plot_KDE` |
@@ -46,6 +47,7 @@ The RLumShiny package provides a single function from which all apps can be star
 | Dose Recovery Test | doserecovery | `plot_DRTResults` |
 | Cosmic Dose Rate | cosmicdose | `calc_CosmicDoseRate`|
 | CW Curve Transformation | transformCW | `CW2pHMi`, `CW2pLM`, `CW2pLMi`, `CW2pPMi` |
+| Plot Filter Combinations | filter | `plot_FilterCombinations` |
 
 The `app_RLum()` function is just a wrapper for `shiny::runApp()`. Via the `...` argument further arguments can be directly passed to `shiny::runApp()`. See `?shiny::runApp` for further details on valid arguments.
 
