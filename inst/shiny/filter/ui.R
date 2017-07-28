@@ -31,14 +31,15 @@ shinyUI(
                         )
                     ),
                     fluidRow(
-                      column(width = 3,
+                      column(width = 10,
+                          inputPanel(
                              numericInput("stimulationInput_custom_centre",
-                                          label = "Centre", value = 470, width = 80, min = 2, max = 1000),
-                             RLumShiny:::jscolorInput("rec_colour", label = "Colour")
-                             ),
-                      column(width = 3,
+                                          label = "Centre", value = 470, width = 150, min = 2, max = 1000),
+
                              numericInput("stimulationInput_custom_width",
-                                          label = "Width", value = 20, width = 80, min = 1, max = 1000))
+                                          label = "Width", value = 20, width = 150, min = 1, max = 1000),
+
+                             RLumShiny:::jscolorInput("rec_colour", label = "Colour")))
 
                     )
 
