@@ -31,7 +31,6 @@ shinyUI(
                         )
                     ),
                     fluidRow(
-                      column(width = 1),
                       column(width = 3,
                              numericInput("stimulationInput_custom_centre",
                                           label = "Centre", value = 470, width = 80, min = 2, max = 1000),
