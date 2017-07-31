@@ -26,8 +26,24 @@ shinyUI(
                         "Violet: 405 \u0394 3 nm " = "violett",
                         "Blue: 458 \u0394 3 nm" = "blue",
                         "Green: 525 \u0394 20 nm" = "green",
-                        "Infrared: 850 \u0394 3 nm" = "infrared")
+                        "Infrared: 850 \u0394 3 nm" = "infrared",
+                        "Custom wavelength" = "custom"
+                        )
+                    ),
+                    fluidRow(
+                      column(width = 10,
+                          inputPanel(
+                             numericInput("stimulationInput_custom_centre",
+                                          label = "Centre", value = 470, width = 150, min = 2, max = 1000),
+
+                             numericInput("stimulationInput_custom_width",
+                                          label = "Width", value = 20, width = 150, min = 1, max = 1000),
+
+                             RLumShiny:::jscolorInput("rec_colour", label = "Colour")))
+
                     )
+
+
             ), # End Tab 1
 
             # Tab 2: Plot Options Transmission

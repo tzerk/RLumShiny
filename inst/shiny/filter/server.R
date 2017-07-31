@@ -63,6 +63,10 @@ shinyServer(function(input, output, session) {
         rect(455, 0, 462, 1, col = "blue", lty = 0)}
       if(input$stimulationInput == "infrared"){
         rect(847, 0, 853, 1, col = "red", lty = 0)}
+     if(input$stimulationInput == "custom"){
+       rect(input$stimulationInput_custom_centre - input$stimulationInput_custom_width/2, 0,
+            input$stimulationInput_custom_centre + input$stimulationInput_custom_width/2, 1,
+            col = input$rec_colour, lty = 0)}
 
     }
   })

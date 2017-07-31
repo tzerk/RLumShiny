@@ -1,4 +1,16 @@
-/* 'chooser-binding.js' taken from the shiny-examples repository (https://github.com/rstudio/shiny-examples) under the MIT License */
+/* 'chooser-binding.js' taken from the shiny-examples repository (https://github.com/rstudio/shiny-examples) under the MIT License
+
+Modified by: sebastian.kreutzer@u-bordeaux-montaigne.fr
+Date: 2017-07-28
+Modification:
+    > http://api.jquery.com/clone/ states:
+    > As shown in the discussion for .append(), normally when an element is inserted somewhere in the DOM,
+    > it is moved from its old location.
+
+    However, this is not what we want ... not really, thus we modify the functions and now we
+    have a clone() for left to right and a remove() for right to left.
+
+*/
 
 (function() {
 
@@ -9,19 +21,30 @@
     var leftArrow = chooser.find(".left-arrow");
     var rightArrow = chooser.find(".right-arrow");
 
-    var canMoveTo = (left.val() || []).length > 0;
-    var canMoveFrom = (right.val() || []).length > 0;
+    var canMoveTo = (left.val() || []).length > 0;  //returns only true or false
+    var canMoveFrom = (right.val() || []).length > 0; //returns only true or false
 
+    //this mutes the arrow, if nothing is left on one or the other side
     leftArrow.toggleClass("muted", !canMoveFrom);
     rightArrow.toggleClass("muted", !canMoveTo);
   }
 
-  function move(chooser, source, dest) {
+
+  function remove(chooser, source, dest) {
+    chooser = $(chooser);
+    var selected = chooser.find(source).children("option:selected");
+    selected.remove();
+    updateChooser(chooser);
+    chooser.trigger("change");
+  }
+
+
+  function copy(chooser, source, dest) {
     chooser = $(chooser);
     var selected = chooser.find(source).children("option:selected");
     var dest = chooser.find(dest);
     dest.children("option:selected").each(function(i, e) {e.selected = false;});
-    dest.append(selected);
+    selected.clone().appendTo(dest);
     updateChooser(chooser);
     chooser.trigger("change");
   }
@@ -31,19 +54,19 @@
   });
 
   $(document).on("click", ".chooser .right-arrow", function() {
-    move($(this).parents(".chooser"), ".left", ".right");
+    copy($(this).parents(".chooser"), ".left", ".right");
   });
 
   $(document).on("click", ".chooser .left-arrow", function() {
-    move($(this).parents(".chooser"), ".right", ".left");
+    remove($(this).parents(".chooser"), ".right", ".left");
   });
 
   $(document).on("dblclick", ".chooser select.left", function() {
-    move($(this).parents(".chooser"), ".left", ".right");
+    copy($(this).parents(".chooser"), ".left", ".right");
   });
 
   $(document).on("dblclick", ".chooser select.right", function() {
-    move($(this).parents(".chooser"), ".right", ".left");
+    remove($(this).parents(".chooser"), ".right", ".left");
   });
 
   var binding = new Shiny.InputBinding();
