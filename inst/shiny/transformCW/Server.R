@@ -2,9 +2,16 @@
 ## MAIN FUNCTION
 function(input, output, session) {
   
+  
   # input data (with default)
-  values <- reactiveValues(data_primary = ExampleData.CW_OSL_Curve,
-                           tdata = NULL)
+  values <- reactiveValues(data_primary = if ("startData" %in% names(.GlobalEnv)) startData else ExampleData.CW_OSL_Curve,
+                           tdata = NULL,
+                           args = NULL,
+                           pargs = NULL)
+  
+  session$onSessionEnded(function() {
+    stopApp()
+  })
   
   # check and read in file (DATA SET 1)
   observeEvent(input$file, {
@@ -76,6 +83,9 @@ function(input, output, session) {
       if (P >= 1)
         args <- append(args, P)
     
+    values$args <- args
+    
+    # values$export_args <- args
     values$tdata <- try(do.call(input$method, args))
   })
   
@@ -92,7 +102,7 @@ function(input, output, session) {
       return()
     }
     
-    pargs <- list(values$tdata[,1], values$tdata[ ,2], 
+    values$pargs <- list(values$tdata[,1], values$tdata[ ,2], 
                   log = paste0(ifelse(input$logx, "x", ""), ifelse(input$logy, "y", "")),
                   main = input$main,
                   xlab = input$xlab,
@@ -103,7 +113,7 @@ function(input, output, session) {
                   bty = "n")
     
     par(mar=c(5,4,4,5)+.1, cex = input$cex)
-    do.call(plot, pargs)
+    do.call(plot, values$pargs)
     
     if (input$showCW) {
       par(new = TRUE)
@@ -119,62 +129,26 @@ function(input, output, session) {
     }
     
     output$exportScript <- downloadHandler(
-      filename = function() { paste(input$filename, ".", "txt", sep="") },
+      filename = function() { "transformedCW.txt" },
       content = function(file) {
         write.table(values$tdata, file, sep = ",", quote = FALSE, row.names = FALSE)
       },#EO content =,
       contentType = "text"
     )#EndOf::dowmloadHandler()
     
+  })
+  
+  observe({
+    # nested renderText({}) for code output on "R plot code" tab
+    code.output <- callModule(RLumShiny:::printCode, "printCode", n_input = 1, 
+                              fun = paste0(input$method, "(data,"), args = values$args)
     
-    # nested downloadHandler() to print plot to file
-    output$exportFile <- downloadHandler(
-      filename = function() { paste(input$filename, ".", input$fileformat, sep="") },
-      content = function(file) {
-        
-        # determine desired fileformat and set arguments
-        if(input$fileformat == "pdf") {
-          pdf(file, 
-              width = input$imgwidth, 
-              height = input$imgheight, 
-              paper = "special",
-              useDingbats = FALSE, 
-              family = input$fontfamily)
-        }
-        if(input$fileformat == "svg") {
-          svg(file, 
-              width = input$imgwidth, 
-              height = input$imgheight, 
-              family = input$fontfamily)
-        }
-        if(input$fileformat == "eps") {
-          postscript(file, 
-                     width = input$imgwidth, 
-                     height = input$imgheight, 
-                     paper = "special", 
-                     family = input$fontfamily)
-        }
-        
-        # plot curve 
-        par(mar=c(5,4,4,5)+.1, cex = input$cex)
-        do.call(plot, args = pargs)
-        if (input$showCW) {
-          par(new = TRUE)
-          plot(values$data_primary, 
-               axes = FALSE, 
-               xlab = NA, 
-               ylab = NA, 
-               col = "red", 
-               type = input$type,
-               log = paste0(ifelse(input$logx, "x", ""), ifelse(input$logy, "y", "")))
-          axis(side = 4, col = "red", col.axis = "red")
-          mtext(input$ylab2, side = 4, line = 3, col = "red")
-        }
-        
-        dev.off()
-      },#EO content =,
-      contentType = "image"
-    )#EndOf::dowmloadHandler()
+    output$plotCode<- renderText({
+      code.output
+    })##EndOf::renderText({})
+    
+    callModule(RLumShiny:::exportCodeHandler, "export", code = code.output)
+    callModule(RLumShiny:::exportPlotHandler, "export", fun = "plot", args = values$pargs)
   })
   
   output$dataset <- renderDataTable({

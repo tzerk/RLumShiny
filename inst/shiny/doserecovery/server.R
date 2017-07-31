@@ -4,8 +4,14 @@
 function(input, output, session) {
   
   # input data (with default)
-  values <- reactiveValues(data_primary =  ExampleData.DeValues$BT998[7:11,],
-                           data_secondary =  setNames(as.data.frame(matrix(NA_real_, nrow = 5, ncol = 2)), c("x", "y")))
+  values <- reactiveValues(data_primary =  if ("startData" %in% names(.GlobalEnv)) startData else ExampleData.DeValues$BT998[7:11,],
+                           data_secondary =  setNames(as.data.frame(matrix(NA_real_, nrow = 5, ncol = 2)), c("x", "y")),
+                           data = NULL,
+                           args = NULL)
+  
+  session$onSessionEnded(function() {
+    stopApp()
+  })
   
   # check and read in file (DATA SET 1)
   observeEvent(input$file1, {
@@ -28,18 +34,18 @@ function(input, output, session) {
   })
   
   ### GET DATA SETS
-  Data<- reactive({
-
+  observe({
+    
     data <- list(values$data_primary, values$data_secondary)
     data <- lapply(data, function(x) { 
       x_tmp <- x[complete.cases(x), ]
       if (nrow(x_tmp) == 0) return(NULL)
       else return(x_tmp)
-      })
+    })
     data <- data[!sapply(data, is.null)]
     data <- lapply(data, function(x) setNames(x, c("Dose", "Error")))
     
-    return(data)
+    values$data <- data
   })
   
   output$table_in_primary <- renderRHandsontable({
@@ -99,11 +105,11 @@ function(input, output, session) {
   
   output$xlim<- renderUI({
     
-    data<- Data()
-
+    data <- values$data
+    
     n <- max(sapply(data, nrow))
     
-    sliderInput(inputId = "xlim", label = "Range x-axis", 
+    sliderInput(inputId = "xlim", label = "Range x-axi s", 
                 min = 0, max = n*2, 
                 value = c(1, n+1))
   })
@@ -113,56 +119,27 @@ function(input, output, session) {
                     value = if(input$preheat==TRUE){"Preheat Temperature [\u00B0C]"}else{"# Aliquot"})
   })
   
-  #### PLOT ####
-  output$main_plot <- renderPlot({
+  observe({
+    
     input$refresh
     
-    data<- Data()
-    
-    
     outputOptions(x = output, name = "xlim", suspendWhenHidden = FALSE)
-    validate(
-      need(expr = input$xlim, message = 'Waiting for data... Please wait!')
-    )
-    
     
     # if custom datapoint style get char from separate input panel
-    if(input$pch == "custom") {
-      pch<- input$custompch
-    } else {
-      pch<- as.integer(input$pch)-1 #-1 offset in pch values
-    }
-    # if custom datapoint style get char from separate input panel
-    if(input$pch2 == "custom") {
-      pch2<- input$custompch2
-    } else {
-      pch2<- as.integer(input$pch2)-1 #-1 offset in pch values
-    }
-    
+    pch <- ifelse(input$pch == "custom", input$custompch, as.integer(input$pch) - 1)
+    pch2 <- ifelse(input$pch2 == "custom", input$custompch2, as.integer(input$pch2) - 1)
     
     # if custom datapoint color get RGB code from separate input panel
-    if(input$color == "custom") {
-      color<- input$rgb
+    color <- ifelse(input$color == "custom", input$rgb, color<- input$color)
+    
+    # if custom datapoint color get RGB code from separate input panel
+    if(length(values$data) > 1) {
+      color2 <- ifelse(input$color2 == "custom", input$rgb2, input$color2)
     } else {
-      color<- input$color
+      color2 <- ifelse(input$preheat, color, "white")
     }
     
-    if(length(data) > 1) {
-      # if custom datapoint color get RGB code from separate input panel
-      if(input$color2 == "custom") {
-        color2<- input$rgb2
-      } else {
-        color2<- input$color2
-      }
-    } else {
-      if(input$preheat == TRUE) {
-        color2<- color
-      } else {
-      color2<- "white"
-      }
-    }
-    
-    if(length(data)==1){
+    if (length(values$data) == 1){
       given.dose<- input$dose
       legend<- input$legendname
     } else {
@@ -171,120 +148,66 @@ function(input, output, session) {
     }
     
     # save all arguments in a list
-    args<- list(values = data, 
-                error.range = input$error,
-                given.dose = given.dose,
-                summary = input$stats,
-                summary.pos = input$sumpos,
-                boxplot = input$boxplot,
-                legend = legend,
-                legend.pos = input$legend.pos,
-                main = input$main,
-                mtext = input$mtext,
-                col = c(color, color2),
-                pch = c(pch, pch2),
-                xlab = input$xlab,
-                ylab = input$ylab,
-                xlim = input$xlim,
-                ylim = input$ylim,
-                cex = input$cex)
+    values$args<- list(
+      values = values$data, 
+      error.range = input$error,
+      given.dose = given.dose,
+      summary = input$stats,
+      summary.pos = input$sumpos,
+      boxplot = input$boxplot,
+      legend = legend,
+      legend.pos = input$legend.pos,
+      main = input$main,
+      mtext = input$mtext,
+      col = c(color, color2),
+      pch = c(pch, pch2),
+      xlab = input$xlab,
+      ylab = input$ylab,
+      xlim = input$xlim,
+      ylim = input$ylim,
+      cex = input$cex)
     
-    if(input$preheat == TRUE) {
-      
-      n<- length(data[[1]][,1])
+    if (input$preheat) {
+
+      n<- length(values$data[[1]][,1])
       ph<- c(input$ph1, input$ph2, input$ph3, input$ph4, input$ph5, input$ph6, input$ph7, input$ph8)
       ph<- ph[1:n]
-      
-      args<- c(args, "preheat" = NA)
-      args$preheat<- ph
-      
-      args$pch<- rep(args$pch, n)
-      args$col<- rep(args$col, n)
-      
+
+    isolate({
+      values$args<- c(values$args, "preheat" = NA)
+      values$args$preheat<- ph
+
+      values$args$pch<- rep(values$args$pch, n)
+      values$args$col<- rep(values$args$col, n)
+    })
+
     }
+      
+  })
+  
+  #### PLOT ####
+  output$main_plot <- renderPlot({
+    
+    validate(
+      need(expr = input$xlim, message = 'Waiting for data... Please wait!')
+    )
     
     # plot DRT Results
-    do.call(what = plot_DRTResults, args = args)
+    do.call(what = plot_DRTResults, args = values$args)
     
-    
-    # prepare code as text output
-    str1 <- "data <- data.table::fread(file, data.table = FALSE)"
-    
-    if(!all(is.na(unlist(values$data_secondary)))) {
-      str2 <- "file2 <- file.choose()"
-      str3 <- "data2 <- data.table::fread(file2, data.table = FALSE)"
-      str4 <- "data <- list(data, data2)"
-      str1 <- paste(str1, str2, str3, str4, sep = "\n")
-    }
-    
-    header <- paste("# To reproduce the plot in your local R environment",
-                    "# copy and run the following code to your R console.",
-                    "library(Luminescence)",
-                    "file <- file.choose()",
-                    str1,
-                    "\n",
-                    sep = "\n")
-    
-    names <- names(args)
-    
-    verb.arg <- paste(mapply(function(name, arg) {
-      if (all(inherits(arg, "character")))
-        arg <- paste0("'", arg, "'")
-      if (length(arg) > 1)
-        arg <- paste0("c(", paste(arg, collapse = ", "), ")")
-      if (is.null(arg))
-        arg <- "NULL"
-      paste(name, "=", arg) 
-    }, names[-1], args[-1]), collapse = ",\n")
-    
-    funCall <- paste0("plot_DRTResults(values = data,\n", verb.arg, ")")
-    
-    code.output <- paste0(header, funCall, collapse = "\n")
-    
+  })
+  
+  observe({
     # nested renderText({}) for code output on "R plot code" tab
+    code.output <- callModule(RLumShiny:::printCode, "printCode", n_input = 2, 
+                              fun = "plot_DRTResults(data,", args = values$args)
+    
     output$plotCode<- renderText({
-      
       code.output
-      
     })##EndOf::renderText({})
     
-    
-    # nested downloadHandler() to print plot to file
-    output$exportFile <- downloadHandler(
-      filename = function() { paste(input$filename, ".", input$fileformat, sep="") },
-      content = function(file) {
-        
-        # determine desired fileformat and set arguments
-        if(input$fileformat == "pdf") {
-          pdf(file, 
-              width = input$imgwidth, 
-              height = input$imgheight, 
-              paper = "special",
-              useDingbats = FALSE, 
-              family = input$fontfamily)
-        }
-        if(input$fileformat == "svg") {
-          svg(file, 
-              width = input$imgwidth, 
-              height = input$imgheight, 
-              family = input$fontfamily)
-        }
-        if(input$fileformat == "eps") {
-          postscript(file, 
-                     width = input$imgwidth, 
-                     height = input$imgheight, 
-                     paper = "special", 
-                     family = input$fontfamily)
-        }
-        
-        # plot Abanico Plot 
-        do.call(what = plot_DRTResults, args = args)
-        
-        dev.off()
-      },#EO content =,
-      contentType = "image"
-    )#EndOf::dowmloadHandler()
-    
+    callModule(RLumShiny:::exportCodeHandler, "export", code = code.output)
+    callModule(RLumShiny:::exportPlotHandler, "export", fun = "plot_DRTResults", args = values$args)
   })
   
   # renderTable() that prints the data to the second tab
@@ -294,30 +217,30 @@ function(input, output, session) {
   table.on('click.dt', 'tr', function() {
   $(this).toggleClass('selected');
   Shiny.onInputChange('rows',
-  table.rows('.selected').data().toArray());
+  table.rows('.selected').values$data.toArray());
   });}",
-{
-  data<- Data()
-  colnames(data[[1]])<- c("De", "De error")
-  data[[1]]
-})##EndOf::renterTable()
-
-
-# renderTable() that prints the data to the second tab
-output$dataset2<- renderDataTable(
-  options = list(pageLength = 10, autoWidth = FALSE),
-  callback = "function(table) {
+    {
+      data<- values$data
+      colnames(data[[1]])<- c("De", "De error")
+      data[[1]]
+    })##EndOf::renterTable()
+  
+  
+  # renderTable() that prints the data to the second tab
+  output$dataset2<- renderDataTable(
+    options = list(pageLength = 10, autoWidth = FALSE),
+    callback = "function(table) {
   table.on('click.dt', 'tr', function() {
   $(this).toggleClass('selected');
   Shiny.onInputChange('rows',
-  table.rows('.selected').data().toArray());
+  table.rows('.selected').values$data.toArray());
   });}",
-{
-  data<- Data()
-  if(length(data)>1) {
-    colnames(data[[2]])<- c("De", "De error")
-    data[[2]]
-  }
-})##EndOf::renterTable()
-
+    {
+      data<- values$data
+      if(length(data)>1) {
+        colnames(data[[2]])<- c("De", "De error")
+        data[[2]]
+      }
+    })##EndOf::renterTable()
+  
 }

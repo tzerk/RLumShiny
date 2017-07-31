@@ -143,68 +143,8 @@ function(request) {
                                                   value = "CW-OSL [cts/s]")
                                ),##EndOf::Tab_4
                                
-                               # Tab 10: save plot as pdf, wmf or eps
-                               tabPanel("Export",
-                                        radioButtons(inputId = "fileformat", 
-                                                     label = "Fileformat", 
-                                                     selected = "pdf",
-                                                     choices = c("PDF   (Portable Document Format)" = "pdf",
-                                                                 "SVG   (Scalable Vector Graphics)" = "svg",
-                                                                 "EPS   (Encapsulated Postscript)" = "eps")),
-                                        textInput(inputId = "filename", 
-                                                  label = "Filename", 
-                                                  value = "transformed CW"),
-                                        fluidRow(
-                                          column(width = 6,
-                                                 numericInput(inputId = "imgheight",
-                                                              label =  "Image height", 
-                                                              value = 7)
-                                          ),
-                                          column(width = 6,
-                                                 numericInput(inputId = "imgwidth",
-                                                              label = "Image width", 
-                                                              value = 7)
-                                          )
-                                        ),
-                                        selectInput(inputId = "fontfamily", 
-                                                    label = "Font", 
-                                                    selected = "Helvetica",
-                                                    choices = c("Helvetica" = "Helvetica",
-                                                                "Helvetica Narrow" = "Helvetica Narrow",
-                                                                "Times" = "Times",
-                                                                "Courier" = "Courier",
-                                                                "Bookman" = "Bookman",
-                                                                "Palatino" = "Palatino")),
-                                        tags$hr(),
-                                        downloadButton(outputId = "exportFile", 
-                                                       label = "Download plot"),
-                                        tags$hr(),
-                                        helpText("The transformed CW curve data can be downloaded as a comma separated 
-                                             ASCII file."),
-                                        
-                                        downloadButton(outputId = "exportScript", 
-                                                       label = "Download transformed data")
-                               ),##EndOf::Tab_8
-                               
-                               # Tab 10: further information
-                               tabPanel("About",
-                                        hr(),
-                                        div(align = "center",
-                                            # HTML code to include a .png file in the tab; the image file must be in
-                                            # a subfolder called "wwww"
-                                            img(src="RL_Logo.png", height = 100, width = 100, alt = "R.Lum"),
-                                            p("Links:"),
-                                            a(href = "http://www.r-luminescence.de", "R.Luminescence project page", target="_blank"),
-                                            br(),
-                                            a(href = "https://forum.r-luminescence.de", "Message board", target="_blank"),
-                                            br(),
-                                            a(href = "http://zerk.canopus.uberspace.de/R.Lum", "Online application", target="_blank"),
-                                            br(),hr(),
-                                            img(src='GitHub-Mark-32px.png', width='32px', height='32px'),
-                                            br(),
-                                            a(href = "https://github.com/tzerk/RLumShiny/tree/master/inst/shiny/transformCW", "See the code at GitHub!", target="_blank")
-                                        )#/div
-                               )##EndOf::Tab_9
+                               RLumShiny:::exportTab("export", filename = "transformCW"),
+                               RLumShiny:::aboutTab("about", "transformCW")
                    )##EndOf::tabsetPanel
       ),##EndOf::sidebarPanel
       
@@ -217,10 +157,12 @@ function(request) {
                 # divide output in separate tabs via tabsetPanel
                 tabsetPanel(
                   tabPanel("Plot", plotOutput(outputId = "main_plot", height = "500px")),
-                  tabPanel("Output table", fluidRow(column(width = 12, dataTableOutput("dataset"))))
+                  tabPanel("Output table", fluidRow(column(width = 12, dataTableOutput("dataset")))),
+                  tabPanel("R code", verbatimTextOutput("plotCode"))
                 )###EndOf::tabsetPanel
       )##EndOf::mainPanel
     ),##EndOf::sideBarLayout
-    bookmarkButton()
+    bookmarkButton(),
+    downloadButton("exportScript", "Download transformed data", class="btn btn-success")
   )##EndOf::fluidPage
 }

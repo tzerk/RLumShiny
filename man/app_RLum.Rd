@@ -30,7 +30,9 @@ Radial Plot \tab \emph{radialplot} \tab \code{\link{plot_RadialPlot}} \cr
 Dose Recovery Test \tab \emph{doserecovery} \tab \code{\link{plot_DRTResults}} \cr
 Cosmic Dose Rate \tab \emph{cosmicdose}  \tab \code{\link{calc_CosmicDoseRate}} \cr
 CW Curve Transformation \tab \emph{transformCW} \tab \code{\link{CW2pHMi}}, \code{\link{CW2pLM}}, \code{\link{CW2pLMi}}, \code{\link{CW2pPMi}} \cr
-Filter Combinations \tab \emph{filter} \tab \code{\link{plot_FilterCombinations}}
+Filter Combinations \tab \emph{filter} \tab \code{\link{plot_FilterCombinations}} \cr
+Fast Ratio \tab \emph{fastratio} \tab \code{\link{calc_FastRatio}} \cr
+Fading Correction \tab \emph{fading} \tab \code{\link{analyse_FadingMeasurement}}, \code{\link{calc_FadingCorr}}
 }
 
 The \code{app_RLum()} function is just a wrapper for \code{\link{runApp}}.
@@ -54,6 +56,8 @@ app_RLum("doserecovery")
 app_RLum("cosmicdose")
 app_RLum("transformCW")
 app_RLum("filter")
+app_RLum("fastratio")
+app_RLum("fading")
 }
 
 }

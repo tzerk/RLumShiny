@@ -18,6 +18,7 @@
 #' @docType package
 #' @import Luminescence shiny googleVis shinydashboard rhandsontable data.table readxl
 #' @importFrom utils citation
+#' @importFrom grDevices dev.off pdf postscript svg
 #' 
 #' @md
 NULL

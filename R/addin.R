@@ -47,7 +47,22 @@ RLumShinyAddin <- function() {
     "filter" = list(title = "Filter Combinations",
                     keyword = "filter",
                     category = "misc",
-                    description = "Plot filter combinations along with the (optional) net transmission window.")
+                    description = "Plot filter combinations along with the (optional) net transmission window."),
+    
+    "fastratio" = list(title = "Calculate Fast Ratio",
+                       keyword = "fastratio",
+                       category = "calc",
+                       description = "Calculate the fast ratio of quartz CW-OSL single grain or single aliquot curves after Durcan & Duller (2011)."),
+    
+    "fading" = list(title = "Estimate g-value and Fading Correction",
+                    keyword = "fading",
+                    category = "calc",
+                    description = "Estimate the g-value from a table of Lx/Tx values with corresponding times since irradiation and apply a fading correction after Huntley & Lamothe (2001)."),
+    
+    "surfaceexposure" = list(title = "Fit model to OSL surface exposure data",
+                             keyword = "surfaceexposure",
+                             category = "calc",
+                             description = "Determine the (weighted) least-squares estimates of the parameters of eq. 1 in Sohbati et al. (2012a) or eq. 12 in Sohbati et al. (2012b) for a given OSL surface exposure data set.")
     
   )
   
@@ -103,7 +118,7 @@ RLumShinyAddin <- function() {
     tags$div(align = "left",
              tags$p(style = "color: grey; margin-left: 10px; margin-right: 40px; font-size: 80%;",
                     attributes(unclass(citation("RLumShiny"))[[1]])$textVersion)
-             )
+    )
     
   )#EndOf:Sidebar
   
@@ -215,7 +230,7 @@ Shiny.onInputChange('linkClicked', link);
       isolate({
         if (!is.null(input$linkClicked))
           app_RLum(input$linkClicked)
-        })
+      })
     })
     
   }#EndOf:ServerLogic

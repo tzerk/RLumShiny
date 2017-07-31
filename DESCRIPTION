@@ -1,8 +1,8 @@
 Package: RLumShiny
 Type: Package
 Title: 'Shiny' Applications for the R Package 'Luminescence'
-Version: 0.2.0
-Date: 2017-06-26
+Version: 0.2.1
+Date: 2017-07-31
 Author: Christoph Burow [aut, cre],
     Urs Tilmann Wolpert [aut],
     Sebastian Kreutzer [aut],
@@ -30,7 +30,7 @@ Depends:
     R (>= 3.3.2)
 Imports:
     Luminescence (>= 0.7.3),
-    shiny (>= 0.14.0),
+    shiny (>= 1.0.5),
     rhandsontable (>= 0.3.4),
     data.table (>= 1.10.4),
     googleVis (>= 0.6.2),
@@ -46,5 +46,8 @@ Collate:
     'tooltip.R'
     'popover.R'
     'RLumShiny.R'
+    'module_aboutTab.R'
+    'module_exportTab.R'
+    'module_printCode.R'
     'zzz.R'
 RoxygenNote: 6.0.1

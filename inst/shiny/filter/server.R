@@ -7,6 +7,10 @@
 ##+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 shinyServer(function(input, output, session) {
 
+  session$onSessionEnded(function() {
+    stopApp()
+  })
+  
   #check for own set filter dataset
   output$filters <- renderUI({
 

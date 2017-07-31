@@ -756,68 +756,8 @@ function(request) {
                                                 text = "The optional parameter layout allows to modify the entire plot more sophisticated. Each element of the plot can be addressed and its properties can be defined. This includes font type, size and decoration, colours and sizes of all plot items. To infer the definition of a specific layout style cf. get_Layout() or type eg. for the layout type \"journal\" get_Layout(\"journal\"). A layout type can be modified by the user by assigning new values to the list object.")
                                ),
                                
-                               # Tab 10: save plot as pdf, wmf or eps
-                               tabPanel("Export",
-                                        radioButtons(inputId = "fileformat", 
-                                                     label = "Fileformat", 
-                                                     selected = "pdf",
-                                                     choices = c("PDF   (Portable Document Format)" = "pdf",
-                                                                 "SVG   (Scalable Vector Graphics)" = "svg",
-                                                                 "EPS   (Encapsulated Postscript)" = "eps")),
-                                        textInput(inputId = "filename", 
-                                                  label = "Filename", 
-                                                  value = "Abanico Plot"),
-                                        fluidRow(
-                                          column(width = 6,
-                                                 numericInput(inputId = "imgheight",
-                                                              label =  "Image height", 
-                                                              value = 7)
-                                          ),
-                                          column(width = 6,
-                                                 numericInput(inputId = "imgwidth",
-                                                              label = "Image width", 
-                                                              value = 7)
-                                          )
-                                        ),
-                                        selectInput(inputId = "fontfamily", 
-                                                    label = "Font", 
-                                                    selected = "Helvetica",
-                                                    choices = c("Helvetica" = "Helvetica",
-                                                                "Helvetica Narrow" = "Helvetica Narrow",
-                                                                "Times" = "Times",
-                                                                "Courier" = "Courier",
-                                                                "Bookman" = "Bookman",
-                                                                "Palatino" = "Palatino")),
-                                        tags$hr(),
-                                        downloadButton(outputId = "exportFile", 
-                                                       label = "Download plot"),
-                                        tags$hr(),
-                                        helpText("Additionally, you can download a corresponding .R file that contains",
-                                                 "a fully functional script to reproduce the plot in your R environment!"),
-                                        
-                                        downloadButton(outputId = "exportScript", 
-                                                       label = "Download R script")
-                               ),##EndOf::Tab_8
-                               
-                               # Tab 10: further information
-                               tabPanel("About",
-                                        hr(),
-                                        div(align = "center",
-                                            # HTML code to include a .png file in the tab; the image file must be in
-                                            # a subfolder called "wwww"
-                                            img(src="RL_Logo.png", height = 100, width = 100, alt = "R.Lum"),
-                                            p("Links:"),
-                                            a(href = "http://www.r-luminescence.de", "R.Luminescence project page", target="_blank"),
-                                            br(),
-                                            a(href = "https://forum.r-luminescence.de", "Message board", target="_blank"),
-                                            br(),
-                                            a(href = "http://zerk.canopus.uberspace.de/R.Lum", "Online application", target="_blank"),
-                                            br(),hr(),
-                                            img(src='GitHub-Mark-32px.png', width='32px', height='32px'),
-                                            br(),
-                                            a(href = "https://github.com/tzerk/RLumShiny/tree/master/inst/shiny/abanico", "See the code at GitHub!", target="_blank")
-                                        )#/div
-                               )##EndOf::Tab_9
+                               RLumShiny:::exportTab("export", filename = "abanico plot"),
+                               RLumShiny:::aboutTab("about", "abanico")
                    )##EndOf::tabsetPanel
       ),##EndOf::sidebarPanel
       

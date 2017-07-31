@@ -4,10 +4,12 @@ function(input, output, session) {
   
   # input data (with default)
   values <- reactiveValues(data_primary = ExampleData.DeValues$CA1,
-                           data_secondary = setNames(as.data.frame(matrix(NA_real_, nrow = 5, ncol = 2)), c("x", "y")))
+                           data_secondary = setNames(as.data.frame(matrix(NA_real_, nrow = 5, ncol = 2)), c("x", "y")),
+                           data = NULL,
+                           args = NULL)
   
   ### GET DATA SETS
-  Data<- reactive({
+  observe({
 
     ### GET DATA
     data <- list(values$data_primary, values$data_secondary)
@@ -45,9 +47,8 @@ function(input, output, session) {
     if(length(data) == 2) {
       updateSelectInput(session, inputId = "filter.sec", choices = sort(data[[2]][,1]), selected = stillSelected.sec)
     }
-    data<- sub
     
-    return(data)
+    values$data <- sub
   })
   
   output$table_in_primary <- renderRHandsontable({
@@ -138,7 +139,7 @@ function(input, output, session) {
   # dynamically inject sliderInput for x-axis range
   output$xlim<- renderUI({
     
-    data<- Data()
+    data<- values$data
     
     if(input$logz == TRUE) {
       sd<- unlist(lapply(data, function(x) x[,2]/x[,1]))
@@ -156,7 +157,7 @@ function(input, output, session) {
   # dynamically inject sliderInput for z-axis range
   output$zlim<- renderUI({
     
-    data<- unlist(lapply(Data(), function(x) x[,1]))
+    data<- unlist(lapply(values$data, function(x) x[,1]))
     
     min<- min(data)
     max<- max(data)
@@ -169,7 +170,7 @@ function(input, output, session) {
   
   
   output$ylim<- renderUI({
-    ylim<- plot_AbanicoPlot(Data(), output = TRUE)$ylim
+    ylim<- plot_AbanicoPlot(values$data, output = TRUE)$ylim
     sliderInput(inputId = "ylim",  sep="",
                 label = "Range y-axis",
                 min = ylim[1]*4, 
@@ -180,7 +181,7 @@ function(input, output, session) {
   
   # dynamically inject sliderInput for KDE bandwidth
   output$bw<- renderUI({
-    data<- unlist(lapply(Data(), function(x) x[,1]))
+    data<- unlist(lapply(values$data, function(x) x[,1]))
     if(input$logz == TRUE) {
       data<- log(data)
       min<- 0.001
@@ -198,25 +199,10 @@ function(input, output, session) {
                 value = value)
   })## EndOf::renderUI()
   
-  # observe({
-  #   # case: 1 data set, 2 sigma bars --> switch to custom value
-  #   if(input$addBar == TRUE && is.null(datGet2())) {
-  #     updateSelectInput(session = session, inputId = "centrality", 
-  #                       label = "Centrality",
-  #                       selected = "custom")
-  #   }
-  #   # case: 1 data set, 1 sigma bars --> return to mean centrality
-  #   if(input$addBar == FALSE && is.null(datGet2())) {
-  #     updateSelectInput(session = session, inputId = "centrality", 
-  #                       label = "Centrality",
-  #                       selected = "mean")
-  #   }
-  # })  
-  
   
   output$centralityNumeric<- renderUI({
     
-    data <- Data()
+    data <- values$data
     
     numericInput(inputId = "centralityNumeric", 
                  label = "Value", 
@@ -224,17 +210,9 @@ function(input, output, session) {
                  step = 0.01)
   })
   
-  # render Abanico Plot
-  output$main_plot <- renderPlot({
-    
+  observe({
     # refresh plot on button press
     input$refresh
-    
-    # progress bar
-    progress<- Progress$new(session, min = 0, max = 5)
-    progress$set(message = "Calculation in progress",
-                 detail = "Retrieve data")
-    on.exit(progress$close())
     
     # make sure that input panels are registered on non-active tabs.
     # by default tabs are suspended and input variables are hence
@@ -245,23 +223,8 @@ function(input, output, session) {
     outputOptions(x = output, name = "ylim", suspendWhenHidden = FALSE)
     outputOptions(x = output, name = "centralityNumeric", suspendWhenHidden = FALSE)
     
-    # get data
-    data<- Data()
-    
-    # update progress bar
-    progress$set(value = 1)
-    progress$set(message = "Calculation in progress",
-                 detail = "Get values")
-    
-    # check if any summary stats are activated, else NA
-    ifelse(input$summary, summary<- input$stats, summary<- NA)
-    
     # if custom datapoint color get RGB code from separate input panel
-    if(input$color == "custom") {
-      color<- ifelse(input$jscol1 == "", "black", input$jscol1)
-    } else {
-      color<- input$color
-    }
+    color <- ifelse(input$color == "custom", input$jscol1, input$color)
     
     if(!all(is.na(unlist(values$data_secondary)))) {
       # if custom datapoint color get RGB code from separate input panel
@@ -284,94 +247,56 @@ function(input, output, session) {
     # if custom datapoint style get char from separate input panel
     pch2<- ifelse(input$pch2 == "custom", input$custompch2, as.integer(input$pch2)-1)
     
-    # update progress bar
-    progress$set(value = 2)
-    progress$set(message = "Calculation in progress",
-                 detail = "Combine values")
-    
     # create numeric vector of lines
-    line<-  as.numeric(c(input$line1, input$line2,
-                         input$line3, input$line4,
-                         input$line5, input$line6,
-                         input$line7, input$line8))
+    line <- sapply(1:8, function(x) input[[paste0("line", x)]])
     
     # create char vector of line colors
-    line.col<-  c(input$colline1, input$colline2,
-                  input$colline3, input$colline4,
-                  input$colline5, input$colline6,
-                  input$colline7, input$colline8)
-    
-    line.col[which(line.col=="#")] <- "#FFFFFF"
+    line.col <- sapply(1:8, function(x) input[[paste0("colline", x)]])
     
     # create char vector of line labels
-    line.label<- c(input$labline1, input$labline2,
-                   input$labline3, input$labline4,
-                   input$labline5, input$labline6,
-                   input$labline7, input$labline8)
+    line.label <- sapply(1:8, function(x) input[[paste0("labline", x)]])
     
     # create integer vector of line types
-    line.lty<- as.integer(c(input$linelty1, input$linelty2,
-                            input$linelty3, input$linelty4,
-                            input$linelty5, input$linelty6,
-                            input$linelty7, input$linelty8))
-    
-    # update progress bar
-    progress$set(value = 3)
-    progress$set(message = "Calculation in progress",
-                 detail = "Get values")
+    line.lty <- sapply(1:8, function(x) as.numeric(input[[paste0("linelty", x)]]))
     
     # if custom polygon color get RGB from separate input panel or "none"
-    if(input$polygon == "custom") {
-      polygon.col<- adjustcolor(col = input$rgbPolygon, alpha.f = input$alpha.polygon/100)
-    } else {
-      polygon.col<- ifelse(input$polygon == "none", 
-                           input$polygon, 
-                           adjustcolor(col = input$polygon, alpha.f = input$alpha.polygon/100))
-    }
-    
+    polygon.col <- ifelse(input$polygon == "custom",
+                          adjustcolor(col = input$rgbPolygon, alpha.f = input$alpha.polygon/100),
+                          ifelse(input$polygon == "none", 
+                                 input$polygon, 
+                                 adjustcolor(col = input$polygon, alpha.f = input$alpha.polygon/100)))
+      
     # if custom polygon color get RGB from separate input panel or "none"
     # (secondary data set)
-    if(input$polygon2 == "custom") {
-      polygon.col2<- adjustcolor(col = input$rgbPolygon2, alpha.f = input$alpha.polygon/100)
-    } else {
-      polygon.col2<- ifelse(input$polygon2 == "none", 
-                            input$polygon2, 
-                            adjustcolor(col = input$polygon2, alpha.f = input$alpha.polygon/100))
-    }
+    polygon.col2 <- ifelse(input$polygon2 == "custom",
+                           adjustcolor(col = input$rgbPolygon2, alpha.f = input$alpha.polygon/100),
+                           ifelse(input$polygon2 == "none", 
+                                  input$polygon2, 
+                                  adjustcolor(col = input$polygon2, alpha.f = input$alpha.polygon/100)))
     
     
     # if custom bar color get RGB from separate input panel or "none"
-    if(input$bar == "custom") {
-      bar.col<- adjustcolor(col = input$rgbBar, alpha.f = input$alpha.bar/100)
-    } else {
-      bar.col<- ifelse(input$bar == "none", 
-                       input$bar, 
-                       adjustcolor(col = input$bar, alpha.f = input$alpha.bar/100))
-    }
+    bar.col <- ifelse(input$bar == "custom", 
+                      adjustcolor(col = input$rgbBar, alpha.f = input$alpha.bar/100), 
+                      ifelse(input$bar == "none", 
+                             input$bar, 
+                             adjustcolor(col = input$bar, alpha.f = input$alpha.bar/100)))
+      
     
     # if custom bar color get RGB from separate input panel or "none"
     # SECONDARY DATA SET
-    if(input$bar2 == "custom") {
-      bar.col2<- adjustcolor(col = input$rgbBar2, alpha.f = input$alpha.bar/100)
-    } else {
-      bar.col2<- ifelse(input$bar2 == "none", 
-                        input$bar, 
-                        adjustcolor(col = input$bar2, alpha.f = input$alpha.bar/100))
-    }
+    bar.col2 <- ifelse(input$bar2 == "custom",
+                       adjustcolor(col = input$rgbBar2, alpha.f = input$alpha.bar/100),
+                       ifelse(input$bar2 == "none", 
+                              input$bar, 
+                              adjustcolor(col = input$bar2, alpha.f = input$alpha.bar/100)))
     
     # if custom grid color get RGB from separate input panel or "none"
-    if(input$grid == "custom") {
-      grid.col<- adjustcolor(col = input$rgbGrid, alpha.f = input$alpha.grid/100)
-    } else {
-      grid.col<- ifelse(input$grid == "none",
-                        input$grid, 
-                        adjustcolor(col = input$grid, alpha.f = input$alpha.grid/100))
-    }
-    
-    # update progress bar
-    progress$set(value = 4)
-    progress$set(message = "Calculation in progress",
-                 detail = "Almost there...")
+    grid.col <- ifelse(input$grid == "custom",
+                       adjustcolor(col = input$rgbGrid, alpha.f = input$alpha.grid/100),
+                       ifelse(input$grid == "none",
+                              input$grid, 
+                              adjustcolor(col = input$grid, alpha.f = input$alpha.grid/100)))
     
     # workaround: if no legend wanted set label to NA and hide 
     # symbol on coordinates -999, -999
@@ -398,28 +323,17 @@ function(input, output, session) {
     } else {
       bar <- TRUE
     }
-
+    
     
     # check wether a keyword or a numeric value is used for
     # centrality
-    if(input$centrality == "custom") {
-        centrality<- input$centralityNumeric
-    } else {
-      centrality<- input$centrality
-    }
+    centrality <- ifelse(input$centrality == "custom", input$centralityNumeric, input$centrality)
     
     # check wether predefined or custom dispersion
     dispersion<- ifelse(input$dispersion == "custom", paste("p", input$cinn, sep=""), input$dispersion)
     
-    # validate(need()) makes sure that all data are available to
-    # renderUI({}) before plotting and will wait until there
-    validate(need(expr = input$bw, message = ''),
-             need(expr = input$zlim, message = ''),
-             need(expr = input$ylim, message = ''),
-             need(expr = input$centralityNumeric, message = 'Waiting for data... Please wait!'))
-    
     # save all arguments in a list
-    args<- list(data = data,
+    values$args<- list(data = values$data,
                 y.axis = input$yaxis,
                 bw = input$bw,
                 bar = bar,
@@ -427,7 +341,7 @@ function(input, output, session) {
                 plot.ratio = input$p.ratio,
                 z.0 = centrality, 
                 log.z = input$logz, 
-                summary = summary,
+                summary = if (input$summary) input$stats else NA,
                 summary.pos = input$sumpos,
                 summary.method = input$summary.method,
                 col = c(color,color2),
@@ -463,102 +377,36 @@ function(input, output, session) {
                 hist = input$histogram,
                 dots = input$dots,
                 frame = input$frame)
+  })
+  
+  # render Abanico Plot
+  output$main_plot <- renderPlot({
     
-    progress$set(value = 5)
-    progress$set(message = "Calculation in progress",
-                 detail = "Ready to plot")
-
+    # validate(need()) makes sure that all data are available to
+    # renderUI({}) before plotting and will wait until there
+    validate(need(expr = input$bw, message = ''),
+             need(expr = input$zlim, message = ''),
+             need(expr = input$ylim, message = ''),
+             need(expr = input$centralityNumeric, message = 'Waiting for data... Please wait!'))
+    
     # plot Abanico Plot 
-    do.call(what = plot_AbanicoPlot, args = args)
+    do.call(what = plot_AbanicoPlot, args = values$args)
     
-    # prepare code as text output
-    str1 <- "data <- data.table::fread(file, data.table = FALSE)"
-    
-    if(!all(is.na(unlist(values$data_secondary)))) {
-      str2 <- "file2 <- file.choose()"
-      str3 <- "data2 <- data.table::fread(file2, data.table = FALSE)"
-      str4 <- "data <- list(data, data2)"
-      str1 <- paste(str1, str2, str3, str4, sep = "\n")
-    }
-    
-    header <- paste("# To reproduce the plot in your local R environment",
-                  "# copy and run the following code to your R console.",
-                  "library(Luminescence)",
-                  "file <- file.choose()",
-                  str1,
-                  "\n",
-                  sep = "\n")
-    
-    names <- names(args)
-    
-    verb.arg <- paste(mapply(function(name, arg) {
-      if (all(inherits(arg, "character")))
-        arg <- paste0("'", arg, "'")
-      if (length(arg) > 1)
-        arg <- paste0("c(", paste(arg, collapse = ", "), ")")
-      if (is.null(arg))
-        arg <- "NULL"
-      paste(name, "=", arg) 
-    }, names[-1], args[-1]), collapse = ",\n")
-    
-    funCall <- paste0("plot_AbanicoPlot(data = data,\n", verb.arg, ")")
-    
-    code.output <- paste0(header, funCall, collapse = "\n")
-    
-    # nested renderText({}) for code output on "R plot code" tab
-    output$plotCode<- renderText({
-      
-      code.output
-      
-    })##EndOf::renderText({})
-    
-    
-    output$exportScript <- downloadHandler(
-      filename = function() { paste(input$filename, ".", "R", sep="") },
-      content = function(file) {
-        write(code.output, file)
-      },#EO content =,
-      contentType = "text"
-    )#EndOf::dowmloadHandler()
-    
-    
-    # nested downloadHandler() to print plot to file
-    output$exportFile <- downloadHandler(
-      filename = function() { paste(input$filename, ".", input$fileformat, sep="") },
-      content = function(file) {
-        
-        # determine desired fileformat and set arguments
-        if(input$fileformat == "pdf") {
-          pdf(file, 
-              width = input$imgwidth, 
-              height = input$imgheight, 
-              paper = "special",
-              useDingbats = FALSE, 
-              family = input$fontfamily)
-        }
-        if(input$fileformat == "svg") {
-          svg(file, 
-              width = input$imgwidth, 
-              height = input$imgheight, 
-              family = input$fontfamily)
-        }
-        if(input$fileformat == "eps") {
-          postscript(file, 
-                     width = input$imgwidth, 
-                     height = input$imgheight, 
-                     paper = "special", 
-                     family = input$fontfamily)
-        }
-        
-        # plot Abanico Plot 
-        do.call(what = plot_AbanicoPlot, args = args)
-        
-        dev.off()
-      },#EO content =,
-      contentType = "image"
-    )#EndOf::dowmloadHandler()
   })##EndOf::renderPlot({})
   
+  observe({
+    # nested renderText({}) for code output on "R plot code" tab
+    code.output <- callModule(RLumShiny:::printCode, "printCode", 
+                              n_input = ifelse(!all(is.na(unlist(values$data_secondary))), 2, 1),
+                              fun = "plot_AbanicoPlot(data,", args = values$args)
+    
+    output$plotCode<- renderText({
+      code.output
+    })##EndOf::renderText({})
+    
+    callModule(RLumShiny:::exportCodeHandler, "export", code = code.output)
+    callModule(RLumShiny:::exportPlotHandler, "export", fun = "plot_AbanicoPlot", args = values$args)
+  })
   
   Selected<- reactive({
     input$refresh
@@ -571,11 +419,11 @@ function(input, output, session) {
       table.on('click.dt', 'tr', function() {
         $(this).toggleClass('selected');
         Shiny.onInputChange('rows',
-                            table.rows('.selected').data().toArray());
+                            table.rows('.selected').values$data.toArray());
       });
     }",
 {
-  data <- Data()
+  data <- values$data
   colnames(data[[1]])<- c("De","De error")
   data[[1]]
   
@@ -588,12 +436,12 @@ function(input, output, session) {
       table.on('click.dt', 'tr', function() {
         $(this).toggleClass('selected');
         Shiny.onInputChange('rows',
-                            table.rows('.selected').data().toArray());
+                            table.rows('.selected').values$data.toArray());
       });
     }",
 {
   if(!all(is.na(unlist(values$data_secondary)))) {
-    data <- Data()
+    data <- values$data
     colnames(data[[2]])<- c("De","De error")
     data[[2]]
   } 
@@ -604,7 +452,7 @@ function(input, output, session) {
   output$CAM<- renderDataTable(
     options = list(pageLength = 10, autoWidth = FALSE),
     {
-      data<- Data()
+      data<- values$data
       t<- as.data.frame(matrix(nrow = length(data), ncol = 7))
       colnames(t)<- c("Data set","n", "log data", "Central dose", "SE abs.", "OD (%)", "OD error (%)")
       res<- lapply(data, function(x) { calc_CentralDose(x, verbose = FALSE, plot = FALSE) })
