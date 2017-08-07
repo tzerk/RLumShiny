@@ -129,7 +129,7 @@ function(request) {
                                tabPanel("Experimental",
                                         div(align = "center", h5("Curve fitting")),
                                         
-                                        checkboxInput(inputId = "fitCWsigma", label = "Calculate photoionisaton cross-sectons",
+                                        checkboxInput(inputId = "fitCWsigma", label = "Calculate and use photoionisaton cross-sections",
                                                       value = FALSE),
                                         checkboxInput(inputId = "fitCWcurve", label = "Derive fast ratio from fitted OSL curve",
                                                       value = FALSE) 
