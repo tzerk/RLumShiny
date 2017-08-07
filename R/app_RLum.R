@@ -16,7 +16,8 @@
 #' Dose Recovery Test \tab *doserecovery* \tab [`plot_DRTResults`] \cr
 #' Cosmic Dose Rate \tab *cosmicdose*  \tab [`calc_CosmicDoseRate`] \cr
 #' CW Curve Transformation \tab *transformCW* \tab [`CW2pHMi`], [`CW2pLM`], [`CW2pLMi`], [`CW2pPMi`] \cr
-#' Filter Combinations \tab *filter* \tab [`plot_FilterCombinations`]
+#' Filter Combinations \tab *filter* \tab [`plot_FilterCombinations`] \cr
+#' Fast Ratio \tab *fastratio* \tab [`calc_FastRatio`]
 #' }
 #' 
 #' The `app_RLum()` function is just a wrapper for [`runApp`]. 
@@ -63,7 +64,8 @@ app_RLum <- function(app = NULL, ...) {
                   "KDE",
                   "radialplot",
                   "transformCW",
-                  "filter")
+                  "filter",
+                  "fastratio")
   
   if (is.null(app)) {
     
