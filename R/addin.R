@@ -47,7 +47,12 @@ RLumShinyAddin <- function() {
     "filter" = list(title = "Filter Combinations",
                     keyword = "filter",
                     category = "misc",
-                    description = "Plot filter combinations along with the (optional) net transmission window.")
+                    description = "Plot filter combinations along with the (optional) net transmission window."),
+    
+    "fastratio" = list(title = "Calculate Fast Ratio",
+                         keyword = "fastratio",
+                         category = "calc",
+                         description = "Calculate the fast ratio of quartz CW-OSL single grain or single aliquot curves after Durcan & Duller (2011).")
     
   )
   
