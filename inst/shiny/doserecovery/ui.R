@@ -279,62 +279,8 @@ function(request) {
                                                                 "Bottom right" = "bottomright"))
                                ),##EndOf::Tab_xy
                                
-                               # Tab xy: save plot as pdf, wmf or eps
-                               tabPanel("Export",
-                                        radioButtons(inputId = "fileformat", 
-                                                     label = "Fileformat", 
-                                                     selected = "pdf",
-                                                     choices = c("PDF   (Portable Document Format)" = "pdf",
-                                                                 "SVG   (Scalable Vector Graphics)" = "svg",
-                                                                 "EPS   (Encapsulated Postscript)" = "eps")),
-                                        textInput(inputId = "filename", 
-                                                  label = "Filename", 
-                                                  value = "DRT Plot"),
-                                        fluidRow(
-                                          column(width = 6,
-                                                 numericInput(inputId = "imgheight",
-                                                              label =  "Image height", 
-                                                              value = 7)
-                                          ),
-                                          column(width = 6,
-                                                 numericInput(inputId = "imgwidth",
-                                                              label = "Image width", 
-                                                              value = 7)
-                                          )
-                                        ),
-                                        selectInput(inputId = "fontfamily", 
-                                                    label = "Font", 
-                                                    selected = "Helvetica",
-                                                    choices = c("Helvetica" = "Helvetica",
-                                                                "Helvetica Narrow" = "Helvetica Narrow",
-                                                                "Times" = "Times",
-                                                                "Courier" = "Courier",
-                                                                "Bookman" = "Bookman",
-                                                                "Palatino" = "Palatino")),
-                                        tags$hr(),
-                                        downloadButton(outputId = "exportFile", 
-                                                       label = "Download plot")
-                               ),##EndOf::Tab_
-                               
-                               # Tab xy: further information
-                               tabPanel("About",
-                                        hr(),
-                                        div(align = "center",
-                                            # HTML code to include a .png file in the tab; the image file must be in
-                                            # a subfolder called "wwww"
-                                            img(src="RL_Logo.png", height = 100, width = 100, alt = "R.Lum"),
-                                            p("Links:"),
-                                            a(href = "http://www.r-luminescence.de", "R.Luminescence project page", target="_blank"),
-                                            br(),
-                                            a(href = "https://forum.r-luminescence.de", "Message board", target="_blank"),
-                                            br(),
-                                            a(href = "http://zerk.canopus.uberspace.de/R.Lum", "Online application", target="_blank"),
-                                            br(),hr(),
-                                            img(src='GitHub-Mark-32px.png', width='32px', height='32px'),
-                                            br(),
-                                            a(href = "https://github.com/tzerk/RLumShiny/tree/master/inst/shiny/doserecovery", "See the code at GitHub!", target="_blank")
-                                        )#/div
-                               )##EndOf::Tab_xy
+                               RLumShiny:::exportTab("export", filename = "dose recovery"),
+                               RLumShiny:::aboutTab("about", "doserecovery")
                    )
       ),
       

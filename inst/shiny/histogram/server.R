@@ -155,83 +155,19 @@ function(input, output, session) {
     
     do.call(plot_Histogram, args = args)
     
-    # prepare code as text output
-    header <- paste("# To reproduce the plot in your local R environment",
-                    "# copy and run the following code to your R console.",
-                    "library(Luminescence)",
-                    "library(data.table)",
-                    "file<- file.choose()",
-                    "data <- data.table::fread(file, data.table = FALSE)",
-                    "\n",
-                    sep = "\n")
-    
-    names <- names(args)
-    
-    verb.arg <- paste(mapply(function(name, arg) {
-      if (all(inherits(arg, "character")))
-        arg <- paste0("'", arg, "'")
-      if (length(arg) > 1)
-        arg <- paste0("c(", paste(arg, collapse = ", "), ")")
-      if (is.null(arg))
-        arg <- "NULL"
-      paste(name, "=", arg) 
-    }, names[-1], args[-1]), collapse = ",\n")
-    
-    funCall <- paste0("plot_Histogram(data = data,\n", verb.arg, ")")
-    
-    code.output <- paste0(header, funCall, collapse = "\n")
-    
     # nested renderText({}) for code output on "R plot code" tab
+    code.output <- callModule(RLumShiny:::printCode, "printCode", n_input = 1, 
+                              fun = "plot_Histogram(data,", args = args)
+    
     output$plotCode<- renderText({
-      
       code.output
-      
     })##EndOf::renderText({})
     
-    output$exportScript <- downloadHandler(
-      filename = function() { paste(input$filename, ".", "R", sep="") },
-      content = function(file) {
-        write(code.output, file)
-      },#EO content =,
-      contentType = "text"
-    )#EndOf::dowmloadHandler()
+    callModule(RLumShiny:::exportCodeHandler, "export", code = code.output)
+    callModule(RLumShiny:::exportPlotHandler, "export", fun = "plot_Histogram", args = args)
+
     
     
-    # nested downloadHandler() to print plot to file
-    output$exportFile <- downloadHandler(
-      filename = function() { paste(input$filename, ".", input$fileformat, sep="") },
-      content = function(file) {
-        
-        # determine desired fileformat and set arguments
-        if(input$fileformat == "pdf") {
-          pdf(file, 
-              width = input$imgwidth, 
-              height = input$imgheight, 
-              paper = "special",
-              useDingbats = FALSE, 
-              family = input$fontfamily)
-        }
-        if(input$fileformat == "svg") {
-          svg(file, 
-              width = input$imgwidth, 
-              height = input$imgheight, 
-              family = input$fontfamily)
-        }
-        if(input$fileformat == "eps") {
-          postscript(file, 
-                     width = input$imgwidth, 
-                     height = input$imgheight, 
-                     paper = "special", 
-                     family = input$fontfamily)
-        }
-        
-        do.call(plot_Histogram, args = args)
-        
-        dev.off()
-        
-      },#EO content =,
-      contentType = "image"
-    )#EndOf::dowmloadHandler()
   })##EndOf::renderPlot({})
   
   
