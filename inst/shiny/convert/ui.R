@@ -28,15 +28,22 @@ function(request) {
                                                  
                                           ),
                                           column(width = 6,
-                                                 uiOutput("types")
+                                                 uiOutput("curveTypes")
                                           )
                                         )
                                ),##EndOf::Tab_1
                                
-                               tabPanel("Method",
-                                        div(align = "center", h5("Input data preprocessing"))
-                                        
-                               )##EndOf::Tab_4
+                               tabPanel("Curves",
+                                        div(align = "center", h5("(De)select individual curves")),
+                                        checkboxGroupInput("curves", "Curves")
+                               ),##EndOf::Tab_4
+                               
+                               tabPanel("Export",
+                                        selectInput("targetFile", label = "Export to...", 
+                                                    choices = list(".bin(x)" = "write_R2BIN",
+                                                                   ".csv" = "write_RLum2CSV")),
+                                        actionButton("export", "Download file", class = "btn btn-success")
+                                        )
                    )##EndOf::tabsetPanel
       ),##EndOf::sidebarPanel
       
@@ -48,12 +55,7 @@ function(request) {
                 tags$head(includeCSS("www/style.css")),
                 # divide output in separate tabs via tabsetPanel
                 fluidRow(
-                  tabsetPanel(
-                    tabPanel("Preview", 
-                             plotOutput(outputId = "main_plot", height = "500px"),
-                             htmlOutput(outputId = "results")
-                             )
-                  )
+                  uiOutput("positionTabs")
                 )
       )##EndOf::mainPanel
     ),##EndOf::sideBarLayout
