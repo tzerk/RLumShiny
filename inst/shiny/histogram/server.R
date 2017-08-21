@@ -3,7 +3,7 @@
 function(input, output, session) {
   
   # input data (with default)
-  values <- reactiveValues(data = ExampleData.DeValues$CA1)
+  values <- reactiveValues(data = ExampleData.DeValues$CA1, args = NULL)
   
   # check and read in file (DATA SET 1)
   observeEvent(input$file1, {
@@ -21,7 +21,7 @@ function(input, output, session) {
     
     # check if file is loaded
     # # case 1: yes -> slinderInput with custom values
-    xlim.plot<- range(hist(values$data[,1], plot = FALSE)$breaks)
+    xlim.plot<- range(hist(values$data[ ,1], plot = FALSE)$breaks)
     
     sliderInput(inputId = "xlim", 
                 label = "Range x-axis",
@@ -32,10 +32,10 @@ function(input, output, session) {
   })## EndOf::renderUI()
   
   output$table_in_primary <- renderRHandsontable({
-      rhandsontable(values$data, 
-                    height = 300, 
-                    colHeaders = c("Dose", "Error"), 
-                    rowHeaders = NULL)
+    rhandsontable(values$data, 
+                  height = 300, 
+                  colHeaders = c("Dose", "Error"), 
+                  rowHeaders = NULL)
   })
   
   observeEvent(input$table_in_primary, {
@@ -56,119 +56,60 @@ function(input, output, session) {
       values$data <- hot_to_r(df_tmp)
   })
   
-  output$main_plot <- renderPlot({
-    
-    # refresh plot on button press
-    input$refresh
-    
-    # progress bar
-    progress<- Progress$new(session, min = 0, max = 3)
-    progress$set(message = "Calculation in progress",
-                 detail = "Retrieve data")
-    on.exit(progress$close())
-    
+  observe({
     # make sure that input panels are registered on non-active tabs.
     # by default tabs are suspended and input variables are hence
     # not available
     outputOptions(x = output, name = "xlim", suspendWhenHidden = FALSE)
     
-    progress$set(value = 1)
-    progress$set(message = "Calculation in progress",
-                 detail = "Get values")
-    
-    # check if any summary stats are activated, else NA
-    if (input$summary) {
-      summary<- input$stats
-    } else {
-      summary<- NA
-    }
-    
-    # if custom datapoint color get RGB code from separate input panel
-    if(input$pchColor == "custom") {
-      pch.color<- input$pchRgb
-    } else {
-      pch.color<- input$pchColor
-    }
-    
-    # if custom datapoint color get RGB code from separate input panel
-    if(input$barsColor == "custom") {
-      bars.color<-  adjustcolor(col = input$barsRgb,
-                                alpha.f = input$alpha.bars/100)
-    } else {
-      bars.color<-  adjustcolor(col = input$barsColor,
-                                alpha.f = input$alpha.bars/100)
-    }
-    
-    # if custom datapoint color get RGB code from separate input panel
-    if(input$rugsColor == "custom") {
-      rugs.color<- input$rugsRgb
-    } else {
-      rugs.color<- input$rugsColor
-    }
-    
-    # if custom datapoint color get RGB code from separate input panel
-    if(input$normalColor == "custom") {
-      normal.color<- input$normalRgb
-    } else {
-      normal.color<- input$normalColor
-    }
-    
-    # update progress bar
-    progress$set(value = 2)
-    progress$set(message = "Calculation in progress",
-                 detail = "Combine values")
+    # color of plor elements
+    pch.color <- ifelse(input$pchColor == "custom", input$pchRgb, input$pchColor)
+    bars.color <- ifelse(input$barsColor == "custom", 
+                         adjustcolor(col = input$barsRgb,
+                                     alpha.f = input$alpha.bars/100), 
+                         adjustcolor(col = input$barsColor,
+                                     alpha.f = input$alpha.bars/100))
+    rugs.color <- ifelse(input$rugsColor == "custom", input$rugsRgb, input$rugsColor)
+    normal.color <- ifelse(input$normalColor == "custom", input$normalRgb, input$normalColor)
     
     colors<- c(bars.color, rugs.color, normal.color, pch.color)
     
-    # if custom datapoint style get char from separate input panel
-    if(input$pch == "custom") {
-      pch<- input$custompch
-    } else {
-      pch<- as.integer(input$pch)-1 #-1 offset in pch values
-    }
-    
-    # validate(need()) makes sure that all data are available to
-    # renderUI({}) before plotting and will wait until there
-    validate(
-      need(expr = input$xlim, message = 'Waiting for data... Please wait!')
-    )
-    
-    progress$set(value = 3)
-    progress$set(message = "Calculation in progress",
-                 detail = "Ready to plot")
-    
-    args <- list(data = values$data,
-                 na.rm = TRUE, 
-                 cex.global = input$cex, 
-                 pch = pch,
-                 xlim = input$xlim,
-                 summary.pos = input$sumpos, 
-                 mtext = input$mtext, 
-                 main = input$main,
-                 rug = input$rugs, 
-                 se = input$errorBars, 
-                 normal_curve = input$norm, 
-                 summary = summary,
-                 xlab = input$xlab,
-                 ylab = c(input$ylab1, input$ylab2),
-                 colour = colors)
-    
-    do.call(plot_Histogram, args = args)
-    
+    values$args <- list(
+      data = values$data,
+      na.rm = TRUE, 
+      cex.global = input$cex, 
+      pch = ifelse(input$pch == "custom", input$custompch, as.integer(input$pch) - 1),
+      xlim = input$xlim,
+      summary.pos = input$sumpos, 
+      mtext = input$mtext, 
+      main = input$main,
+      rug = input$rugs, 
+      se = input$errorBars, 
+      normal_curve = input$norm, 
+      summary = if (input$summary) input$stats else NA,
+      xlab = input$xlab,
+      ylab = c(input$ylab1, input$ylab2),
+      colour = colors)
+  })
+  
+  
+  output$main_plot <- renderPlot({
+    validate(need(input$xlim, "Just wait a second..."))
+    do.call(plot_Histogram, args = values$args)
+  })##EndOf::renderPlot({})
+  
+  observe({
     # nested renderText({}) for code output on "R plot code" tab
     code.output <- callModule(RLumShiny:::printCode, "printCode", n_input = 1, 
-                              fun = "plot_Histogram(data,", args = args)
+                              fun = "plot_Histogram(data,", args = values$args)
     
     output$plotCode<- renderText({
       code.output
     })##EndOf::renderText({})
     
     callModule(RLumShiny:::exportCodeHandler, "export", code = code.output)
-    callModule(RLumShiny:::exportPlotHandler, "export", fun = "plot_Histogram", args = args)
-
-    
-    
-  })##EndOf::renderPlot({})
+    callModule(RLumShiny:::exportPlotHandler, "export", fun = "plot_Histogram", args = values$args)
+  })
   
   
   # renderTable() that prints the data to the second tab
@@ -200,7 +141,7 @@ function(input, output, session) {
   output$CAM<- renderDataTable(
     options = list(pageLength = 10, autoWidth = FALSE),
     {
-
+      
       t<- as.data.frame(matrix(nrow = length(list(values$data)), ncol = 7))
       colnames(t)<- c("Data set","n", "log data", "Central dose", "SE abs.", "OD (%)", "OD error (%)")
       res<- lapply(list(values$data), function(x) { calc_CentralDose(x, verbose = FALSE, plot = FALSE) })
