@@ -3,12 +3,14 @@
 function(input, output, session) {
   
   # input data (with default)
-  values <- reactiveValues(data_primary = ExampleData.CW_OSL_Curve)
+  values <- reactiveValues(data_primary = ExampleData.CW_OSL_Curve,
+                           args = NULL,
+                           results = NULL)
   
   # check and read in file (DATA SET 1)
   observeEvent(input$file, {
     inFile<- input$file
-  
+    
     if(is.null(inFile)) 
       return(NULL) # if no file was uploaded return NULL
     
@@ -24,10 +26,10 @@ function(input, output, session) {
   })
   
   observeEvent(input$fitCWsigma, {
-      # restore default values (Durcan and Duller, 2011)
-      Map(function(id, val) {
-        updateNumericInput(session, id, value = val)
-      }, c("cs1base", "cs1exp", "cs2base", "cs2exp"), c(2.60, 17, 4.28, 18))
+    # restore default values (Durcan and Duller, 2011)
+    Map(function(id, val) {
+      updateNumericInput(session, id, value = val)
+    }, c("cs1base", "cs1exp", "cs2base", "cs2exp"), c(2.60, 17, 4.28, 18))
   })
   
   observeEvent(input$table_in_primary, {
@@ -58,9 +60,9 @@ function(input, output, session) {
     updateSliderInput(session, "L3", max = nrow(values$data_primary))
   })
   
-  output$main_plot <- renderPlot({
-    
-    pargs <- list(
+  
+  observe({
+    values$args <- list(
       # calc_FastRatio arguments
       object = values$data_primary[input$deadchannels[1]:input$deadchannels[2], ],
       stimulation.power = input$stimpow,
@@ -81,61 +83,61 @@ function(input, output, session) {
       cex = input$cex,
       xlab = input$xlab,
       ylab = input$ylab,
-      log = ""
+      log = paste0("", ifelse(input$logx, "x", ""), ifelse(input$logy, "y", ""))
     )
     
-    if (input$logx)
-      pargs$log <- paste0(pargs$log, "x")
-    if (input$logy)
-      pargs$log <- paste0(pargs$log, "y")
-    
     if (input$overrideL2)
-      pargs <- modifyList(pargs, list(Ch_L2 = input$L2))
+      values$args <- modifyList(isolate(values$args), list(Ch_L2 = input$L2))
     if (input$overrideL3)
-      pargs <- modifyList(pargs, list(Ch_L3 = range(as.numeric(input$L3))))
-    
-    results <- do.call(calc_FastRatio, pargs)
-    
-    # update numeric input with photoionisation cross-sections calculated
-    # by fit_CWCurve()
-    if (input$fitCWsigma) {
-      updateNumericInput(session, "cs1base",
-                         value = as.numeric(strsplit(as.character(results@data$summary$sigmaF), "e-")[[1]][1]))
-      updateNumericInput(session, "cs1exp",
-                         value = as.numeric(strsplit(as.character(results@data$summary$sigmaF), "e-")[[1]][2]))
-      updateNumericInput(session, "cs2base",
-                         value = as.numeric(strsplit(as.character(results@data$summary$sigmaM), "e-")[[1]][1]))
-      updateNumericInput(session, "cs2exp",
-                         value = as.numeric(strsplit(as.character(results@data$summary$sigmaM), "e-")[[1]][2]))
-    }
-    
-    # Render numeric results in a data table
-    output$results <- renderUI({
-      res <- get_RLum(results)
-      HTML(paste0(
-        tags$b("Fast ratio: "), signif(res$fast.ratio, 2), " &plusmn; ", signif(res$fast.ratio.se, 2),
-        tags$i("(", signif(res$fast.ratio.rse, 2), "% rel. error)"), tags$br(), tags$br(),
-        
-        tags$b("  Time (s) | Channel | Counts:"), tags$br(),
-        tags$b("L1: "), signif(res$t_L1, 2), " / ", res$Ch_L1, " / ", signif(res$Cts_L1, 2),  tags$br(),
-        tags$b("L2: "), signif(res$t_L2, 2), " / ", res$Ch_L2, " / ", signif(res$Cts_L2, 2),  tags$br(),
-        tags$b("L3 start: "), signif(res$t_L3_start, 2), " / ", res$Ch_L3_start, " /", tags$br(),
-        tags$b("L3 end: "), signif(res$t_L3_end, 2), " / ", res$Ch_L3_end, " / ", signif(res$Cts_L3, 2)
-      ))
-    })
-    
-    
+      values$args <- modifyList(isolate(values$args), list(Ch_L3 = range(as.numeric(input$L3))))
+  })
+  
+  output$main_plot <- renderPlot({
+    values$results <- do.call(calc_FastRatio, values$args)
+  })
+  
+  # update numeric input with photoionisation cross-sections calculated
+  # by fit_CWCurve()
+  observeEvent(values$results, {
+  if (input$fitCWsigma) {
+    updateNumericInput(session, "cs1base",
+                       value = as.numeric(strsplit(as.character(values$results@data$summary$sigmaF), "e-")[[1]][1]))
+    updateNumericInput(session, "cs1exp",
+                       value = as.numeric(strsplit(as.character(values$results@data$summary$sigmaF), "e-")[[1]][2]))
+    updateNumericInput(session, "cs2base",
+                       value = as.numeric(strsplit(as.character(values$results@data$summary$sigmaM), "e-")[[1]][1]))
+    updateNumericInput(session, "cs2exp",
+                       value = as.numeric(strsplit(as.character(values$results@data$summary$sigmaM), "e-")[[1]][2]))
+  }
+  })
+  
+  # Render numeric results in a data table
+  output$results <- renderUI({
+    res <- get_RLum(values$results)
+    HTML(paste0(
+      tags$b("Fast ratio: "), signif(res$fast.ratio, 2), " &plusmn; ", signif(res$fast.ratio.se, 2),
+      tags$i("(", signif(res$fast.ratio.rse, 2), "% rel. error)"), tags$br(), tags$br(),
+      
+      tags$b("  Time (s) | Channel | Counts:"), tags$br(),
+      tags$b("L1: "), signif(res$t_L1, 2), " / ", res$Ch_L1, " / ", signif(res$Cts_L1, 2),  tags$br(),
+      tags$b("L2: "), signif(res$t_L2, 2), " / ", res$Ch_L2, " / ", signif(res$Cts_L2, 2),  tags$br(),
+      tags$b("L3 start: "), signif(res$t_L3_start, 2), " / ", res$Ch_L3_start, " /", tags$br(),
+      tags$b("L3 end: "), signif(res$t_L3_end, 2), " / ", res$Ch_L3_end, " / ", signif(res$Cts_L3, 2)
+    ))
+  })
+  
+  observe({
     # nested renderText({}) for code output on "R plot code" tab
     code.output <- callModule(RLumShiny:::printCode, "printCode", n_input = 1, 
-                              fun = "calc_FastRatio(data,", args = pargs)
+                              fun = "calc_FastRatio(data,", args = values$args)
     
     output$plotCode<- renderText({
       code.output
     })##EndOf::renderText({})
     
     callModule(RLumShiny:::exportCodeHandler, "export", code = code.output)
-    callModule(RLumShiny:::exportPlotHandler, "export", fun = "calc_FastRatio", args = pargs)
-    
+    callModule(RLumShiny:::exportPlotHandler, "export", fun = "calc_FastRatio", args = values$args)
   })
+  
   
 }##EndOf::function(input, output)
