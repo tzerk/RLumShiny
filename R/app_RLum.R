@@ -17,7 +17,8 @@
 #' Cosmic Dose Rate \tab *cosmicdose*  \tab [`calc_CosmicDoseRate`] \cr
 #' CW Curve Transformation \tab *transformCW* \tab [`CW2pHMi`], [`CW2pLM`], [`CW2pLMi`], [`CW2pPMi`] \cr
 #' Filter Combinations \tab *filter* \tab [`plot_FilterCombinations`] \cr
-#' Fast Ratio \tab *fastratio* \tab [`calc_FastRatio`]
+#' Fast Ratio \tab *fastratio* \tab [`calc_FastRatio`] \cr
+#' Fading Correction \tab *fading* \tab [`analyse_FadingMeasurement`], [`calc_FadingCorr`]
 #' }
 #' 
 #' The `app_RLum()` function is just a wrapper for [`runApp`]. 
@@ -51,6 +52,8 @@
 #' app_RLum("cosmicdose")
 #' app_RLum("transformCW")
 #' app_RLum("filter")
+#' app_RLum("fastratio")
+#' app_RLum("fading")
 #' }
 #' 
 #' @md
@@ -65,7 +68,8 @@ app_RLum <- function(app = NULL, ...) {
                   "radialplot",
                   "transformCW",
                   "filter",
-                  "fastratio")
+                  "fastratio",
+                  "fading")
   
   if (is.null(app)) {
     

@@ -5,6 +5,13 @@ RLumShiny 0.2.1 (Release date: 2017-xx-xx)
   and Duller (2011). Base function: `Luminescence::calc_FastRatio()`.
   Keyword for `app_RLum()`: 'fastratio'.
   
+* New application to estimate the g-value from a table of Lx/Tx values with 
+  corresponding waiting times since irradiation and to apply a fading 
+  after Huntley & Lamothe (2001). 
+  Base functions: `Luminescence::analyse_FadingMeasurement()`, 
+  `Luminescence::calc_FadingCorr()`.
+  Keyword for `app_RLum()`: 'fading'.
+  
 * Output panel showing the R code to reproduce the plot/calculation is now
   properly responsive and updates as soon as input widgets change.
 
