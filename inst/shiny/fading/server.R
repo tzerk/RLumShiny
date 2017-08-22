@@ -144,7 +144,8 @@ function(input, output, session) {
         tags$b("g-value: "), signif(gval$FIT, 3), " &plusmn; ", signif(gval$SD, 3), " %/decade", tags$br(),
         tags$b("g-value"), tags$sub("2days"), ": ", signif(gval$G_VALUE_2DAYS, 3), " &plusmn; ", signif(gval$G_VALUE_2DAYS.ERROR, 3), " %/decade", tags$br(),
         tags$b("t"), tags$sub("c"), ": ", gval$TC, tags$br(),
-        " &rho;': ", signif(rho$MEAN, 3), " &plusmn; ", signif(rho$SD, 3), tags$br()
+        " &rho;': ", signif(rho$MEAN, 3), " &plusmn; ", signif(rho$SD, 3), tags$br(),
+        " &raquo; log10(&rho;'): ", signif(log10(rho$MEAN), 3), " &plusmn; ", signif(rho$SD / (rho$MEAN * log(10, base = exp(1))), 3)
       ))
     
   })
