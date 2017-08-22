@@ -4,6 +4,13 @@ RLumShiny 0.2.1 (Release date: 2017-xx-xx)
 * New application to calculate the fast ratio of CW-OSL curves after Durcan
   and Duller (2011). Base function: `Luminescence::calc_FastRatio()`.
   Keyword for `app_RLum()`: 'fastratio'.
+  
+* Output panel showing the R code to reproduce the plot/calculation is now
+  properly responsive and updates as soon as input widgets change.
+
+* Internal: server logic of most applications simplified.
+  
+* Several minor bugfixes.
 
 RLumShiny 0.2.0 (Release date: 2017-06-26)
 ==============
