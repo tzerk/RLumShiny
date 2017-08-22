@@ -5,7 +5,8 @@ function(input, output, session) {
   # input data (with default)
   values <- reactiveValues(data_primary = ExampleData.CW_OSL_Curve,
                            tdata = NULL,
-                           args = NULL)
+                           args = NULL,
+                           pargs = NULL)
   
   # check and read in file (DATA SET 1)
   observeEvent(input$file, {
@@ -96,7 +97,7 @@ function(input, output, session) {
       return()
     }
     
-    pargs <- list(values$tdata[,1], values$tdata[ ,2], 
+    values$pargs <- list(values$tdata[,1], values$tdata[ ,2], 
                   log = paste0(ifelse(input$logx, "x", ""), ifelse(input$logy, "y", "")),
                   main = input$main,
                   xlab = input$xlab,
@@ -107,7 +108,7 @@ function(input, output, session) {
                   bty = "n")
     
     par(mar=c(5,4,4,5)+.1, cex = input$cex)
-    do.call(plot, pargs)
+    do.call(plot, values$pargs)
     
     if (input$showCW) {
       par(new = TRUE)
@@ -130,6 +131,9 @@ function(input, output, session) {
       contentType = "text"
     )#EndOf::dowmloadHandler()
     
+  })
+  
+  observe({
     # nested renderText({}) for code output on "R plot code" tab
     code.output <- callModule(RLumShiny:::printCode, "printCode", n_input = 1, 
                               fun = paste0(input$method, "(data,"), args = values$args)
@@ -139,7 +143,7 @@ function(input, output, session) {
     })##EndOf::renderText({})
     
     callModule(RLumShiny:::exportCodeHandler, "export", code = code.output)
-    callModule(RLumShiny:::exportPlotHandler, "export", fun = "plot", args = pargs)
+    callModule(RLumShiny:::exportPlotHandler, "export", fun = "plot", args = values$pargs)
   })
   
   output$dataset <- renderDataTable({
