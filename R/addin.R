@@ -52,7 +52,12 @@ RLumShinyAddin <- function() {
     "fastratio" = list(title = "Calculate Fast Ratio",
                          keyword = "fastratio",
                          category = "calc",
-                         description = "Calculate the fast ratio of quartz CW-OSL single grain or single aliquot curves after Durcan & Duller (2011).")
+                         description = "Calculate the fast ratio of quartz CW-OSL single grain or single aliquot curves after Durcan & Duller (2011)."),
+    
+    "fading" = list(title = "Estimate g-value and Fading Correction",
+                    keyword = "fading",
+                    category = "calc",
+                    description = "Estimate the g-value from a table of Lx/Tx values with corresponding times since irradiation and apply a fading correction after Huntley & Lamothe (2001).")
     
   )
   
