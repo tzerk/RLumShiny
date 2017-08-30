@@ -49,6 +49,7 @@ The RLumShiny package provides a single function from which all apps can be star
 | CW Curve Transformation | transformCW | `CW2pHMi`, `CW2pLM`, `CW2pLMi`, `CW2pPMi` |
 | Plot Filter Combinations | filter | `plot_FilterCombinations` |
 | Calculate Fast Ratio | fastratio | `calc_FastRatio` |
+| Fading measurement analysis and correction | fading | `analyse_FadingMeasurement`, `calc_FadingCorr` |
 
 The `app_RLum()` function is just a wrapper for `shiny::runApp()`. Via the `...` argument further arguments can be directly passed to `shiny::runApp()`. See `?shiny::runApp` for further details on valid arguments.
 
