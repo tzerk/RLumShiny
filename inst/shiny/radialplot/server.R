@@ -2,11 +2,16 @@
 ## MAIN FUNCTION
 function(input, output, session) {
   
+  
   # input data (with default)
   values <- reactiveValues(data_primary = ExampleData.DeValues$CA1,
                            data_secondary = setNames(as.data.frame(matrix(NA_real_, nrow = 5, ncol = 2)), c("x", "y")),
                            data = NULL,
                            args = NULL)
+  
+  session$onSessionEnded(function() {
+    stopApp()
+  })
   
   # check and read in file (DATA SET 1)
   observeEvent(input$file1, {

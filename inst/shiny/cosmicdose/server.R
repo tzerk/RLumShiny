@@ -2,6 +2,10 @@
 ## MAIN FUNCTION
 function(input, output, session) {
   
+  session$onSessionEnded(function() {
+    stopApp()
+  })
+  
   # function to convert coordinates to degree decimal format
   coord_conv<- function(x, id) {
     if(id=="degDecMin") {

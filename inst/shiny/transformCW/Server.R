@@ -2,11 +2,16 @@
 ## MAIN FUNCTION
 function(input, output, session) {
   
+  
   # input data (with default)
   values <- reactiveValues(data_primary = ExampleData.CW_OSL_Curve,
                            tdata = NULL,
                            args = NULL,
                            pargs = NULL)
+  
+  session$onSessionEnded(function() {
+    stopApp()
+  })
   
   # check and read in file (DATA SET 1)
   observeEvent(input$file, {

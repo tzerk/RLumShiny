@@ -5,6 +5,10 @@ function(input, output, session) {
   # input data (with default)
   values <- reactiveValues(data = ExampleData.DeValues$CA1, args = NULL)
   
+  session$onSessionEnded(function() {
+    stopApp()
+  })
+  
   # check and read in file (DATA SET 1)
   observeEvent(input$file1, {
     inFile<- input$file1

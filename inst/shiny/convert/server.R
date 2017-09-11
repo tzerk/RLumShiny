@@ -2,8 +2,13 @@
 ## MAIN FUNCTION
 function(input, output, session) {
   
+  
   # input data (with default)
   values <- reactiveValues(data = NULL, data_filtered = NULL, positions = NULL, types = NULL)
+  
+  session$onSessionEnded(function() {
+    stopApp()
+  })
   
   # check and read in file (DATA SET 1)
   observeEvent(input$import, {

@@ -10,6 +10,10 @@ function(input, output, session) {
                            results = NULL,
                            results_corr = NULL)
   
+  session$onSessionEnded(function() {
+    stopApp()
+  })
+  
   # check and read in file (DATA SET 1)
   observeEvent(input$file, {
     inFile<- input$file
