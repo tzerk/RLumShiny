@@ -4,7 +4,7 @@ function(input, output, session) {
   
   
   # input data (with default)
-  values <- reactiveValues(data_primary = ExampleData.DeValues$CA1,
+  values <- reactiveValues(data_primary = if ("startData" %in% names(.GlobalEnv)) startData else ExampleData.DeValues$CA1,
                            data_secondary = setNames(as.data.frame(matrix(NA_real_, nrow = 5, ncol = 2)), c("x", "y")),
                            data = NULL,
                            args = NULL)

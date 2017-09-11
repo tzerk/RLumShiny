@@ -3,7 +3,8 @@
 function(input, output, session) {
   
   # input data (with default)
-  values <- reactiveValues(data = ExampleData.DeValues$CA1, args = NULL)
+  values <- reactiveValues(data = if ("startData" %in% names(.GlobalEnv)) startData else ExampleData.DeValues$CA1, 
+                           args = NULL)
   
   session$onSessionEnded(function() {
     stopApp()

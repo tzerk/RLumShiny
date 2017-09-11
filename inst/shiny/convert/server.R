@@ -4,7 +4,10 @@ function(input, output, session) {
   
   
   # input data (with default)
-  values <- reactiveValues(data = NULL, data_filtered = NULL, positions = NULL, types = NULL)
+  values <- reactiveValues(data = NULL, 
+                           data_filtered = NULL, 
+                           positions = NULL, 
+                           types = NULL)
   
   session$onSessionEnded(function() {
     stopApp()

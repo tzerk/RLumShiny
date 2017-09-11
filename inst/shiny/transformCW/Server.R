@@ -4,7 +4,7 @@ function(input, output, session) {
   
   
   # input data (with default)
-  values <- reactiveValues(data_primary = ExampleData.CW_OSL_Curve,
+  values <- reactiveValues(data_primary = if ("startData" %in% names(.GlobalEnv)) startData else ExampleData.CW_OSL_Curve,
                            tdata = NULL,
                            args = NULL,
                            pargs = NULL)
