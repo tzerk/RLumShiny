@@ -12,6 +12,11 @@ RLumShiny 0.2.1 (Release date: 2017-xx-xx)
   `Luminescence::calc_FadingCorr()`.
   Keyword for `app_RLum()`: 'fading'.
   
+* New application to fit eq. 1 of Sohbati et al. (2012a) or eq. 12 of 
+  Sohbati et al. (2012b) to OSL surface exposure data.
+  Base function: `Luminescence::fit_SurfaceExposure()`.
+  Keyword for `app_RLum()`: 'surfaceexposure'.
+  
 * Output panel showing the R code to reproduce the plot/calculation is now
   properly responsive and updates as soon as input widgets change.
 

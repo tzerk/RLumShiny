@@ -54,6 +54,7 @@
 #' app_RLum("filter")
 #' app_RLum("fastratio")
 #' app_RLum("fading")
+#' app_RLum("surfaceexposure")
 #' }
 #' 
 #' @md
@@ -69,7 +70,8 @@ app_RLum <- function(app = NULL, ...) {
                   "transformCW",
                   "filter",
                   "fastratio",
-                  "fading")
+                  "fading",
+                  "surfaceexposure")
   
   if (is.null(app)) {
     
