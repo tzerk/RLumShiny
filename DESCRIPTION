@@ -29,8 +29,8 @@ License: GPL-3
 Depends:
     R (>= 3.3.2)
 Imports:
-    Luminescence (>= 0.7.3),
-    shiny (>= 0.14.0),
+    Luminescence (>= 0.8.0),
+    shiny (>= 1.0.5),
     rhandsontable (>= 0.3.4),
     data.table (>= 1.10.4),
     googleVis (>= 0.6.2),
