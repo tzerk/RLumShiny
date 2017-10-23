@@ -158,8 +158,9 @@ function(request) {
                                         fluidRow(
                                           column(width = 6,
                                                  selectInput(inputId = "line_col", label = "Fitting line color",
-                                                             selected = "#428bca",
-                                                             choices = list("Black" = "black",
+                                                             selected = "default",
+                                                             choices = list("Default" = "default",
+                                                                            "Black" = "black",
                                                                             "Grey" = "grey50",
                                                                             "Red" = "#b22222", 
                                                                             "Green" = "#6E8B3D", 

@@ -137,7 +137,15 @@ function(input, output, session) {
         age <- NULL
     }
     
-    values$args <- list(
+    # fitting line color
+    if (input$line_col == "custom")
+      line_col <- input$jscol
+    else if (input$line_col == "default")
+      line_col <- NULL
+    else
+      line_col <- input$line_col
+      
+    args <- list(
       data = values$data_used,
       age = age,
       weights = if (input$global_fit) FALSE else input$weights,
@@ -151,7 +159,7 @@ function(input, output, session) {
       cex = input$cex,
       legend = input$legend,
       main = input$main,
-      line_col = ifelse(input$line_col == "custom", input$jscol2, input$line_col),
+      line_col = line_col,
       line_lty = as.numeric(input$lty),
       line_lwd = as.numeric(input$lwd),
       xlab = input$xlab,
@@ -162,6 +170,11 @@ function(input, output, session) {
       xlim = if (!input$coord_flip) input$xlim else input$ylim,
       ylim = if (!input$coord_flip) input$ylim else rev(input$xlim))
     
+    # sanitise final list by removing all NULL elements
+    args[sapply(args, is.null)] <- NULL
+    
+    # return
+    values$args <- args
   })
   
   observe({
