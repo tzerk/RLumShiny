@@ -29,7 +29,7 @@ License: GPL-3
 Depends:
     R (>= 3.3.2)
 Imports:
-    Luminescence (>= 0.8.0),
+    Luminescence (>= 0.7.3),
     shiny (>= 1.0.5),
     rhandsontable (>= 0.3.4),
     data.table (>= 1.10.4),
