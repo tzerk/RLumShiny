@@ -8,7 +8,7 @@ library(rhandsontable)
 data("ExampleData.SurfaceExposure")
 tmp <- Map(function(x, i) {
   x$error <- 0.001
-  x$group <- as.factor(i)
+  x$group <- i
   return(x)
 }, ExampleData.SurfaceExposure$set_1, LETTERS[1:4])
 

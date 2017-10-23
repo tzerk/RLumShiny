@@ -27,9 +27,9 @@ function(input, output, session) {
     
     if (ncol(data) == 2) {
       data$error <- 0.0001
-      data$group <- as.factor("A")
+      data$group <- "A"
     } else if (ncol(data) == 3) {
-      data$group <- as.factor("A")
+      data$group <- "A"
     }
     
     colnames(data) <- c("x", "y", "error", "group")
