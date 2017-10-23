@@ -179,7 +179,9 @@ function(input, output, session) {
   
   ## MAIN ----
   output$main_plot <- renderPlot({
-    values$results <- do.call(fit_SurfaceExposure, values$args)
+    tryCatch({
+      values$results <- do.call(fit_SurfaceExposure, values$args)
+    }, error = function(e) print(e))
   })
   
   output$console <- renderText({
