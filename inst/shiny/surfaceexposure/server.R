@@ -114,7 +114,8 @@ function(input, output, session) {
         if (length(NA_index) > 0)
           data <- data[-NA_index, ]
         
-        data$group <- droplevels(data$group)
+        if (is.factor(data$group))
+          data$group <- droplevels(data$group)
         
         data <- split(data, data$group)
         # remove any list element with data.frames with 0 rows
@@ -196,7 +197,6 @@ function(input, output, session) {
     } else {
       res <- as.data.frame(get_RLum(values$results))
       
-      print(str(res))
       HTML(paste0(
         tags$b("Ages (a): "), paste(res$age, collapse = ", "), tags$em(" (fixed)"), tags$br(), 
         tags$b("sigmaPhi: "), signif(unique(res$sigmaphi), 3), " &plusmn; ", signif(unique(res$sigmaphi_error), 3), tags$em(ifelse(input$override_sigmaphi, "(fixed)", "")), tags$br(),
