@@ -239,7 +239,7 @@ function(request) {
                                                     value = c(-0.1, 1.1), step = 0.1)
                                ),##EndOf::Tab_4
                                
-                               RLumShiny:::exportTab("export", filename = "surfaceExposure"),
+                               RLumShiny:::exportTab("export", filename = "surfaceexposure"),
                                RLumShiny:::aboutTab("about", "surfaceExposure")
                    )##EndOf::tabsetPanel
       ),##EndOf::sidebarPanel
