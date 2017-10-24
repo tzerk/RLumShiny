@@ -19,15 +19,24 @@ function(request) {
                                                   label = strong("Primary data set"),
                                                   accept="text/plain, .csv, text/csv"),
                                         # rhandsontable input/output
-                                        rHandsontableOutput(outputId = "table_in_primary")
+                                        rHandsontableOutput(outputId = "table_in_primary"),
+                                        helpText(HTML(paste0(
+                                          tags$b("NOTE: "), "The uploaded file must have at least two columns (<i>Depth, Signal</i>). ",
+                                          "If the file contains three columns, it is automatically assumed that the third column ",
+                                          "is the error on the signal. The fourth column (<i>Group</i>) is only required for global fitting ",
+                                          "of multiple data sets.")
+                                        ))
                                         
                                ),##EndOf::Tab_1
                                
                                tabPanel("Parameters",
                                         checkboxInput(inputId = "global_fit", "Global fit", TRUE),
+                                        conditionalPanel(condition = "input.global_fit == true",
+                                                         helpText(HTML(paste(tags$b("NOTE:"), "Weighting is not available for global fitting.")))
+                                        ),
                                         uiOutput("global_fit_ages"),
                                         conditionalPanel(condition = "input.global_fit == false",
-                                                         checkboxInput(inputId = "weights", "Error weighted fitting", FALSE)
+                                                         checkboxInput(inputId = "weights", HTML("Error weighted fitting (1/&sigma;<sup>2</sup>)"), FALSE)
                                         ),
                                         hr(),
                                         conditionalPanel(
@@ -38,8 +47,7 @@ function(request) {
                                             column(10,
                                                    numericInput(inputId = "age", "Age (a)", value = 1000, min = 0)
                                             )
-                                          ),
-                                          hr()
+                                          )
                                         ),
                                         fluidRow(
                                           column(1,
@@ -47,29 +55,36 @@ function(request) {
                                           column(10,
                                                  fluidRow(
                                                    column(width = 6,
-                                                          numericInput(inputId = "sigmaphi_base", "SigmaPhi (base)", value = 5.0, step = 0.1)
+                                                          numericInput(inputId = "sigmaphi_base", "\\( \\overline{\\sigma\\varphi_0} \\) (base)", value = 5.0, step = 0.1)
                                                    ),
                                                    column(width = 6,
-                                                          numericInput(inputId = "sigmaphi_exp", "SigmaPhi (exponent)", value = 10, step = 1)
+                                                          numericInput(inputId = "sigmaphi_exp", "\\( \\overline{\\sigma\\varphi_0} \\) (exponent)", value = 10, step = 1)
                                                    )
                                                  )
                                           )
                                         ),
-                                        hr(),
                                         fluidRow(
                                           column(1,
                                                  checkboxInput(inputId = "override_mu", "", value = TRUE)),
                                           column(10,
-                                                 numericInput(inputId = "mu", "mu", value = 0.90, step = 0.01)
+                                                 numericInput(inputId = "mu", "\\( \\mu \\)", value = 0.90, step = 0.01)
                                           )
                                         )
                                ),
                                
                                tabPanel("Dose rate",
                                         checkboxInput("doserate", "Consider dose rate", FALSE),
-                                        numericInput("ddot", "Dose rate, D (Gy/ka)", value = 1.5, min = 0, step = 0.01),
-                                        numericInput("d0", "Characteristic saturation dose, D0 (Gy)", value = 40, min = 0, step = 1),
-                                        hr()
+                                        helpText(HTML(paste(
+                                          "This will fit eq. 12 in Sohbati et al. (2012b) to the data. <b>Note</b>, however,",
+                                          "that here the dose rate is assumed constant, i.e., it is independent of sample depth."
+                                        ))),
+                                        withMathJax(),
+                                        helpText("$$L(x) = \\frac{\\overline{\\sigma\\varphi _0}e^{-\\mu x}e^{-t[\\overline{\\sigma\\varphi _0}e^{-\\mu x} + \\frac{\\dot{D}}{D_0}]}+ \\frac{\\dot{D}}{D_0}}
+{\\overline{\\sigma\\varphi _0}e^{-\\mu x} + \\frac{\\dot{D}}{D_0}}$$"),
+                                        numericInput("ddot", "Dose rate, \\(\\dot{D} (Gy/ka)\\)", value = 1.5, min = 0, step = 0.01),
+                                        numericInput("d0", "Characteristic saturation dose, \\(D_0\\) (Gy)", value = 40, min = 0, step = 1),
+                                        hr(),
+                                        helpText(HTML(paste(tags$b("Reference:"), "Sohbati, R., Jain, M., Murray, A.S., 2012b. Surface exposure dating of non-terrestial bodies using optically stimulated luminescence: A new method. Icarus 221, 160-166.")))
                                ),
                                
                                tabPanel("Plot", 
