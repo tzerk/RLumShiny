@@ -36,7 +36,8 @@ Imports:
     googleVis (>= 0.6.2),
     shinydashboard (>= 0.5.3),
     readxl (>= 1.0.0),
-    DT (>= 0.4)
+    DT (>= 0.4),
+    knitr (>= 1.20)
 URL: https://tzerk.github.io/RLumShiny/
 BugReports: https://github.com/tzerk/RLumShiny/issues
 Collate:
