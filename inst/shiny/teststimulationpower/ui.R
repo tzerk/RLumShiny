@@ -2,7 +2,7 @@
 ## Title:   Test Stimulation Power App
 ## Authors: Sebastian Kreutzer, IRAMAT-CRP2A, Universite Bordeaux Montaigne (France)
 ## Contact: sebastian.kreutzer@u-bordeaux-montainge.fr
-## Date:    2017-11-22
+## Initial date: 2017-11-22
 ##+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 fluidPage(
   tags$head(tags$style(".centerAlign{text-align: center;}")),
@@ -26,7 +26,6 @@ fluidPage(
                     actionButton(inputId = "Display", "Update curves!", col = "green", icon = icon("refresh")),
                     actionButton(inputId = "ClearButton", "Reset!")
                     , align = "center")
-
 
           ),
 
