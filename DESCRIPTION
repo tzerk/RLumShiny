@@ -5,7 +5,7 @@ Version: 0.2.1
 Date: 2017-07-31
 Author: Christoph Burow [aut, cre],
     Urs Tilmann Wolpert [aut],
-    Sebastian Kreutzer [aut],
+    Sebastian Kreutzer [aut] (<https://orcid.org/0000-0002-0734-2199>),
     R Luminescence Package Team [ctb],
     Jan Odvarko [cph] (jscolor.js in www/jscolor),
     AnalytixWare [cph] (ShinySky package),
@@ -13,7 +13,7 @@ Author: Christoph Burow [aut, cre],
 Authors@R: c(
     person("Christoph", "Burow", role = c("aut", "cre"), email = "christoph.burow@uni-koeln.de"),
     person("Urs Tilmann", "Wolpert", role = "aut"),
-    person("Sebastian", "Kreutzer", role = "aut"),
+    person("Sebastian", "Kreutzer", role = "aut", comment = c(ORCID = "0000-0002-0734-2199")),
     person(family = "R Luminescence Package Team", role = "ctb"),
     person("Jan", "Odvarko", role = "cph", comment = "jscolor.js in www/jscolor"),
     person(family = "AnalytixWare", role = "cph", comment = "ShinySky package" ),
@@ -27,7 +27,7 @@ Description: A collection of 'shiny' applications for the R package
     contains the 'jscolor.js' library with a custom 'shiny' output binding.
 License: GPL-3
 Depends:
-    R (>= 3.3.2)
+    R (>= 3.4.0)
 Imports:
     Luminescence (>= 0.7.3),
     shiny (>= 1.0.5),
@@ -35,7 +35,9 @@ Imports:
     data.table (>= 1.10.4),
     googleVis (>= 0.6.2),
     shinydashboard (>= 0.5.3),
-    readxl (>= 1.0.0)
+    readxl (>= 1.0.0),
+    DT (>= 0.4),
+    knitr (>= 1.20)
 URL: https://tzerk.github.io/RLumShiny/
 BugReports: https://github.com/tzerk/RLumShiny/issues
 Collate:
