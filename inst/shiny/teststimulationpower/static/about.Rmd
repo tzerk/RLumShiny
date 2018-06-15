@@ -2,11 +2,11 @@
 
 This software was developed for the IRAMAT-CRP2A, Université Bordeaux Montaigne (France) to test the stimulation power of the Freiberg Instruments *lexsyg research* and *lexsyg SMART* readers used in the laboratory.
 
-This application only works with XSYG-files and the shown output is based on results returned by the photodiodes of the OSL unit. The application assumes that the simulation power output does not change from curve to curve during SAR CW-OSL measurements. Any variation beyond a specific threshold is detected as 'mismatch'.
+This application only works with XSYG-filesand the shown output is based on results returned by the photodiodes of the OSL unit. The application assumes that the simulation power output does not change from curve to curve during SAR CW-OSL measurements. Any variation beyond a specific threshold is detected as 'mismatch'.
 
 *Please note that if a mismatch was detected, the results can only give you an indication of where to look for and does not free you from checking your measurement results.*
 
-**Version**: 0.2.2 [2018-06-12]
+**Version**: 0.2.3 [2018-06-15]
 
 **Author**: Sebastian Kreutzer, IRAMAT-CRP2A, UMR 5060, CNRS - Université Bordeaux Montaigne (France)
 

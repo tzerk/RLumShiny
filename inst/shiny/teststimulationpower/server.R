@@ -2,26 +2,25 @@
 ## Title:   Test Stimulation Power App
 ## Authors: Sebastian Kreutzer, IRAMAT-CRP2A, Universite Bordeaux Montaigne (France)
 ## Contact: sebastian.kreutzer@u-bordeaux-montainge.fr
-## Date:    2017-11-22
+## Initial date:    2017-11-22
 ##+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 shinyServer(function(input, output, session) {
 
-    ##clear
+    # TABPANEL Import ----------------------------------------------------------------------------
+    ##reset
     observeEvent(input$ClearButton, {
         file_data <- NULL
         file_info <- NULL
 
         ##clear plot and text
-        output$curves <- NULL
-        output$text <- NULL
-        output$df <- NULL
+        output$curves <- renderPlot({NULL})
+        output$text <- renderText({NULL})
+        output$df <- renderDataTable(NULL)
         updateRadioButtons(session, inputId = "SelectedCurves",
                            choices = "none")
 
     })
 
-
-    # Import --------------------------------------------------------------------------------------
     ##import data
     observeEvent(input$file_data, {
 
