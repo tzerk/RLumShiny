@@ -1,8 +1,8 @@
 # Check times
 
-|package      |version | check_time|
-|:------------|:-------|----------:|
-|Luminescence |0.7.4   |      249.4|
-|treespace    |1.0.0   |      190.5|
+|   |package      |version | check_time|
+|:--|:------------|:-------|----------:|
+|2  |treespace    |1.1.3   |      345.6|
+|1  |Luminescence |0.8.5   |      311.2|
 
 

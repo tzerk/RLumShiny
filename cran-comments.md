@@ -1,31 +1,16 @@
 ## Test environments
-* local Windows 10 x64 install, R-devel (2017-06-24 r72853)
-* Windows Server 2012 R2 x64 (build 9600) (on AppVeyor CI), R 3.4.0 Patched (2017-06-17 r72808)
-* Ubuntu 12.04 (on Travis-CI), R 3.4.0
+* local Windows 10 x64 install, R 3.5.0 (2018-04-23 r74626)
+* Windows Server 2012 R2 x64 (build 9600) (on AppVeyor CI), R 3.5.0 Patched (2018-06-13 r74898)
+* Ubuntu 14.04.5 LTS (on Travis-CI), R 3.5.0
 * win-builder (devel and release)
 
 ## CRAN Notes
 
-> Dependence on R version ‘3.3.2’ not with patchlevel 0 
-
-Fixed by setting the R dependency to 3.3.0
-
 ## R CMD check results
-There were no ERRORs or WARNINGs.
-
-There was 1 NOTE:
-
-* checking CRAN incoming feasibility ... NOTE
-Maintainer: 'Christoph Burow <christoph.burow@uni-koeln.de>'
-
-Possibly mis-spelled words in DESCRIPTION:
-  chronometric (25:14)
-  tooltip (26:43)
-  
-These are spelled correctly.
+There were no ERRORs, WARNINGs or NOTEs.
 
 ## Downstream dependencies
 I have also run R CMD check on downstream dependencies of RLumShiny using
 devtools::revdep_check() (https://github.com/tzerk/RLumShiny/tree/master/revdep).
 
-All packages passed.
+All packages passed. There were two NOTEs, both unrelated to the dependency on RLumShiny.
