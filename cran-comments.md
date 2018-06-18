@@ -13,4 +13,4 @@ There were no ERRORs, WARNINGs or NOTEs.
 I have also run R CMD check on downstream dependencies of RLumShiny using
 devtools::revdep_check() (https://github.com/tzerk/RLumShiny/tree/master/revdep).
 
-All packages passed. There were two NOTEs, both unrelated to the dependency on RLumShiny.
+All packages passed. There were 0 problems and 2 NOTEs, both unrelated to the dependency on RLumShiny.
