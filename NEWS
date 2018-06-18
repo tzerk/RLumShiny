@@ -1,6 +1,11 @@
-RLumShiny 0.2.1 (Release date: 2017-xx-xx)
+RLumShiny 0.2.1 (Release date: 2018-06-18)
 ==============
 
+* New application that compares the OSL/IRSL stimulation power of measurements 
+  performed on Freiberg Instruments lexsyg devices to check the stability
+  of the stimulation power (Contributed by Sebastian Kreutzer).
+  Keyword for `app_RLum()`: 'teststimulationpower'.
+  
 * New application to calculate the fast ratio of CW-OSL curves after Durcan
   and Duller (2011). Base function: `Luminescence::calc_FastRatio()`.
   Keyword for `app_RLum()`: 'fastratio'.

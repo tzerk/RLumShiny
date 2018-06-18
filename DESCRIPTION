@@ -2,7 +2,7 @@ Package: RLumShiny
 Type: Package
 Title: 'Shiny' Applications for the R Package 'Luminescence'
 Version: 0.2.1
-Date: 2017-07-31
+Date: 2018-06-18
 Author: Christoph Burow [aut, cre],
     Urs Tilmann Wolpert [aut],
     Sebastian Kreutzer [aut] (<https://orcid.org/0000-0002-0734-2199>),
