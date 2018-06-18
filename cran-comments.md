@@ -5,6 +5,9 @@
 * win-builder (devel and release)
 
 ## CRAN Notes
+> Dependence on R version ‘3.3.2’ not with patchlevel 0 
+
+Fixed by setting the R dependency to 3.4.0
 
 ## R CMD check results
 There were no ERRORs, WARNINGs or NOTEs.
