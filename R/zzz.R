@@ -9,4 +9,7 @@
   if (x) return(x)
   Luminescence::sTeve()
   googleVis::renderGvis()
+  tmp <- DT::datatable(data.frame(1))
+  knitr::normal_print("")
+  rm(tmp)
 }
