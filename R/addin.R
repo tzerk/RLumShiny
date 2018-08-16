@@ -67,7 +67,12 @@ RLumShinyAddin <- function() {
     "teststimulationpower" = list(title = "Test OSL/IRSL Stimulation Power",
                              keyword = "teststimulationpower",
                              category = "misc",
-                             description = "Compares the OSL/IRSL stimulation power of measurements performed on Freiberg Instruments lexsyg devices and returns a message if a mismatch is detected, i.e. the stimulation power was not stable of the sequence.RLum")
+                             description = "Compares the OSL/IRSL stimulation power of measurements performed on Freiberg Instruments lexsyg devices and returns a message if a mismatch is detected, i.e. the stimulation power was not stable of the sequence.RLum"),
+    
+    "scalegamma" = list(title = "Gamma Dose Rate Scaling",
+                             keyword = "scalegamma",
+                             category = "calc",
+                             description = "Scale the gamma dose rate considering variations in soil radioactivity.")
 
   )
 
