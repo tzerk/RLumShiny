@@ -1,7 +1,11 @@
 RLumShiny 0.2.2 (Release date: 2018-xx-xx)
 ==============
 
-* No news yet.
+* New application that scales the gamma dose rate considering layer-to-layer
+  variations in soil radioactivity. Base function: `Luminescence::scale_GammaDose()`.
+  Keyword for `app_RLum()`: 'scalegamma'.
+  
+* Removed and updated deprecated links from the "About"-tab in all applications.
 
 
 RLumShiny 0.2.1 (Release date: 2018-06-18)
