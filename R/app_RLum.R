@@ -20,7 +20,7 @@
 #' Fast Ratio \tab *fastratio* \tab [`calc_FastRatio`] \cr
 #' Fading Correction \tab *fading* \tab [`analyse_FadingMeasurement`], [`calc_FadingCorr`] \cr
 #' Test Stimulation Power \tab *teststimulationpower* \tab  [`plot_RLum`] \cr
-#' Scale Gamma Dose Rate \tab *scalegamma* \tab [`scale_GammaDose`] \cr
+#' Scale Gamma Dose Rate \tab *scalegamma* \tab `scale_GammaDose` \cr
 #' RCarb app \tab *RCarb* \tab [RCarb::model_DoseRate]
 #' }
 #'
