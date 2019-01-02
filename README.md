@@ -51,11 +51,12 @@ The RLumShiny package provides a single function from which all apps can be star
 | Calculate Fast Ratio | fastratio | `calc_FastRatio` |
 | Fading measurement analysis and correction | fading | `analyse_FadingMeasurement`, `calc_FadingCorr` |
 | Test OSL/IRSL Stimulation Power | teststimulationpower | `plot_RLum` |
-| Scale Gamma Dose Rate* | scalegamma | `scale_GammaDose()` |
+| Scale Gamma Dose Rate*,† | scalegamma | `scale_GammaDose()` |
+| Model dose rate evolution in carbonate-rich samples* | RCarb | `RCarb::model_DoseRate` |
 
 The `app_RLum()` function is just a wrapper for `shiny::runApp()`. Via the `...` argument further arguments can be directly passed to `shiny::runApp()`. See `?shiny::runApp` for further details on valid arguments.
 
-\* Not yet available in the official CRAN release. Requires the development version (`@dev_0.9.0`-branch) of the `Luminescence` package.
+\* Not yet available in the official CRAN release. † Requires the development version (`@dev_0.9.0`-branch) of the `Luminescence` package.
 
 ## Extending Shiny
 
@@ -102,3 +103,4 @@ The RLumShiny package is licensed under the GPLv3. See these files in the main d
 
 * [RLumModel](https://github.com/R-Lum/RLumModel)
 * [Luminescence](https://github.com/R-Lum/Luminescence)
+* [RCarb](https://github.com/R-Lum/RCarb)
