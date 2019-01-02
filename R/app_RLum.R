@@ -20,7 +20,7 @@
 #' Fast Ratio \tab *fastratio* \tab [`calc_FastRatio`] \cr
 #' Fading Correction \tab *fading* \tab [`analyse_FadingMeasurement`], [`calc_FadingCorr`] \cr
 #' Test Stimulation Power \tab *teststimulationpower* \tab  [`plot_RLum`] \cr
-#' Scale Gamma Dose Rate \tab *scalegamma* \tab [`scale_GammaDose`]
+#' Scale Gamma Dose Rate \tab *scalegamma* \tab `scale_GammaDose`
 #' }
 #'
 #' The `app_RLum()` function is just a wrapper for [`runApp`].
