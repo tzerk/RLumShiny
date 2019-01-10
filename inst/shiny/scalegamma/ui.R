@@ -35,6 +35,7 @@ function(request) {
                                         ),
                                         selectInput(inputId = "conv_fac", "Conversion Factors", 
                                                     choices = c(
+                                                      "Cresswell et al. 2019" = "Cresswelletal2019",
                                                       "Liritzis et al. 2013" = "Liritzisetal2013",
                                                       "Guerin et al. 2011" = "Guerinetal2011",
                                                       "Adamiec & Aitken 1998" = "AdamiecAitken1998"
