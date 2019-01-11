@@ -72,7 +72,12 @@ RLumShinyAddin <- function() {
     "scalegamma" = list(title = "Gamma Dose Rate Scaling",
                              keyword = "scalegamma",
                              category = "calc",
-                             description = "Scale the gamma dose rate considering variations in soil radioactivity.")
+                             description = "Scale the gamma dose rate considering variations in soil radioactivity."),
+    
+    "rcarb" = list(title = "Dose Rate Modelling of Carbonate-Rich Samples",
+                             keyword = "rcarb",
+                             category = "calc",
+                             description = "This app models the dose rate evolution in carbonate enrich environments.")
 
   )
 

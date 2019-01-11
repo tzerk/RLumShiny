@@ -1,9 +1,18 @@
-RLumShiny 0.2.2 (Release date: 2018-xx-xx)
+RLumShiny 0.2.3 (Release date: 2019-xx-xx)
 ==============
 
-* New application that scales the gamma dose rate considering layer-to-layer
+* 
+
+RLumShiny 0.2.2 (Release date: 2019-01-11)
+==============
+
+* PREVIEW: New application that scales the gamma dose rate considering layer-to-layer
   variations in soil radioactivity. Base function: `Luminescence::scale_GammaDose()`.
   Keyword for `app_RLum()`: 'scalegamma'.
+  
+  NOTE: This application will only start if the development version 0.9.x of the
+  R package `Luminescence` is installed as the function `scale_GammaDose()` is
+  still under development.
 
 * New application to support the new R package `RCarb`. Base function `RCarb::model_DoseRate()`.
   Keyword for `app_RLum()`: 'RCarb'
