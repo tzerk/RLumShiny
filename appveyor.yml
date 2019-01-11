@@ -10,9 +10,9 @@ install:
 
 # Adapt as necessary starting from here
 environment:
-  USE_RTOOLS: true
 
   global:
+    USE_RTOOLS: true
     WARNINGS_ARE_ERRORS: 1
 
   matrix:
