@@ -1,0 +1,15 @@
+navbar:
+  title: "RLumShiny"
+  left:
+    - icon: fa-home
+      text: "Home"
+      href: index.html
+    - text: "Functions"
+      href: reference/index.html
+  right:
+    - icon: fa-github
+      text: "GitHub"
+      href: https://github.com/tzerk/RLumShiny
+
+
+
