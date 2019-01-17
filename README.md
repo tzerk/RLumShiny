@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# RLumShiny <a href=''><img src='man/figures/logo.png' align="right" height="138.5" /></a>
+# RLumShiny <a href='https://tzerk.github.io/RLumShiny/'><img src='man/figures/logo.png' align="right" height="138.5" /></a>
 
 <!-- badges: start -->
 

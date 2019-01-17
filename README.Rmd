@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
 )
 ``` 
 
-# RLumShiny <a href=''><img src='man/figures/logo.png' align="right" height="138.5" /></a>
+# RLumShiny <a href='https://tzerk.github.io/RLumShiny/'><img src='man/figures/logo.png' align="right" height="138.5" /></a>
 
 <!-- badges: start -->
 [![CRAN](http://www.r-pkg.org/badges/version/RLumShiny)](http://cran.rstudio.com/package=RLumShiny)
