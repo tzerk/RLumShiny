@@ -1,11 +1,15 @@
 navbar:
   title: "RLumShiny"
+  type: inverse
   left:
     - icon: fa-home
       text: "Home"
       href: index.html
     - text: "Functions"
       href: reference/index.html
+    - text: "News"
+      href: news/index.html
+
   right:
     - icon: fa-github
       text: "GitHub"
