@@ -11,3 +11,7 @@ appveyor.yml$
 revdep
 dev/
 docs/
+_pkgdown.yml$
+/man/figures/
+^.*.Rmd$
+pkgdown/
