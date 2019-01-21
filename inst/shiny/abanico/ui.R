@@ -71,6 +71,13 @@ function(request) {
                                                                    "Monte Carlo" = "MCM")),
                                         tooltip(refId = "summary.method", attr = "for", text = "Keyword indicating the method used to calculate the statistic summary. See calc_Statistics for details."),
                                         
+                                        helpText(tags$b("NOTE:"),
+                                                 tags$a(
+                                                   href = "https://github.com/R-Lum/Luminescence/issues/50", target = "_blank",
+                                                   HTML("The statistical parameters are calculated on the <b>logged</b> D<sub>E</sub> values",
+                                                        "if <code>log.z = TRUE</code> (the default, see <i>'Axis' > 'Logarithmic z-axis'</i>).</href>")
+                                                 
+                                        )),
                                         checkboxGroupInput(inputId = "stats",
                                                            label = "Parameters", 
                                                            selected = c("n","mean"),
