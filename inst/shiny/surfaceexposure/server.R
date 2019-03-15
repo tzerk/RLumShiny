@@ -3,7 +3,7 @@
 function(input, output, session) {
   
   # input data (with default)
-  values <- reactiveValues(data = example_data, data_used = NULL, args = NULL, results = NULL)
+  values <- reactiveValues(data = example_data, data_used = NULL, args = NULL, results = NULL, error = NULL)
   
   observe({
     # make sure that input panels are registered on non-active tabs.
@@ -60,7 +60,16 @@ function(input, output, session) {
     if (df_tmp$changes$event == "afterRemoveRow")
       df_tmp$changes$event <- "afterChange"
     
-    if (!is.null(hot_to_r(df_tmp)))
+    if (!is.null(hot_to_r(df_tmp))) {
+      if (nrow(hot_to_r(df_tmp)) > 0) {
+        tryCatch({ 
+          values$data <- hot_to_r(df_tmp)
+        }, error = function(e) { 
+            values$error <- e
+            values$results <- NULL
+          })
+      } 
+    }
       values$data <- hot_to_r(df_tmp)
     
   })
@@ -113,6 +122,11 @@ function(input, output, session) {
         NA_index <- which(data$group == "")
         if (length(NA_index) > 0)
           data <- data[-NA_index, ]
+        if (nrow(data) == 0) {
+          values$error <- simpleError("No or invalid data. Please check your input table or file.")
+          values$results <- NULL
+          return(NULL)
+        }
         
         if (is.factor(data$group))
           data$group <- droplevels(data$group)
@@ -190,16 +204,34 @@ function(input, output, session) {
     callModule(RLumShiny:::exportPlotHandler, "export", fun = "fit_SurfaceExposure", args = values$args)
   })
   
+  ## ERROR HANDLING ----
+  output$error <- renderText({
+    # invalidate all reactive values
+    if (!is.null(values$error)) {
+      values$results <- NULL
+      HTML(paste0(
+        tags$br(),
+        tags$p("ERROR!", style = "color:red; font-size:20px;"),
+        values$error$message
+      ))
+    }
+  })
+  
   ## MAIN ----
   output$main_plot <- renderPlot({
     tryCatch({
       values$results <- do.call(fit_SurfaceExposure, values$args)
-    }, error = function(e) print(e))
+    }, error = function(e) {
+      values$error <- e
+      values$results <- NULL
+    })
   })
   
   output$console <- renderText({
     if (is.null(values$results))
       return(NULL)
+    
+    values$error <- NULL
     
     if (!input$global_fit) {
       res <- as.data.frame(t(signif(unlist(get_RLum(values$results)), 3)))
