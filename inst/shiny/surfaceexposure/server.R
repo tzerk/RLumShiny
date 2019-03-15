@@ -90,25 +90,37 @@ function(input, output, session) {
   
   # update for log values
   observe({
+    
+    data <- values$data[complete.cases(values$data), ]
+    
+    if (nrow(data) == 0)
+      return(NULL)
+    
     if (input$logy)
       updateSliderInput(session, "ylim", value = c(0.1, isolate(input$ylim[2])), min = 0.1)
     else
       updateSliderInput(session, "ylim", 
-                        min = min(values$data[ ,2]) - diff(range(values$data[ ,2])) / 2, 
-                        max = max(values$data[ ,2]) + diff(range(values$data[ ,2])) / 2, 
-                        value = range(pretty(values$data[ ,2])))
+                        min = min(data[ ,2]) - diff(range(data[ ,2])) / 2, 
+                        max = max(data[ ,2]) + diff(range(data[ ,2])) / 2, 
+                        value = range(pretty(data[ ,2])))
     
   })
   
   # update for log values
   observe({
+    
+    data <- values$data[complete.cases(values$data), ]
+    
+    if (nrow(data) == 0)
+      return(NULL)
+    
     if (input$logx)
       updateSliderInput(session, "xlim", value = c(0.1, isolate(input$xlim[2])), min = 0.1)
     else
       updateSliderInput(session, "xlim", 
-                        min = min(values$data[ ,1]) - diff(range(values$data[ ,1])) / 2, 
-                        max = max(values$data[ ,1]) + diff(range(values$data[ ,1])) / 2, 
-                        value = range(pretty(values$data[ ,1])))
+                        min = min(data[ ,1]) - diff(range(data[ ,1])) / 2, 
+                        max = max(data[ ,1]) + diff(range(data[ ,1])) / 2, 
+                        value = range(pretty(data[ ,1])))
   })
   
   
@@ -142,7 +154,8 @@ function(input, output, session) {
         values$data_used <- lapply(data, function(x) x[ ,1:2])
       }
     } else {
-      values$data_used <- values$data
+      data <- values$data[complete.cases(values$data), ]
+      values$data_used <- data
     }
     
     # Age
