@@ -131,6 +131,10 @@ function(input, output, session) {
         if (is.factor(data$group))
           data$group <- droplevels(data$group)
         
+        # remove line feeds that might be copied from the clipboard
+        data$group <- gsub("\r", "", data$group)
+        data$group <- gsub("\n", "", data$group)
+        
         data <- split(data, data$group)
         # remove any list element with data.frames with 0 rows
         data <- lapply(data, function(x) if (nrow(x) != 0) x else NULL )
