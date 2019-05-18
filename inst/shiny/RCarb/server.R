@@ -119,6 +119,7 @@ shinyServer(function(input, output, session) {
              png(file = temp_files[[i]], bg = "transparent", width = 800, height = 400, res = 100)
              values$df[i,] <- RCarb::model_DoseRate(
                  data =  values$df[i,1:29],
+                 DR_conv_factors = input$conversion_factors,
                  length_step = input$length_step,
                  max_time = input$max_time,
                  n.MC = input$n.MC,
