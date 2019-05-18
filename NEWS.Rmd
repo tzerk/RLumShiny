@@ -5,7 +5,7 @@ output: github_document
 
 ## RLumShiny 0.2.3 (Release date: 2019-xx-xx)
 
-* nothing so far
+* Update app 'RCarb' to support 'RCarb' >= 0.1.3
 
 ## RLumShiny 0.2.2 (Release date: 2019-01-11)
 
