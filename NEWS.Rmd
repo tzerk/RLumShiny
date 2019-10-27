@@ -5,7 +5,8 @@ output: github_document
 
 ## RLumShiny 0.2.3 (Release date: 2019-xx-xx)
 
-* nothing so far
+* Updated `surfaceexposure` app now allows considering multiple mu values when
+  using the global fit functionality.
 
 ## RLumShiny 0.2.2 (Release date: 2019-01-11)
 

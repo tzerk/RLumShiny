@@ -68,3 +68,7 @@ input,textarea,.uneditable-input{
 	width: auto;
 	}
 
+.help-block {
+  margin-top: 13px;
+  margin-bottom: 0px;
+}

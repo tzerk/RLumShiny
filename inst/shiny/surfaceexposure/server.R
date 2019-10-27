@@ -10,6 +10,7 @@ function(input, output, session) {
     # by default tabs are suspended and input variables are hence
     # not available
     outputOptions(x = output, name = "global_fit_ages", suspendWhenHidden = FALSE)
+    outputOptions(x = output, name = "global_fit_mus", suspendWhenHidden = FALSE)
   })
   
   session$onSessionEnded(function() {
@@ -78,6 +79,18 @@ function(input, output, session) {
     if (input$global_fit && inherits(values$data_used, "list")) {
       lapply(1:length(values$data_used), function(i) {
         numericInput(paste0("age_", i), paste("Age", i), value = 10^(2+i))
+      })
+    }
+  })
+  
+  output$global_fit_mus <- renderUI({
+    if (input$global_fit && inherits(values$data_used, "list") && input$override_mu) {
+      if (input$individual_mus)
+        n <- length(values$data_used)
+      else 
+        n <- 1
+      lapply(1:n, function(i) {
+        numericInput(paste0("mus_", i), paste("\\( \\mu \\)", i), value = 0.9, step = 0.1)
       })
     }
   })
@@ -168,6 +181,21 @@ function(input, output, session) {
         age <- NULL
     }
     
+    # Mu
+    if (input$global_fit) {
+      if (input$individual_mus && input$override_mu) 
+        mu <- sapply(1:length(values$data_used), function(i) as.numeric(input[[paste0("mus_", i)]]))
+      else if (input$override_mu)
+        mu <- as.numeric(input[["mus_1"]])
+      else
+        mu <- NULL
+    } else {
+      if (input$override_mu)
+        mu <- input$mu
+      else
+        mu <- NULL
+    }
+    
     # fitting line color
     if (input$line_col == "custom")
       line_col <- input$jscol
@@ -181,7 +209,7 @@ function(input, output, session) {
       age = age,
       weights = if (input$global_fit) FALSE else input$weights,
       sigmaphi = if (input$override_sigmaphi) input$sigmaphi_base * 10^-(abs(input$sigmaphi_exp)) else NULL,
-      mu = if (input$override_mu) input$mu else NULL,
+      mu = mu,
       Ddot = if (input$doserate) input$ddot else NULL,
       D0  = if (input$doserate) input$d0 else NULL,
       verbose = FALSE,

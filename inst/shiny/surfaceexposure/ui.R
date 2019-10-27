@@ -30,11 +30,25 @@ function(request) {
                                ),##EndOf::Tab_1
                                
                                tabPanel("Parameters",
-                                        checkboxInput(inputId = "global_fit", "Global fit", TRUE),
+                                        fluidRow(
+                                          column(width = 6,
+                                                 checkboxInput(inputId = "global_fit", "Global fit", TRUE)
+                                                 ),
+                                          column(width = 6,
+                                                 checkboxInput(inputId = "individual_mus", "Individual \\( \\mu \\) values", TRUE)
+                                                 )
+                                        ),
                                         conditionalPanel(condition = "input.global_fit == true",
                                                          helpText(HTML(paste(tags$b("NOTE:"), "Weighting is not available for global fitting.")))
                                         ),
-                                        uiOutput("global_fit_ages"),
+                                        fluidRow(
+                                          column(width = 6,
+                                                 uiOutput("global_fit_ages")
+                                                 ),
+                                          column(width=6,
+                                                 uiOutput("global_fit_mus")
+                                                 )
+                                        ),
                                         conditionalPanel(condition = "input.global_fit == false",
                                                          checkboxInput(inputId = "weights", HTML("Error weighted fitting (1/&sigma;<sup>2</sup>)"), FALSE)
                                         ),
@@ -67,7 +81,12 @@ function(request) {
                                           column(1,
                                                  checkboxInput(inputId = "override_mu", "", value = TRUE)),
                                           column(10,
-                                                 numericInput(inputId = "mu", "\\( \\mu \\)", value = 0.90, step = 0.01)
+                                                 conditionalPanel(condition = "input.global_fit == false",
+                                                                  numericInput(inputId = "mu", "\\( \\mu \\)", value = 0.90, step = 0.01)
+                                                 ),
+                                                 conditionalPanel(condition = "input.global_fit == true",
+                                                                  helpText(paste("Provide \\( \\mu \\) values"))
+                                                 )
                                           )
                                         )
                                ),
