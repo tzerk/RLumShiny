@@ -58,6 +58,9 @@ shinyUI(
                                  min = 200,
                                  max = 1000,
                                  value = c(200, 1000)),
+                     checkboxInput(inputId = "net_transmission",
+                                   label = "Show net transmisison",
+                                   value = TRUE),
                      checkboxInput(inputId = "legend",
                                    label = "Show legend",
                                    value = TRUE)
@@ -166,7 +169,7 @@ shinyUI(
            helpText("A '.xlsx' file containing one's individual filter data can be temporarily uploaded here."),
            helpText(strong("Note to keep the exact same data structure as in the template '.xlsx' file, which can be downloaded below.")),
            tags$hr(),
-           downloadButton("MasterFile",label = "Download Filterdatabase", icon = "download"),
+           downloadButton("MasterFile",label = "Download Filterdatabase"),
            br(),
            br(),
            helpText("The currently used '.xlsx' file of the app (template or individual) can be downloaded here.")
@@ -175,9 +178,11 @@ shinyUI(
            ),
 
   tabPanel("About",
+           h5("App version"),
+           p("0.2.1 (2021-02-24)"),
            h5("Authors"),
            p("Urs Tilmann Wolpert, Department of Geography, Justus-Liebig-University Giessen (Germany)"),
-           p("Sebastian Kreutzer, IRAMAT-CRP2A, Universite Bordeaux Montaigne (France)"),
+           p("Sebastian Kreutzer, Geography & Earth Sciences, Aberystwyth University (United Kingdom)"),
            h5("Contact"),
            p("urs.t.wolpert@geogr.uni-giessen.de"),
            tags$hr(),
