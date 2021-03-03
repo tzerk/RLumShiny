@@ -12,16 +12,15 @@
 [![Downloads](http://cranlogs.r-pkg.org/badges/last-day/RLumShiny)](http://www.r-pkg.org/pkg/RLumShiny)
 [![Build
 status](https://ci.appveyor.com/api/projects/status/jp8ueedudbuhvtfe/branch/master?svg=true)](https://ci.appveyor.com/project/tzerk/rlumshiny/branch/master)
-[![Build
-Status](https://travis-ci.org/tzerk/RLumShiny.svg?branch=master)](https://travis-ci.org/tzerk/RLumShiny)
+[![R-CMD-check](https://github.com/R-Lum/RLumShiny/workflows/R-CMD-check/badge.svg)](https://github.com/R-Lum/RLumShiny/actions)
 <!-- badges: end -->
 
 > Visit the
 > <a href="https://tzerk.github.io/RLumShiny/" target="_blank">project
-> page</a>\!
+> page</a>!
 
-> Follow us on [![alt text](man/figures/twitter.png
-> "twitter icon without padding")](http://www.twitter.com/RLuminescence)
+> Follow us on [![alt
+> text](man/figures/twitter.png "twitter icon without padding")](http://www.twitter.com/RLuminescence)
 > <a href="http://www.twitter.com/RLuminescence" target="_blank">@RLuminescence</a>
 
 # Overview
@@ -55,11 +54,10 @@ devtools::install_github("tzerk/RLumShiny@master")
 The RLumShiny package provides a single function from which all apps can
 be started: `app_RLum()`. It essentially only takes one argument, which
 is a unique keyword to specify which app to start. See the table below
-for a list of available apps and which keywords to
-use.
+for a list of available apps and which keywords to use.
 
 | Application                                         |       Keyword        | Function                                       |
-| --------------------------------------------------- | :------------------: | ---------------------------------------------- |
+|-----------------------------------------------------|:--------------------:|------------------------------------------------|
 | Abanico Plot                                        |       abanico        | `plot_AbanicoPlot`                             |
 | Histogram                                           |      histogram       | `plot_Histogram`                               |
 | Kernel Density Estimate Plot                        |         KDE          | `plot_KDE`                                     |
@@ -109,15 +107,13 @@ requiring any format conversion.
 
 ### Tooltip
 
-`tooltip(refId, text, attr = NULL, animation = TRUE, delay = 100, html =
-TRUE, placement = "auto", trigger = "hover")`
+`tooltip(refId, text, attr = NULL, animation = TRUE, delay = 100, html = TRUE, placement = "auto", trigger = "hover")`
 
 ![tooltip](man/figures/tooltip.png)
 
 ### JSColor
 
-`jscolorInput(inputId, label, value, position = "bottom", color =
-"transparent", mode = "HSV", slider = TRUE, close = FALSE)`
+`jscolorInput(inputId, label, value, position = "bottom", color = "transparent", mode = "HSV", slider = TRUE, close = FALSE)`
 
 ![jscolor.js](man/figures/jscolor.png)
 
@@ -131,12 +127,12 @@ create new functions as well as a user-friendly design. Visit our
 [e-mail](mailto:team@r-luminescence.de) if anything crosses your mind or
 if you want your new self-written shiny application to be to
 implemented. You are kindly invited to bring forward the package with
-us\!
+us!
 
 ## Note
 
 This version is a development version and it comes without any
-guarentee\! For stable branches please visit the package on [CRAN
+guarentee! For stable branches please visit the package on [CRAN
 ‘RLumShiny’](http://cran.r-project.org/web/packages/RLumShiny/index.html).
 
 ## License
@@ -144,10 +140,10 @@ guarentee\! For stable branches please visit the package on [CRAN
 The RLumShiny package is licensed under the GPLv3. See these files in
 the main directory for additional details:
 
-  - LICENSE.note
+-   LICENSE.note
 
 ## Related projects
 
-  - [RLumModel](https://github.com/R-Lum/RLumModel)
-  - [Luminescence](https://github.com/R-Lum/Luminescence)
-  - [RCarb](https://github.com/R-Lum/RCarb)
+-   [RLumModel](https://github.com/R-Lum/RLumModel)
+-   [Luminescence](https://github.com/R-Lum/Luminescence)
+-   [RCarb](https://github.com/R-Lum/RCarb)
