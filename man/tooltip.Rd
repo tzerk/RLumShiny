@@ -4,8 +4,16 @@
 \alias{tooltip}
 \title{Create a bootstrap tooltip}
 \usage{
-tooltip(refId, text, attr = NULL, animation = TRUE, delay = 100,
-  html = TRUE, placement = "auto", trigger = "hover")
+tooltip(
+  refId,
+  text,
+  attr = NULL,
+  animation = TRUE,
+  delay = 100,
+  html = TRUE,
+  placement = "auto",
+  trigger = "hover"
+)
 }
 \arguments{
 \item{refId}{\code{\link{character}} (\strong{required}):

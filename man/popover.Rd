@@ -4,9 +4,15 @@
 \alias{popover}
 \title{Create a bootstrap button with popover}
 \usage{
-popover(title, content, header = NULL, html = TRUE,
-  class = "btn btn-default", placement = c("right", "top", "left",
-  "bottom"), trigger = c("click", "hover", "focus", "manual"))
+popover(
+  title,
+  content,
+  header = NULL,
+  html = TRUE,
+  class = "btn btn-default",
+  placement = c("right", "top", "left", "bottom"),
+  trigger = c("click", "hover", "focus", "manual")
+)
 }
 \arguments{
 \item{title}{\code{\link{character}} (\strong{required}):

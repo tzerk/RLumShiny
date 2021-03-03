@@ -4,9 +4,16 @@
 \alias{jscolorInput}
 \title{Create a JSColor picker input widget}
 \usage{
-jscolorInput(inputId, label, value, position = "bottom",
-  color = "transparent", mode = "HSV", slider = TRUE,
-  close = FALSE)
+jscolorInput(
+  inputId,
+  label,
+  value,
+  position = "bottom",
+  color = "transparent",
+  mode = "HSV",
+  slider = TRUE,
+  close = FALSE
+)
 }
 \arguments{
 \item{inputId}{\code{\link{character}} (\strong{required}):
