@@ -1,5 +1,9 @@
 ## News and changes
 
+### Version 0.1.1
+
+* Support for 'RCarb' 0.1.3 added
+
 ### Version 0.1.0
 
 * Initial version 

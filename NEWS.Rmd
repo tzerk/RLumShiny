@@ -7,6 +7,8 @@ output: github_document
 
 * Updated `surfaceexposure` app now allows considering multiple mu values when
   using the global fit functionality.
+  
+* The `filter` did not work anymore after changes in `'shiny'`; fixed. 
 
 ## RLumShiny 0.2.2 (Release date: 2019-01-11)
 
