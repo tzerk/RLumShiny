@@ -56,4 +56,4 @@ Collate:
     'module_exportTab.R'
     'module_printCode.R'
     'zzz.R'
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
