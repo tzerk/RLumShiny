@@ -61,7 +61,8 @@ shinyUI(
                 title = "Input template",
                 br(),
                 div(
-                  downloadButton("download_template",label = "Download input CSV-file template", icon =icon("download")),
+                  downloadButton("download_template",label = "Download input CSV-file template",
+                                 icon = icon("download")),
                   align = "center"
                 )
               )

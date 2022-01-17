@@ -28,15 +28,15 @@ chooserInput <- function(inputId, leftLabel, rightLabel, leftChoices, rightChoic
       )
     )),
     div(id=inputId, class="chooser",
-        div(class="chooser-container chooser-left-container",
+        div(class = "chooser-container chooser-left-container",
             tags$select(class="left", size=size, multiple=multiple, leftChoices)
         ),
-        div(class="chooser-container chooser-center-container",
+        div(class = "chooser-container chooser-center-container",
             icon("fas fa-arrow-alt-circle-right", "right-arrow fa-2x"),
             tags$br(),
             icon("fas fa-arrow-alt-circle-left", "left-arrow fa-2x")
         ),
-        div(class="chooser-container chooser-right-container",
+        div(class = "chooser-container chooser-right-container",
             tags$select(class="right", size=size, multiple=multiple, rightChoices)
         )
     )

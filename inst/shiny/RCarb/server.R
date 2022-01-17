@@ -43,7 +43,7 @@ shinyServer(function(input, output, session) {
 
     #feedback changes in the table
     observe({
-        if(!is.null(input$df)){
+      if (!is.null(input$df)) {
             values$df <- hot_to_r(input$df)
         }
 
