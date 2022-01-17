@@ -2,7 +2,7 @@ Package: RLumShiny
 Type: Package
 Title: 'Shiny' Applications for the R Package 'Luminescence'
 Version: 0.2.3
-Date: 2019-xx-xx
+Date: 2022-xx-xx
 Author: Christoph Burow [aut, cre] (<https://orcid.org/0000-0002-5023-4046>),
     Urs Tilmann Wolpert [aut],
     Sebastian Kreutzer [aut] (<https://orcid.org/0000-0002-0734-2199>),
@@ -28,19 +28,19 @@ Description: A collection of 'shiny' applications for the R package
 License: GPL-3
 Encoding: UTF-8
 Depends:
-    R (>= 3.4.0)
+    R (>= 4.0)
 Imports:
-    Luminescence (>= 0.8.5),
-    shiny (>= 1.1.0),
-    rhandsontable (>= 0.3.4),
-    data.table (>= 1.10.4),
-    googleVis (>= 0.6.2),
-    shinydashboard (>= 0.7.0),
-    RCarb (>= 0.1.0),
+    Luminescence (>= 0.9.18),
+    shiny (>= 1.7.0),
+    rhandsontable (>= 0.3.8),
+    data.table (>= 1.14.2),
+    googleVis (>= 0.6.11),
+    shinydashboard (>= 0.7.2),
+    RCarb (>= 0.1.4),
     markdown (>= 1.1),
-    readxl (>= 1.1.0),
-    DT (>= 0.4),
-    knitr (>= 1.20)
+    readxl (>= 1.3.1),
+    DT (>= 0.20),
+    knitr (>= 1.37)
 URL: https://tzerk.github.io/RLumShiny/
 BugReports: https://github.com/tzerk/RLumShiny/issues
 Collate:

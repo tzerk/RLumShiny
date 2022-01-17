@@ -3,6 +3,8 @@
 
 ## RLumShiny 0.2.3 (Release date: 2022-01-17)
 
+**This package version requires R \> 4.0!**
+
 -   Updated `surfaceexposure` app now allows considering multiple mu
     values when using the global fit functionality.
 
