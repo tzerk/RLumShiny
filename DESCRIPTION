@@ -36,9 +36,8 @@ Imports:
     data.table (>= 1.10.4),
     googleVis (>= 0.6.2),
     shinydashboard (>= 0.7.0),
-    shinyjs (>= 1.0),
     RCarb (>= 0.1.0),
-    rmarkdown (>= 1.11),
+    markdown (>= 1.1),
     readxl (>= 1.1.0),
     DT (>= 0.4),
     knitr (>= 1.20)
