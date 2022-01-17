@@ -23,7 +23,7 @@ fluidPage(
                             multiple = TRUE),
                   radioButtons("SelectedCurves", "Stimulation curves to display ...", "none"),
                   div(
-                    actionButton(inputId = "Display", "Update curves!", col = "green", icon = icon("refresh")),
+                    actionButton(inputId = "Display", "Update curves!", col = "green", icon = icon("fas fa-sync")),
                     actionButton(inputId = "ClearButton", "Reset!")
                     , align = "center")
 

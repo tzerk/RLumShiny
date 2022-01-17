@@ -3,7 +3,7 @@ function(request) {
     titlePanel(NULL, windowTitle = "RLumShiny - DRT"),
     sidebarLayout(
       sidebarPanel(width = 5,
-                   
+
                    # include a tabs in the input panel for easier navigation
                    tabsetPanel(id = "tabs", type = "pill", selected = "Data",
                                # Tab 1: Data input
@@ -11,12 +11,12 @@ function(request) {
                                         # informational text
                                         div(align = "center", h5("Data upload")),
                                         # file upload button (data set 1)
-                                        fileInput(inputId = "file1", 
+                                        fileInput(inputId = "file1",
                                                   label = strong("Primary data set"),
                                                   accept="text/plain, .csv, text/csv"),
                                         # file upload button (data set 2)
-                                        fileInput(inputId = "file2", 
-                                                  label = strong("Secondary data set"), 
+                                        fileInput(inputId = "file2",
+                                                  label = strong("Secondary data set"),
                                                   accept="text/plain, .csv, text/csv"),
                                         # rhandsontable input/output
                                         fluidRow(
@@ -27,13 +27,13 @@ function(request) {
                                                  rHandsontableOutput(outputId = "table_in_secondary"))
                                         ),
                                         hr(),
-                                        
-                                        actionButton(inputId = "refresh", label = "Refresh", icon = icon("refresh")),
+
+                                        actionButton(inputId = "refresh", label = "Refresh", icon = icon("fas fa-sync")),
                                         tooltip(refId = "refresh", text = "Redraw the plot")
                                ),##EndOf::Tab_1
-                               
+
                                # Tab 2: Statistical information
-                               tabPanel("Statistics",                             
+                               tabPanel("Statistics",
                                         div(align = "center", h5("Summary")),
                                         selectInput(inputId = "sumpos",
                                                     label = "Summary position",
@@ -48,7 +48,7 @@ function(request) {
                                                                             "Bottom right" = "bottomright"))),
                                         tooltip(refId = "sumpos", attr = "for", text = "Position of the statistical summary. The keyword \"Subtitle\" will only work if no plot subtitle is used."),
                                         checkboxGroupInput(inputId = "stats",
-                                                           label = "Parameters", 
+                                                           label = "Parameters",
                                                            selected = c("n","mean"),
                                                            choices = c("n" = "n",
                                                                        "Mean" = "mean",
@@ -72,9 +72,9 @@ function(request) {
                                                      value = 10, min = 0, max = 100, step = 1),
                                         tooltip(refId = "error", text = "Symmetric error range in percent will be shown as dashed lines in the plot. Set error.range to 0 to void plotting of error ranges.")
                                ),##EndOf::Tab_2
-                               
+
                                # Tab 3: input that refer to the plot rather than the data
-                               tabPanel("DRT Details", 
+                               tabPanel("DRT Details",
                                         div(align = "center", h5("Experimental details")),
                                         numericInput(inputId = "dose", label = "Given dose (primary data set)", value = 2800),
                                         tooltip(refId = "dose", text = "Given dose used for the dose recovery test to normalise data. If only one given dose is provided this given dose is valid for all input data sets (i.e., values is a list). Otherwise a given dose for each input data set has to be provided (e.g., given.dose = c(100,200)). If no given.dose values are plotted without normalisation (might be useful for preheat plateau tests). Note: Unit has to be the same as from the input values (e.g., Seconds or Gray)."),
@@ -82,7 +82,7 @@ function(request) {
                                         div(align = "center", h5("Preheat temperatures")),
                                         checkboxInput(inputId = "preheat", label = "Group values by preheat temperature", FALSE),
                                         tooltip(refId = "preheat", text = "Optional preheat temperatures to be used for grouping the De values. If specified, the temperatures are assigned to the x-axis."),
-                                        conditionalPanel(condition = 'input.preheat == true', 
+                                        conditionalPanel(condition = 'input.preheat == true',
                                                          numericInput(inputId = "ph1", "PH Temperature #1", 180, min = 0),
                                                          numericInput(inputId = "ph2", "PH Temperature #2", 200, min = 0),
                                                          numericInput(inputId = "ph3", "PH Temperature #3", 220, min = 0),
@@ -93,19 +93,19 @@ function(request) {
                                                          numericInput(inputId = "ph8", "PH Temperature #8", 320, min = 0)
                                         )
                                ),##EndOf::Tab_3
-                               
+
                                # Tab 3: input that refer to the plot rather than the data
-                               tabPanel("Plot", 
+                               tabPanel("Plot",
                                         div(align = "center", h5("Title")),
                                         fluidRow(
                                           column(width = 6,
-                                                 textInput(inputId = "main", 
-                                                           label = "Title", 
+                                                 textInput(inputId = "main",
+                                                           label = "Title",
                                                            value = "DRT Plot")
                                           ),
                                           column(width = 6,
-                                                 textInput(inputId = "mtext", 
-                                                           label = "Subtitle", 
+                                                 textInput(inputId = "mtext",
+                                                           label = "Subtitle",
                                                            value = "")
                                           )
                                         ),
@@ -113,32 +113,32 @@ function(request) {
                                         checkboxInput(inputId = "boxplot", label = "Plot as boxplot", value = FALSE),
                                         tooltip(refId = "boxplot", text = "Optionally plot values, that are grouped by preheat temperature as boxplots. Only possible when preheat vector is specified."),
                                         div(align = "center", h5("Scaling")),
-                                        sliderInput(inputId = "cex", 
+                                        sliderInput(inputId = "cex",
                                                     label = "Scaling factor",
-                                                    min = 0.5, max = 2, 
+                                                    min = 0.5, max = 2,
                                                     value = 1.0, step = 0.1)
                                ),##EndOf::Tab_3
-                               
+
                                # Tab 4: modify axis parameters
                                tabPanel("Axis",
                                         div(align = "center", h5("X-axis")),
-                                        textInput(inputId = "xlab", 
+                                        textInput(inputId = "xlab",
                                                   label = "Label x-axis",
                                                   value = "# Aliquot"),
                                         # inject sliderInput from Server.R
                                         uiOutput(outputId = "xlim"),
                                         br(),
                                         div(align = "center", h5("Y-axis")),
-                                        textInput(inputId = "ylab", 
+                                        textInput(inputId = "ylab",
                                                   label = "Label y-axis",
                                                   value = "Normalised De"),
-                                        sliderInput(inputId = "ylim", label = "Range y-axis", 
-                                                    min = 0, max = 3, 
-                                                    value = c(0.75, 1.25), 
+                                        sliderInput(inputId = "ylim", label = "Range y-axis",
+                                                    min = 0, max = 3,
+                                                    value = c(0.75, 1.25),
                                                     step = 0.01)
                                ),##EndOf::Tab_4
-                               
-                               tabPanel("Datapoints",              
+
+                               tabPanel("Datapoints",
                                         div(align = "center", h5("Primary data set")),
                                         fluidRow(
                                           column(width = 6,
@@ -171,8 +171,8 @@ function(request) {
                                           column(width = 6,
                                                  # show only if custom symbol is desired
                                                  conditionalPanel(condition = "input.pch == 'custom'",
-                                                                  textInput(inputId = "custompch", 
-                                                                            label = "Insert character", 
+                                                                  textInput(inputId = "custompch",
+                                                                            label = "Insert character",
                                                                             value = "?"))
                                           )
                                         ),
@@ -181,8 +181,8 @@ function(request) {
                                                  selectInput(inputId = "color", label = "Datapoint color",
                                                              choices = list("Black" = "black",
                                                                             "Grey" = "grey50",
-                                                                            "Red" = "#b22222", 
-                                                                            "Green" = "#6E8B3D", 
+                                                                            "Red" = "#b22222",
+                                                                            "Green" = "#6E8B3D",
                                                                             "Blue" = "#428bca",
                                                                             "Custom" = "custom"))
                                           ),
@@ -227,19 +227,19 @@ function(request) {
                                           column(width = 6,
                                                  # show only if custom symbol is desired
                                                  conditionalPanel(condition = "input.pch2 == 'custom'",
-                                                                  textInput(inputId = "custompch2", 
-                                                                            label = "Insert character", 
+                                                                  textInput(inputId = "custompch2",
+                                                                            label = "Insert character",
                                                                             value = "?"))
                                           )
                                         ),
                                         fluidRow(
                                           column(width = 6,
-                                                 selectInput(inputId = "color2", label = "Datapoint color", 
+                                                 selectInput(inputId = "color2", label = "Datapoint color",
                                                              selected = "#b22222",
                                                              choices = list("Black" = "black",
                                                                             "Grey" = "grey50",
-                                                                            "Red" = "#b22222", 
-                                                                            "Green" = "#6E8B3D", 
+                                                                            "Red" = "#b22222",
+                                                                            "Green" = "#6E8B3D",
                                                                             "Blue" = "#428bca",
                                                                             "Custom" = "custom"))
                                           ),
@@ -251,19 +251,19 @@ function(request) {
                                           )
                                         )
                                ),##EndOf::Tab_5
-                               
+
                                # Tab xy: add and customize legend
                                tabPanel("Legend",
                                         div(align = "center", h5("Legend")),
                                         fluidRow(
                                           column(width = 6,
-                                                 textInput(inputId = "legendname", 
-                                                           label = "Primary data label", 
+                                                 textInput(inputId = "legendname",
+                                                           label = "Primary data label",
                                                            value = "primary data")
                                           ),
                                           column(width = 6,
-                                                 textInput(inputId = "legendname2", 
-                                                           label = "Secondary data label", 
+                                                 textInput(inputId = "legendname2",
+                                                           label = "Secondary data label",
                                                            value = "secondary data")
                                           )
                                         ),
@@ -278,13 +278,13 @@ function(request) {
                                                                 "Bottom left" = "bottomleft",
                                                                 "Bottom right" = "bottomright"))
                                ),##EndOf::Tab_xy
-                               
+
                                RLumShiny:::exportTab("export", filename = "dose recovery"),
                                RLumShiny:::aboutTab("about", "doserecovery")
                    )
       ),
-      
-      
+
+
       # Show a plot of the generated distribution
       mainPanel(width = 7,
                 # insert css code inside <head></head> of the generated HTML file:

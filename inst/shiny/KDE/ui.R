@@ -13,14 +13,14 @@ function(request) {
                                tabPanel("Data",
                                         # informational text
                                         div(align = "center", h5("Data upload")),
-                                        
+
                                         # file upload button (data set 1)
-                                        fileInput(inputId = "file1", 
+                                        fileInput(inputId = "file1",
                                                   label = strong("Primary data set"),
                                                   accept="text/plain, .csv, text/csv"),
                                         # file upload button (data set 2)
-                                        fileInput(inputId = "file2", 
-                                                  label = strong("Secondary data set"), 
+                                        fileInput(inputId = "file2",
+                                                  label = strong("Secondary data set"),
                                                   accept="text/plain, .csv, text/csv"),
                                         # rhandsontable input/output
                                         fluidRow(
@@ -31,12 +31,12 @@ function(request) {
                                                  rHandsontableOutput(outputId = "table_in_secondary"))
                                         ),
                                         hr(),
-                                        actionButton(inputId = "refresh", label = "Refresh", icon = icon("refresh")),
+                                        actionButton(inputId = "refresh", label = "Refresh", icon = icon("fas fa-sync")),
                                         tooltip(refId = "refresh", text = "Redraw the plot")
                                ),##EndOf::Tab_1
-                               
+
                                # Tab 2: Statistical information
-                               tabPanel("Statistics",                             
+                               tabPanel("Statistics",
                                         div(align = "center", h5("Summary")),
                                         fluidRow(
                                           column(width = 6,
@@ -61,7 +61,7 @@ function(request) {
                                                  tooltip(refId = "sumpos", attr = "for", text = "Position of the statistical summary. The keyword \"Subtitle\" will only work if no plot subtitle is used.")
                                           )
                                         ),
-                                        
+
                                         selectInput(inputId = "summary.method",
                                                     label = "Summary method",
                                                     selected = "unweighted",
@@ -69,9 +69,9 @@ function(request) {
                                                                    "Weighted" = "weighted",
                                                                    "Monte Carlo" = "MCM")),
                                         tooltip(refId = "summary.method", attr = "for", text = "Keyword indicating the method used to calculate the statistic summary. See calc_Statistics for details."),
-                                        
+
                                         checkboxGroupInput(inputId = "stats",
-                                                           label = "Parameters", 
+                                                           label = "Parameters",
                                                            selected = c("n","mean"),
                                                            choices = c("n" = "n",
                                                                        "Mean" = "mean",
@@ -85,32 +85,32 @@ function(request) {
                                                                        "% in 2 sigma range" = "in.2s")),
                                         tooltip(refId = "stats", text = "Statistical parameters to be shown in the summary"),
                                         div(align = "center", h5("Additional options")),
-                                        
+
                                         checkboxInput(inputId = "cumulative",
                                                       label = "Show individual data",
                                                       value = TRUE),
                                         tooltip(refId = "cumulative", text = "Show cumulative individual data.")
-                                        
+
                                ),##EndOf::Tab_2
-                               
+
                                # Tab 3: input that refer to the plot rather than the data
-                               tabPanel("Plot", 
+                               tabPanel("Plot",
                                         div(align = "center", h5("Title")),
-                                        
-                                        textInput(inputId = "main", 
-                                                  label = "Title", 
+
+                                        textInput(inputId = "main",
+                                                  label = "Title",
                                                   value = "KDE Plot"),
-                                        
+
                                         # inject sliderInput from Server.R
                                         uiOutput(outputId = "bw"),
                                         tooltip(refId = "bw", text = "Bin width of the kernel density estimate"),
                                         br(),
                                         div(align = "center", h5("Scaling")),
-                                        sliderInput(inputId = "cex", 
+                                        sliderInput(inputId = "cex",
                                                     label = "Scaling factor",
-                                                    min = 0.5, max = 2, 
+                                                    min = 0.5, max = 2,
                                                     value = 1.0, step = 0.1),
-                                        
+
                                         div(align = "center", h5("Further options")),
                                         fluidRow(
                                           column(width = 6,
@@ -124,14 +124,14 @@ function(request) {
                                                                value = TRUE))
                                         )
                                ),##EndOf::Tab_3
-                               
+
                                # Tab 4: modify axis parameters
                                tabPanel("Axis",
                                         div(align = "center", h5("X-axis")),
                                         checkboxInput(inputId = "logx",
                                                       label = "Logarithmic x-axis",
                                                       value = FALSE),
-                                        textInput(inputId = "xlab", 
+                                        textInput(inputId = "xlab",
                                                   label = "Label x-axis",
                                                   value = "Equivalent dose [Gy]"),
                                         # inject sliderInput from Server.R
@@ -140,28 +140,28 @@ function(request) {
                                         div(align = "center", h5("Y-axis")),
                                         fluidRow(
                                           column(width = 6,
-                                                 textInput(inputId = "ylab1", 
+                                                 textInput(inputId = "ylab1",
                                                            label = "Label y-axis (left)",
                                                            value = "Density")
                                           ),
                                           column(width = 6,
-                                                 textInput(inputId = "ylab2", 
+                                                 textInput(inputId = "ylab2",
                                                            label = "Label y-axis (right)",
                                                            value = "Cumulative frequency")
                                           )
                                         )
                                ),##EndOf::Tab_4
-                               
+
                                # Tab 5: modify data point representation
-                               tabPanel("Datapoints",              
+                               tabPanel("Datapoints",
                                         div(align = "center", h5("Primary data set")),
                                         fluidRow(
                                           column(width = 6,
                                                  selectInput(inputId = "color", label = "Datapoint color",
                                                              choices = list("Black" = "black",
                                                                             "Grey" = "grey50",
-                                                                            "Red" = "#b22222", 
-                                                                            "Green" = "#6E8B3D", 
+                                                                            "Red" = "#b22222",
+                                                                            "Green" = "#6E8B3D",
                                                                             "Blue" = "#428bca",
                                                                             "Custom" = "custom"))
                                           ),
@@ -175,12 +175,12 @@ function(request) {
                                         div(align = "center", h5("Secondary data set")),
                                         fluidRow(
                                           column(width = 6,
-                                                 selectInput(inputId = "color2", label = "Datapoint color", 
+                                                 selectInput(inputId = "color2", label = "Datapoint color",
                                                              selected = "#b22222",
                                                              choices = list("Black" = "black",
                                                                             "Grey" = "grey50",
-                                                                            "Red" = "#b22222", 
-                                                                            "Green" = "#6E8B3D", 
+                                                                            "Red" = "#b22222",
+                                                                            "Green" = "#6E8B3D",
                                                                             "Blue" = "#428bca",
                                                                             "Custom" = "custom"))
                                           ),
@@ -192,13 +192,13 @@ function(request) {
                                           )
                                         )
                                ),##EndOf::Tab_5
-                               
+
                                # Tab 9: save plot as pdf, wmf or eps
                                RLumShiny:::exportTab("export", filename = "KDE"),
                                RLumShiny:::aboutTab("about", "KDE")
                    )##EndOf::tabsetPanel
       ),##EndOf::sidebarPanel
-      
+
       # 3 - output panel
       mainPanel(width = 7,
                 # insert css code inside <head></head> of the generated HTML file:

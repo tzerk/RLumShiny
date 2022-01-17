@@ -1,5 +1,5 @@
 ## UI.R
-function(request) { 
+function(request) {
   fluidPage(
     titlePanel(NULL, windowTitle = "RLumShiny - RadialPlot"),
     sidebarLayout(
@@ -14,12 +14,12 @@ function(request) {
                                         # informational text
                                         div(align = "center", h5("Data upload")),
                                         # file upload button (data set 1)
-                                        fileInput(inputId = "file1", 
+                                        fileInput(inputId = "file1",
                                                   label = strong("Primary data set"),
                                                   accept="text/plain, .csv, text/csv"),
                                         # file upload button (data set 2)
-                                        fileInput(inputId = "file2", 
-                                                  label = strong("Secondary data set"), 
+                                        fileInput(inputId = "file2",
+                                                  label = strong("Secondary data set"),
                                                   accept="text/plain, .csv, text/csv"),
                                         # rhandsontable input/output
                                         fluidRow(
@@ -30,12 +30,12 @@ function(request) {
                                                  rHandsontableOutput(outputId = "table_in_secondary"))
                                         ),
                                         hr(),
-                                        actionButton(inputId = "refresh", label = "Refresh", icon = icon("refresh")),
+                                        actionButton(inputId = "refresh", label = "Refresh", icon = icon("fas fa-sync")),
                                         tooltip(refId = "refresh", text = "Redraw the plot")
                                ),##EndOf::Tab_1
-                               
+
                                # Tab 2: Statistical information
-                               tabPanel("Statistics",                             
+                               tabPanel("Statistics",
                                         div(align = "center", h5("Summary")),
                                         fluidRow(
                                           column(width = 6,
@@ -61,7 +61,7 @@ function(request) {
                                           )
                                         ),
                                         checkboxGroupInput(inputId = "stats",
-                                                           label = "Parameters", 
+                                                           label = "Parameters",
                                                            selected = c("n","mean"),
                                                            choices = c("n" = "n",
                                                                        "Mean" = "mean",
@@ -82,25 +82,25 @@ function(request) {
                                         br(),
                                         div(align = "center", h5("Datapoint labels")),
                                         div(align = "center", checkboxGroupInput(inputId = "statlabels", inline = TRUE,
-                                                                                 label = NULL, 
+                                                                                 label = NULL,
                                                                                  choices = c("Min" = "min",
                                                                                              "Max" = "max",
                                                                                              "Median" = "median"))),
                                         tooltip(refId = "statlabels", text = "Additional labels of statistically important values in the plot.")
                                ),##EndOf::Tab_2
-                               
+
                                # Tab 3: input that refer to the plot rather than the data
-                               tabPanel("Plot", 
+                               tabPanel("Plot",
                                         div(align = "center", h5("Title")),
                                         fluidRow(
                                           column(width = 6,
-                                                 textInput(inputId = "main", 
-                                                           label = "Title", 
+                                                 textInput(inputId = "main",
+                                                           label = "Title",
                                                            value = "Radial Plot")
                                           ),
                                           column(width = 6,
-                                                 textInput(inputId = "mtext", 
-                                                           label = "Subtitle", 
+                                                 textInput(inputId = "mtext",
+                                                           label = "Subtitle",
                                                            value = "")
                                           )
                                         ),
@@ -112,32 +112,32 @@ function(request) {
                                                  tooltip(refId = "centValue", text = "User-defined central value, primarily used for horizontal centering of the z-axis")
                                           ),
                                           column(width = 6,
-                                                 sliderInput(inputId = "cex", 
+                                                 sliderInput(inputId = "cex",
                                                              label = "Scaling factor",
-                                                             min = 0.5, max = 2, 
+                                                             min = 0.5, max = 2,
                                                              value = 1.0, step = 0.1)
                                           )
                                         ),
-                                        selectInput(inputId = "centrality", 
+                                        selectInput(inputId = "centrality",
                                                     label = "Centrality",
                                                     list("Mean" = "mean",
-                                                         "Median" = "median", 
-                                                         "Weighted mean" = "mean.weighted", 
+                                                         "Median" = "median",
+                                                         "Weighted mean" = "mean.weighted",
                                                          "Weighted median" = "median.weighted")),
                                         tooltip(refId = "centrality", attr = "for", text = "Measure of centrality, used for the standardisation, centering the plot and drawing the central line.")
                                ),##EndOf::Tab_3
-                               
+
                                # Tab 4: modify axis parameters
                                tabPanel("Axis",
                                         div(align = "center", h5("X-axis")),
                                         fluidRow(
                                           column(width = 6,
-                                                 textInput(inputId = "xlab1", 
+                                                 textInput(inputId = "xlab1",
                                                            label = "Label x-axis (upper)",
                                                            value = "Relative error [%]")
                                           ),
                                           column(width = 6,
-                                                 textInput(inputId = "xlab2", 
+                                                 textInput(inputId = "xlab2",
                                                            label = "Label x-axis (lower)",
                                                            value = "Precision")
                                           )
@@ -149,7 +149,7 @@ function(request) {
                                                       label = HTML("Show &plusmn;2&sigma; label"),
                                                       value = TRUE),
                                         tooltip(refId = "yticks", text = "Option to hide y-axis labels."),
-                                        textInput(inputId = "ylab", 
+                                        textInput(inputId = "ylab",
                                                   label = "Label y-axis",
                                                   value = "Standardised estimate"),
                                         div(align = "center", h5("Z-axis")),
@@ -157,19 +157,19 @@ function(request) {
                                                       label = "Logarithmic z-axis",
                                                       value = TRUE),
                                         tooltip(refId = "logz", text = "Option to display the z-axis in logarithmic scale."),
-                                        textInput(inputId = "zlab", 
+                                        textInput(inputId = "zlab",
                                                   label = "Label z-axis",
                                                   value = "Equivalent dose [Gy]"),
                                         # inject sliderInput from Server.R
                                         uiOutput(outputId = "zlim"),
-                                        sliderInput('curvature', 'Z-axis curvature', 
+                                        sliderInput('curvature', 'Z-axis curvature',
                                                     min=0, max=3,
                                                     value=4.5/5.5, step=0.01, round=FALSE),
                                         tooltip(refId = "curvature", attr = "for", text = "User-defined plot area ratio (i.e. curvature of the z-axis). If omitted, the default value (4.5/5.5) is used and modified automatically to optimise the z-axis curvature. The parameter should be decreased when data points are plotted outside the z-axis or when the z-axis gets too elliptic.")
                                ),##EndOf::Tab_4
-                               
+
                                # Tab 5: modify data point representation
-                               tabPanel("Datapoints",              
+                               tabPanel("Datapoints",
                                         div(align = "center", h5("Primary data set")),
                                         fluidRow(
                                           column(width = 6,
@@ -202,8 +202,8 @@ function(request) {
                                           column(width = 6,
                                                  # show only if custom symbol is desired
                                                  conditionalPanel(condition = "input.pch == 'custom'",
-                                                                  textInput(inputId = "custompch", 
-                                                                            label = "Insert character", 
+                                                                  textInput(inputId = "custompch",
+                                                                            label = "Insert character",
                                                                             value = "?"))
                                           )
                                         ),
@@ -212,8 +212,8 @@ function(request) {
                                                  selectInput(inputId = "color", label = "Datapoint color",
                                                              choices = list("Black" = "black",
                                                                             "Grey" = "grey50",
-                                                                            "Red" = "#b22222", 
-                                                                            "Green" = "#6E8B3D", 
+                                                                            "Red" = "#b22222",
+                                                                            "Green" = "#6E8B3D",
                                                                             "Blue" = "#428bca",
                                                                             "Custom" = "custom"))
                                           ),
@@ -257,19 +257,19 @@ function(request) {
                                           column(width = 6,
                                                  # show only if custom symbol is desired
                                                  conditionalPanel(condition = "input.pch2 == 'custom'",
-                                                                  textInput(inputId = "custompch2", 
-                                                                            label = "Insert character", 
+                                                                  textInput(inputId = "custompch2",
+                                                                            label = "Insert character",
                                                                             value = "?"))
                                           )
                                         ),
                                         fluidRow(
                                           column(width = 6,
-                                                 selectInput(inputId = "color2", label = "Datapoint color", 
+                                                 selectInput(inputId = "color2", label = "Datapoint color",
                                                              selected = "#b22222",
                                                              choices = list("Black" = "black",
                                                                             "Grey" = "grey50",
-                                                                            "Red" = "#b22222", 
-                                                                            "Green" = "#6E8B3D", 
+                                                                            "Red" = "#b22222",
+                                                                            "Green" = "#6E8B3D",
                                                                             "Blue" = "#428bca",
                                                                             "Custom" = "custom"))
                                           ),
@@ -281,23 +281,23 @@ function(request) {
                                           )
                                         )
                                ),##EndOf::Tab_5
-                               
+
                                # Tab 6: add additional lines to the plot
                                tabPanel("Lines",
                                         helpText("Here you can add additional lines."),
                                         # options for custom lines:
                                         # 1 - z-value, 2 - color, 3 - label
                                         # only the options for the first line are shown
-                                        numericInput(inputId = "line1", 
-                                                     label = strong("Line #1"), 
+                                        numericInput(inputId = "line1",
+                                                     label = strong("Line #1"),
                                                      value =  NA, min = 0),
                                         tooltip(refId = "line1", text = "Numeric values of the additional lines to be added."),
                                         fluidRow(
-                                          column(width = 6, 
+                                          column(width = 6,
                                                  HTML("Choose a color<br>"),
                                                  jscolorInput(inputId = "colline1")
                                           ),
-                                          column(width = 6,                                    
+                                          column(width = 6,
                                                  textInput(inputId = "labline1",
                                                            label = "Label",
                                                            value = "")
@@ -319,7 +319,7 @@ function(request) {
                                                            column(width = 6, textInput("labline3","Label",value = ""))
                                                          )
                                         ),
-                                        
+
                                         conditionalPanel(condition = "input.line3 > 0",
                                                          numericInput(inputId = "line4", strong("Line #4"), NA, min = 0),
                                                          fluidRow(
@@ -327,7 +327,7 @@ function(request) {
                                                            column(width = 6, textInput("labline4","Label",value = ""))
                                                          )
                                         ),
-                                        
+
                                         conditionalPanel(condition = "input.line4 > 0",
                                                          numericInput(inputId = "line5", strong("Line #5"), NA, min = 0),
                                                          fluidRow(
@@ -335,7 +335,7 @@ function(request) {
                                                            column(width = 6, textInput("labline5","Label",value = ""))
                                                          )
                                         ),
-                                        
+
                                         conditionalPanel(condition = "input.line5 > 0",
                                                          numericInput(inputId = "line6", strong("Line #6"), NA, min = 0),
                                                          fluidRow(
@@ -343,7 +343,7 @@ function(request) {
                                                            column(width = 6, textInput("labline6","Label",value = ""))
                                                          )
                                         ),
-                                        
+
                                         conditionalPanel(condition = "input.line6 > 0",
                                                          numericInput(inputId = "line7", strong("Line #7"), NA, min = 0),
                                                          fluidRow(
@@ -351,7 +351,7 @@ function(request) {
                                                            column(width = 6, textInput("labline7","Label",value = ""))
                                                          )
                                         ),
-                                        
+
                                         conditionalPanel(condition = "input.line7 > 0",
                                                          numericInput(inputId = "line8", strong("Line #8"), NA, min = 0),
                                                          fluidRow(
@@ -359,29 +359,29 @@ function(request) {
                                                            column(width = 6, textInput("labline8","Label",value = ""))
                                                          )
                                         )
-                                        
+
                                ),##EndOf::Tab_6
-                               
+
                                # Tab 7: modify the 2-sigma bar (radial plot), grid (both) and polygon (KDE)
                                tabPanel("Bars & Grid",
                                         div(align = "center", h5("Central line")),
                                         fluidRow(
                                           column(width = 6,
-                                                 numericInput(inputId = "lwd", 
-                                                              label = "Central line width #1", 
-                                                              min = 0, max = 5, 
+                                                 numericInput(inputId = "lwd",
+                                                              label = "Central line width #1",
+                                                              min = 0, max = 5,
                                                               value = 1)
                                           ),
                                           column(width = 6,
-                                                 numericInput(inputId = "lwd2", 
-                                                              label = "Central line width #2", 
-                                                              min = 0, max = 5, 
+                                                 numericInput(inputId = "lwd2",
+                                                              label = "Central line width #2",
+                                                              min = 0, max = 5,
                                                               value = 1)
                                           )
                                         ),
                                         fluidRow(
                                           column(width = 6,
-                                                 selectInput(inputId = "lty", 
+                                                 selectInput(inputId = "lty",
                                                              label = "Line type",
                                                              selected = 2,
                                                              choices = list("Blank" = 0,
@@ -393,7 +393,7 @@ function(request) {
                                                                             "Two dash" = 6))
                                           ),
                                           column(width = 6,
-                                                 selectInput(inputId = "lty2", 
+                                                 selectInput(inputId = "lty2",
                                                              label = "Line type",
                                                              selected = 2,
                                                              choices = list("Blank" = 0,
@@ -403,7 +403,7 @@ function(request) {
                                                                             "Dot dash" = 4,
                                                                             "Long dash" = 5,
                                                                             "Two dash" = 6))
-                                                 
+
                                           )
                                         ),
                                         div(align = "center", HTML("<h5>2&sigma; bar</h5>")),
@@ -429,16 +429,16 @@ function(request) {
                                                                                label = "Choose a color"))
                                           ),
                                           column(width = 6,
-                                                 
+
                                                  # show only if custom color is desired
                                                  conditionalPanel(condition = "input.bar2 == 'custom'",
                                                                   jscolorInput(inputId = "rgbBar2",
                                                                                label = "Choose a color"))
                                           )
                                         ),
-                                        sliderInput(inputId = "alpha.bar", 
+                                        sliderInput(inputId = "alpha.bar",
                                                     label = "Transparency",
-                                                    min = 0, max = 100, 
+                                                    min = 0, max = 100,
                                                     step = 1, value = 66),
                                         div(align = "center", h5("Grid")),
                                         fluidRow(
@@ -458,16 +458,16 @@ function(request) {
                                         ),
                                         sliderInput(inputId = "alpha.grid",
                                                     label = "Transparency",
-                                                    min = 0, max = 100, 
+                                                    min = 0, max = 100,
                                                     step = 1, value = 100)
                                ),##EndOf::Tab_7
-                               
+
                                tabPanel("Legend",
                                         div(align = "center", h5("Legend")),
                                         fluidRow(
                                           column(width = 6,
-                                                 checkboxInput(inputId = "showlegend", 
-                                                               label = "Show legend", 
+                                                 checkboxInput(inputId = "showlegend",
+                                                               label = "Show legend",
                                                                value = FALSE),
                                                  tooltip(refId = "showlegend", text = "Legend content to be added to the plot.")
                                           ),
@@ -486,23 +486,23 @@ function(request) {
                                         ),
                                         fluidRow(
                                           column(width = 6,
-                                                 textInput(inputId = "legendname", 
-                                                           label = "Primary data label", 
+                                                 textInput(inputId = "legendname",
+                                                           label = "Primary data label",
                                                            value = "primary data")
                                           ),
                                           column(width = 6,
-                                                 textInput(inputId = "legendname2", 
-                                                           label = "Secondary data label", 
+                                                 textInput(inputId = "legendname2",
+                                                           label = "Secondary data label",
                                                            value = "secondary data")
                                           )
                                         )
                                ),##EndOf::Tab_8
-                               
+
                                RLumShiny:::exportTab("export", filename = "radial plot"),
                                RLumShiny:::aboutTab("about", "radialplot")
                    )##EndOf::tabsetPanel
       ),##EndOf::sidebarPanel
-      
+
       # 3 - output panel
       mainPanel(width = 7,
                 # insert css code inside <head></head> of the generated HTML file:
