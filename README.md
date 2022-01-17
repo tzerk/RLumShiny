@@ -5,11 +5,11 @@
 
 <!-- badges: start -->
 
-[![CRAN](http://www.r-pkg.org/badges/version/RLumShiny)](http://cran.rstudio.com/package=RLumShiny)
-[![Downloads](http://cranlogs.r-pkg.org/badges/grand-total/RLumShiny)](http://www.r-pkg.org/pkg/RLumShiny)
-[![Downloads](http://cranlogs.r-pkg.org/badges/RLumShiny)](http://www.r-pkg.org/pkg/RLumShiny)
-[![Downloads](http://cranlogs.r-pkg.org/badges/last-week/RLumShiny)](http://www.r-pkg.org/pkg/RLumShiny)
-[![Downloads](http://cranlogs.r-pkg.org/badges/last-day/RLumShiny)](http://www.r-pkg.org/pkg/RLumShiny)
+[![CRAN](https://www.r-pkg.org/badges/version/RLumShiny)](https://cran.rstudio.com/package=RLumShiny)
+[![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/RLumShiny)](https://www.r-pkg.org/pkg/RLumShiny)
+[![Downloads](https://cranlogs.r-pkg.org/badges/RLumShiny)](https://www.r-pkg.org/pkg/RLumShiny)
+[![Downloads](https://cranlogs.r-pkg.org/badges/last-week/RLumShiny)](https://www.r-pkg.org/pkg/RLumShiny)
+[![Downloads](https://cranlogs.r-pkg.org/badges/last-day/RLumShiny)](https://www.r-pkg.org/pkg/RLumShiny)
 [![Build
 status](https://ci.appveyor.com/api/projects/status/jp8ueedudbuhvtfe/branch/master?svg=true)](https://ci.appveyor.com/project/tzerk/rlumshiny/branch/master)
 [![R-CMD-check](https://github.com/R-Lum/RLumShiny/workflows/R-CMD-check/badge.svg)](https://github.com/R-Lum/RLumShiny/actions)
@@ -20,17 +20,17 @@ status](https://ci.appveyor.com/api/projects/status/jp8ueedudbuhvtfe/branch/mast
 > page</a>!
 
 > Follow us on [![alt
-> text](man/figures/twitter.png "twitter icon without padding")](http://www.twitter.com/RLuminescence)
-> <a href="http://www.twitter.com/RLuminescence" target="_blank">@RLuminescence</a>
+> text](man/figures/twitter.png "twitter icon without padding")](https://www.twitter.com/RLuminescence)
+> <a href="https://www.twitter.com/RLuminescence" target="_blank">@RLuminescence</a>
 
 # Overview
 
 A collection of `shiny` applications for the R package `Luminescence`.
 These mainly, but not exclusively, include applications for plotting
 chronometric data from e.g. luminescence or radiocarbon dating. It
-further provides access to twitter bootstraps tooltip and popover
-functionality and contains the [jscolor.js library](http://jscolor.com/)
-with a custom `shiny` output binding.
+further provides access to twitter bootstraps tooltip and pop over
+functionality and contains the [jscolor.js
+library](https://jscolor.com/) with a custom `shiny` output binding.
 
 ## Installation
 
@@ -91,7 +91,7 @@ framework the JavaScript tooltip and popover components can be added to
 any shiny application via `tooltip()` and `popover()`.
 
 It further provides a custom input binding to the JavaScript/HTML color
-picker [JSColor](http://jscolor.com). Offering access to most options
+picker [JSColor](https://jscolor.com). Offering access to most options
 provided by the JSColor API the function `jscolorInput()` is easily
 implemented in a shiny app. RGB colors are returned as hex values and
 can be directly used in **R**’s base plotting functions without
@@ -123,22 +123,22 @@ This package is part of the R Luminescence project. The is based on and
 evolves from ideas, contributions and constructive criticism of its
 users. Help us to maintain and develop the package, to find bugs and
 create new functions as well as a user-friendly design. Visit our
-[message board](https://forum.r-luminescence.de) or write us an
-[e-mail](mailto:team@r-luminescence.de) if anything crosses your mind or
-if you want your new self-written shiny application to be to
+[message board](https://r-luminescence.org) or write us an
+[e-mail](mailto:team@r-luminescence.org) if anything crosses your mind
+or if you want your new self-written shiny application to be to
 implemented. You are kindly invited to bring forward the package with
 us!
 
 ## Note
 
 This version is a development version and it comes without any
-guarentee! For stable branches please visit the package on [CRAN
-‘RLumShiny’](http://cran.r-project.org/web/packages/RLumShiny/index.html).
+guarantee! For stable branches please visit the package on [CRAN
+‘RLumShiny’](https://CRAN.R-project.org/package=RLumShiny).
 
 ## License
 
-The RLumShiny package is licensed under the GPLv3. See these files in
-the main directory for additional details:
+The `'RLumShiny'` package is licensed under the GPLv3. See these files
+in the main directory for additional details:
 
 -   LICENSE.note
 
