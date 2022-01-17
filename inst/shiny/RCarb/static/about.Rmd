@@ -2,9 +2,9 @@
 
 This software provides a graphical user interface to the R package 'RCarb'.
 
-**Version**: 0.1.1 [2019-05-18]
+**Version**: 0.1.2 [2022-01-17]
 
-**Author**: Sebastian Kreutzer, IRAMAT-CRP2A, UMR 5060, CNRS - Université Bordeaux Montaigne (France)
+**Author**: Sebastian Kreutzer, Geography & Earth Sciences, Aberystwyth University (United Kingdom)
 
 **Contact**: sebastian.kreutzer@u-bordeaux-montaigne.fr
 
