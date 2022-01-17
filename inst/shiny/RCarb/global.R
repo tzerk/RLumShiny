@@ -8,8 +8,6 @@
 ##load needed packages
 require(shiny)
 require(RCarb)
-require(shinyjs)
-require(rmarkdown)
 require(rhandsontable)
 require(knitr)
 

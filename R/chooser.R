@@ -1,10 +1,10 @@
 ## +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-## 'chooser.R' taken from the shiny-examples repository 
+## 'chooser.R' taken from the shiny-examples repository
 ## (https://github.com/rstudio/shiny-examples) under the MIT License
 ##+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 chooserInput <- function(inputId, leftLabel, rightLabel, leftChoices, rightChoices,
                          size = 5, multiple = FALSE) {
-  
+
   shiny::registerInputHandler("shinyjsexamples.chooser", function(data, ...) {
     if (is.null(data))
       NULL
@@ -28,15 +28,15 @@ chooserInput <- function(inputId, leftLabel, rightLabel, leftChoices, rightChoic
       )
     )),
     div(id=inputId, class="chooser",
-        div(class="chooser-container chooser-left-container",
+        div(class = "chooser-container chooser-left-container",
             tags$select(class="left", size=size, multiple=multiple, leftChoices)
         ),
-        div(class="chooser-container chooser-center-container",
-            icon("arrow-circle-o-right", "right-arrow fa-3x"),
+        div(class = "chooser-container chooser-center-container",
+            icon("fas fa-arrow-alt-circle-right", "right-arrow fa-2x"),
             tags$br(),
-            icon("arrow-circle-o-left", "left-arrow fa-3x")
+            icon("fas fa-arrow-alt-circle-left", "left-arrow fa-2x")
         ),
-        div(class="chooser-container chooser-right-container",
+        div(class = "chooser-container chooser-right-container",
             tags$select(class="right", size=size, multiple=multiple, rightChoices)
         )
     )

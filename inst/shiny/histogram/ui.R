@@ -3,7 +3,7 @@ function(request) {
     titlePanel(NULL, windowTitle = "RLumShiny - Histogram"),
     sidebarLayout(
       sidebarPanel(width = 5,
-                   
+
                    # include a tabs in the input panel for easier navigation
                    tabsetPanel(id = "tabs", type = "pill", selected = "Data",
                                # Tab 1: Data input
@@ -11,7 +11,7 @@ function(request) {
                                         # informational text
                                         div(align = "center", h5("Data upload")),
                                         # file upload button (data set 1)
-                                        fileInput(inputId = "file1", 
+                                        fileInput(inputId = "file1",
                                                   label = strong("Primary data set"),
                                                   accept="text/plain, .csv, text/csv"),
                                         # rhandsontable input/output
@@ -22,12 +22,12 @@ function(request) {
                                           column(width = 6)
                                         ),
                                         hr(),
-                                        actionButton(inputId = "refresh", label = "Refresh", icon = icon("refresh")),
+                                        actionButton(inputId = "refresh", label = "Refresh", icon = icon("fas fa-sync")),
                                         tooltip(refId = "refresh", text = "Redraw the plot")
                                ),##EndOf::Tab_1
-                               
+
                                # Tab 2: Statistical information
-                               tabPanel("Statistics",                             
+                               tabPanel("Statistics",
                                         fluidRow(
                                           column(width = 6,
                                                  checkboxInput(inputId = "summary",
@@ -51,7 +51,7 @@ function(request) {
                                                  tooltip(refId = "sumpos", attr = "for", text = "Position of the statistical summary. The keyword \"Subtitle\" will only work if no plot subtitle is used.")
                                           )
                                         ),
-                                        
+
                                         ## ARG 'SUMMARY.METHOD' NOT YET IMPLEMENTED
                                         ##
                                         # selectInput(inputId = "summary.method",
@@ -61,9 +61,9 @@ function(request) {
                                         #                            "Weighted" = "weighted",
                                         #                            "Monte Carlo" = "MCM")),
                                         # tooltip(refId = "summary.method", attr = "for", text = "Keyword indicating the method used to calculate the statistic summary. See calc_Statistics for details."),
-                                        
+
                                         checkboxGroupInput(inputId = "stats",
-                                                           label = "Parameters", 
+                                                           label = "Parameters",
                                                            selected = c("n","mean"),
                                                            choices = c("n" = "n",
                                                                        "Mean" = "mean",
@@ -84,19 +84,19 @@ function(request) {
                                                       value = TRUE),
                                         tooltip(refId = "errorBars", text = "Plot the standard error points over the histogram.")
                                ),##EndOf::Tab_2
-                               
+
                                # Tab 1: Data input
                                tabPanel("Plot",
                                         div(align = "center", h5("Title")),
                                         fluidRow(
                                           column(width = 6,
-                                                 textInput(inputId = "main", 
-                                                           label = "Title", 
+                                                 textInput(inputId = "main",
+                                                           label = "Title",
                                                            value = "Histogram")
                                           ),
                                           column(width = 6,
-                                                 textInput(inputId = "mtext", 
-                                                           label = "Subtitle", 
+                                                 textInput(inputId = "mtext",
+                                                           label = "Subtitle",
                                                            value = "")
                                           )
                                         ),
@@ -108,8 +108,8 @@ function(request) {
                                                              choices = list("White" = "white",
                                                                             "Black" = "black",
                                                                             "Grey" = "grey80",
-                                                                            "Red" = "#b22222", 
-                                                                            "Green" = "#6E8B3D", 
+                                                                            "Red" = "#b22222",
+                                                                            "Green" = "#6E8B3D",
                                                                             "Blue" = "#428bca",
                                                                             "Custom" = "custom"))
                                           ),
@@ -120,9 +120,9 @@ function(request) {
                                                                                label = "Choose a color"))
                                           )
                                         ),
-                                        sliderInput(inputId = "alpha.bars", 
-                                                    label = "Bar transparency", 
-                                                    min = 0, max = 100, 
+                                        sliderInput(inputId = "alpha.bars",
+                                                    label = "Bar transparency",
+                                                    min = 0, max = 100,
                                                     step = 1, value = 66),
                                         br(),
                                         div(align = "center", h5("Normal curve")),
@@ -136,8 +136,8 @@ function(request) {
                                                              selected = "red",
                                                              choices = list("Black" = "black",
                                                                             "Grey" = "grey50",
-                                                                            "Red" = "#b22222", 
-                                                                            "Green" = "#6E8B3D", 
+                                                                            "Red" = "#b22222",
+                                                                            "Green" = "#6E8B3D",
                                                                             "Blue" = "#428bca",
                                                                             "Custom" = "custom"))
                                           ),
@@ -149,9 +149,9 @@ function(request) {
                                           )
                                         ),
                                         div(align = "center", h5("Scaling")),
-                                        sliderInput(inputId = "cex", 
+                                        sliderInput(inputId = "cex",
                                                     label = "Scaling factor",
-                                                    min = 0.5, max = 2, 
+                                                    min = 0.5, max = 2,
                                                     value = 1.0, step = 0.1),
                                         br(),
                                         div(align = "center", h5("Rugs")),
@@ -164,8 +164,8 @@ function(request) {
                                                  selectInput(inputId = "rugsColor", label = "Rugs color",
                                                              choices = list("Black" = "black",
                                                                             "Grey" = "grey50",
-                                                                            "Red" = "#b22222", 
-                                                                            "Green" = "#6E8B3D", 
+                                                                            "Red" = "#b22222",
+                                                                            "Green" = "#6E8B3D",
                                                                             "Blue" = "#428bca",
                                                                             "Custom" = "custom"))
                                           ),
@@ -177,11 +177,11 @@ function(request) {
                                           )
                                         )
                                ),##EndOf::Tab_9
-                               
+
                                # Tab 4: modify axis parameters
                                tabPanel("Axis",
                                         div(align = "center", h5("X-axis")),
-                                        textInput(inputId = "xlab", 
+                                        textInput(inputId = "xlab",
                                                   label = "Label x-axis",
                                                   value = "Equivalent dose [Gy]"),
                                         # inject sliderInput from Server.R
@@ -189,20 +189,20 @@ function(request) {
                                         div(align = "center", h5("Y-axis")),
                                         fluidRow(
                                           column(width = 6,
-                                                 textInput(inputId = "ylab1", 
+                                                 textInput(inputId = "ylab1",
                                                            label = "Label y-axis (left)",
                                                            value = "Counts")
                                           ),
                                           column(width = 6,
-                                                 textInput(inputId = "ylab2", 
+                                                 textInput(inputId = "ylab2",
                                                            label = "Label y-axis (right)",
                                                            value = "Error")
                                           )
                                         )
                                ),##EndOf::Tab_4
-                               
+
                                # Tab 5: modify data point representation
-                               tabPanel("Datapoints",              
+                               tabPanel("Datapoints",
                                         div(align = "center", h5("Primary data set")),
                                         fluidRow(
                                           column(width = 6,
@@ -235,8 +235,8 @@ function(request) {
                                           column(width = 6,
                                                  # show only if custom symbol is desired
                                                  conditionalPanel(condition = "input.pch == 'custom'",
-                                                                  textInput(inputId = "custompch", 
-                                                                            label = "Insert character", 
+                                                                  textInput(inputId = "custompch",
+                                                                            label = "Insert character",
                                                                             value = "?"))
                                           )
                                         ),
@@ -245,11 +245,11 @@ function(request) {
                                                  selectInput(inputId = "pchColor", label = "Datapoint color",
                                                              choices = list("Black" = "black",
                                                                             "Grey" = "grey50",
-                                                                            "Red" = "#b22222", 
-                                                                            "Green" = "#6E8B3D", 
+                                                                            "Red" = "#b22222",
+                                                                            "Green" = "#6E8B3D",
                                                                             "Blue" = "#428bca",
                                                                             "Custom" = "custom"))
-                                          ), 
+                                          ),
                                           column(width = 6,
                                                  # show only if custom color is desired
                                                  conditionalPanel(condition = "input.pchColor == 'custom'",
@@ -262,8 +262,8 @@ function(request) {
                                RLumShiny:::aboutTab("about", "histogram")
                    )##EndOf::tabsetPanel
       ),##EndOf::sidebarPanel
-      
-      
+
+
       # 3 - output panel
       mainPanel(width = 7,
                 # insert css code inside <head></head> of the generated HTML file:
