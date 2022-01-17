@@ -10,6 +10,8 @@ output: github_document
   
 * The `filter` did not work anymore after changes in `'shiny'`; fixed. 
 
+* The filter selector icons were deprecated, causing a warning in the terminal; fixed.
+
 * The app `RCarb App` did not work anymore after changes in `'shiny'`; fixed. 
 
 ## RLumShiny 0.2.2 (Release date: 2019-01-11)
