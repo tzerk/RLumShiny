@@ -6,6 +6,7 @@ output: github_document
 ## RLumShiny 0.2.4 (Release date: `r Sys.Date()`)
 
 * App `cosmicdose`: Google maps window replaced by Open Street Map window 
+* App `doserecovery`: Fix partly non-working summary statistics (#2)
 
 ## RLumShiny 0.2.3 (Release date: `r Sys.Date()`)
 
