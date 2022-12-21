@@ -35,6 +35,7 @@ Imports:
     rhandsontable (>= 0.3.8),
     data.table (>= 1.14.6),
     googleVis (>= 0.7.0),
+    leaflet (>= 2.1.1),
     shinydashboard (>= 0.7.2),
     RCarb (>= 0.1.6),
     markdown (>= 1.4),

@@ -16,7 +16,7 @@
 #'
 #' @name RLumShiny-package
 #' @docType package
-#' @import Luminescence shiny googleVis shinydashboard rhandsontable data.table readxl
+#' @import Luminescence shiny googleVis shinydashboard rhandsontable data.table readxl leaflet
 #' @importFrom RCarb model_DoseRate write_InputTemplate
 #' @importFrom markdown markdownToHTML
 #' @importFrom utils citation

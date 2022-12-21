@@ -1,7 +1,7 @@
 ## global.R ##
 library(Luminescence)
 library(shiny)
-library(googleVis)
+library(leaflet)
 library(RLumShiny)
 
 enableBookmarking(store = "server")
