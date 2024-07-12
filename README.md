@@ -6,6 +6,8 @@
 <!-- badges: start -->
 
 [![CRAN](https://www.r-pkg.org/badges/version/RLumShiny)](https://cran.rstudio.com/package=RLumShiny)
+[![CRAN
+DOI](https://img.shields.io/badge/doi-10.32614/CRAN.package.RLumShiny-blue.svg)](https://doi.org/10.32614/CRAN.package.RLumShiny)
 [![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/RLumShiny)](https://www.r-pkg.org/pkg/RLumShiny)
 [![Downloads](https://cranlogs.r-pkg.org/badges/RLumShiny)](https://www.r-pkg.org/pkg/RLumShiny)
 [![Downloads](https://cranlogs.r-pkg.org/badges/last-week/RLumShiny)](https://www.r-pkg.org/pkg/RLumShiny)
@@ -56,21 +58,21 @@ be started: `app_RLum()`. It essentially only takes one argument, which
 is a unique keyword to specify which app to start. See the table below
 for a list of available apps and which keywords to use.
 
-| Application                                         |       Keyword        | Function                                       |
-|-----------------------------------------------------|:--------------------:|------------------------------------------------|
-| Abanico Plot                                        |       abanico        | `plot_AbanicoPlot`                             |
-| Histogram                                           |      histogram       | `plot_Histogram`                               |
-| Kernel Density Estimate Plot                        |         KDE          | `plot_KDE`                                     |
-| Radial Plot                                         |      radialplot      | `plot_RadialPlot`                              |
-| Dose Recovery Test                                  |     doserecovery     | `plot_DRTResults`                              |
-| Cosmic Dose Rate                                    |      cosmicdose      | `calc_CosmicDoseRate`                          |
-| CW Curve Transformation                             |     transformCW      | `CW2pHMi`, `CW2pLM`, `CW2pLMi`, `CW2pPMi`      |
-| Plot Filter Combinations                            |        filter        | `plot_FilterCombinations`                      |
-| Calculate Fast Ratio                                |      fastratio       | `calc_FastRatio`                               |
-| Fading measurement analysis and correction          |        fading        | `analyse_FadingMeasurement`, `calc_FadingCorr` |
-| Test OSL/IRSL Stimulation Power                     | teststimulationpower | `plot_RLum`                                    |
-| Scale Gamma Dose Rate†                              |      scalegamma      | `scale_GammaDose()`                            |
-| Model dose rate evolution in carbonate-rich samples |        RCarb         | `RCarb::model_DoseRate`                        |
+| Application | Keyword | Function |
+|----|:--:|----|
+| Abanico Plot | abanico | `plot_AbanicoPlot` |
+| Histogram | histogram | `plot_Histogram` |
+| Kernel Density Estimate Plot | KDE | `plot_KDE` |
+| Radial Plot | radialplot | `plot_RadialPlot` |
+| Dose Recovery Test | doserecovery | `plot_DRTResults` |
+| Cosmic Dose Rate | cosmicdose | `calc_CosmicDoseRate` |
+| CW Curve Transformation | transformCW | `CW2pHMi`, `CW2pLM`, `CW2pLMi`, `CW2pPMi` |
+| Plot Filter Combinations | filter | `plot_FilterCombinations` |
+| Calculate Fast Ratio | fastratio | `calc_FastRatio` |
+| Fading measurement analysis and correction | fading | `analyse_FadingMeasurement`, `calc_FadingCorr` |
+| Test OSL/IRSL Stimulation Power | teststimulationpower | `plot_RLum` |
+| Scale Gamma Dose Rate† | scalegamma | `scale_GammaDose()` |
+| Model dose rate evolution in carbonate-rich samples | RCarb | `RCarb::model_DoseRate` |
 
 The `app_RLum()` function is just a wrapper for `shiny::runApp()`. Via
 the `...` argument further arguments can be directly passed to
@@ -103,19 +105,28 @@ requiring any format conversion.
 
 `app_RLum("abanico")`
 
-![Abanico app](man/figures/abanico.png)
+<figure>
+<img src="man/figures/abanico.png" alt="Abanico app" />
+<figcaption aria-hidden="true">Abanico app</figcaption>
+</figure>
 
 ### Tooltip
 
 `tooltip(refId, text, attr = NULL, animation = TRUE, delay = 100, html = TRUE, placement = "auto", trigger = "hover")`
 
-![tooltip](man/figures/tooltip.png)
+<figure>
+<img src="man/figures/tooltip.png" alt="tooltip" />
+<figcaption aria-hidden="true">tooltip</figcaption>
+</figure>
 
 ### JSColor
 
 `jscolorInput(inputId, label, value, position = "bottom", color = "transparent", mode = "HSV", slider = TRUE, close = FALSE)`
 
-![jscolor.js](man/figures/jscolor.png)
+<figure>
+<img src="man/figures/jscolor.png" alt="jscolor.js" />
+<figcaption aria-hidden="true">jscolor.js</figcaption>
+</figure>
 
 ## Contribute
 
@@ -140,10 +151,10 @@ guarantee! For stable branches please visit the package on [CRAN
 The `'RLumShiny'` package is licensed under the GPLv3. See these files
 in the main directory for additional details:
 
--   LICENSE.note
+- LICENSE.note
 
 ## Related projects
 
--   [RLumModel](https://github.com/R-Lum/RLumModel)
--   [Luminescence](https://github.com/R-Lum/Luminescence)
--   [RCarb](https://github.com/R-Lum/RCarb)
+- [RLumModel](https://github.com/R-Lum/RLumModel)
+- [Luminescence](https://github.com/R-Lum/Luminescence)
+- [RCarb](https://github.com/R-Lum/RCarb)
