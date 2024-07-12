@@ -2,6 +2,7 @@
 % Please edit documentation in R/RLumShiny.R
 \docType{package}
 \name{RLumShiny-package}
+\alias{RLumShiny}
 \alias{RLumShiny-package}
 \title{Shiny Applications for the R Package Luminescence}
 \description{
@@ -19,4 +20,30 @@ It further provides a custom input binding to the JavaScript/HTML color picker J
 Offering access to most options provided by the JSColor API the function \code{\link{jscolorInput}}
 is easily implemented in a shiny app. RGB colors are returned as hex values and can be
 directly used in R's base plotting functions without the need of any format conversion.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://tzerk.github.io/RLumShiny/}
+  \item Report bugs at \url{https://github.com/tzerk/RLumShiny/issues}
+}
+
+}
+\author{
+\strong{Maintainer}: Christoph Burow \email{christoph.burow@gmx.net} (\href{https://orcid.org/0000-0002-5023-4046}{ORCID})
+
+Authors:
+\itemize{
+  \item Urs Tilmann Wolpert
+  \item Sebastian Kreutzer (\href{https://orcid.org/0000-0002-0734-2199}{ORCID})
+}
+
+Other contributors:
+\itemize{
+  \item  R Luminescence Package Team [contributor]
+  \item Jan Odvarko (jscolor.js in www/jscolor) [copyright holder]
+  \item  AnalytixWare (ShinySky package) [copyright holder]
+  \item  RStudio (chooser_inputBinding.js in www/ and chooser.R in R/) [copyright holder]
+}
+
 }
