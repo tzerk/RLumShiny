@@ -16,28 +16,28 @@ jscolorInput(
 )
 }
 \arguments{
-\item{inputId}{\code{\link{character}} (\strong{required}):
+\item{inputId}{\link{character} (\strong{required}):
 Specifies the input slot that will be used to access the value.}
 
-\item{label}{\code{\link{character}} (\emph{optional}):
+\item{label}{\link{character} (\emph{optional}):
 Display label for the control, or NULL for no label.}
 
-\item{value}{\code{\link{character}} (\emph{optional}):
+\item{value}{\link{character} (\emph{optional}):
 Initial RGB value of the color picker. Default is black ('#000000').}
 
-\item{position}{\code{\link{character}} (\emph{with default}):
+\item{position}{\link{character} (\emph{with default}):
 Position of the picker relative to the text input ('bottom', 'left', 'top', 'right').}
 
-\item{color}{\code{\link{character}} (\emph{with default}):
+\item{color}{\link{character} (\emph{with default}):
 Picker color scheme ('transparent' by default). Use RGB color coding ('000000').}
 
-\item{mode}{\code{\link{character}} (\emph{with default}):
+\item{mode}{\link{character} (\emph{with default}):
 Mode of hue, saturation and value. Can either be 'HSV' or 'HVS'.}
 
-\item{slider}{\code{\link{logical}} (\emph{with default}):
+\item{slider}{\link{logical} (\emph{with default}):
 Show or hide the slider.}
 
-\item{close}{\code{\link{logical}} (\emph{with default}):
+\item{close}{\link{logical} (\emph{with default}):
 Show or hide a close button.}
 }
 \description{
@@ -51,8 +51,8 @@ jscolorInput("col", "Color", "21BF6B", slider = FALSE)
 \dontrun{
 shinyApp(
 ui = fluidPage(
-  jscolorInput(inputId = "col", label = "JSColor Picker", 
-               value = "21BF6B", position = "right", 
+  jscolorInput(inputId = "col", label = "JSColor Picker",
+               value = "21BF6B", position = "right",
                mode = "HVS", close = TRUE),
   plotOutput("plot")
 ),
@@ -64,9 +64,9 @@ server = function(input, output) {
 }
 }
 \seealso{
-Other input.elements: \code{\link{animationOptions}}, \code{\link{sliderInput}};
-\code{\link{checkboxGroupInput}}; \code{\link{checkboxInput}}; \code{\link{dateInput}};
-\code{\link{dateRangeInput}}; \code{\link{fileInput}}; \code{\link{numericInput}};
-\code{\link{passwordInput}}; \code{\link{radioButtons}}; \code{\link{selectInput}},
-\code{\link{selectizeInput}}; \code{\link{submitButton}}; \code{\link{textInput}}
+Other input.elements: \link[shiny:sliderInput]{shiny::animationOptions}, \link[shiny:sliderInput]{shiny::sliderInput};
+\link[shiny:checkboxGroupInput]{shiny::checkboxGroupInput}; \link[shiny:checkboxInput]{shiny::checkboxInput}; \link[shiny:dateInput]{shiny::dateInput};
+\link[shiny:dateRangeInput]{shiny::dateRangeInput}; \link[shiny:fileInput]{shiny::fileInput}; \link[shiny:numericInput]{shiny::numericInput};
+\link[shiny:passwordInput]{shiny::passwordInput}; \link[shiny:radioButtons]{shiny::radioButtons}; \link[shiny:selectInput]{shiny::selectInput},
+\link[shiny:selectInput]{shiny::selectizeInput}; \link[shiny:submitButton]{shiny::submitButton}; \link[shiny:textInput]{shiny::textInput}
 }
