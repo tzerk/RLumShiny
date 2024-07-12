@@ -28,9 +28,9 @@ Description: A collection of 'shiny' applications for the R package
 License: GPL-3
 Encoding: UTF-8
 Depends:
-    R (>= 4.1)
+    R (>= 4.3)
 Imports:
-    Luminescence (>= 0.9.20),
+    Luminescence (>= 0.9.24),
     shiny (>= 1.7.4),
     rhandsontable (>= 0.3.8),
     data.table (>= 1.14.6),
@@ -56,4 +56,4 @@ Collate:
     'module_exportTab.R'
     'module_printCode.R'
     'zzz.R'
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
