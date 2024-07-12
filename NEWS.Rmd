@@ -7,8 +7,9 @@ output: github_document
 
 * App `cosmicdose`: Google maps window replaced by Open Street Map window 
 * App `doserecovery`: Fix partly non-working summary statistics (#2)
+* Non-user visible changes to satisfy CRAN (anchor notes)
 
-## RLumShiny 0.2.3 (Release date: `r Sys.Date()`)
+## RLumShiny 0.2.3 (Release date: 2022-01-29)
 
 **This package version requires R > 4.0!** 
 
