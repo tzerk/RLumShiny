@@ -110,9 +110,7 @@ RLumShinyAddin <- function() {
   ## HEADER ----------------------------------------------------------------------
   header <- dashboardHeader(
     title = tags$p(style = "color:white; font-family:verdana;","RLumShiny"),
-    tags$li(class = "dropdown", tags$a(href = "https://github.com/tzerk/RLumShiny", icon("github"))),
-    tags$li(class = "dropdown", tags$a(href = "https://twitter.com/RLuminescence", icon("twitter"))),
-    tags$li(class = "dropdown", tags$a(href = "https://forum.r-luminescence.de/", icon("comments-o")))
+    tags$li(class = "dropdown", tags$a(href = "https://github.com/tzerk/RLumShiny", icon("github")))
   )#EndOf:Header
 
 
