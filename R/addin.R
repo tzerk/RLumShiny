@@ -130,7 +130,7 @@ RLumShinyAddin <- function() {
     tags$hr(),
     tags$div(align = "left",
              tags$p(style = "color: grey; margin-left: 10px; margin-right: 40px; font-size: 80%;",
-                    attributes(unclass(citation("RLumShiny"))[[1]])$textVersion)
+                    paste("RLumShiny", unclass(packageDescription("RLumShiny"))$Version))
     )
 
   )#EndOf:Sidebar
