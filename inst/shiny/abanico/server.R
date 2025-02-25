@@ -457,7 +457,7 @@ function(input, output, session) {
       colnames(t)<- c("Data set","n", "log data", "Central dose", "SE abs.", "OD (%)", "OD error (%)")
       res<- lapply(data, function(x) { calc_CentralDose(x, verbose = FALSE, plot = FALSE) })
       for(i in 1:length(res)) {
-        t[i,1]<- ifelse(i==1,"pimary","secondary")
+        t[i,1]<- ifelse(i==1,"primary","secondary")
         t[i,2]<- length(res[[i]]@data$data[,1])
         t[i,3]<- res[[i]]@data$args$log
         t[i,4:7]<- round(res[[i]]@data$summary[1:4],2)
