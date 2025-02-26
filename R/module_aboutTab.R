@@ -16,7 +16,7 @@ aboutTab <- function(id, subdir) {
                  br(),hr(),
                  img(src='GitHub-Mark-32px.png', width='32px', height='32px'),
                  br(),
-                 a(href = paste0("https://github.com/tzerk/RLumShiny/tree/master/inst/shiny/", subdir), "See the code at GitHub!", target="_blank")
+                 a(href = paste0("https://github.com/tzerk/RLumShiny/tree/master/inst/shiny/", subdir), "See the code on GitHub!", target="_blank")
              )#/div
     )
     
