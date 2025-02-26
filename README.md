@@ -60,7 +60,7 @@ for a list of available apps and which keywords to use.
 | Radial Plot | radialplot | `plot_RadialPlot` |
 | Dose Recovery Test | doserecovery | `plot_DRTResults` |
 | Cosmic Dose Rate | cosmicdose | `calc_CosmicDoseRate` |
-| CW Curve Transformation | transformCW | `CW2pHMi`, `CW2pLM`, `CW2pLMi`, `CW2pPMi` |
+| CW Curve Transformation | transformCW | `convert_CW2pHMi`, `convert_CW2pLM`, `convert_CW2pLMi`, `convert_CW2pPMi` |
 | Plot Filter Combinations | filter | `plot_FilterCombinations` |
 | Calculate Fast Ratio | fastratio | `calc_FastRatio` |
 | Fading measurement analysis and correction | fading | `analyse_FadingMeasurement`, `calc_FadingCorr` |

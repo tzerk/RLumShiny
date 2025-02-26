@@ -28,7 +28,7 @@ Kernel Density Estimate Plot \tab \emph{KDE} \tab \link[Luminescence:plot_KDE]{L
 Radial Plot \tab \emph{radialplot} \tab \link[Luminescence:plot_RadialPlot]{Luminescence::plot_RadialPlot} \cr
 Dose Recovery Test \tab \emph{doserecovery} \tab \link[Luminescence:plot_DRTResults]{Luminescence::plot_DRTResults} \cr
 Cosmic Dose Rate \tab \emph{cosmicdose}  \tab \link[Luminescence:calc_CosmicDoseRate]{Luminescence::calc_CosmicDoseRate} \cr
-CW Curve Transformation \tab \emph{transformCW} \tab \link[Luminescence:CW2pHMi]{Luminescence::CW2pHMi}, \link[Luminescence:CW2pLM]{Luminescence::CW2pLM}, \link[Luminescence:CW2pLMi]{Luminescence::CW2pLMi}, \link[Luminescence:CW2pPMi]{Luminescence::CW2pPMi} \cr
+CW Curve Transformation \tab \emph{transformCW} \tab \link[Luminescence:convert_CW2pHMi]{Luminescence::convert_CW2pHMi}, \link[Luminescence:convert_CW2pLM]{Luminescence::convert_CW2pLM}, \link[Luminescence:convert_CW2pLMi]{Luminescence::convert_CW2pLMi}, \link[Luminescence:convert_CW2pPMi]{Luminescence::convert_CW2pPMi} \cr
 Filter Combinations \tab \emph{filter} \tab \link[Luminescence:plot_FilterCombinations]{Luminescence::plot_FilterCombinations} \cr
 Fast Ratio \tab \emph{fastratio} \tab \link[Luminescence:calc_FastRatio]{Luminescence::calc_FastRatio} \cr
 Fading Correction \tab \emph{fading} \tab \link[Luminescence:analyse_FadingMeasurement]{Luminescence::analyse_FadingMeasurement}, \link[Luminescence:calc_FadingCorr]{Luminescence::calc_FadingCorr} \cr
