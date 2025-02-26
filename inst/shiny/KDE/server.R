@@ -122,8 +122,8 @@ function(input, output, session) {
     
     sliderInput(inputId = "bw", 
                 label = "KDE bandwidth", 
-                min = bw.nrd0(data[,1])/4, 
-                max = bw.nrd0(data[,1])*4,
+                min = round(bw.nrd0(data[,1])/4, 3),
+                max = round(bw.nrd0(data[,1])*4, 3),
                 value = bw.nrd0(data[,1]))
     
   })## EndOf::renderUI()

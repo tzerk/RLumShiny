@@ -131,7 +131,7 @@ function(input, output, session) {
     sliderInput(inputId = "xlim", 
                 label = "Range x-axis",
                 min = 0, 
-                max = max(prec)*2,
+                max = round(max(prec)*2, 3),
                 value = c(0, max(prec)*1.05), round=FALSE, step=0.0001)
     
   })## EndOf::renderUI()
