@@ -20,7 +20,7 @@ RLumShinyAddin <- function() {
                     description = "This function calculates the cosmic dose rate taking into account the soft- and hard-component of the cosmic ray flux and allows corrections for geomagnetic latitude, altitude above sea-level and geomagnetic field changes."),
 
     "kde" = list(title = "Kernel Density Estimate Plot",
-                 keyword = "kde",
+                 keyword = "KDE",
                  category = "plot",
                  description = "Plot a kernel density estimate of measurement values in combination with the actual values and associated error bars in ascending order."),
 
@@ -68,14 +68,14 @@ RLumShinyAddin <- function() {
                              keyword = "teststimulationpower",
                              category = "misc",
                              description = "Compares the OSL/IRSL stimulation power of measurements performed on Freiberg Instruments lexsyg devices and returns a message if a mismatch is detected, i.e. the stimulation power was not stable of the sequence.RLum"),
-    
+
     "scalegamma" = list(title = "Gamma Dose Rate Scaling",
                              keyword = "scalegamma",
                              category = "calc",
                              description = "Scale the gamma dose rate considering variations in soil radioactivity."),
-    
+
     "rcarb" = list(title = "Dose Rate Modelling of Carbonate-Rich Samples",
-                             keyword = "rcarb",
+                             keyword = "RCarb",
                              category = "calc",
                              description = "This app models the dose rate evolution in carbonate enrich environments.")
 
