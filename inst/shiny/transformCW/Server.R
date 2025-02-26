@@ -150,8 +150,8 @@ function(input, output, session) {
     callModule(RLumShiny:::exportCodeHandler, "export", code = code.output)
     callModule(RLumShiny:::exportPlotHandler, "export", fun = "plot", args = values$pargs)
   })
-  
-  output$dataset <- renderDataTable({
+
+  output$dataset <- DT::renderDT({
     if (!is.null(values$tdata))
       values$tdata
   })

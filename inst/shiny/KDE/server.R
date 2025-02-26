@@ -196,9 +196,9 @@ function(input, output, session) {
     callModule(RLumShiny:::exportCodeHandler, "export", code = code.output)
     callModule(RLumShiny:::exportPlotHandler, "export", fun = "plot_KDE", args = values$args)
   })
-  
+
   # renderTable() that prints the data to the second tab
-  output$dataset<- renderDataTable(
+  output$dataset<- DT::renderDT(
     options = list(pageLength = 10, autoWidth = FALSE),
     callback = "function(table) {
     table.on('click.dt', 'tr', function() {
@@ -212,11 +212,11 @@ function(input, output, session) {
       data <- values$data[[1]]
       colnames(data) <- c("De","De error")
       data
-      
-    })##EndOf::renterTable()
-  
+
+    })##EndOf::renderDT()
+
   # renderTable() that prints the secondary data to the second tab
-  output$dataset2<- renderDataTable(
+  output$dataset2<- DT::renderDT(
     options = list(pageLength = 10, autoWidth = FALSE),
     callback = "function(table) {
   table.on('click.dt', 'tr', function() {
@@ -234,12 +234,12 @@ function(input, output, session) {
         
       } else {
       }
-    })##EndOf::renterTable()
-  
-  
+    })##EndOf::renderDT()
+
+
   # renderTable() to print the results of the
   # central age model (CAM)
-  output$CAM<- renderDataTable(
+  output$CAM<- DT::renderDT(
     options = list(pageLength = 10, autoWidth = FALSE),
     {
       
@@ -255,6 +255,6 @@ function(input, output, session) {
         t[i,4:7]<- round(res[[i]]@data$summary[1:4],2)
       }
       t
-    })##EndOf::renterTable()
-  
+    })##EndOf::renderDT()
+
 }##EndOf::shinyServer(function(input, output)

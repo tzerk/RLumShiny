@@ -75,11 +75,9 @@ fluidPage(
   # MAINPANEL -----------------------------------------------------------------------------------
   mainPanel(
       plotOutput("curves"),
-      DT::dataTableOutput("df")
+      DT::DTOutput("df")
 
     )
 
   )##sidebarLayout
 )##fluidPage
-
-

@@ -118,7 +118,7 @@ function(input, output, session) {
   
   
   # renderTable() that prints the data to the second tab
-  output$dataset<- renderDataTable(
+  output$dataset<- DT::renderDT(
     options = list(pageLength = 10, autoWidth = FALSE),
     callback = "function(table) {
     table.on('click.dt', 'tr', function() {
@@ -143,7 +143,7 @@ function(input, output, session) {
   
   # renderTable() to print the results of the
   # central age model (CAM)
-  output$CAM<- renderDataTable(
+  output$CAM<- DT::renderDT(
     options = list(pageLength = 10, autoWidth = FALSE),
     {
       

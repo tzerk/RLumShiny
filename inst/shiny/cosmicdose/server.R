@@ -104,7 +104,7 @@ function(input, output, session) {
   })
 
   # render results for mode 3
-  output$resultsTable<- renderDataTable({
+  output$resultsTable<- DT::renderDT({
 
     # refresh plot on button press
     input$refresh

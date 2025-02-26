@@ -40,7 +40,7 @@ Imports:
     RCarb (>= 0.1.6),
     markdown (>= 1.4),
     readxl (>= 1.4.1),
-    DT (>= 0.26),
+    DT (>= 0.32.1),
     knitr (>= 1.41)
 URL: https://tzerk.github.io/RLumShiny/
 BugReports: https://github.com/tzerk/RLumShiny/issues
