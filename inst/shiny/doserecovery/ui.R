@@ -52,18 +52,17 @@ function(request) {
                                                            selected = c("n","mean"),
                                                            choices = c("n" = "n",
                                                                        "Mean" = "mean",
-                                                                       "weighted Mean" = "mean.weighted",
+                                                                       "weighted Mean" = "weighted$mean",
                                                                        "Median" = "median",
                                                                        #"weighted Median" = "median.weighted",
-                                                                       "rel. Standard deviation" = "sdrel",
-                                                                       "abs. Standard deviation" = "sdabs",
-                                                                       "rel. Standard error" = "serel",
-                                                                       "abs. Standard error" = "seabs",
+                                                                       "rel. Standard deviation" = "sd.rel",
+                                                                       "abs. Standard deviation" = "sd.abs",
+                                                                       "rel. Standard error" = "se.rel",
+                                                                       "abs. Standard error" = "se.abs",
                                                                        #"25 % Quartile" = "q25", #not implemented yet
                                                                        #"75 % Quartile" = "q75", #not implemented yet
                                                                        "Skewness" = "skewness", #not implemented yet
-                                                                       "Kurtosis" = "kurtosis", #not implemented yet
-                                                                       "Confidence interval" = "in.ci")),
+                                                                       "Kurtosis" = "kurtosis")), #not implemented yet
                                         tooltip(refId = "stats", text = "Statistical parameters to be shown in the summary"),
                                         br(),
                                         div(align = "center", h5("Error range")),

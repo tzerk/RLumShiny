@@ -15,12 +15,11 @@
 #' directly used in R's base plotting functions without the need of any format conversion.
 #'
 #' @name RLumShiny-package
-#' @docType package
-#' @import Luminescence shiny googleVis shinydashboard rhandsontable data.table readxl
+#' @import Luminescence shiny googleVis shinydashboard rhandsontable data.table readxl leaflet
 #' @importFrom RCarb model_DoseRate write_InputTemplate
 #' @importFrom markdown markdownToHTML
 #' @importFrom utils citation
 #' @importFrom grDevices dev.off pdf postscript svg
 #'
 #' @md
-NULL
+"_PACKAGE"

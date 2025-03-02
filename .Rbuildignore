@@ -16,4 +16,5 @@ _pkgdown.yml$
 ^.*.Rmd$
 pkgdown/
 ^\.github$
+NEWS.html
 ^revdep$

@@ -7,15 +7,14 @@
 app_RLum(app = NULL, ...)
 }
 \arguments{
-\item{app}{\code{\link{character}} (\strong{required}):
+\item{app}{\link{character} (\strong{required}):
 name of the application to start. See details for a list of available apps.}
 
-\item{...}{further arguments to pass to \code{\link{runApp}}}
+\item{...}{further arguments to pass to \link[shiny:runApp]{shiny::runApp}}
 }
 \description{
-A wrapper for \code{\link{runApp}} to start interactive shiny apps for the R package Luminescence.
-}
-\details{
+A wrapper for \link[shiny:runApp]{shiny::runApp} to start interactive shiny apps for the R package Luminescence.
+
 The RLumShiny package provides a single function from which all shiny apps can be started: \code{app_RLum()}.
 It essentially only takes one argument, which is a unique keyword specifying which application to start.
 See the table below for a list of available shiny apps and which keywords to use. If no keyword is used
@@ -23,23 +22,23 @@ a dashboard will be started instead, from which an application can be started.
 
 \tabular{lcl}{
 \strong{Application name:} \tab  \strong{Keyword:}  \tab \strong{Function:} \cr
-Abanico Plot \tab \emph{abanico} \tab \code{\link{plot_AbanicoPlot}} \cr
-Histogram \tab \emph{histogram} \tab \code{\link{plot_Histogram}} \cr
-Kernel Density Estimate Plot \tab \emph{KDE} \tab \code{\link{plot_KDE}} \cr
-Radial Plot \tab \emph{radialplot} \tab \code{\link{plot_RadialPlot}} \cr
-Dose Recovery Test \tab \emph{doserecovery} \tab \code{\link{plot_DRTResults}} \cr
-Cosmic Dose Rate \tab \emph{cosmicdose}  \tab \code{\link{calc_CosmicDoseRate}} \cr
-CW Curve Transformation \tab \emph{transformCW} \tab \code{\link{CW2pHMi}}, \code{\link{CW2pLM}}, \code{\link{CW2pLMi}}, \code{\link{CW2pPMi}} \cr
-Filter Combinations \tab \emph{filter} \tab \code{\link{plot_FilterCombinations}} \cr
-Fast Ratio \tab \emph{fastratio} \tab \code{\link{calc_FastRatio}} \cr
-Fading Correction \tab \emph{fading} \tab \code{\link{analyse_FadingMeasurement}}, \code{\link{calc_FadingCorr}} \cr
-Test Stimulation Power \tab \emph{teststimulationpower} \tab  \code{\link{plot_RLum}} \cr
-Scale Gamma Dose Rate \tab \emph{scalegamma} \tab \code{scale_GammaDose} \cr
+Abanico Plot \tab \emph{abanico} \tab \link[Luminescence:plot_AbanicoPlot]{Luminescence::plot_AbanicoPlot} \cr
+Histogram \tab \emph{histogram} \tab \link[Luminescence:plot_Histogram]{Luminescence::plot_Histogram} \cr
+Kernel Density Estimate Plot \tab \emph{KDE} \tab \link[Luminescence:plot_KDE]{Luminescence::plot_KDE} \cr
+Radial Plot \tab \emph{radialplot} \tab \link[Luminescence:plot_RadialPlot]{Luminescence::plot_RadialPlot} \cr
+Dose Recovery Test \tab \emph{doserecovery} \tab \link[Luminescence:plot_DRTResults]{Luminescence::plot_DRTResults} \cr
+Cosmic Dose Rate \tab \emph{cosmicdose}  \tab \link[Luminescence:calc_CosmicDoseRate]{Luminescence::calc_CosmicDoseRate} \cr
+CW Curve Transformation \tab \emph{transformCW} \tab \link[Luminescence:CW2pHMi]{Luminescence::CW2pHMi}, \link[Luminescence:CW2pLM]{Luminescence::CW2pLM}, \link[Luminescence:CW2pLMi]{Luminescence::CW2pLMi}, \link[Luminescence:CW2pPMi]{Luminescence::CW2pPMi} \cr
+Filter Combinations \tab \emph{filter} \tab \link[Luminescence:plot_FilterCombinations]{Luminescence::plot_FilterCombinations} \cr
+Fast Ratio \tab \emph{fastratio} \tab \link[Luminescence:calc_FastRatio]{Luminescence::calc_FastRatio} \cr
+Fading Correction \tab \emph{fading} \tab \link[Luminescence:analyse_FadingMeasurement]{Luminescence::analyse_FadingMeasurement}, \link[Luminescence:calc_FadingCorr]{Luminescence::calc_FadingCorr} \cr
+Test Stimulation Power \tab \emph{teststimulationpower} \tab  \link[Luminescence:plot_RLum]{Luminescence::plot_RLum} \cr
+Scale Gamma Dose Rate \tab \emph{scalegamma} \tab \link[Luminescence:scale_GammaDose]{Luminescence::scale_GammaDose} \cr
 RCarb app \tab \emph{RCarb} \tab \link[RCarb:model_DoseRate]{RCarb::model_DoseRate}
 }
 
-The \code{app_RLum()} function is just a wrapper for \code{\link{runApp}}.
-Via the \code{...} argument further arguments can be directly passed to \code{\link{runApp}}.
+The \code{app_RLum()} function is just a wrapper for \link[shiny:runApp]{shiny::runApp}.
+Via the \code{...} argument further arguments can be directly passed to \link[shiny:runApp]{shiny::runApp}.
 See \code{?shiny::runApp} for further details on valid arguments.
 }
 \examples{
@@ -69,7 +68,7 @@ app_RLum("RCarb")
 
 }
 \seealso{
-\code{\link{runApp}}
+\link[shiny:runApp]{shiny::runApp}
 }
 \author{
 Christoph Burow, University of Cologne (Germany)

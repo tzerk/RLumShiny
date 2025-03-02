@@ -105,7 +105,7 @@ function(request) {
     fluidRow(
       column(width = 6,
              div(id="gmap",
-                 htmlOutput("map")
+                 leaflet::leafletOutput("map")
              )
       ),
       column(width = 6,
