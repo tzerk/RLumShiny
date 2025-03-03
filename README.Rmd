@@ -21,16 +21,10 @@ knitr::opts_chunk$set(
 [![Downloads](https://cranlogs.r-pkg.org/badges/RLumShiny)](https://www.r-pkg.org/pkg/RLumShiny)
 [![Downloads](https://cranlogs.r-pkg.org/badges/last-week/RLumShiny)](https://www.r-pkg.org/pkg/RLumShiny)
 [![Downloads](https://cranlogs.r-pkg.org/badges/last-day/RLumShiny)](https://www.r-pkg.org/pkg/RLumShiny)
-[![Build status](https://ci.appveyor.com/api/projects/status/jp8ueedudbuhvtfe/branch/master?svg=true)](https://ci.appveyor.com/project/tzerk/rlumshiny/branch/master)
-[![R-CMD-check](https://github.com/R-Lum/RLumShiny/workflows/R-CMD-check/badge.svg)](https://github.com/R-Lum/RLumShiny/actions)
+[![R-CMD-check](https://github.com/R-Lum/RLumShiny/actions/workflows/GitHub_Actions_CI.yaml/badge.svg)](https://github.com/R-Lum/RLumShiny/actions)
 <!-- badges: end -->
 
 > Visit the <a href="https://tzerk.github.io/RLumShiny/" target="_blank">project page</a>!
-
-> Follow us on [![alt text][1.1]][1] <a href="https://www.twitter.com/RLuminescence" target="_blank">@RLuminescence</a>
-
-[1.1]: man/figures/twitter.png (twitter icon without padding)
-[1]: https://www.twitter.com/RLuminescence
 
 # Overview
 
