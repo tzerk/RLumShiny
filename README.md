@@ -12,18 +12,12 @@ DOI](https://img.shields.io/badge/doi-10.32614/CRAN.package.RLumShiny-blue.svg)]
 [![Downloads](https://cranlogs.r-pkg.org/badges/RLumShiny)](https://www.r-pkg.org/pkg/RLumShiny)
 [![Downloads](https://cranlogs.r-pkg.org/badges/last-week/RLumShiny)](https://www.r-pkg.org/pkg/RLumShiny)
 [![Downloads](https://cranlogs.r-pkg.org/badges/last-day/RLumShiny)](https://www.r-pkg.org/pkg/RLumShiny)
-[![Build
-status](https://ci.appveyor.com/api/projects/status/jp8ueedudbuhvtfe/branch/master?svg=true)](https://ci.appveyor.com/project/tzerk/rlumshiny/branch/master)
-[![R-CMD-check](https://github.com/R-Lum/RLumShiny/workflows/R-CMD-check/badge.svg)](https://github.com/R-Lum/RLumShiny/actions)
+[![R-CMD-check](https://github.com/R-Lum/RLumShiny/actions/workflows/GitHub_Actions_CI.yaml/badge.svg)](https://github.com/R-Lum/RLumShiny/actions)
 <!-- badges: end -->
 
 > Visit the
 > <a href="https://tzerk.github.io/RLumShiny/" target="_blank">project
 > page</a>!
-
-> Follow us on [![alt
-> text](man/figures/twitter.png "twitter icon without padding")](https://www.twitter.com/RLuminescence)
-> <a href="https://www.twitter.com/RLuminescence" target="_blank">@RLuminescence</a>
 
 # Overview
 
