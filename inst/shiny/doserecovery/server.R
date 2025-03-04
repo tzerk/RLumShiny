@@ -213,12 +213,12 @@ function(input, output, session) {
   # renderTable() that prints the data to the second tab
   output$dataset<- DT::renderDT(
     options = list(pageLength = 10, autoWidth = FALSE),
-    callback = "function(table) {
+    callback = htmlwidgets::JS("function(table) {
   table.on('click.dt', 'tr', function() {
   $(this).toggleClass('selected');
   Shiny.onInputChange('rows',
   table.rows('.selected').values$data.toArray());
-  });}",
+  });}"),
     {
       data<- values$data
       colnames(data[[1]])<- c("De", "De error")
@@ -229,12 +229,12 @@ function(input, output, session) {
   # renderTable() that prints the data to the second tab
   output$dataset2<- DT::renderDT(
     options = list(pageLength = 10, autoWidth = FALSE),
-    callback = "function(table) {
+    callback = htmlwidgets::JS("function(table) {
   table.on('click.dt', 'tr', function() {
   $(this).toggleClass('selected');
   Shiny.onInputChange('rows',
   table.rows('.selected').values$data.toArray());
-  });}",
+  });}"),
     {
       data<- values$data
       if(length(data)>1) {
