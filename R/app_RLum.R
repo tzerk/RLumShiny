@@ -15,7 +15,7 @@
 #' Radial Plot \tab *radialplot* \tab [Luminescence::plot_RadialPlot] \cr
 #' Dose Recovery Test \tab *doserecovery* \tab [Luminescence::plot_DRTResults] \cr
 #' Cosmic Dose Rate \tab *cosmicdose*  \tab [Luminescence::calc_CosmicDoseRate] \cr
-#' CW Curve Transformation \tab *transformCW* \tab [Luminescence::CW2pHMi], [Luminescence::CW2pLM], [Luminescence::CW2pLMi], [Luminescence::CW2pPMi] \cr
+#' CW Curve Transformation \tab *transformCW* \tab [Luminescence::convert_CW2pHMi], [Luminescence::convert_CW2pLM], [Luminescence::convert_CW2pLMi], [Luminescence::convert_CW2pPMi] \cr
 #' Filter Combinations \tab *filter* \tab [Luminescence::plot_FilterCombinations] \cr
 #' Fast Ratio \tab *fastratio* \tab [Luminescence::calc_FastRatio] \cr
 #' Fading Correction \tab *fading* \tab [Luminescence::analyse_FadingMeasurement], [Luminescence::calc_FadingCorr] \cr

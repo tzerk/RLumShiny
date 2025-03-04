@@ -31,11 +31,11 @@ function(request) {
                                tabPanel("Method",
                                         hr(),
                                         div(align = "center", h5("Transformation settings")),
-                                        radioButtons("method", "Method", selected = "CW2pHMi", 
-                                                     choices = c("Hyperbolic" = "CW2pHMi",
-                                                                 "Linear" = "CW2pLM",
-                                                                 "Linear (interpolated)" = "CW2pLMi",
-                                                                 "Parabolic" = "CW2pPMi")
+                                        radioButtons("method", "Method", selected = "convert_CW2pHMi",
+                                                     choices = c("Hyperbolic" = "convert_CW2pHMi",
+                                                                 "Linear" = "convert_CW2pLM",
+                                                                 "Linear (interpolated)" = "convert_CW2pLMi",
+                                                                 "Parabolic" = "convert_CW2pPMi")
                                         ),
                                         conditionalPanel(condition = "input.method == 'CW2pHMi'",
                                                          numericInput("delta", "Delta", value = 1, min = 0)),
@@ -157,7 +157,7 @@ function(request) {
                 # divide output in separate tabs via tabsetPanel
                 tabsetPanel(
                   tabPanel("Plot", plotOutput(outputId = "main_plot", height = "500px")),
-                  tabPanel("Output table", fluidRow(column(width = 12, dataTableOutput("dataset")))),
+                  tabPanel("Output table", fluidRow(column(width = 12, DT::DTOutput("dataset")))),
                   tabPanel("R code", verbatimTextOutput("plotCode"))
                 )###EndOf::tabsetPanel
       )##EndOf::mainPanel

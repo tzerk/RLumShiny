@@ -173,23 +173,23 @@ function(instance, td, row, col, prop, value, cellProperties) {
       )
     ))
   })
-  
+
   ## TABLE 1: Infinite matrix dose rate ----
-  output$df_inf <- renderDataTable({
+  output$df_inf <- DT::renderDT({
     if (is.null(values$results))
       return(NULL)
-    
+
     df <- get_RLum(values$results, "dose_rates")$`infinite_matrix`
     for (i in 2:ncol(df))
       df[,i] <- f(df[,i])
     df
   }, options = list(ordering = FALSE, searching = FALSE, paging = FALSE))
-  
+
   ## TABLE 2: Scaled gamma dose rate ----
-  output$df_scaled <- renderDataTable({
+  output$df_scaled <- DT::renderDT({
     if (is.null(values$results))
       return(NULL)
-    
+
     df <- get_RLum(values$results, "dose_rates")$scaled_dose_rate
     for (i in 2:ncol(df))
       df[,i] <- f(df[,i])

@@ -273,8 +273,8 @@ function(request) {
                 # divide output in separate tabs via tabsetPanel
                 tabsetPanel(
                   tabPanel("Plot", plotOutput(outputId = "main_plot", height = "500px")),
-                  tabPanel("Data set", dataTableOutput("dataset")),
-                  tabPanel("Central Age Model", dataTableOutput("CAM")),
+                  tabPanel("Data set", DT::DTOutput("dataset")),
+                  tabPanel("Central Age Model", DT::DTOutput("CAM")),
                   tabPanel("R plot code", verbatimTextOutput("plotCode"))
                 )###EndOf::tabsetPanel
       )##EndOf::mainPanel

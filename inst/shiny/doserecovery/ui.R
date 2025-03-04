@@ -293,8 +293,8 @@ function(request) {
                 # divide output in separate tabs via tabsetPanel
                 tabsetPanel(
                   tabPanel("Plot", plotOutput(outputId = "main_plot", height = "400px")),
-                  tabPanel("Primary data set", fluidRow(column(width = 12, dataTableOutput("dataset")))),
-                  tabPanel("Secondary data set", dataTableOutput("dataset2")),
+                  tabPanel("Primary data set", fluidRow(column(width = 12, DT::DTOutput("dataset")))),
+                  tabPanel("Secondary data set", DT::DTOutput("dataset2")),
                   tabPanel("R plot code", verbatimTextOutput("plotCode"))
                 )
       )

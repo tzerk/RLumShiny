@@ -15,7 +15,7 @@ shinyServer(function(input, output, session) {
         ##clear plot and text
         output$curves <- renderPlot({NULL})
         output$text <- renderText({NULL})
-        output$df <- renderDataTable(NULL)
+        output$df <- DT::renderDT(NULL)
         updateRadioButtons(session, inputId = "SelectedCurves",
                            choices = "none")
 
@@ -132,7 +132,7 @@ shinyServer(function(input, output, session) {
         if(nrow(df) > 0){
           colnames(df) <- c("FILE","ALQ", "POSITION", "ID AFFECTED CURVE(S)")
           rownames(df) <- NULL
-          output$df <- renderDataTable(df)
+          output$df <- DT::renderDT(df)
           output$text <- renderText({"Stimulation power mismatch detected!"})
 
         }else{
@@ -227,7 +227,7 @@ shinyServer(function(input, output, session) {
         if(nrow(df) > 0){
             colnames(df) <- c("FILE","ALQ", "ID AFFECTED CURVE(S)")
             rownames(df) <- NULL
-            output$df <- renderDataTable(df)
+            output$df <- DT::renderDT(df)
             output$text <- renderText({"Stimulation power mismatch detected!"})
 
         }else{
@@ -246,4 +246,3 @@ shinyServer(function(input, output, session) {
 
 
 })
-
