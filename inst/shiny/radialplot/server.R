@@ -132,11 +132,11 @@ function(input, output, session) {
                 label = "Range x-axis",
                 min = 0, 
                 max = round(max(prec)*2, 3),
-                value = c(0, max(prec)*1.05), round=FALSE, step=0.0001)
-    
+                value = max(prec)*1.05, round=FALSE, step=0.001)
+
   })## EndOf::renderUI()
-  
-  
+
+
   # dynamically inject sliderInput for z-axis range
   output$zlim<- renderUI({
     
@@ -242,7 +242,7 @@ function(input, output, session) {
     # plot radial Plot
     values$args <- list(
       data = values$data, 
-      xlim = input$xlim, 
+      xlim = c(0, input$xlim),
       zlim = input$zlim, 
       xlab = c(input$xlab1, input$xlab2), 
       ylab = input$ylab,

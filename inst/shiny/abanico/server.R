@@ -151,7 +151,7 @@ function(input, output, session) {
                 label = "Range x-axis",
                 min = 0,
                 max = round(max(prec)*2, 3),
-                value = c(0, max(prec)*1.05))
+                value = max(prec)*1.05)
   })## EndOf::renderUI()
 
   # dynamically inject sliderInput for z-axis range
@@ -367,7 +367,7 @@ function(input, output, session) {
                 xlab = c(input$xlab1, input$xlab2),
                 ylab = input$ylab,
                 lty = c(as.integer(input$lty), as.integer(input$lty2)),
-                xlim = input$xlim,
+                xlim = c(0, input$xlim),
                 ylim = input$ylim,
                 rug = input$rug,
                 layout = input$layout,
