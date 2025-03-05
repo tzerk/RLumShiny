@@ -5,7 +5,12 @@
 
 - App `cosmicdose`: Google maps window replaced by Open Street Map
   window
-- App `doserecovery`: Fix partly non-working summary statistics (#2)
+
+- App `doserecovery`:
+
+  - Fix partly non-working summary statistics (#2)
+  - New checkbox to control the showing of the legend
+
 - Non-user visible changes to satisfy CRAN (anchor notes)
 
 ## RLumShiny 0.2.3 (Release date: 2022-01-29)

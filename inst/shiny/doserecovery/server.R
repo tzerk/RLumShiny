@@ -146,7 +146,12 @@ function(input, output, session) {
       given.dose<- c(input$dose, input$dose2)
       legend<- c(input$legendname, input$legendname2)
     }
-    
+    legend.pos <- input$legend.pos
+    if (!input$showlegend) {
+      legend <- NA
+      legend.pos <- c(-999, -999)
+    }
+
     # save all arguments in a list
     values$args<- list(
       values = values$data, 
@@ -156,7 +161,7 @@ function(input, output, session) {
       summary.pos = input$sumpos,
       boxplot = input$boxplot,
       legend = legend,
-      legend.pos = input$legend.pos,
+      legend.pos = legend.pos,
       main = input$main,
       mtext = input$mtext,
       col = c(color, color2),

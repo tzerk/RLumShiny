@@ -256,6 +256,13 @@ function(request) {
                                         div(align = "center", h5("Legend")),
                                         fluidRow(
                                           column(width = 6,
+                                                 checkboxInput(inputId = "showlegend",
+                                                               label = "Show legend",
+                                                               value = TRUE),
+                                                 tooltip(refId = "showlegend", text = "Legend content to be added to the plot."))
+                                          ),
+                                        fluidRow(
+                                          column(width = 6,
                                                  textInput(inputId = "legendname",
                                                            label = "Primary data label",
                                                            value = "primary data")
