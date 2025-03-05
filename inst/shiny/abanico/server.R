@@ -384,7 +384,7 @@ function(input, output, session) {
 
     # validate(need()) makes sure that all data are available to
     # renderUI({}) before plotting and will wait until there
-    validate(need(expr = input$bw, message = ''),
+    validate(need(expr = req(input$bw), message = ''),
              need(expr = input$zlim, message = ''),
              need(expr = input$ylim, message = ''),
              need(expr = input$centralityNumeric, message = 'Waiting for data... Please wait!'))
