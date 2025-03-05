@@ -108,9 +108,9 @@ function(input, output, session) {
     data <- values$data
     
     n <- max(sapply(data, nrow))
-    
-    sliderInput(inputId = "xlim", label = "Range x-axi s", 
-                min = 0, max = n*2, 
+
+    sliderInput(inputId = "xlim", label = "Range x-axis",
+                min = 0, max = n*2,
                 value = c(1, n+1))
   })
   
