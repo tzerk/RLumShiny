@@ -1,4 +1,14 @@
 function(request) {
+  ## helper functions
+  densityInput <- function(id, value) {
+    numericInput(inputId = id, label = p(class = "h", "Density (g/cm\uB3)"),
+                 value = value, min = 0, step = 0.1)
+  }
+  depthInput <- function(id, value) {
+    numericInput(inputId = id, label = p(class = "h", "Depth (m)"),
+                 value = value, min = 0, step = 0.01)
+  }
+
   fluidPage(
     titlePanel(NULL, windowTitle = "RLumShiny - CosmicDose"),
     includeCSS("./www/style.css"),
@@ -51,30 +61,29 @@ function(request) {
              div(align = "center", span(class="label label-info", "Sediment")),
 
              wellPanel(
-               numericInput(inputId = "density_1", label = p(class="h","Density (g/cm\uB3)"), value = 2.0, step = 0.1),
+               densityInput("density_1", value = 2.0),
                tooltip(refId = "density_1", text = "Average overburden density (g/cm\uB3)."),
 
                conditionalPanel(condition = "input.mode == 'xAsS'",
-                                numericInput(inputId = "density_2", label = p(class="h","Density (g/cm\uB3)"), value = NULL, step = 0.1),
-                                numericInput(inputId = "density_3", label = p(class="h","Density (g/cm\uB3)"), value = NULL, step = 0.1),
-                                numericInput(inputId = "density_4", label = p(class="h","Density (g/cm\uB3)"), value = NULL, step = 0.1),
-                                numericInput(inputId = "density_5", label = p(class="h","Density (g/cm\uB3)"), value = NULL, step = 0.1)
+                                densityInput("density_2", value = NULL),
+                                densityInput("density_3", value = NULL),
+                                densityInput("density_4", value = NULL),
+                                densityInput("density_5", value = NULL)
                )
-
              )
       ),
       column(width = 3,
              div(align = "center", span(class="label label-info", "Samples")),
 
              wellPanel(
-               numericInput(inputId = "depth_1", label = p(class="h","Depth (m)"), value = 1.00, step = 0.01),
+               depthInput("depth_1", value = 1.00),
                tooltip("depth_1", text = "Depth of overburden (m)."),
 
                conditionalPanel(condition = "input.mode == 'sAxS' || input.mode == 'xAsS'",
-                                numericInput(inputId = "depth_2", label = p(class="h","Depth (m)"), value = NULL, step = 0.01),
-                                numericInput(inputId = "depth_3", label = p(class="h","Depth (m)"), value = NULL, step = 0.01),
-                                numericInput(inputId = "depth_4", label = p(class="h","Depth (m)"), value = NULL, step = 0.01),
-                                numericInput(inputId = "depth_5", label = p(class="h","Depth (m)"), value = NULL, step = 0.01)
+                                depthInput("depth_2", value = NULL),
+                                depthInput("depth_3", value = NULL),
+                                depthInput("depth_4", value = NULL),
+                                depthInput("depth_5", value = NULL)
                )
              )
       ),
