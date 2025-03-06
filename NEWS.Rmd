@@ -11,6 +11,9 @@ output: github_document
   + Fix partly non-working summary statistics (#2)
   + New checkbox to control the showing of the legend
 
+* App `fastratio`:
+  + Fix the matching between point style and their descriptive labels
+
 * Non-user visible changes to satisfy CRAN (anchor notes)
 
 ## RLumShiny 0.2.3 (Release date: 2022-01-29)
