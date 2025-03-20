@@ -180,7 +180,19 @@ function(input, output, session) {
     
     # if custom datapoint style get char from separate input panel
     pch2<- ifelse(input$pch2 == "custom", input$custompch2, as.integer(input$pch2)-1)
-    
+
+    lwd2 <- input$lwd2
+    lty2 <- as.integer(input$lty2)
+
+    ## unset values if the secondary dataset is missing, as the length of
+    ## these arguments must match the number of datasets available
+    if (all(is.na(unlist(values$data_secondary)))) {
+      color2 <- NULL
+      pch2 <- NULL
+      lty2 <- NULL
+      lwd2 <- NULL
+    }
+
     # workaround to initialize plotting after app startup
     centValue <- ifelse(is.null(input$centValue), 3000, input$centValue)
     
@@ -236,7 +248,6 @@ function(input, output, session) {
         legend<- c(input$legendname, "")
         legend.pos<- input$legend.pos
       }
-      
     }
     
     # plot radial Plot
@@ -261,16 +272,15 @@ function(input, output, session) {
       log.z = input$logz, 
       stats = input$statlabels, 
       plot.ratio = input$curvature, 
-      summary = if (input$summary) input$stats else NA,
+      summary = if (input$summary) input$stats else "",
       summary.pos = input$sumpos, 
       legend = legend, 
       legend.pos = legend.pos,
       na.rm = TRUE, 
       central.value = input$centValue, 
       centrality = input$centrality,
-      lwd = c(input$lwd, input$lwd2),
-      lty = c(as.integer(input$lty), as.integer(input$lty2)))
-    
+      lwd = c(input$lwd, lwd2),
+      lty = c(as.integer(input$lty), lty2))
   })
   
   # render Radial Plot

@@ -91,7 +91,7 @@ function(input, output, session) {
       rug = input$rugs, 
       se = input$errorBars, 
       normal_curve = input$norm, 
-      summary = if (input$summary) input$stats else NA,
+      summary = if (input$summary) input$stats else "",
       xlab = input$xlab,
       ylab = c(input$ylab1, input$ylab2),
       colour = colors)
