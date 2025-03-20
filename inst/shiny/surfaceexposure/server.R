@@ -90,7 +90,7 @@ function(input, output, session) {
       else
         n <- 1
       lapply(1:n, function(i) {
-        numericInput(paste0("mus_", i), paste("\\( \\mu \\)", i), value = 0.9, step = 0.1)
+        numericInput(paste0("mus_", i), HTML(paste("<i>&mu;</i>", i)), value = 0.9, step = 0.1)
       })
     }
   })
