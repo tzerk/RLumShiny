@@ -61,7 +61,7 @@ function(input, output, session) {
       n.MC = 100,
       verbose = FALSE,
       plot = TRUE,
-      plot.single = 3
+      plot_singlePanels = 3
     )
   })
   

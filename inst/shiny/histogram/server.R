@@ -91,7 +91,7 @@ function(input, output, session) {
       rug = input$rugs, 
       se = input$errorBars, 
       normal_curve = input$norm, 
-      summary = if (input$summary) input$stats else NA,
+      summary = if (input$summary) input$stats else "",
       xlab = input$xlab,
       ylab = c(input$ylab1, input$ylab2),
       colour = colors)
@@ -120,18 +120,10 @@ function(input, output, session) {
   # renderTable() that prints the data to the second tab
   output$dataset<- DT::renderDT(
     options = list(pageLength = 10, autoWidth = FALSE),
-    callback = htmlwidgets::JS("function(table) {
-    table.on('click.dt', 'tr', function() {
-    $(this).toggleClass('selected');
-    Shiny.onInputChange('rows',
-    table.rows('.selected').data().toArray());
-    });
-  }"),
     {
       setNames(values$data, c("De", "De error"))
     })##EndOf::renterTable()
-  
-  
+
   # reactive function for gVis plots that allow for dynamic input!
   myOptionsCAM<- reactive({
     options<- list(

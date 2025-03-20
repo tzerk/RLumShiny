@@ -108,9 +108,9 @@ function(input, output, session) {
     data <- values$data
     
     n <- max(sapply(data, nrow))
-    
-    sliderInput(inputId = "xlim", label = "Range x-axi s", 
-                min = 0, max = n*2, 
+
+    sliderInput(inputId = "xlim", label = "Range x-axis",
+                min = 0, max = n*2,
                 value = c(1, n+1))
   })
   
@@ -146,7 +146,12 @@ function(input, output, session) {
       given.dose<- c(input$dose, input$dose2)
       legend<- c(input$legendname, input$legendname2)
     }
-    
+    legend.pos <- input$legend.pos
+    if (!input$showlegend) {
+      legend <- NA
+      legend.pos <- c(-999, -999)
+    }
+
     # save all arguments in a list
     values$args<- list(
       values = values$data, 
@@ -156,7 +161,7 @@ function(input, output, session) {
       summary.pos = input$sumpos,
       boxplot = input$boxplot,
       legend = legend,
-      legend.pos = input$legend.pos,
+      legend.pos = legend.pos,
       main = input$main,
       mtext = input$mtext,
       col = c(color, color2),
@@ -213,28 +218,15 @@ function(input, output, session) {
   # renderTable() that prints the data to the second tab
   output$dataset<- DT::renderDT(
     options = list(pageLength = 10, autoWidth = FALSE),
-    callback = htmlwidgets::JS("function(table) {
-  table.on('click.dt', 'tr', function() {
-  $(this).toggleClass('selected');
-  Shiny.onInputChange('rows',
-  table.rows('.selected').values$data.toArray());
-  });}"),
     {
       data<- values$data
       colnames(data[[1]])<- c("De", "De error")
       data[[1]]
     })##EndOf::renterTable()
 
-
   # renderTable() that prints the data to the second tab
   output$dataset2<- DT::renderDT(
     options = list(pageLength = 10, autoWidth = FALSE),
-    callback = htmlwidgets::JS("function(table) {
-  table.on('click.dt', 'tr', function() {
-  $(this).toggleClass('selected');
-  Shiny.onInputChange('rows',
-  table.rows('.selected').values$data.toArray());
-  });}"),
     {
       data<- values$data
       if(length(data)>1) {
@@ -242,5 +234,4 @@ function(input, output, session) {
         data[[2]]
       }
     })##EndOf::renterTable()
-  
 }

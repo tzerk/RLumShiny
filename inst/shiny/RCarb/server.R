@@ -23,7 +23,7 @@ shinyServer(function(input, output, session) {
             readOnly = FALSE,
             customOpts = list(
                           csv = list(name = "Download to CSV",
-                                     callback = htmlwidgets::JS(
+                                     callback = DT::JS(
                                          "function (key, options) {
                          var csv = csvString(this, sep=',', dec='.');
 
