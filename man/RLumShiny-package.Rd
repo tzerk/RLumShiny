@@ -36,6 +36,7 @@ Authors:
 \itemize{
   \item Urs Tilmann Wolpert
   \item Sebastian Kreutzer (\href{https://orcid.org/0000-0002-0734-2199}{ORCID})
+  \item Marco Colombo (\href{https://orcid.org/0000-0001-6672-0623}{ORCID})
 }
 
 Other contributors:
