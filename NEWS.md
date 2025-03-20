@@ -18,6 +18,10 @@
 
   - Fix the matching between point style and their descriptive labels
 
+- App `histogram`:
+
+  - Add support for breaks (#3)
+
 - Non-user visible changes to satisfy CRAN (anchor notes)
 
 ## RLumShiny 0.2.3 (Release date: 2022-01-29)
