@@ -30,18 +30,18 @@ Encoding: UTF-8
 Depends:
     R (>= 4.3)
 Imports:
-    Luminescence (>= 1.0.0),
-    shiny (>= 1.7.4),
+    Luminescence (>= 1.0.1),
+    shiny (>= 1.10.0),
     rhandsontable (>= 0.3.8),
-    data.table (>= 1.14.6),
-    googleVis (>= 0.7.0),
-    leaflet (>= 2.1.1),
+    data.table (>= 1.17.0),
+    googleVis (>= 0.7.3),
+    leaflet (>= 2.2.2),
     shinydashboard (>= 0.7.2),
     RCarb (>= 0.1.6),
-    markdown (>= 1.4),
-    readxl (>= 1.4.1),
-    DT (>= 0.32.1),
-    knitr (>= 1.41)
+    markdown (>= 1.13),
+    readxl (>= 1.4.3),
+    DT (>= 0.33),
+    knitr (>= 1.49)
 URL: https://tzerk.github.io/RLumShiny/
 BugReports: https://github.com/tzerk/RLumShiny/issues
 Collate:
