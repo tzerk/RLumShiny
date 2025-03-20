@@ -115,8 +115,7 @@ function(request) {
                                 htmlOutput("results")
                               )),
              conditionalPanel(condition = "input.mode == 'sAxS'",
-
-                              dataTableOutput("resultsTable")
+                              DT::DTOutput("resultsTable")
              )
       )
     ),

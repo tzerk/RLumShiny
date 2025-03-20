@@ -74,12 +74,12 @@ function(input, output, session) {
       P <- 1
     }
 
-      
+
     args <- list(values$data_primary)
-    if (input$method == "CW2pHMi")
+    if (input$method == "convert_CW2pHMi")
       if (delta >= 1)
         args <- append(args, delta)
-    if (input$method == "CW2pLMi" || input$method == "CW2pPMi")
+    if (input$method == "convert_CW2pLMi" || input$method == "convert_CW2pPMi")
       if (P >= 1)
         args <- append(args, P)
     
@@ -150,8 +150,8 @@ function(input, output, session) {
     callModule(RLumShiny:::exportCodeHandler, "export", code = code.output)
     callModule(RLumShiny:::exportPlotHandler, "export", fun = "plot", args = values$pargs)
   })
-  
-  output$dataset <- renderDataTable({
+
+  output$dataset <- DT::renderDT({
     if (!is.null(values$tdata))
       values$tdata
   })

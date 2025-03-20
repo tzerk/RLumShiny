@@ -30,7 +30,7 @@ Encoding: UTF-8
 Depends:
     R (>= 4.3)
 Imports:
-    Luminescence (>= 0.9.24),
+    Luminescence (>= 1.0.0),
     shiny (>= 1.7.4),
     rhandsontable (>= 0.3.8),
     data.table (>= 1.14.6),
@@ -40,7 +40,7 @@ Imports:
     RCarb (>= 0.1.6),
     markdown (>= 1.4),
     readxl (>= 1.4.1),
-    DT (>= 0.26),
+    DT (>= 0.32.1),
     knitr (>= 1.41)
 URL: https://tzerk.github.io/RLumShiny/
 BugReports: https://github.com/tzerk/RLumShiny/issues

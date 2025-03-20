@@ -64,12 +64,11 @@ function(input, output, session) {
     # get absorber properties
     depth <- na.omit(c(input$depth_1, input$depth_2, input$depth_3, input$depth_4, input$depth_5))
     density <- na.omit(c(input$density_1, input$density_2, input$density_3, input$density_4, input$density_5))
-
-    t <- get_RLum(calc_CosmicDoseRate(depth = depth,
-                                     density = density,
+    t <- get_RLum(calc_CosmicDoseRate(depth = as.numeric(depth),
+                                     density = as.numeric(density),
                                      latitude = lat,
                                      longitude = long,
-                                     altitude = input$altitude,
+                                     altitude = as.numeric(input$altitude),
                                      corr.fieldChanges = input$corr,
                                      est.age = input$estage,
                                      half.depth = input$half,
@@ -104,7 +103,7 @@ function(input, output, session) {
   })
 
   # render results for mode 3
-  output$resultsTable<- renderDataTable({
+  output$resultsTable<- DT::renderDT({
 
     # refresh plot on button press
     input$refresh

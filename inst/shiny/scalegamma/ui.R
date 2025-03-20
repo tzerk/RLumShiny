@@ -60,8 +60,8 @@ function(request) {
                            htmlOutput("error"),
                            plotOutput(outputId = "main_plot", height = "500px"),
                            htmlOutput(outputId = "console")),
-                  tabPanel("Infinite matrix \u1E0A\u03B3", dataTableOutput("df_inf")),
-                  tabPanel("Scaled \u1E0A\u03B3", dataTableOutput("df_scaled")),
+                  tabPanel("Infinite matrix \u1E0A\u03B3", DT::DTOutput("df_inf")),
+                  tabPanel("Scaled \u1E0A\u03B3", DT::DTOutput("df_scaled")),
                   tabPanel("R code", verbatimTextOutput("plotCode"))
                 )###EndOf::tabsetPanel
       )##EndOf::mainPanel
@@ -69,4 +69,3 @@ function(request) {
     bookmarkButton()
   )##EndOf::fluidPage
 }
-

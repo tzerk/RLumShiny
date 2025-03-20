@@ -209,32 +209,32 @@ function(input, output, session) {
     callModule(RLumShiny:::exportCodeHandler, "export", code = code.output)
     callModule(RLumShiny:::exportPlotHandler, "export", fun = "plot_DRTResults", args = values$args)
   })
-  
+
   # renderTable() that prints the data to the second tab
-  output$dataset<- renderDataTable(
+  output$dataset<- DT::renderDT(
     options = list(pageLength = 10, autoWidth = FALSE),
-    callback = "function(table) {
+    callback = htmlwidgets::JS("function(table) {
   table.on('click.dt', 'tr', function() {
   $(this).toggleClass('selected');
   Shiny.onInputChange('rows',
   table.rows('.selected').values$data.toArray());
-  });}",
+  });}"),
     {
       data<- values$data
       colnames(data[[1]])<- c("De", "De error")
       data[[1]]
     })##EndOf::renterTable()
-  
-  
+
+
   # renderTable() that prints the data to the second tab
-  output$dataset2<- renderDataTable(
+  output$dataset2<- DT::renderDT(
     options = list(pageLength = 10, autoWidth = FALSE),
-    callback = "function(table) {
+    callback = htmlwidgets::JS("function(table) {
   table.on('click.dt', 'tr', function() {
   $(this).toggleClass('selected');
   Shiny.onInputChange('rows',
   table.rows('.selected').values$data.toArray());
-  });}",
+  });}"),
     {
       data<- values$data
       if(length(data)>1) {

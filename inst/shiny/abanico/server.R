@@ -413,15 +413,15 @@ function(input, output, session) {
   })
 
   # renderTable() that prints the data to the second tab
-  output$dataset<- renderDataTable(
+  output$dataset<- DT::renderDT(
     options = list(pageLength = 10, autoWidth = FALSE),
-    callback = "function(table) {
+    callback = htmlwidgets::JS("function(table) {
       table.on('click.dt', 'tr', function() {
         $(this).toggleClass('selected');
         Shiny.onInputChange('rows',
                             table.rows('.selected').values$data.toArray());
       });
-    }",
+    }"),
 {
   data <- values$data
   colnames(data[[1]])<- c("De","De error")
@@ -430,15 +430,15 @@ function(input, output, session) {
 })##EndOf::renterTable()
 
   # renderTable() that prints the secondary data to the second tab
-  output$dataset2<- renderDataTable(
+  output$dataset2<- DT::renderDT(
     options = list(pageLength = 10, autoWidth = FALSE),
-    callback = "function(table) {
+    callback = htmlwidgets::JS("function(table) {
       table.on('click.dt', 'tr', function() {
         $(this).toggleClass('selected');
         Shiny.onInputChange('rows',
                             table.rows('.selected').values$data.toArray());
       });
-    }",
+    }"),
 {
   if(!all(is.na(unlist(values$data_secondary)))) {
     data <- values$data
@@ -449,7 +449,7 @@ function(input, output, session) {
 
   # renderTable() to print the results of the
   # central age model (CAM)
-  output$CAM<- renderDataTable(
+  output$CAM<- DT::renderDT(
     options = list(pageLength = 10, autoWidth = FALSE),
     {
       data<- values$data
@@ -457,7 +457,7 @@ function(input, output, session) {
       colnames(t)<- c("Data set","n", "log data", "Central dose", "SE abs.", "OD (%)", "OD error (%)")
       res<- lapply(data, function(x) { calc_CentralDose(x, verbose = FALSE, plot = FALSE) })
       for(i in 1:length(res)) {
-        t[i,1]<- ifelse(i==1,"pimary","secondary")
+        t[i,1]<- ifelse(i==1,"primary","secondary")
         t[i,2]<- length(res[[i]]@data$data[,1])
         t[i,3]<- res[[i]]@data$args$log
         t[i,4:7]<- round(res[[i]]@data$summary[1:4],2)
