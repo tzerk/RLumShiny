@@ -103,6 +103,24 @@ function(request) {
                                         div(align = "center", h5("Histogram bars")),
                                         fluidRow(
                                           column(width = 6,
+                                                 selectInput(inputId = "breaks", label = "Breaks",
+                                                             selected = "Sturges",
+                                                             choices = list("Sturges" = "sturges",
+                                                                            "Scott" = "scott",
+                                                                            "Freedman-Diaconis" = "fd",
+                                                                            "Custom" = "custom")),
+                                          ),
+                                          column(width = 6,
+                                                 # show only if custom breaks are desired
+                                                 conditionalPanel(condition = "input.breaks == 'custom'",
+                                                                  sliderInput(inputId = "breaks.num",
+                                                                              label = "Number of breaks",
+                                                                              min = 2, max = 100,
+                                                                              step = 2, value = 10))
+                                                 )
+                                        ),
+                                        fluidRow(
+                                          column(width = 6,
                                                  selectInput(inputId = "barsColor", label = "Bar color",
                                                              selected = "grey80",
                                                              choices = list("White" = "white",
