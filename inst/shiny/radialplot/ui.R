@@ -30,8 +30,8 @@ function(request) {
                                                  rHandsontableOutput(outputId = "table_in_secondary"))
                                         ),
                                         hr(),
-                                        actionButton(inputId = "refresh", label = "Refresh", icon = icon("fas fa-sync")),
-                                        tooltip(refId = "refresh", text = "Redraw the plot")
+                                        actionButton(inputId = "refresh", label = "Refresh",
+                                                     icon = icon("fas fa-sync"), title = "Redraw the plot.")
                                ),##EndOf::Tab_1
 
                                # Tab 2: Statistical information
@@ -42,7 +42,7 @@ function(request) {
                                                  checkboxInput(inputId = "summary",
                                                                label = "Show summary",
                                                                value = FALSE),
-                                                 tooltip(refId = "summary", text = "Adds numerical output to the plot")
+                                                 title = "Add numerical output to the plot."
                                           ),
                                           column(width = 6,
                                                  selectInput(inputId = "sumpos",
@@ -57,36 +57,37 @@ function(request) {
                                                                                      "Bottom left" = "bottomleft",
                                                                                      "Bottom right" = "bottomright")
                                                              )),
-                                                 tooltip(refId = "sumpos", attr = "for", text = "Position of the statistical summary. The keyword \"Subtitle\" will only work if no plot subtitle is used.")
+                                                 title = "Position of the statistical summary. The keyword \"Subtitle\" will only work if no plot subtitle is used."
                                           )
                                         ),
-                                        checkboxGroupInput(inputId = "stats",
-                                                           label = "Parameters",
-                                                           selected = c("n","mean"),
-                                                           choices = c("n" = "n",
-                                                                       "Mean" = "mean",
-                                                                       "weighted Mean" = "mean.weighted",
-                                                                       "Median" = "median",
-                                                                       "weighted Median" = "median.weighted",
-                                                                       "rel. Standard deviation" = "sdrel",
-                                                                       "abs. Standard deviation" = "sdabs",
-                                                                       "rel. Standard error" = "serel",
-                                                                       "abs. Standard error" = "seabs",
-                                                                       #"25 % Quartile" = "q25", #not implemented yet
-                                                                       #"75 % Quartile" = "q75", #not implemented yet
-                                                                       "KDEmax"  = "kdemax",
-                                                                       "Skewness" = "skewness",
-                                                                       "Kurtosis" = "kurtosis"
-                                                           )),
-                                        tooltip(refId = "stats", text = "Statistical parameters to be shown in the summary"),
+                                        div(align = "left",
+                                            checkboxGroupInput(inputId = "stats",
+                                                               label = "Parameters",
+                                                               selected = c("n", "mean"),
+                                                               choices = c("n" = "n",
+                                                                           "Mean" = "mean",
+                                                                           "weighted Mean" = "mean.weighted",
+                                                                           "Median" = "median",
+                                                                           "weighted Median" = "median.weighted",
+                                                                           "rel. Standard deviation" = "sdrel",
+                                                                           "abs. Standard deviation" = "sdabs",
+                                                                           "rel. Standard error" = "serel",
+                                                                           "abs. Standard error" = "seabs",
+                                                                           #"25 % Quartile" = "q25", #not implemented yet
+                                                                           #"75 % Quartile" = "q75", #not implemented yet
+                                                                           "KDEmax"  = "kdemax",
+                                                                           "Skewness" = "skewness",
+                                                                           "Kurtosis" = "kurtosis")
+                                                               ),
+                                            title = "Statistical parameters to be shown in the summary."),
                                         br(),
                                         div(align = "center", h5("Datapoint labels")),
                                         div(align = "center", checkboxGroupInput(inputId = "statlabels", inline = TRUE,
                                                                                  label = NULL,
                                                                                  choices = c("Min" = "min",
                                                                                              "Max" = "max",
-                                                                                             "Median" = "median"))),
-                                        tooltip(refId = "statlabels", text = "Additional labels of statistically important values in the plot.")
+                                                                                             "Median" = "median")),
+                                            title = "Additional labels of statistically important values in the plot.")
                                ),##EndOf::Tab_2
 
                                # Tab 3: input that refer to the plot rather than the data
@@ -109,7 +110,7 @@ function(request) {
                                           column(width = 6,
                                                  # inject sliderInput from Server.R
                                                  uiOutput(outputId = "centValue"),
-                                                 tooltip(refId = "centValue", text = "User-defined central value, primarily used for horizontal centering of the z-axis")
+                                                 title = "User-defined central value, primarily used for horizontal centering of the z-axis."
                                           ),
                                           column(width = 6,
                                                  sliderInput(inputId = "cex",
@@ -118,13 +119,14 @@ function(request) {
                                                              value = 1.0, step = 0.1)
                                           )
                                         ),
-                                        selectInput(inputId = "centrality",
-                                                    label = "Centrality",
-                                                    list("Mean" = "mean",
-                                                         "Median" = "median",
-                                                         "Weighted mean" = "mean.weighted",
-                                                         "Weighted median" = "median.weighted")),
-                                        tooltip(refId = "centrality", attr = "for", text = "Measure of centrality, used for the standardisation, centering the plot and drawing the central line.")
+                                        div(align = "left",
+                                            selectInput(inputId = "centrality",
+                                                        label = "Centrality",
+                                                        list("Mean" = "mean",
+                                                             "Median" = "median",
+                                                             "Weighted mean" = "mean.weighted",
+                                                             "Weighted median" = "median.weighted")),
+                                            title = "Measure of centrality, used for the standardisation, centering the plot and drawing the central line.")
                                ),##EndOf::Tab_3
 
                                # Tab 4: modify axis parameters
@@ -145,27 +147,30 @@ function(request) {
                                         # inject sliderInput from Server.R
                                         uiOutput(outputId = "xlim"),
                                         div(align = "center", h5("Y-axis")),
-                                        checkboxInput(inputId = "yticks",
-                                                      label = HTML("Show &plusmn;2&sigma; label"),
-                                                      value = TRUE),
-                                        tooltip(refId = "yticks", text = "Option to hide y-axis labels."),
+                                        div(align = "left",
+                                            checkboxInput(inputId = "yticks",
+                                                          label = HTML("Show &plusmn;2&sigma; label"),
+                                                          value = TRUE),
+                                            title = "Hide y-axis labels."),
                                         textInput(inputId = "ylab",
                                                   label = "Label y-axis",
                                                   value = "Standardised estimate"),
                                         div(align = "center", h5("Z-axis")),
-                                        checkboxInput(inputId = "logz",
-                                                      label = "Logarithmic z-axis",
-                                                      value = TRUE),
-                                        tooltip(refId = "logz", text = "Option to display the z-axis in logarithmic scale."),
+                                        div(align = "left",
+                                            checkboxInput(inputId = "logz",
+                                                          label = "Logarithmic z-axis",
+                                                          value = TRUE),
+                                            title = "Display the z-axis in logarithmic scale."),
                                         textInput(inputId = "zlab",
                                                   label = "Label z-axis",
                                                   value = "Equivalent dose [Gy]"),
                                         # inject sliderInput from Server.R
                                         uiOutput(outputId = "zlim"),
-                                        sliderInput('curvature', 'Z-axis curvature',
-                                                    min=0, max=3,
-                                                    value=4.5/5.5, step=0.01, round=FALSE),
-                                        tooltip(refId = "curvature", attr = "for", text = "User-defined plot area ratio (i.e. curvature of the z-axis). If omitted, the default value (4.5/5.5) is used and modified automatically to optimise the z-axis curvature. The parameter should be decreased when data points are plotted outside the z-axis or when the z-axis gets too elliptic.")
+                                        div(align = "left",
+                                            sliderInput('curvature', 'Z-axis curvature',
+                                                        min = 0, max = 3,
+                                                        value = 4.5/5.5, step = 0.01, round = FALSE),
+                                            title = "User-defined plot area ratio (i.e. curvature of the z-axis). If omitted, the default value (4.5/5.5) is used and modified automatically to optimise the z-axis curvature. The parameter should be decreased when data points are plotted outside the z-axis or when the z-axis gets too elliptic.")
                                ),##EndOf::Tab_4
 
                                # Tab 5: modify data point representation
@@ -288,10 +293,11 @@ function(request) {
                                         # options for custom lines:
                                         # 1 - z-value, 2 - color, 3 - label
                                         # only the options for the first line are shown
-                                        numericInput(inputId = "line1",
-                                                     label = strong("Line #1"),
-                                                     value =  NA, min = 0),
-                                        tooltip(refId = "line1", text = "Numeric values of the additional lines to be added."),
+                                        div(align = "left",
+                                            numericInput(inputId = "line1",
+                                                         label = strong("Line #1"),
+                                                         value =  NA, min = 0),
+                                            title = "Numeric values of the additional lines to be added."),
                                         fluidRow(
                                           column(width = 6,
                                                  HTML("Choose a color<br>"),
@@ -447,7 +453,7 @@ function(request) {
                                                              list("Grey" = "grey",
                                                                   "Custom" = "custom",
                                                                   "None" = "none")),
-                                                 tooltip(refId = "grid", attr = "for", text = "colour of the grid lines (originating at [0,0] and stretching to the z-scale). To disable grid lines, use \"none\".")
+                                                 title = "Colour of the grid lines (originating at [0,0] and stretching to the z-scale). To disable grid lines, use \"none\"."
                                           ),
                                           column(width = 6,
                                                  # show only if custom color is desired
@@ -469,7 +475,7 @@ function(request) {
                                                  checkboxInput(inputId = "showlegend",
                                                                label = "Show legend",
                                                                value = FALSE),
-                                                 tooltip(refId = "showlegend", text = "Legend content to be added to the plot.")
+                                                 title = "Legend content to be added to the plot."
                                           ),
                                           column(width = 6,
                                                  selectInput(inputId = "legend.pos",
