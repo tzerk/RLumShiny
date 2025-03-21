@@ -60,29 +60,31 @@ function(request) {
                                         #             choices = list("Unweighted" = "unweighted",
                                         #                            "Weighted" = "weighted",
                                         #                            "Monte Carlo" = "MCM")),
-                                        # tooltip(refId = "summary.method", attr = "for", text = "Keyword indicating the method used to calculate the statistic summary. See calc_Statistics for details."),
+                                        # tooltip(refId = "summary.method", attr = "for", text = "Method used to calculate the statistic summary. See calc_Statistics for details."),
 
-                                        checkboxGroupInput(inputId = "stats",
-                                                           label = "Parameters",
-                                                           selected = c("n","mean"),
-                                                           choices = c("n" = "n",
-                                                                       "Mean" = "mean",
-                                                                       "Median" = "median",
-                                                                       "rel. Standard deviation" = "sdrel",
-                                                                       "abs. Standard deviation" = "sdabs",
-                                                                       "rel. Standard error" = "serel",
-                                                                       "abs. Standard error" = "seabs",
-                                                                       "Skewness" = "skewness",
-                                                                       "Kurtosis" = "kurtosis"
-                                                                       # "% in 2 sigma range" = "in.2s"
-                                                           )
-                                        ),
-                                        tooltip(refId = "stats", text = "Statistical parameters to be shown in the summary"),
+                                        div(align = "left",
+                                            checkboxGroupInput(inputId = "stats",
+                                                               label = "Parameters",
+                                                               selected = c("n","mean"),
+                                                               choices = c("n" = "n",
+                                                                           "Mean" = "mean",
+                                                                           "Median" = "median",
+                                                                           "rel. Standard deviation" = "sdrel",
+                                                                           "abs. Standard deviation" = "sdabs",
+                                                                           "rel. Standard error" = "serel",
+                                                                           "abs. Standard error" = "seabs",
+                                                                           "Skewness" = "skewness",
+                                                                           "Kurtosis" = "kurtosis"
+                                                                           # "% in 2 sigma range" = "in.2s"
+                                                                           )
+                                                               ),
+                                            title = "Statistical parameters to be shown in the summary"),
                                         div(align = "center", h5("Error bars")),
-                                        checkboxInput(inputId = "errorBars",
-                                                      label = "Show standard error points",
-                                                      value = TRUE),
-                                        tooltip(refId = "errorBars", text = "Plot the standard error points over the histogram.")
+                                        div(align = "left",
+                                            checkboxInput(inputId = "errorBars",
+                                                          label = "Show standard error points",
+                                                          value = TRUE),
+                                            title = "Plot the standard error points over the histogram.")
                                ),##EndOf::Tab_2
 
                                # Tab 1: Data input
@@ -145,10 +147,11 @@ function(request) {
                                                     step = 1, value = 66),
                                         br(),
                                         div(align = "center", h5("Normal curve")),
-                                        checkboxInput(inputId = "norm",
-                                                      label = "Add normal curve",
-                                                      value = FALSE),
-                                        tooltip(refId = "norm", text = "Add a normal curve to the histogram. Mean and standard deviation are calculated from the input data. If the normal curve is added, the y-axis in the histogram will show the probability density"),
+                                        div(align = "left",
+                                            checkboxInput(inputId = "norm",
+                                                          label = "Add normal curve",
+                                                          value = FALSE),
+                                            title = "Add a normal curve to the histogram. Mean and standard deviation are calculated from the input data. If the normal curve is added, the y-axis in the histogram will show the probability density."),
                                         fluidRow(
                                           column(width = 6,
                                                  selectInput(inputId = "normalColor", label = "Normal curve color",
@@ -174,10 +177,11 @@ function(request) {
                                                     value = 1.0, step = 0.1),
                                         br(),
                                         div(align = "center", h5("Rugs")),
-                                        checkboxInput(inputId = "rugs",
-                                                      label = "Add rugs",
-                                                      value = TRUE),
-                                        tooltip(refId = "rugs", text = "Option to add a rug to the KDE part, to indicate the location of individual values"),
+                                        div(align = "left",
+                                            checkboxInput(inputId = "rugs",
+                                                          label = "Add rugs",
+                                                          value = TRUE),
+                                            title = "Add a rug to the KDE part to indicate the location of individual values."),
                                         fluidRow(
                                           column(width = 6,
                                                  selectInput(inputId = "rugsColor", label = "Rugs color",

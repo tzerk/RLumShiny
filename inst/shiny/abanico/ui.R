@@ -62,13 +62,14 @@ function(request) {
                                                  title = "Position of the statistical summary. The keyword \"Subtitle\" will only work if no plot subtitle is used."
                                           )
                                         ),
-                                        selectInput(inputId = "summary.method",
-                                                    label = "Summary method",
-                                                    selected = "unweighted",
-                                                    choices = list("Unweighted" = "unweighted",
-                                                                   "Weighted" = "weighted",
-                                                                   "Monte Carlo" = "MCM")),
-                                        tooltip(refId = "summary.method", attr = "for", text = "Keyword indicating the method used to calculate the statistic summary. See calc_Statistics for details."),
+                                        div(align = "left",
+                                            selectInput(inputId = "summary.method",
+                                                        label = "Summary method",
+                                                        selected = "unweighted",
+                                                        choices = list("Unweighted" = "unweighted",
+                                                                       "Weighted" = "weighted",
+                                                                       "Monte Carlo" = "MCM")),
+                                            title = "Method used to calculate the statistic summary. See calc_Statistics for details."),
 
                                         helpText(tags$b("NOTE:"),
                                                  tags$a(
@@ -77,34 +78,36 @@ function(request) {
                                                         "if <code>log.z = TRUE</code> (the default, see <i>'Axis' > 'Logarithmic z-axis'</i>).</href>")
 
                                         )),
-                                        checkboxGroupInput(inputId = "stats",
-                                                           label = "Parameters",
-                                                           selected = c("n","mean"),
-                                                           choices = c("n" = "n",
-                                                                       "Mean" = "mean",
-                                                                       "Median" = "median",
-                                                                       "rel. Standard deviation" = "sd.rel",
-                                                                       "abs. Standard deviation" = "sd.abs",
-                                                                       "rel. Standard error" = "se.rel",
-                                                                       "abs. Standard error" = "se.abs",
-                                                                       "Skewness" = "skewness",
-                                                                       "Kurtosis" = "kurtosis",
-                                                                       "% in 2 sigma range" = "in.2s")),
-                                        tooltip(refId = "stats", text = "Statistical parameters to be shown in the summary"),
+                                        div(align = "left",
+                                            checkboxGroupInput(inputId = "stats",
+                                                               label = "Parameters",
+                                                               selected = c("n","mean"),
+                                                               choices = c("n" = "n",
+                                                                           "Mean" = "mean",
+                                                                           "Median" = "median",
+                                                                           "rel. Standard deviation" = "sd.rel",
+                                                                           "abs. Standard deviation" = "sd.abs",
+                                                                           "rel. Standard error" = "se.rel",
+                                                                           "abs. Standard error" = "se.abs",
+                                                                           "Skewness" = "skewness",
+                                                                           "Kurtosis" = "kurtosis",
+                                                                           "% in 2 sigma range" = "in.2s")),
+                                            title = "Statistical parameters to be shown in the summary."),
                                         br(),
                                         div(align = "center", h5("Datapoint labels")),
                                         div(align = "center", checkboxGroupInput(inputId = "statlabels", inline = TRUE,
                                                                                  label = NULL,
                                                                                  choices = c("Min" = "min",
                                                                                              "Max" = "max",
-                                                                                             "Median" = "median"))),
-                                        tooltip(refId = "statlabels", text = "Additional labels of statistically important values in the plot."),
+                                                                                             "Median" = "median")),
+                                            title = "Additional labels of statistically important values in the plot."),
                                         br(),
                                         div(align = "center", h5("Error bars")),
-                                        checkboxInput(inputId = "errorbars",
-                                                      label = "Show error bars",
-                                                      value = FALSE),
-                                        tooltip(refId = "errorbars", text = "Option to show D<sub>e</sub>-errors as error bars on D<sub>e</sub>-points. Useful in combination with hidden y-axis and 2&sigma; bar")
+                                        div(align = "left",
+                                            checkboxInput(inputId = "errorbars",
+                                                          label = "Show error bars",
+                                                          value = FALSE),
+                                            title = "Show De-errors as error bars on De-points. Useful in combination with hidden y-axis and 2σ bar.")
                                ),##EndOf::Tab_2
 
                                # Tab 3: input that refer to the plot rather than the data
@@ -125,9 +128,9 @@ function(request) {
                                         div(align = "center", h5("Scaling")),
                                         # inject sliderInput from Server.R
                                         div(id="bwKDE",
-                                            uiOutput(outputId = "bw")
+                                            uiOutput(outputId = "bw"),
+                                            title = "Bin width of the kernel density estimate."
                                         ),
-                                        tooltip(refId = "bwKDE", text = "Bin width of the kernel density estimate"),
                                         fluidRow(
                                           column(width = 6,
                                                  div(id="pratiodiv",
@@ -147,28 +150,28 @@ function(request) {
                                         ),
                                         br(),
                                         div(align = "center", h5("Centrality")),
-
-                                        # centrality can either be a keyword or numerical input
-                                        selectInput(inputId = "centrality",
-                                                    label = "Central Value",
-                                                    list("Mean" = "mean",
-                                                         "Median" = "median",
-                                                         "Weighted mean" = "mean.weighted",
-                                                         "Custom value" = "custom")),
-                                        tooltip(refId = "centrality", text = "User-defined central value, used for centering of data."),
+                                        div(align = "left",
+                                            # centrality can either be a keyword or numerical input
+                                            selectInput(inputId = "centrality",
+                                                        label = "Central Value",
+                                                        list("Mean" = "mean",
+                                                             "Median" = "median",
+                                                             "Weighted mean" = "mean.weighted",
+                                                             "Custom value" = "custom")),
+                                            title = "User-defined central value, used for centering of data."),
 
                                         conditionalPanel(condition = "input.centrality == 'custom'",
                                                          uiOutput("centralityNumeric")),
 
                                         div(align = "center", h5("Dispersion")),
-
-                                        selectInput(inputId = "dispersion",
-                                                    label = "Measure of dispersion",
-                                                    list("Quartile range" = "qr",
-                                                         "1 sigma" = "sd",
-                                                         "2 sigma" = "2sd",
-                                                         "Custom percentile range" = "custom")),
-                                        tooltip(refId = "dispersion", text = "Measure of dispersion, used for drawing the polygon that depicts the spread in the dose distribution."),
+                                        div(align = "left",
+                                            selectInput(inputId = "dispersion",
+                                                        label = "Measure of dispersion",
+                                                        list("Quartile range" = "qr",
+                                                             "1 sigma" = "sd",
+                                                             "2 sigma" = "2sd",
+                                                             "Custom percentile range" = "custom")),
+                                            title = "Measure of dispersion, used for drawing the polygon that depicts the spread in the dose distribution."),
 
                                         conditionalPanel(condition = "input.dispersion == 'custom'",
                                                          numericInput(inputId = "cinn",
@@ -260,7 +263,7 @@ function(request) {
                                         fluidRow(
                                           column(width = 6,
                                                  checkboxInput(inputId = "rug",
-                                                               label = "Add rug",
+                                                               label = "Rug",
                                                                value = FALSE),
                                                  title = "Add a rug to the KDE part to indicate the location of individual values."
                                           ),
@@ -269,16 +272,32 @@ function(request) {
                                                                label = "Rotate plot",
                                                                value = FALSE),
                                                  title = "Rotate the plot by 90°."
-                                          )
+                                          ),
+                                          column(width = 6,
+                                                 checkboxInput(inputId = "boxplot",
+                                                               label = "Boxplot",
+                                                               value = FALSE),
+                                                 title = "Add a boxplot to the dispersion part."
+                                          ),
+                                          column(width = 6,
+                                                 checkboxInput(inputId = "kde",
+                                                               label = "KDE",
+                                                               value = TRUE),
+                                                 title = "Add a KDE plot to the dispersion part."
+                                          ),
+                                          column(width = 6,
+                                                 checkboxInput(inputId = "histogram",
+                                                               label = "Histogram",
+                                                               value = TRUE),
+                                                 title = "Add a histogram to the dispersion part. Only meaningful when not more than one data set is plotted."
+                                          ),
+                                          column(width = 6,
+                                                 checkboxInput(inputId = "dots",
+                                                               label = "Dots",
+                                                               value = TRUE),
+                                                 title = "Add a dot plot to the dispersion part. If number of dots exceeds space in the dispersion part, a square indicates this."
+                                         )
                                         ),
-                                        checkboxInput(inputId = "boxplot", label = "Boxplot", value = FALSE),
-                                        tooltip(refId = "boxplot", text = "Option to add a boxplot to the dispersion part."),
-                                        checkboxInput(inputId = "kde", label = "KDE", value = TRUE),
-                                        tooltip(refId = "kde", text = "Option to add a KDE plot to the dispersion part."),
-                                        checkboxInput(inputId = "histogram", label = "Histogram", value = TRUE),
-                                        tooltip(refId = "histogram", text = "Option to add a histogram to the dispersion part. Only meaningful when not more than one data set is plotted."),
-                                        checkboxInput(inputId = "dots", label = "Dots", value = TRUE),
-                                        tooltip(refId = "dots", text = "Option to add a dot plot to the dispersion part. If number of dots exceeds space in the dispersion part, a square indicates this.")
                                ),##EndOf::Tab_3
 
                                # Tab 4: modify axis parameters
@@ -300,20 +319,22 @@ function(request) {
                                         uiOutput(outputId = "xlim"),
                                         br(),
                                         div(align = "center", h5("Y-axis")),
-                                        checkboxInput(inputId = "yaxis",
-                                                      label = "Show y-axis",
-                                                      value = TRUE),
-                                        tooltip(refId = "yaxis", text = "Option to hide y-axis labels. Useful for data with small scatter."),
+                                        div(align = "left",
+                                            checkboxInput(inputId = "yaxis",
+                                                          label = "Show y-axis",
+                                                          value = TRUE),
+                                            title = "Hide the y-axis labels. Useful for data with small scatter."),
                                         textInput(inputId = "ylab",
                                                   label = "Label y-axis",
                                                   value = "Standardised estimate"),
                                         uiOutput("ylim"),
                                         br(),
                                         div(align = "center", h5("Z-axis")),
-                                        checkboxInput(inputId = "logz",
-                                                      label = "Logarithmic z-axis",
-                                                      value = TRUE),
-                                        tooltip(refId = "logz", text = "Option to display the z-axis in logarithmic scale."),
+                                        div(align = "left",
+                                            checkboxInput(inputId = "logz",
+                                                          label = "Logarithmic z-axis",
+                                                          value = TRUE),
+                                            title = "Display the z-axis in logarithmic scale."),
                                         textInput(inputId = "zlab",
                                                   label = "Label z-axis",
                                                   value = "Equivalent dose [Gy]"),
@@ -756,10 +777,9 @@ function(request) {
                                                         label = "Choose layout",
                                                         selected = "default",
                                                         choices = c("Default"="default",
-                                                                    "Journal"="journal"))
+                                                                    "Journal"="journal")),
+                                            title = "Allows to modify the entire plot in a more sophisticated manner. Each element of the plot can be addressed and its properties can be defined. This includes font type, size and decoration, colours and sizes of all plot items. To infer the definition of a specific layout style cf. get_Layout() or type eg. for the layout type \"journal\" get_Layout(\"journal\"). A layout type can be modified by the user by assigning new values to the list object."
                                         ),
-                                        tooltip(refId = "layout", placement = "top",
-                                                text = "The optional parameter layout allows to modify the entire plot more sophisticated. Each element of the plot can be addressed and its properties can be defined. This includes font type, size and decoration, colours and sizes of all plot items. To infer the definition of a specific layout style cf. get_Layout() or type eg. for the layout type \"journal\" get_Layout(\"journal\"). A layout type can be modified by the user by assigning new values to the list object.")
                                ),
 
                                RLumShiny:::exportTab("export", filename = "abanico plot"),
