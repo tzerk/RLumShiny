@@ -19,7 +19,6 @@ function(input, output, session) {
     }
 
     return(x)
-
   }
 
 
@@ -50,7 +49,6 @@ function(input, output, session) {
       leaflet::addTiles() |>
       leaflet::setView(coords()$Long, coords()$Lat, zoom = 17) |>
       leaflet::addPopups(coords()$Long, coords()$Lat, 'Sampling site')
-
   })
 
 
@@ -112,6 +110,9 @@ function(input, output, session) {
 
       t<- get_results()
 
+      ## work around for issue #23
+      if (is.null(t$depth))
+        t$depth <- NA
       table<- as.data.frame(cbind(t$depth, t$total_absorber.gcm2, round(t$d0, 3), round(t$dc,3), round(t$dc/100*input$error, 3)))
       colnames(table)<- c("Depth (m)",
                           "Absorber (g/cm\u00b2)",
