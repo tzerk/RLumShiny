@@ -42,7 +42,7 @@ function(request) {
                                                  checkboxInput(inputId = "summary",
                                                                label = "Show summary",
                                                                value = FALSE),
-                                                 tooltip(refId = "summary", text = "Adds numerical output to the plot")
+                                                 title = "Add numerical output to the plot."
                                           ),
                                           column(width = 6,
                                                  selectInput(inputId = "sumpos",
@@ -57,7 +57,7 @@ function(request) {
                                                                                      "Bottom left" = "bottomleft",
                                                                                      "Bottom right" = "bottomright")
                                                              )),
-                                                 tooltip(refId = "sumpos", attr = "for", text = "Position of the statistical summary. The keyword \"Subtitle\" will only work if no plot subtitle is used.")
+                                                 title = "Position of the statistical summary. The keyword \"Subtitle\" will only work if no plot subtitle is used."
                                           )
                                         ),
                                         checkboxGroupInput(inputId = "stats",
@@ -109,7 +109,7 @@ function(request) {
                                           column(width = 6,
                                                  # inject sliderInput from Server.R
                                                  uiOutput(outputId = "centValue"),
-                                                 tooltip(refId = "centValue", text = "User-defined central value, primarily used for horizontal centering of the z-axis")
+                                                 title = "User-defined central value, primarily used for horizontal centering of the z-axis."
                                           ),
                                           column(width = 6,
                                                  sliderInput(inputId = "cex",
@@ -447,7 +447,7 @@ function(request) {
                                                              list("Grey" = "grey",
                                                                   "Custom" = "custom",
                                                                   "None" = "none")),
-                                                 tooltip(refId = "grid", attr = "for", text = "colour of the grid lines (originating at [0,0] and stretching to the z-scale). To disable grid lines, use \"none\".")
+                                                 title = "Colour of the grid lines (originating at [0,0] and stretching to the z-scale). To disable grid lines, use \"none\"."
                                           ),
                                           column(width = 6,
                                                  # show only if custom color is desired
@@ -469,7 +469,7 @@ function(request) {
                                                  checkboxInput(inputId = "showlegend",
                                                                label = "Show legend",
                                                                value = FALSE),
-                                                 tooltip(refId = "showlegend", text = "Legend content to be added to the plot.")
+                                                 title = "Legend content to be added to the plot."
                                           ),
                                           column(width = 6,
                                                  selectInput(inputId = "legend.pos",

@@ -259,7 +259,7 @@ function(request) {
                                                  checkboxInput(inputId = "showlegend",
                                                                label = "Show legend",
                                                                value = TRUE),
-                                                 tooltip(refId = "showlegend", text = "Legend content to be added to the plot."))
+                                                 title = "Legend content to be added to the plot.")
                                           ),
                                         fluidRow(
                                           column(width = 6,

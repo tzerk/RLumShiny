@@ -45,7 +45,7 @@ function(request) {
                                                  checkboxInput(inputId = "summary",
                                                                label = "Show summary",
                                                                value = TRUE),
-                                                 tooltip(refId = "summary", text = "Adds numerical output to the plot")
+                                                 title = "Add numerical output to the plot."
                                           ),
                                           column(width = 6,
                                                  selectInput(inputId = "sumpos",
@@ -59,7 +59,7 @@ function(request) {
                                                                             Bottom=c("Bottom" = "bottom",
                                                                                      "Bottom left" = "bottomleft",
                                                                                      "Bottom right" = "bottomright"))),
-                                                 tooltip(refId = "sumpos", attr = "for", text = "Position of the statistical summary. The keyword \"Subtitle\" will only work if no plot subtitle is used.")
+                                                 title = "Position of the statistical summary. The keyword \"Subtitle\" will only work if no plot subtitle is used."
                                           )
                                         ),
                                         selectInput(inputId = "summary.method",
@@ -136,7 +136,7 @@ function(request) {
                                                                  min=0.25, max=0.90,
                                                                  value=0.75, step=0.01, round= FALSE)
                                                  ),
-                                                 tooltip(refId = "pratiodiv", text = "Relative space given to the radial versus the cartesian plot part, default is 0.75.")
+                                                 title = "Relative space given to the radial versus the cartesian plot part, default is 0.75."
                                           ),
                                           column(width = 6,
                                                  sliderInput(inputId = "cex",
@@ -262,13 +262,13 @@ function(request) {
                                                  checkboxInput(inputId = "rug",
                                                                label = "Add rug",
                                                                value = FALSE),
-                                                 tooltip(refId = "rug", text = "Option to add a rug to the KDE part, to indicate the location of individual values")
+                                                 title = "Add a rug to the KDE part to indicate the location of individual values."
                                           ),
                                           column(width = 6,
                                                  checkboxInput(inputId = "rotate",
                                                                label = "Rotate plot",
                                                                value = FALSE),
-                                                 tooltip(refId = "rotate", text = "Option to rotate the plot by 90&deg;.")
+                                                 title = "Rotate the plot by 90°."
                                           )
                                         ),
                                         checkboxInput(inputId = "boxplot", label = "Boxplot", value = FALSE),
@@ -446,9 +446,9 @@ function(request) {
                                           column(width = 6,
                                                  numericInput(inputId = "line1",
                                                               label = strong("Line #1"),
-                                                              value =  NA, min = 0)
+                                                              value =  NA, min = 0),
+                                                 title = "Numeric values of the additional lines to be added."
                                           ),
-                                          tooltip(refId = "line1", text = "Numeric values of the additional lines to be added."),
                                           column(width = 6,
                                                  selectInput(inputId = "linelty1",
                                                              label = "Line type",
@@ -606,7 +606,7 @@ function(request) {
                                                              choices = list("Grey" = "grey80",
                                                                             "Custom" = "custom",
                                                                             "None" = "none")),
-                                                 tooltip(refId = "polygon", attr = "for", text = "Colour of the polygon showing the dose dispersion around the central value.")
+                                                 title = "Colour of the polygon showing the dose dispersion around the central value."
                                           ),
                                           column(width = 6,
                                                  selectInput(inputId = "polygon2",
@@ -642,7 +642,7 @@ function(request) {
                                                              choices = list("Grey" = "grey50",
                                                                             "Custom" = "custom",
                                                                             "None" = "none")),
-                                                 tooltip(refId = "bar", attr = "for", text = "Colour of the bar showing the 2-sigma range of the dose error around the central value.")
+                                                 title = "Colour of the bar showing the 2-sigma range of the dose error around the central value."
                                           ),
                                           column(width = 6,
                                                  selectInput(inputId = "bar2", label = HTML("2&sigma; bar color #2"),
@@ -708,7 +708,7 @@ function(request) {
                                                  checkboxInput(inputId = "showlegend",
                                                                label = "Show legend",
                                                                value = FALSE),
-                                                 tooltip(refId = "showlegend", text = "Legend content to be added to the plot.")
+                                                 title = "Legend content to be added to the plot."
                                           ),
                                           column(width = 6,
                                                  selectInput(inputId = "legend.pos",

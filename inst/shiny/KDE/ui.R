@@ -43,7 +43,7 @@ function(request) {
                                                  checkboxInput(inputId = "summary",
                                                                label = "Show summary",
                                                                value = FALSE),
-                                                 tooltip(refId = "summary", text = "Adds numerical output to the plot")
+                                                 title = "Add numerical output to the plot."
                                           ),
                                           column(width = 6,
                                                  selectInput(inputId = "sumpos",
@@ -58,7 +58,7 @@ function(request) {
                                                                                      "Bottom left" = "bottomleft",
                                                                                      "Bottom right" = "bottomright")
                                                              )),
-                                                 tooltip(refId = "sumpos", attr = "for", text = "Position of the statistical summary. The keyword \"Subtitle\" will only work if no plot subtitle is used.")
+                                                 title = "Position of the statistical summary. The keyword \"Subtitle\" will only work if no plot subtitle is used."
                                           )
                                         ),
 
