@@ -22,8 +22,8 @@ function(request) {
                                           column(width = 6)
                                         ),
                                         hr(),
-                                        actionButton(inputId = "refresh", label = "Refresh", icon = icon("fas fa-sync")),
-                                        tooltip(refId = "refresh", text = "Redraw the plot")
+                                        actionButton(inputId = "refresh", label = "Refresh",
+                                                     icon = icon("fas fa-sync"), title = "Redraw the plot.")
                                ),##EndOf::Tab_1
 
                                # Tab 2: Statistical information

@@ -105,8 +105,8 @@ function(request) {
                                        "1 absorber, x samples" = "sAxS"))
              ),
 
-             actionButton(inputId = "refresh", label = "", icon = icon("fas fa-sync")),
-             tooltip(refId = "refresh", text = "Reload app"),
+             actionButton(inputId = "refresh", label = "",
+                          icon = icon("fas fa-sync"), title = "Reload app"),
              bookmarkButton()
 
       )
