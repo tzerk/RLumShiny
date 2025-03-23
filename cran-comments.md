@@ -1,17 +1,13 @@
 ## Test environments
 
--   local Windows 11 x64 install, R 4.1.2 (2021-11-01)
+-   local Windows 11 x64 install, R 4.4.3 (2025-03-23)
 -   win-builder (devel, release, oldrel)
 
 ## CRAN Notes
 
 ## R CMD check results
 
-There were no ERRORs or WARNINGs.
-
-There is 1 NOTE:
-
--   The maintainer's email address has changed. As per CRAN Repository Policy Version \$Revision: 4769 \$ a separate email was send to CRAN-submissions\@R-project.org to comment on this issue.
+There were no ERRORs, WARNINGs or NOTEs.
 
 ## Downstream dependencies
 

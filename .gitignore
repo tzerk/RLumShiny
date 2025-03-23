@@ -11,3 +11,4 @@ packrat/lib*/
 input.rds
 dev
 NEWS.html
+/revdep/*/

@@ -2,7 +2,7 @@ Package: RLumShiny
 Type: Package
 Title: 'Shiny' Applications for the R Package 'Luminescence'
 Version: 0.2.4
-Date: 2025-03-20
+Date: 2025-03-23
 Authors@R: c(
     person("Christoph", "Burow", role = c("aut", "cre"), email = "christoph.burow@gmx.net", comment = c(ORCID = "0000-0002-5023-4046")),
     person("Urs Tilmann", "Wolpert", role = "aut"),

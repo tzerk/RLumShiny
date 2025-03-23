@@ -1,110 +1,120 @@
 # Platform
 
-|field    |value                                            |
-|:--------|:------------------------------------------------|
-|version  |R version 4.1.2 (2021-11-01)                     |
-|os       |Windows 10 x64 (build 22000)                     |
-|system   |x86_64, mingw32                                  |
-|ui       |RStudio                                          |
-|language |(EN)                                             |
-|collate  |English_United Kingdom.1252                      |
-|ctype    |English_United Kingdom.1252                      |
-|tz       |Europe/Berlin                                    |
-|date     |2022-01-29                                       |
-|rstudio  |2022.02.0-preview+410 Prairie Trillium (desktop) |
-|pandoc   |NA                                               |
+|field    |value                                                                                                                                                            |
+|:--------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|version  |R version 4.4.3 (2025-02-28 ucrt)                                                                                                                                |
+|os       |Windows 11 x64 (build 22631)                                                                                                                                     |
+|system   |x86_64, mingw32                                                                                                                                                  |
+|ui       |RStudio                                                                                                                                                          |
+|language |(EN)                                                                                                                                                             |
+|collate  |English_United Kingdom.utf8                                                                                                                                      |
+|ctype    |English_United Kingdom.utf8                                                                                                                                      |
+|tz       |Europe/Berlin                                                                                                                                                    |
+|date     |2025-03-23                                                                                                                                                       |
+|rstudio  |2024.12.1+563 Kousa Dogwood (desktop)                                                                                                                            |
+|pandoc   |3.2 @ C:/Program Files/RStudio/resources/app/bin/quarto/bin/tools/ (via rmarkdown)                                                                               |
+|quarto   |ERROR: Unknown command "TMPDIR=C:/Users/Fury/AppData/Local/Temp/RtmpcxAIZQ/filea31c684a5894". Did you mean command "update"? @ C:\PROGRA~1\Quarto\bin\quarto.exe |
 
 # Dependencies
 
-|package        |old        |new        |<U+0394>  |
-|:--------------|:----------|:----------|:--|
-|RLumShiny      |0.2.2      |0.2.3      |*  |
-|askpass        |1.1        |1.1        |   |
-|base64enc      |0.1-3      |0.1-3      |   |
-|bbmle          |1.0.24     |1.0.24     |   |
-|bdsmatrix      |1.3-4      |1.3-4      |   |
-|bslib          |0.3.1      |0.3.1      |   |
-|cachem         |1.0.6      |1.0.6      |   |
-|cellranger     |1.1.0      |1.1.0      |   |
-|cli            |3.1.1      |3.1.1      |   |
-|commonmark     |1.7        |1.7        |   |
-|crayon         |1.4.2      |1.4.2      |   |
-|crosstalk      |1.2.0      |1.2.0      |   |
-|curl           |4.3.2      |4.3.2      |   |
-|data.table     |1.14.2     |1.14.2     |   |
-|deldir         |1.0-6      |1.0-6      |   |
-|DEoptim        |2.2-6      |2.2-6      |   |
-|digest         |0.6.29     |0.6.29     |   |
-|DT             |0.20       |0.20       |   |
-|ellipsis       |0.3.2      |0.3.2      |   |
-|evaluate       |0.14       |0.14       |   |
-|fansi          |1.0.2      |1.0.2      |   |
-|fastmap        |1.1.0      |1.1.0      |   |
-|fontawesome    |0.2.2      |0.2.2      |   |
-|fs             |1.5.2      |1.5.2      |   |
-|glue           |1.6.0      |1.6.0      |   |
-|googleVis      |0.6.11     |0.6.11     |   |
-|highr          |0.9        |0.9        |   |
-|hms            |1.1.1      |1.1.1      |   |
-|htmltools      |0.5.2      |0.5.2      |   |
-|htmlwidgets    |1.5.4      |1.5.4      |   |
-|httpuv         |1.6.5      |1.6.5      |   |
-|httr           |1.4.2      |1.4.2      |   |
-|interp         |1.0-33     |1.0-33     |   |
-|jquerylib      |0.1.4      |0.1.4      |   |
-|jsonlite       |1.7.3      |1.7.3      |   |
-|knitr          |1.37       |1.37       |   |
-|lamW           |2.1.1      |2.1.1      |   |
-|later          |1.3.0      |1.3.0      |   |
-|lazyeval       |0.2.2      |0.2.2      |   |
-|lifecycle      |1.0.1      |1.0.1      |   |
-|Luminescence   |0.9.18     |0.9.18     |   |
-|magrittr       |2.0.1      |2.0.1      |   |
-|markdown       |NA         |1.1        |*  |
-|matrixStats    |0.61.0     |0.61.0     |   |
-|mclust         |5.4.9      |5.4.9      |   |
-|mime           |0.12       |0.12       |   |
-|minpack.lm     |1.2-1      |1.2-1      |   |
-|mvtnorm        |1.1-3      |1.1-3      |   |
-|numDeriv       |2016.8-1.1 |2016.8-1.1 |   |
-|openssl        |1.4.6      |1.4.6      |   |
-|pillar         |1.6.5      |1.6.5      |   |
-|pkgconfig      |2.0.3      |2.0.3      |   |
-|plotrix        |3.8-2      |3.8-2      |   |
-|prettyunits    |1.1.1      |1.1.1      |   |
-|progress       |1.2.2      |1.2.2      |   |
-|promises       |1.2.0.1    |1.2.0.1    |   |
-|R6             |2.5.1      |2.5.1      |   |
-|rappdirs       |0.3.3      |0.3.3      |   |
-|RCarb          |0.1.4      |0.1.4      |   |
-|Rcpp           |1.0.8      |1.0.8      |   |
-|RcppArmadillo  |0.10.8.1.0 |0.10.8.1.0 |   |
-|RcppEigen      |0.3.3.9.1  |0.3.3.9.1  |   |
-|RcppParallel   |5.1.5      |5.1.5      |   |
-|readxl         |1.3.1      |1.3.1      |   |
-|rematch        |1.0.1      |1.0.1      |   |
-|rhandsontable  |0.3.8      |0.3.8      |   |
-|rlang          |0.4.12     |0.4.12     |   |
-|rmarkdown      |2.11       |NA         |*  |
-|sass           |0.4.0      |0.4.0      |   |
-|shape          |1.4.6      |1.4.6      |   |
-|shiny          |1.7.1      |1.7.1      |   |
-|shinydashboard |0.7.2      |0.7.2      |   |
-|shinyjs        |2.1.0      |NA         |*  |
-|sourcetools    |0.1.7      |0.1.7      |   |
-|stringi        |1.7.6      |1.7.6      |   |
-|stringr        |1.4.0      |1.4.0      |   |
-|sys            |3.4        |3.4        |   |
-|tibble         |3.1.6      |3.1.6      |   |
-|tinytex        |0.36       |NA         |*  |
-|utf8           |1.2.2      |1.2.2      |   |
-|vctrs          |0.3.8      |0.3.8      |   |
-|withr          |2.4.3      |2.4.3      |   |
-|xfun           |0.29       |0.29       |   |
-|XML            |3.99-0.8   |3.99-0.8   |   |
-|xtable         |1.8-4      |1.8-4      |   |
-|yaml           |2.2.2      |2.2.2      |   |
-|zoo            |1.8-9      |1.8-9      |   |
+|package           |old        |new        |Δ  |
+|:-----------------|:----------|:----------|:--|
+|RLumShiny         |0.2.3      |0.2.4      |*  |
+|askpass           |1.2.1      |1.2.1      |   |
+|base64enc         |0.1-3      |0.1-3      |   |
+|bbmle             |1.0.25.1   |1.0.25.1   |   |
+|bdsmatrix         |1.3-7      |1.3-7      |   |
+|bslib             |0.9.0      |0.9.0      |   |
+|cachem            |1.1.0      |1.1.0      |   |
+|cellranger        |1.1.0      |1.1.0      |   |
+|cli               |3.6.4      |3.6.4      |   |
+|colorspace        |NA         |2.1-1      |*  |
+|commonmark        |1.9.5      |1.9.5      |   |
+|cpp11             |0.5.2      |0.5.2      |   |
+|crayon            |1.5.3      |1.5.3      |   |
+|crosstalk         |1.2.1      |1.2.1      |   |
+|curl              |6.2.1      |6.2.1      |   |
+|data.table        |1.17.0     |1.17.0     |   |
+|deldir            |2.0-4      |2.0-4      |   |
+|DEoptim           |2.2-8      |2.2-8      |   |
+|digest            |0.6.37     |0.6.37     |   |
+|DT                |0.33       |0.33       |   |
+|evaluate          |1.0.3      |1.0.3      |   |
+|fansi             |1.0.6      |1.0.6      |   |
+|farver            |NA         |2.1.2      |*  |
+|fastmap           |1.2.0      |1.2.0      |   |
+|fontawesome       |0.5.3      |0.5.3      |   |
+|fs                |1.6.5      |1.6.5      |   |
+|glue              |1.8.0      |1.8.0      |   |
+|googleVis         |0.7.3      |0.7.3      |   |
+|highr             |0.11       |0.11       |   |
+|hms               |1.1.3      |1.1.3      |   |
+|htmltools         |0.5.8.1    |0.5.8.1    |   |
+|htmlwidgets       |1.6.4      |1.6.4      |   |
+|httpuv            |1.6.15     |1.6.15     |   |
+|httr              |1.4.7      |1.4.7      |   |
+|interp            |1.1-6      |1.1-6      |   |
+|jquerylib         |0.1.4      |0.1.4      |   |
+|jsonlite          |1.9.1      |1.9.1      |   |
+|knitr             |1.50       |1.50       |   |
+|labeling          |NA         |0.4.3      |*  |
+|lamW              |2.2.4      |2.2.4      |   |
+|later             |1.4.1      |1.4.1      |   |
+|lazyeval          |0.2.2      |0.2.2      |   |
+|leaflet           |NA         |2.2.2      |*  |
+|leaflet.providers |NA         |2.0.0      |*  |
+|lifecycle         |1.0.4      |1.0.4      |   |
+|Luminescence      |1.0.1      |1.0.1      |   |
+|magrittr          |2.0.3      |2.0.3      |   |
+|markdown          |1.13       |1.13       |   |
+|matrixStats       |1.5.0      |1.5.0      |   |
+|mclust            |6.1.1      |6.1.1      |   |
+|memoise           |2.0.1      |2.0.1      |   |
+|mime              |0.13       |0.13       |   |
+|minpack.lm        |1.2-4      |1.2-4      |   |
+|munsell           |NA         |0.5.1      |*  |
+|mvtnorm           |1.3-3      |1.3-3      |   |
+|numDeriv          |2016.8-1.1 |2016.8-1.1 |   |
+|openssl           |2.3.2      |2.3.2      |   |
+|pillar            |1.10.1     |1.10.1     |   |
+|pkgconfig         |2.0.3      |2.0.3      |   |
+|png               |NA         |0.1-8      |*  |
+|prettyunits       |1.2.0      |1.2.0      |   |
+|progress          |1.2.3      |1.2.3      |   |
+|promises          |1.3.2      |1.3.2      |   |
+|R6                |2.6.1      |2.6.1      |   |
+|rappdirs          |0.3.3      |0.3.3      |   |
+|raster            |NA         |3.6-31     |*  |
+|RCarb             |0.1.6      |0.1.6      |   |
+|RColorBrewer      |NA         |1.1-3      |*  |
+|Rcpp              |1.0.14     |1.0.14     |   |
+|RcppArmadillo     |14.4.0-1   |14.4.0-1   |   |
+|RcppEigen         |0.3.4.0.2  |0.3.4.0.2  |   |
+|RcppParallel      |5.1.10     |5.1.10     |   |
+|readxl            |1.4.5      |1.4.5      |   |
+|rematch           |2.0.0      |2.0.0      |   |
+|rhandsontable     |0.3.8      |0.3.8      |   |
+|rlang             |1.1.5      |1.1.5      |   |
+|rmarkdown         |2.29       |2.29       |   |
+|sass              |0.4.9      |0.4.9      |   |
+|scales            |NA         |1.3.0      |*  |
+|shape             |1.4.6.1    |1.4.6.1    |   |
+|shiny             |1.10.0     |1.10.0     |   |
+|shinydashboard    |0.7.2      |0.7.2      |   |
+|sourcetools       |0.1.7-1    |0.1.7-1    |   |
+|sp                |NA         |2.2-0      |*  |
+|sys               |3.4.3      |3.4.3      |   |
+|terra             |NA         |1.8-29     |*  |
+|tibble            |3.2.1      |3.2.1      |   |
+|tinytex           |0.56       |0.56       |   |
+|utf8              |1.2.4      |1.2.4      |   |
+|vctrs             |0.6.5      |0.6.5      |   |
+|viridisLite       |NA         |0.4.2      |*  |
+|withr             |3.0.2      |3.0.2      |   |
+|xfun              |0.51       |0.51       |   |
+|XML               |3.99-0.18  |3.99-0.18  |   |
+|xtable            |1.8-4      |1.8-4      |   |
+|yaml              |2.3.10     |2.3.10     |   |
 
 # Revdeps
 

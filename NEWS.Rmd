@@ -120,7 +120,7 @@ output: github_document
     + the plot now also shows the CW-OSL data curve
     + improved error handling
 
-* Internal: R dcoumentation re-written in Markdown using 'roxygen2 >=6.0.0'
+* Internal: R documentation re-written in Markdown using 'roxygen2 >=6.0.0'
 
 * Several minor bugfixes.
 

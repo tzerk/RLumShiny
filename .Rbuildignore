@@ -18,3 +18,4 @@ pkgdown/
 ^\.github$
 NEWS.html
 ^revdep$
+^CRAN-SUBMISSION$
