@@ -198,7 +198,7 @@ function(input, output, session) {
 
     # fitting line color
     if (input$line_col == "custom")
-      line_col <- input$jscol
+      line_col <- input$jscol2
     else if (input$line_col == "default")
       line_col <- NULL
     else
