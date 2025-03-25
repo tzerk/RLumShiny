@@ -100,8 +100,12 @@ function(request) {
                                         withMathJax(),
                                         helpText("$$L(x) = \\frac{\\overline{\\sigma\\varphi _0}e^{-\\mu x}e^{-t[\\overline{\\sigma\\varphi _0}e^{-\\mu x} + \\frac{\\dot{D}}{D_0}]}+ \\frac{\\dot{D}}{D_0}}
 {\\overline{\\sigma\\varphi _0}e^{-\\mu x} + \\frac{\\dot{D}}{D_0}}$$"),
-                                        numericInput("ddot", "Dose rate, \\(\\dot{D} (Gy/ka)\\)", value = 1.5, min = 0, step = 0.01),
-                                        numericInput("d0", "Characteristic saturation dose, \\(D_0\\) (Gy)", value = 40, min = 0, step = 1),
+                                        conditionalPanel(condition = "input.doserate == true",
+                                                         numericInput("ddot", "Environmental dose rate, \\(\\dot{D}\\) (Gy/ka)",
+                                                                      value = 1.5, min = 0, step = 0.01),
+                                                         numericInput("d0", "Characteristic saturation dose, \\(D_0\\) (Gy)",
+                                                                      value = 40, min = 0, step = 1)
+                                        ),
                                         hr(),
                                         helpText(HTML(paste(tags$b("Reference:"), "Sohbati, R., Jain, M., Murray, A.S., 2012b. Surface exposure dating of non-terrestial bodies using optically stimulated luminescence: A new method. Icarus 221, 160-166.")))
                                ),
@@ -281,4 +285,3 @@ function(request) {
     bookmarkButton()
   )##EndOf::fluidPage
 }
-
