@@ -72,7 +72,8 @@ function(request) {
                                                           numericInput(inputId = "sigmaphi_base", "\\( \\overline{\\sigma\\varphi_0} \\) (base)", value = 5.0, step = 0.1)
                                                    ),
                                                    column(width = 6,
-                                                          numericInput(inputId = "sigmaphi_exp", "\\( \\overline{\\sigma\\varphi_0} \\) (exponent)", value = 10, step = 1)
+                                                          numericInput(inputId = "sigmaphi_exp", "\\( \\overline{\\sigma\\varphi_0} \\) (exponent)",
+                                                                       value = -10, max = 0, step = 1)
                                                    )
                                                  )
                                           )
