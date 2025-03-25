@@ -208,21 +208,16 @@ function(request) {
                                                                   jscolorInput(inputId = "jscol2"))
                                           )
                                         ),
-                                        
+
                                         br(),
                                         fluidRow(
-                                          column(width = 4,
-                                                 checkboxInput(inputId = "legend", 
+                                          column(width = 6,
+                                                 checkboxInput(inputId = "legend",
                                                                label = "Show legend",
                                                                value = TRUE)
                                           ),
-                                          column(width = 4,
-                                                 checkboxInput(inputId = "coord_flip", 
-                                                               label = "Flip coordinate system",
-                                                               value = FALSE)
-                                          ),
-                                          column(width = 4,
-                                                 checkboxInput(inputId = "error_bars", 
+                                          column(width = 6,
+                                                 checkboxInput(inputId = "error_bars",
                                                                label = "Show error bars",
                                                                value = TRUE)
                                           )
@@ -254,10 +249,14 @@ function(request) {
                                         textInput(inputId = "ylab", 
                                                   label = "Label y-axis (left)",
                                                   value = "OSL intensity (Ln/Tn)"),
-                                        sliderInput(inputId = "ylim", "Y-axis limits", min = -1, max = 2, 
-                                                    value = c(-0.1, 1.1), step = 0.1)
+                                        sliderInput(inputId = "ylim", "Y-axis limits", min = -1, max = 2,
+                                                    value = c(-0.1, 1.1), step = 0.1),
+                                        br(),
+                                        checkboxInput(inputId = "coord_flip",
+                                                      label = "Flip the coordinate system",
+                                                      value = FALSE)
                                ),##EndOf::Tab_4
-                               
+
                                RLumShiny:::exportTab("export", filename = "surfaceexposure"),
                                RLumShiny:::aboutTab("about", "surfaceExposure")
                    )##EndOf::tabsetPanel
