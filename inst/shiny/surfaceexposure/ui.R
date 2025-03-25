@@ -43,10 +43,12 @@ function(request) {
                                         ),
                                         fluidRow(
                                           column(width = 6,
-                                                 uiOutput("global_fit_ages")
+                                                 uiOutput("global_fit_ages"),
+                                                 title = "The age (a) of the sample."
                                                  ),
                                           column(width=6,
-                                                 uiOutput("global_fit_mus")
+                                                 uiOutput("global_fit_mus"),
+                                                 title = "The light attenuation coefficient."
                                                  )
                                         ),
                                         conditionalPanel(condition = "input.global_fit == false",
@@ -59,7 +61,8 @@ function(request) {
                                             column(1,
                                                    checkboxInput(inputId = "override_age", "", value = FALSE)),
                                             column(10,
-                                                   numericInput(inputId = "age", "Age (a)", value = 1000, min = 0)
+                                                   numericInput(inputId = "age", "Age (a)", value = 1000, min = 0),
+                                                   title = "The age (a) of the sample."
                                             )
                                           )
                                         ),
@@ -75,7 +78,8 @@ function(request) {
                                                           numericInput(inputId = "sigmaphi_exp", "\\( \\overline{\\sigma\\varphi_0} \\) (exponent)",
                                                                        value = -10, max = 0, step = 1)
                                                    )
-                                                 )
+                                                 ),
+                                                 title = "The charge detrapping rate."
                                           )
                                         ),
                                         fluidRow(
@@ -87,11 +91,12 @@ function(request) {
                                                  ),
                                                  conditionalPanel(condition = "input.global_fit == true",
                                                                   helpText(paste("Provide \\( \\mu \\) values"))
-                                                 )
+                                                 ),
+                                                 title = "The light attenuation coefficient."
                                           )
                                         )
                                ),
-                               
+
                                tabPanel("Dose rate",
                                         checkboxInput("doserate", "Consider dose rate", FALSE),
                                         helpText(HTML(paste(
@@ -224,7 +229,8 @@ function(request) {
                                           column(width = 6,
                                                  checkboxInput(inputId = "error_bars",
                                                                label = "Show error bars",
-                                                               value = TRUE)
+                                                               value = TRUE),
+                                                 title = "Show or hide error bars (only applies if errors are provided)."
                                           )
                                         ),
                                         div(align = "center", h5("Scaling")),
