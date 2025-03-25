@@ -26,17 +26,22 @@ function(request) {
                                           "is the error on the signal. The fourth column (<i>Group</i>) is only required for global fitting ",
                                           "of multiple data sets.")
                                         ))
-                                        
+
                                ),##EndOf::Tab_1
-                               
+
                                tabPanel("Parameters",
                                         fluidRow(
-                                          column(width = 6,
+                                          column(width = 4,
                                                  checkboxInput(inputId = "global_fit", "Global fit", TRUE)
                                                  ),
-                                          column(width = 6,
-                                                 checkboxInput(inputId = "individual_mus", "Individual \\( \\mu \\) values", TRUE)
-                                                 )
+                                          column(width = 4,
+                                                 checkboxInput(inputId = "override_mu", "Provide \\( \\mu \\) values", TRUE)
+                                                 ),
+                                          conditionalPanel(condition = "input.global_fit == true && input.override_mu == true",
+                                                           column(width = 4,
+                                                                  checkboxInput(inputId = "individual_mus", "Individual \\( \\mu \\) values", TRUE)
+                                                           )
+                                          )
                                         ),
                                         conditionalPanel(condition = "input.global_fit == true",
                                                          helpText(HTML(paste(tags$b("NOTE:"), "Weighting is not available for global fitting.")))
@@ -60,9 +65,16 @@ function(request) {
                                           fluidRow(
                                             column(1,
                                                    checkboxInput(inputId = "override_age", "", value = FALSE)),
-                                            column(10,
+                                            column(width = 5,
                                                    numericInput(inputId = "age", "Age (a)", value = 1000, min = 0),
                                                    title = "The age (a) of the sample."
+                                            ),
+                                            conditionalPanel(condition = "input.override_mu == true",
+                                                             column(width = 4,
+                                                                    numericInput(inputId = "mu", "\\( \\mu \\)",
+                                                                                 value = 0.9, min = 0),
+                                                                    title = "The light attenuation coefficient."
+                                                             )
                                             )
                                           )
                                         ),
@@ -80,19 +92,6 @@ function(request) {
                                                    )
                                                  ),
                                                  title = "The charge detrapping rate."
-                                          )
-                                        ),
-                                        fluidRow(
-                                          column(1,
-                                                 checkboxInput(inputId = "override_mu", "", value = TRUE)),
-                                          column(10,
-                                                 conditionalPanel(condition = "input.global_fit == false",
-                                                                  numericInput(inputId = "mu", "\\( \\mu \\)", value = 0.90, step = 0.01)
-                                                 ),
-                                                 conditionalPanel(condition = "input.global_fit == true",
-                                                                  helpText(paste("Provide \\( \\mu \\) values"))
-                                                 ),
-                                                 title = "The light attenuation coefficient."
                                           )
                                         )
                                ),
