@@ -198,7 +198,7 @@ function(input, output, session) {
 
     # fitting line color
     if (input$line_col == "custom")
-      line_col <- input$jscol
+      line_col <- input$jscol2
     else if (input$line_col == "default")
       line_col <- NULL
     else
@@ -208,7 +208,7 @@ function(input, output, session) {
       data = values$data_used,
       age = age,
       weights = if (input$global_fit) FALSE else input$weights,
-      sigmaphi = if (input$override_sigmaphi) input$sigmaphi_base * 10^-(abs(input$sigmaphi_exp)) else NULL,
+      sigmaphi = if (input$override_sigmaphi) input$sigmaphi_base * 10^input$sigmaphi_exp else NULL,
       mu = mu,
       Ddot = if (input$doserate) input$ddot else NULL,
       D0  = if (input$doserate) input$d0 else NULL,

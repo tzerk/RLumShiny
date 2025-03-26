@@ -26,27 +26,34 @@ function(request) {
                                           "is the error on the signal. The fourth column (<i>Group</i>) is only required for global fitting ",
                                           "of multiple data sets.")
                                         ))
-                                        
+
                                ),##EndOf::Tab_1
-                               
+
                                tabPanel("Parameters",
                                         fluidRow(
-                                          column(width = 6,
+                                          column(width = 4,
                                                  checkboxInput(inputId = "global_fit", "Global fit", TRUE)
                                                  ),
-                                          column(width = 6,
-                                                 checkboxInput(inputId = "individual_mus", "Individual \\( \\mu \\) values", TRUE)
-                                                 )
+                                          column(width = 4,
+                                                 checkboxInput(inputId = "override_mu", "Provide \\( \\mu \\) values", TRUE)
+                                                 ),
+                                          conditionalPanel(condition = "input.global_fit == true && input.override_mu == true",
+                                                           column(width = 4,
+                                                                  checkboxInput(inputId = "individual_mus", "Individual \\( \\mu \\) values", TRUE)
+                                                           )
+                                          )
                                         ),
                                         conditionalPanel(condition = "input.global_fit == true",
                                                          helpText(HTML(paste(tags$b("NOTE:"), "Weighting is not available for global fitting.")))
                                         ),
                                         fluidRow(
                                           column(width = 6,
-                                                 uiOutput("global_fit_ages")
+                                                 uiOutput("global_fit_ages"),
+                                                 title = "The age (a) of the sample."
                                                  ),
                                           column(width=6,
-                                                 uiOutput("global_fit_mus")
+                                                 uiOutput("global_fit_mus"),
+                                                 title = "The light attenuation coefficient."
                                                  )
                                         ),
                                         conditionalPanel(condition = "input.global_fit == false",
@@ -58,8 +65,16 @@ function(request) {
                                           fluidRow(
                                             column(1,
                                                    checkboxInput(inputId = "override_age", "", value = FALSE)),
-                                            column(10,
-                                                   numericInput(inputId = "age", "Age (a)", value = 1000, min = 0)
+                                            column(width = 5,
+                                                   numericInput(inputId = "age", "Age (a)", value = 1000, min = 0),
+                                                   title = "The age (a) of the sample."
+                                            ),
+                                            conditionalPanel(condition = "input.override_mu == true",
+                                                             column(width = 4,
+                                                                    numericInput(inputId = "mu", "\\( \\mu \\)",
+                                                                                 value = 0.9, min = 0),
+                                                                    title = "The light attenuation coefficient."
+                                                             )
                                             )
                                           )
                                         ),
@@ -72,25 +87,15 @@ function(request) {
                                                           numericInput(inputId = "sigmaphi_base", "\\( \\overline{\\sigma\\varphi_0} \\) (base)", value = 5.0, step = 0.1)
                                                    ),
                                                    column(width = 6,
-                                                          numericInput(inputId = "sigmaphi_exp", "\\( \\overline{\\sigma\\varphi_0} \\) (exponent)", value = 10, step = 1)
+                                                          numericInput(inputId = "sigmaphi_exp", "\\( \\overline{\\sigma\\varphi_0} \\) (exponent)",
+                                                                       value = -10, max = 0, step = 1)
                                                    )
-                                                 )
-                                          )
-                                        ),
-                                        fluidRow(
-                                          column(1,
-                                                 checkboxInput(inputId = "override_mu", "", value = TRUE)),
-                                          column(10,
-                                                 conditionalPanel(condition = "input.global_fit == false",
-                                                                  numericInput(inputId = "mu", "\\( \\mu \\)", value = 0.90, step = 0.01)
                                                  ),
-                                                 conditionalPanel(condition = "input.global_fit == true",
-                                                                  helpText(paste("Provide \\( \\mu \\) values"))
-                                                 )
+                                                 title = "The charge detrapping rate."
                                           )
                                         )
                                ),
-                               
+
                                tabPanel("Dose rate",
                                         checkboxInput("doserate", "Consider dose rate", FALSE),
                                         helpText(HTML(paste(
@@ -100,8 +105,12 @@ function(request) {
                                         withMathJax(),
                                         helpText("$$L(x) = \\frac{\\overline{\\sigma\\varphi _0}e^{-\\mu x}e^{-t[\\overline{\\sigma\\varphi _0}e^{-\\mu x} + \\frac{\\dot{D}}{D_0}]}+ \\frac{\\dot{D}}{D_0}}
 {\\overline{\\sigma\\varphi _0}e^{-\\mu x} + \\frac{\\dot{D}}{D_0}}$$"),
-                                        numericInput("ddot", "Dose rate, \\(\\dot{D} (Gy/ka)\\)", value = 1.5, min = 0, step = 0.01),
-                                        numericInput("d0", "Characteristic saturation dose, \\(D_0\\) (Gy)", value = 40, min = 0, step = 1),
+                                        conditionalPanel(condition = "input.doserate == true",
+                                                         numericInput("ddot", "Environmental dose rate, \\(\\dot{D}\\) (Gy/ka)",
+                                                                      value = 1.5, min = 0, step = 0.01),
+                                                         numericInput("d0", "Characteristic saturation dose, \\(D_0\\) (Gy)",
+                                                                      value = 40, min = 0, step = 1)
+                                        ),
                                         hr(),
                                         helpText(HTML(paste(tags$b("Reference:"), "Sohbati, R., Jain, M., Murray, A.S., 2012b. Surface exposure dating of non-terrestial bodies using optically stimulated luminescence: A new method. Icarus 221, 160-166.")))
                                ),
@@ -208,23 +217,19 @@ function(request) {
                                                                   jscolorInput(inputId = "jscol2"))
                                           )
                                         ),
-                                        
+
                                         br(),
                                         fluidRow(
-                                          column(width = 4,
-                                                 checkboxInput(inputId = "legend", 
+                                          column(width = 6,
+                                                 checkboxInput(inputId = "legend",
                                                                label = "Show legend",
                                                                value = TRUE)
                                           ),
-                                          column(width = 4,
-                                                 checkboxInput(inputId = "coord_flip", 
-                                                               label = "Flip coordinate system",
-                                                               value = FALSE)
-                                          ),
-                                          column(width = 4,
-                                                 checkboxInput(inputId = "error_bars", 
+                                          column(width = 6,
+                                                 checkboxInput(inputId = "error_bars",
                                                                label = "Show error bars",
-                                                               value = TRUE)
+                                                               value = TRUE),
+                                                 title = "Show or hide error bars (only applies if errors are provided)."
                                           )
                                         ),
                                         div(align = "center", h5("Scaling")),
@@ -254,10 +259,14 @@ function(request) {
                                         textInput(inputId = "ylab", 
                                                   label = "Label y-axis (left)",
                                                   value = "OSL intensity (Ln/Tn)"),
-                                        sliderInput(inputId = "ylim", "Y-axis limits", min = -1, max = 2, 
-                                                    value = c(-0.1, 1.1), step = 0.1)
+                                        sliderInput(inputId = "ylim", "Y-axis limits", min = -1, max = 2,
+                                                    value = c(-0.1, 1.1), step = 0.1),
+                                        br(),
+                                        checkboxInput(inputId = "coord_flip",
+                                                      label = "Flip the coordinate system",
+                                                      value = FALSE)
                                ),##EndOf::Tab_4
-                               
+
                                RLumShiny:::exportTab("export", filename = "surfaceexposure"),
                                RLumShiny:::aboutTab("about", "surfaceExposure")
                    )##EndOf::tabsetPanel
@@ -282,4 +291,3 @@ function(request) {
     bookmarkButton()
   )##EndOf::fluidPage
 }
-
