@@ -84,6 +84,11 @@ function(input, output, session) {
 
   observe({
     # nested renderText({}) for code output on "R plot code" tab
+    if (input$mode == "pd") {
+      values$args$grains.counted <- NULL
+    } else {
+      values$args$packing.density <- NULL
+    }
     code.output <- callModule(RLumShiny:::printCode, "printCode", n_input = 0,
                               fun = "calc_AliquotSize(", args = values$args)
 
