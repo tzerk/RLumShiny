@@ -1,8 +1,9 @@
 printCode <- function(input, output, session, n_input, fun, args) {
   
   # prepare code as text output
-  str1 <- "data <- data.table::fread(file, data.table = FALSE)"
-  
+  str1 <- paste("file <- file.choose()",
+                "data <- data.table::fread(file, data.table = FALSE)",
+                sep = "\n")
   if (n_input == 2) {
     str2 <- "file2 <- file.choose()"
     str3 <- "data2 <- data.table::fread(file2, data.table = FALSE)"
@@ -12,10 +13,9 @@ printCode <- function(input, output, session, n_input, fun, args) {
   
   header <- paste("# To reproduce the plot in your local R environment",
                   "# copy and run the following code to your R console.",
+                  "",
                   "library(Luminescence)",
-                  "file <- file.choose()",
-                  str1,
-                  "\n",
+                  if (n_input > 0) paste(str1, "\n"),
                   sep = "\n")
   
   names <- names(args)
@@ -40,7 +40,7 @@ printCode <- function(input, output, session, n_input, fun, args) {
   
   funCall <- paste0(fun, "\n", verb.arg, ")")
   
-  code.output <- paste0(header, funCall, collapse = "\n")
+  code.output <- paste0(header, "\n", funCall, sep = "\n")
   
   return(code.output)
 }
