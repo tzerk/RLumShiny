@@ -28,8 +28,8 @@ function(input, output, session) {
 
     if (ncol(data) == 2) {
       data$error <- 0.0001
-      data$group <- "A"
-    } else if (ncol(data) == 3) {
+    }
+    if (ncol(data) == 3) {
       data$group <- "A"
     }
 
@@ -72,7 +72,6 @@ function(input, output, session) {
       }
     }
       values$data <- hot_to_r(df_tmp)
-
   })
 
   output$global_fit_ages <- renderUI({
@@ -116,7 +115,6 @@ function(input, output, session) {
                         min = min(data[ ,2]) - diff(range(data[ ,2])) / 2,
                         max = max(data[ ,2]) + diff(range(data[ ,2])) / 2,
                         value = range(pretty(data[ ,2])))
-
   })
 
   # update for log values
@@ -157,8 +155,8 @@ function(input, output, session) {
           data$group <- droplevels(data$group)
 
         # remove line feeds that might be copied from the clipboard
-        data$group <- gsub("\r", "", data$group[1])
-        data$group <- gsub("\n", "", data$group[1])
+        data$group <- gsub("\r", "", data$group)
+        data$group <- gsub("\n", "", data$group)
 
         data <- split(data, data$group)
         # remove any list element with data.frames with 0 rows
@@ -278,24 +276,34 @@ function(input, output, session) {
 
     values$error <- NULL
 
+    ## helper to format the output string
+    report <- function(label, value, error, override_value = TRUE) {
+      paste(
+          tags$b(paste0(label, ":")), paste(value, collapse = ", "),
+          if (override_value) tags$em("(fixed)") else paste("&plusmn;", error),
+          tags$br()
+      )
+    }
+
     if (!input$global_fit) {
       res <- as.data.frame(t(signif(unlist(get_RLum(values$results)), 3)))
 
-      HTML(paste0(
-        tags$b("Age (a): "), res$age, " &plusmn; ", res$age_error, tags$em(ifelse(input$override_age, "(fixed)", "")), tags$br(),
-        tags$b("sigmaPhi: "), res$sigmaphi, " &plusmn; ", res$sigmaphi_error, tags$em(ifelse(input$override_sigmaphi, "(fixed)", "")), tags$br(),
-        tags$b("mu: "), res$mu, " &plusmn; ", res$mu_error, tags$em(ifelse(input$override_mu, "\t(fixed)", "")), tags$br()
-      ))
+      HTML(
+          report("Age (a)", res$age, res$age_error, input$override_age),
+          report("sigmaPhi", res$sigmaphi, res$sigmaphi_error, input$override_sigmaphi),
+          report("mu", res$mu, res$mu_error, input$override_mu)
+      )
     } else {
       res <- as.data.frame(get_RLum(values$results))
 
-      HTML(paste0(
-        tags$b("Ages (a): "), paste(res$age, collapse = ", "), tags$em(" (fixed)"), tags$br(),
-        tags$b("sigmaPhi: "), signif(unique(res$sigmaphi), 3), " &plusmn; ", signif(unique(res$sigmaphi_error), 3), tags$em(ifelse(input$override_sigmaphi, "(fixed)", "")), tags$br(),
-        tags$b("mu: "), signif(unique(res$mu), 3), " &plusmn; ", signif(unique(res$mu_error), 3), tags$em(ifelse(input$override_mu, "\t(fixed)", "")), tags$br()
-      ))
+      HTML(
+        report("Ages (a)", res$age),
+        report("sigmaPhi", signif(unique(res$sigmaphi), 3),
+               signif(unique(res$sigmaphi_error), 3), input$override_sigmaphi),
+        report("mu", signif(unique(res$mu), 3),
+               signif(unique(res$mu_error), 3), input$override_mu)
+      )
     }
   })
-
 
 }##EndOf::function(input, output)
