@@ -5,6 +5,11 @@ output: github_document
 
 ## RLumShiny 0.2.5 (Release date: `r Sys.Date()`)
 
+* New application to either estimate the number of grains on an aliquot or to
+  compute the packing density.
+  Base function: `Luminescence::calc_AliquotSize()`.
+  Keyword for `app_RLum()`: 'aliquotsize'.
+
 * App `surfaceexposure`:
   + Rework user interface and add tooltips (#4)
 

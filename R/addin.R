@@ -14,6 +14,11 @@ RLumShinyAddin <- function() {
                      category = "plot",
                      description = "A plot which allows comprehensive presentation of data precision and its dispersion around a central value as well as illustration of a kernel density estimate, histogram and/or dot plot of the dose values."),
 
+    "aliquotsize" = list(title = "Aliquot Size",
+                         keyword = "aliquotsize",
+                         category = "calc",
+                         description = "This function can be used to either estimate the number of grains on an aliquot or to compute the packing density, depending on the arguments provided."),
+
     "cosmic" = list(title = "Cosmic Dose Rate",
                     keyword = "cosmicdose",
                     category = "calc",

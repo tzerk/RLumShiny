@@ -13,6 +13,7 @@
 #' Histogram \tab *histogram* \tab [Luminescence::plot_Histogram] \cr
 #' Kernel Density Estimate Plot \tab *KDE* \tab [Luminescence::plot_KDE] \cr
 #' Radial Plot \tab *radialplot* \tab [Luminescence::plot_RadialPlot] \cr
+#' Aliquot Size \tab *aliquotsize* \tab [Luminescence::calc_AliquotSize] \cr
 #' Dose Recovery Test \tab *doserecovery* \tab [Luminescence::plot_DRTResults] \cr
 #' Cosmic Dose Rate \tab *cosmicdose*  \tab [Luminescence::calc_CosmicDoseRate] \cr
 #' CW Curve Transformation \tab *transformCW* \tab [Luminescence::convert_CW2pHMi], [Luminescence::convert_CW2pLM], [Luminescence::convert_CW2pLMi], [Luminescence::convert_CW2pPMi] \cr
@@ -52,6 +53,7 @@
 #' app_RLum("doserecovery")
 #'
 #' # Further apps
+#' app_RLum("aliquotsize")
 #' app_RLum("cosmicdose")
 #' app_RLum("transformCW")
 #' app_RLum("filter")
@@ -68,6 +70,7 @@
 app_RLum <- function(app = NULL, ...) {
 
   valid_apps <- c("abanico",
+                  "aliquotsize",
                   "cosmicdose",
                   "doserecovery",
                   "histogram",
