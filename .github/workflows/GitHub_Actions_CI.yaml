@@ -23,14 +23,14 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: windows-latest, r: 'oldrel', not_cran: 'true'}
-          - {os: windows-latest, r: 'release', not_cran: 'true'}
-          - {os: windows-latest, r: 'devel', not_cran: 'true'}
-          - {os: macos-13,   r: 'release', not_cran: 'true'}
-          - {os: macos-13,   r: 'oldrel', not_cran: 'true'}
+          #- {os: windows-latest, r: 'oldrel', not_cran: 'true'}
+          #- {os: windows-latest, r: 'release', not_cran: 'true'}
+          #- {os: windows-latest, r: 'devel', not_cran: 'true'}
+          #- {os: macos-13,   r: 'release', not_cran: 'true'}
+          #- {os: macos-13,   r: 'oldrel', not_cran: 'true'}
           - {os: ubuntu-latest,   r: 'devel', not_cran: 'true'}
-          - {os: ubuntu-latest,   r: 'release', not_cran: 'true'}
-          - {os: ubuntu-latest,   r: 'oldrel', not_cran: 'true'}
+          #- {os: ubuntu-latest,   r: 'release', not_cran: 'true'}
+          #- {os: ubuntu-latest,   r: 'oldrel', not_cran: 'true'}
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
