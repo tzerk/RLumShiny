@@ -26,12 +26,14 @@ Abanico Plot \tab \emph{abanico} \tab \link[Luminescence:plot_AbanicoPlot]{Lumin
 Histogram \tab \emph{histogram} \tab \link[Luminescence:plot_Histogram]{Luminescence::plot_Histogram} \cr
 Kernel Density Estimate Plot \tab \emph{KDE} \tab \link[Luminescence:plot_KDE]{Luminescence::plot_KDE} \cr
 Radial Plot \tab \emph{radialplot} \tab \link[Luminescence:plot_RadialPlot]{Luminescence::plot_RadialPlot} \cr
+Aliquot Size \tab \emph{aliquotsize} \tab \link[Luminescence:calc_AliquotSize]{Luminescence::calc_AliquotSize} \cr
 Dose Recovery Test \tab \emph{doserecovery} \tab \link[Luminescence:plot_DRTResults]{Luminescence::plot_DRTResults} \cr
 Cosmic Dose Rate \tab \emph{cosmicdose}  \tab \link[Luminescence:calc_CosmicDoseRate]{Luminescence::calc_CosmicDoseRate} \cr
 CW Curve Transformation \tab \emph{transformCW} \tab \link[Luminescence:convert_CW2pHMi]{Luminescence::convert_CW2pHMi}, \link[Luminescence:convert_CW2pLM]{Luminescence::convert_CW2pLM}, \link[Luminescence:convert_CW2pLMi]{Luminescence::convert_CW2pLMi}, \link[Luminescence:convert_CW2pPMi]{Luminescence::convert_CW2pPMi} \cr
 Filter Combinations \tab \emph{filter} \tab \link[Luminescence:plot_FilterCombinations]{Luminescence::plot_FilterCombinations} \cr
 Fast Ratio \tab \emph{fastratio} \tab \link[Luminescence:calc_FastRatio]{Luminescence::calc_FastRatio} \cr
 Fading Correction \tab \emph{fading} \tab \link[Luminescence:analyse_FadingMeasurement]{Luminescence::analyse_FadingMeasurement}, \link[Luminescence:calc_FadingCorr]{Luminescence::calc_FadingCorr} \cr
+Portable OSL \tab \emph{portableOSL} \tab \link[Luminescence:analyse_portableOSL]{Luminescence::analyse_portableOSL} \cr
 Test Stimulation Power \tab \emph{teststimulationpower} \tab  \link[Luminescence:plot_RLum]{Luminescence::plot_RLum} \cr
 Scale Gamma Dose Rate \tab \emph{scalegamma} \tab \link[Luminescence:scale_GammaDose]{Luminescence::scale_GammaDose} \cr
 RCarb app \tab \emph{RCarb} \tab \link[RCarb:model_DoseRate]{RCarb::model_DoseRate}
@@ -55,11 +57,13 @@ app_RLum("radialplot")
 app_RLum("doserecovery")
 
 # Further apps
+app_RLum("aliquotsize")
 app_RLum("cosmicdose")
 app_RLum("transformCW")
 app_RLum("filter")
 app_RLum("fastratio")
 app_RLum("fading")
+app_RLum("portableOSL")
 app_RLum("surfaceexposure")
 app_RLum("teststimulationpower")
 app_RLum("scalegamma")
