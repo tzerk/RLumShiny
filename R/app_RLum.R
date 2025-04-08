@@ -20,7 +20,7 @@
 #' Filter Combinations \tab *filter* \tab [Luminescence::plot_FilterCombinations] \cr
 #' Fast Ratio \tab *fastratio* \tab [Luminescence::calc_FastRatio] \cr
 #' Fading Correction \tab *fading* \tab [Luminescence::analyse_FadingMeasurement], [Luminescence::calc_FadingCorr] \cr
-#' Portable OSL \tab *portableOSL* \tab [Luminescence::analyse_PortableOSL] \cr
+#' Portable OSL \tab *portableOSL* \tab [Luminescence::analyse_portableOSL] \cr
 #' Test Stimulation Power \tab *teststimulationpower* \tab  [Luminescence::plot_RLum] \cr
 #' Scale Gamma Dose Rate \tab *scalegamma* \tab [Luminescence::scale_GammaDose] \cr
 #' RCarb app \tab *RCarb* \tab [RCarb::model_DoseRate]
