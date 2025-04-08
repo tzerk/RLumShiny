@@ -9,9 +9,11 @@ function(input, output, session) {
     data <- merge_RLum(ExampleData.portableOSL)
 
     ## add coordinates so that the surface mode works
-    set.seed(1)
+    sample.names <- unique(sapply(data@records, function(x) x@info$settings$Sample))
     data@records <- lapply(data@records, function(x) {
-      x@info$settings$Sample <- paste0("Test_x:", runif(1), "|y:", runif(1))
+      name <- x@info$settings$Sample
+      set.seed(match(name, sample.names))
+      x@info$settings$Sample <- paste0(name, "_x:", runif(1), "|y:", runif(1))
       x
     })
   }
