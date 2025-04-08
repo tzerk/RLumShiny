@@ -34,6 +34,11 @@ RLumShinyAddin <- function() {
                           category = "plot",
                           description = "The function provides a standardised plot output for dose recovery test measurements."),
 
+    "portableOSL" = list(title = "Portable OSL",
+                        keyword = "portableOSL",
+                        category = "plot",
+                        description = "The function analyses CW-OSL curve data produced by a SUERC portable OSL reader and produces a combined plot of OSL/IRSL signal intensities, OSL/IRSL depletion ratios  and the IRSL/OSL ratio."),
+
     "radialplot" = list(title = "Radial Plot",
                         keyword = "radialplot",
                         category = "plot",
