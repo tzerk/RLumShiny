@@ -103,14 +103,31 @@ function(request) {
                                                          ),
 
                                         conditionalPanel(condition = "input.mode == 'surface'",
+                                                         sliderInput(inputId = "nlevels",
+                                                                     label = "Number of contour levels",
+                                                                     min = 0, max = 20,
+                                                                     value = 2,
+                                                                     step = 1
+                                                                     ),
+
                                                          fluidRow(
                                                              column(width = 6,
-                                                                    checkboxInput(inputId = "contour",
-                                                                                  label = "Show contour",
-                                                                                  value = FALSE)
+                                                                    selectInput(inputId = "contour_col",
+                                                                                label = "Contour color",
+                                                                                choices = list("Grey" = "grey50",
+                                                                                               "Red" = "#b22222",
+                                                                                               "Green" = "#6E8B3D",
+                                                                                               "Blue" = "#428bca",
+                                                                                               "Custom" = "custom"))
+                                                                    ),
+                                                             column(width = 6,
+                                                                    # show only if custom color is desired
+                                                                    conditionalPanel(condition = "input.contour_col == 'custom'",
+                                                                                     HTML("Choose a color<br>"),
+                                                                                     jscolorInput(inputId = "jscol"))
                                                                     )
                                                          )
-                                                         ),
+                                        ),
 
                                         div(align = "center", h5("Axis")),
                                         conditionalPanel(condition = "input.mode == 'surface'",
