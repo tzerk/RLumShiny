@@ -49,13 +49,11 @@ function(request) {
                                ),
 
                                tabPanel("Plot",
-                                        div(align = "center", h5("Title")),
-
+                                        div(align = "center", h5("Plot elements")),
                                         textInput(inputId = "main",
                                                   label = "Title",
                                                   value = "Portable OSL"),
 
-                                        div(align = "center", h5("Plot elements")),
                                         conditionalPanel(condition = "input.mode == 'profile'",
                                                          radioButtons("type", "Type", selected = "b", inline = TRUE,
                                                                       choices = c("Line+Points" = "b",
@@ -105,21 +103,50 @@ function(request) {
                                                          ),
 
                                         conditionalPanel(condition = "input.mode == 'surface'",
+                                                         sliderInput(inputId = "nlevels",
+                                                                     label = "Number of contour levels",
+                                                                     min = 0, max = 20,
+                                                                     value = 2,
+                                                                     step = 1
+                                                                     ),
+
                                                          fluidRow(
                                                              column(width = 6,
-                                                                    checkboxInput(inputId = "legend",
-                                                                                  label = "Show legend",
-                                                                                  value = TRUE)
+                                                                    selectInput(inputId = "contour_col",
+                                                                                label = "Contour color",
+                                                                                choices = list("Grey" = "grey50",
+                                                                                               "Red" = "#b22222",
+                                                                                               "Green" = "#6E8B3D",
+                                                                                               "Blue" = "#428bca",
+                                                                                               "Custom" = "custom"))
                                                                     ),
                                                              column(width = 6,
-                                                                    checkboxInput(inputId = "contour",
-                                                                                  label = "Show contour",
-                                                                                  value = FALSE)
+                                                                    # show only if custom color is desired
+                                                                    conditionalPanel(condition = "input.contour_col == 'custom'",
+                                                                                     HTML("Choose a color<br>"),
+                                                                                     jscolorInput(inputId = "jscol"))
                                                                     )
                                                          )
+                                        ),
+
+                                        div(align = "center", h5("Axis")),
+                                        conditionalPanel(condition = "input.mode == 'surface'",
+                                                         textInput(inputId = "xlab",
+                                                                   label = "Label x-axis",
+                                                                   value = "t (s)"),
+                                                         ),
+                                        textInput(inputId = "ylab",
+                                                  label = "Label y-axis",
+                                                  value = "Depth [m]"),
+                                        checkboxInput(inputId = "invert",
+                                                      "Invert axis",
+                                                      value = FALSE),
+                                        conditionalPanel(condition = "input.mode == 'surface'",
+                                                         checkboxInput(inputId = "legend",
+                                                                       label = "Show legend",
+                                                                       value = TRUE)
                                                          ),
 
-                                        br(),
                                         div(align = "center", h5("Scaling")),
                                         sliderInput(inputId = "cex",
                                                     label = "Scaling factor",
@@ -127,24 +154,6 @@ function(request) {
                                                     value = 1.0, step = 0.1)
 
                                ),##EndOf::Tab_3
-
-                               # Tab 4: modify axis parameters
-                               tabPanel("Axis",
-                                        div(align = "center", h5("X-axis")),
-                                        textInput(inputId = "xlab",
-                                                  label = "Label x-axis",
-                                                  value = "t (s)"),
-                                        # inject sliderInput from Server.R
-                                        br(),
-                                        div(align = "center", h5("Y-axis")),
-                                        textInput(inputId = "ylab",
-                                                  label = "Label y-axis",
-                                                  value = "Depth [m]"),
-                                        checkboxInput(inputId = "invert",
-                                                      "Invert axis",
-                                                      value = FALSE)
-
-                               ),##EndOf::Tab_4
                                RLumShiny:::exportTab("export", filename = "portableOSL"),
                                RLumShiny:::aboutTab("about", "portableOSL")
                    )##EndOf::tabsetPanel

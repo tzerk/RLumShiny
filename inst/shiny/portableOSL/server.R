@@ -71,7 +71,9 @@ function(input, output, session) {
       ylab = input$ylab,
       grid = input$grid,
       legend = input$legend,
-      contour = input$contour
+      contour = input$nlevels > 0,
+      contour_nlevels = input$nlevels,
+      contour_col = ifelse(input$contour_col == "custom", input$jscol, input$contour_col)
     )
 
     ## set the maximum signal_integral allowed
