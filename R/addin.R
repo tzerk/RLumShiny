@@ -34,6 +34,11 @@ RLumShinyAddin <- function() {
                           category = "plot",
                           description = "The function provides a standardised plot output for dose recovery test measurements."),
 
+    "finitemixture" = list(title = "Finite Mixture",
+                           keyword = "finitemixture",
+                           category = "plot",
+                           description = "The function fits a k-component mixture to a De distribution with differing known standard errors; doses and mixing proportions are estimated by maximum likelihood assuming that the log dose estimates come from a mixture of normal distributions."),
+
     "portableOSL" = list(title = "Portable OSL",
                         keyword = "portableOSL",
                         category = "plot",
