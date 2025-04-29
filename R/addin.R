@@ -39,6 +39,11 @@ RLumShinyAddin <- function() {
                            category = "plot",
                            description = "The function fits a k-component mixture to a De distribution with differing known standard errors; doses and mixing proportions are estimated by maximum likelihood assuming that the log dose estimates come from a mixture of normal distributions."),
 
+    "finitemixture" = list(title = "Huntley (2006)",
+                           keyword = "huntley2006",
+                           category = "plot",
+                           description = "The function calculatse the expected sample specific fraction of saturation based on the model of Huntley (2006), using the approach as implemented in Kars et al. (2008) or Guralnik et al. (2015)"),
+
     "portableOSL" = list(title = "Portable OSL",
                         keyword = "portableOSL",
                         category = "plot",
