@@ -21,6 +21,7 @@
 #' Fast Ratio \tab *fastratio* \tab [Luminescence::calc_FastRatio] \cr
 #' Fading Correction \tab *fading* \tab [Luminescence::analyse_FadingMeasurement], [Luminescence::calc_FadingCorr] \cr
 #' Finite Mixture \tab *finitemixture* \tab [Luminescence::calc_FiniteMixture] \cr
+#' Huntley (2006) \tab *huntley2006* \tab [Luminescence::calc_Huntley2006] \cr
 #' Portable OSL \tab *portableOSL* \tab [Luminescence::analyse_portableOSL] \cr
 #' Test Stimulation Power \tab *teststimulationpower* \tab  [Luminescence::plot_RLum] \cr
 #' Scale Gamma Dose Rate \tab *scalegamma* \tab [Luminescence::scale_GammaDose] \cr
@@ -62,6 +63,7 @@
 #' app_RLum("fastratio")
 #' app_RLum("fading")
 #' app_RLum("finitemixture")
+#' app_RLum("huntley2006")
 #' app_RLum("portableOSL")
 #' app_RLum("surfaceexposure")
 #' app_RLum("teststimulationpower")
@@ -85,6 +87,7 @@ app_RLum <- function(app = NULL, ...) {
                   "fastratio",
                   "fading",
                   "finitemixture",
+                  "huntley2006",
                   "portableOSL",
                   "surfaceexposure",
                   "teststimulationpower",
