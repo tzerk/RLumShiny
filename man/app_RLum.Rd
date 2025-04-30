@@ -33,6 +33,8 @@ CW Curve Transformation \tab \emph{transformCW} \tab \link[Luminescence:convert_
 Filter Combinations \tab \emph{filter} \tab \link[Luminescence:plot_FilterCombinations]{Luminescence::plot_FilterCombinations} \cr
 Fast Ratio \tab \emph{fastratio} \tab \link[Luminescence:calc_FastRatio]{Luminescence::calc_FastRatio} \cr
 Fading Correction \tab \emph{fading} \tab \link[Luminescence:analyse_FadingMeasurement]{Luminescence::analyse_FadingMeasurement}, \link[Luminescence:calc_FadingCorr]{Luminescence::calc_FadingCorr} \cr
+Finite Mixture \tab \emph{finitemixture} \tab \link[Luminescence:calc_FiniteMixture]{Luminescence::calc_FiniteMixture} \cr
+Huntley (2006) \tab \emph{huntley2006} \tab \link[Luminescence:calc_Huntley2006]{Luminescence::calc_Huntley2006} \cr
 Portable OSL \tab \emph{portableOSL} \tab \link[Luminescence:analyse_portableOSL]{Luminescence::analyse_portableOSL} \cr
 Test Stimulation Power \tab \emph{teststimulationpower} \tab  \link[Luminescence:plot_RLum]{Luminescence::plot_RLum} \cr
 Scale Gamma Dose Rate \tab \emph{scalegamma} \tab \link[Luminescence:scale_GammaDose]{Luminescence::scale_GammaDose} \cr
@@ -63,6 +65,8 @@ app_RLum("transformCW")
 app_RLum("filter")
 app_RLum("fastratio")
 app_RLum("fading")
+app_RLum("finitemixture")
+app_RLum("huntley2006")
 app_RLum("portableOSL")
 app_RLum("surfaceexposure")
 app_RLum("teststimulationpower")
