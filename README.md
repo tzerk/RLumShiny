@@ -60,10 +60,13 @@ for a list of available apps and which keywords to use.
 | Radial Plot | radialplot | `plot_RadialPlot` |
 | Dose Recovery Test | doserecovery | `plot_DRTResults` |
 | Cosmic Dose Rate | cosmicdose | `calc_CosmicDoseRate` |
+| Calculate Aliquot Size | aliquotsize | `calc_AliquotSize` |
 | CW Curve Transformation | transformCW | `convert_CW2pHMi`, `convert_CW2pLM`, `convert_CW2pLMi`, `convert_CW2pPMi` |
 | Plot Filter Combinations | filter | `plot_FilterCombinations` |
 | Calculate Fast Ratio | fastratio | `calc_FastRatio` |
 | Fading measurement analysis and correction | fading | `analyse_FadingMeasurement`, `calc_FadingCorr` |
+| Fading correction after Huntley 2006 | huntley2006 | `calc_Huntley2006` |
+| Calculate Finite Mixture Model | finitemixture | `calc_FiniteMixture` |
 | Test OSL/IRSL Stimulation Power | teststimulationpower | `plot_RLum` |
 | Scale Gamma Dose Rate† | scalegamma | `scale_GammaDose()` |
 | Model dose rate evolution in carbonate-rich samples | RCarb | `RCarb::model_DoseRate` |
@@ -75,8 +78,8 @@ arguments.
 
 <!--- * Not yet available in the official CRAN release.  -->
 
-† Requires the development version (`@dev_0.9.0`-branch) of the
-`Luminescence` package.
+† Requires the development version of the `Luminescence` package (\>
+v1.0.1) not yet on CRAN.
 
 ## Extending Shiny
 
