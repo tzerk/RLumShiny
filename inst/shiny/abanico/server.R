@@ -341,7 +341,7 @@ function(input, output, session) {
                 plot.ratio = input$p.ratio,
                 z.0 = centrality,
                 log.z = input$logz,
-                summary = if (input$summary) input$stats else NA,
+                summary = if (input$summary) input$stats else "",
                 summary.pos = input$sumpos,
                 summary.method = input$summary.method,
                 col = c(color,color2),

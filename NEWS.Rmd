@@ -27,6 +27,9 @@ output: github_document
   Base function: `Luminescence::analyse_portableOSL()`.
   Keyword for `app_RLum()`: 'portableOSL'.
 
+* App `abanico`:
+  + Fix a crash when the summary is disabled
+
 * App `surfaceexposure`:
   + Rework user interface and add tooltips (#4)
 
