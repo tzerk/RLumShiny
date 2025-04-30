@@ -31,6 +31,10 @@
   - Fix a crash when the 2σ bar color is set to none
   - Improve the rounding in the sliders and the appearance of the legend
 
+- App `radialplot`:
+
+  - Improve the appearance of the legend
+
 - App `surfaceexposure`:
 
   - Rework user interface and add tooltips (#4)

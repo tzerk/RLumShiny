@@ -233,8 +233,8 @@ function(input, output, session) {
                               input$grid,
                               adjustcolor(col = input$grid, 
                                           alpha.f = input$alpha.grid/100)))
-    
-    # workaround: if no legend wanted set label to NA and hide 
+
+    # workaround: if no legend wanted set label to NA and hide
     # symbol on coordinates -999, -999
     if(input$showlegend == FALSE) {
       legend<- c(NA,NA)
@@ -245,11 +245,11 @@ function(input, output, session) {
         legend<- c(input$legendname, input$legendname2)
         legend.pos<- input$legend.pos
       } else {
-        legend<- c(input$legendname, "")
+        legend<- c(input$legendname)
         legend.pos<- input$legend.pos
       }
     }
-    
+
     # plot radial Plot
     values$args <- list(
       data = values$data, 
