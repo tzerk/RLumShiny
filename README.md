@@ -150,6 +150,14 @@ in the main directory for additional details:
 
 - LICENSE.note
 
+## Funding
+
+- contributions from 2025 are supported through the DFG programme
+  “REPLAY: REProducible Luminescence Data AnalYses” [No
+  528704761](https://gepris.dfg.de/gepris/projekt/528704761?language=en)
+  led by Dr Sebastian Kreutzer (PI at Heidelberg University, DE) and Dr
+  Thomas Kolb (PI at Justus-Liebig-University Giessen, DE).
+
 ## Related projects
 
 - [RLumModel](https://github.com/R-Lum/RLumModel)
