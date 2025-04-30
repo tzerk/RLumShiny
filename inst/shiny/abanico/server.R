@@ -280,7 +280,7 @@ function(input, output, session) {
     bar.col <- ifelse(input$bar == "custom",
                       adjustcolor(col = input$rgbBar, alpha.f = input$alpha.bar/100),
                       ifelse(input$bar == "none",
-                             input$bar,
+                             "transparent",
                              adjustcolor(col = input$bar, alpha.f = input$alpha.bar/100)))
 
 
@@ -289,7 +289,7 @@ function(input, output, session) {
     bar.col2 <- ifelse(input$bar2 == "custom",
                        adjustcolor(col = input$rgbBar2, alpha.f = input$alpha.bar/100),
                        ifelse(input$bar2 == "none",
-                              input$bar,
+                              "transparent",
                               adjustcolor(col = input$bar2, alpha.f = input$alpha.bar/100)))
 
     # if custom grid color get RGB from separate input panel or "none"

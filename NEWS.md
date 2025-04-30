@@ -28,6 +28,7 @@
 - App `abanico`:
 
   - Fix a crash when the summary is disabled
+  - Fix a crash when the 2σ bar color is set to none
   - Improve the rounding in the sliders and the appearance of the legend
 
 - App `surfaceexposure`:
