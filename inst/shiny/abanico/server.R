@@ -170,12 +170,13 @@ function(input, output, session) {
 
 
   output$ylim<- renderUI({
-    ylim<- plot_AbanicoPlot(values$data, output = TRUE)$ylim
+    ylim <- round(plot_AbanicoPlot(values$data, output = TRUE)$ylim, 3)
     sliderInput(inputId = "ylim",  sep="",
                 label = "Range y-axis",
                 min = ylim[1]*4,
-                max = round(ylim[2]*4, 3),
-                value = c(ylim[1], ylim[2]))
+                max = ylim[2]*4,
+                value = c(ylim[1], ylim[2]),
+                step = 0.01)
   })
 
 
