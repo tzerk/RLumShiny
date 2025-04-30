@@ -308,11 +308,10 @@ function(input, output, session) {
       if(!all(is.na(unlist(values$data_secondary))))
       {
         legend<- c(input$legendname, input$legendname2)
-        legend.pos<- input$legend.pos
       } else {
-        legend<- c(input$legendname, "")
-        legend.pos<- input$legend.pos
+        legend<- c(input$legendname)
       }
+      legend.pos <- input$legend.pos
     }
 
     # TODO: arg 'bar' handling (custom values, 1 or 2 bars)
