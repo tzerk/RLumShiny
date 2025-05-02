@@ -31,6 +31,10 @@
   - Fix a crash when the 2σ bar color is set to none
   - Improve the rounding in the sliders and the appearance of the legend
 
+- App `histogram`:
+
+  - Improve the step of the x-axis range slider.
+
 - App `radialplot`:
 
   - Improve the appearance of the legend

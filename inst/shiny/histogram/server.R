@@ -32,10 +32,11 @@ function(input, output, session) {
                 label = "Range x-axis",
                 min = xlim.plot[1]*0.5, 
                 max = xlim.plot[2]*1.5,
-                value = c(xlim.plot[1], xlim.plot[2]), round=FALSE, step=0.0001)
-    
+                value = c(xlim.plot[1], xlim.plot[2]),
+                step = 10^(floor(log10(diff(xlim.plot))) - 4))
+
   })## EndOf::renderUI()
-  
+
   output$table_in_primary <- renderRHandsontable({
     rhandsontable(values$data, 
                   height = 300, 
