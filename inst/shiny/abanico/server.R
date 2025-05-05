@@ -170,12 +170,13 @@ function(input, output, session) {
 
 
   output$ylim<- renderUI({
-    ylim<- plot_AbanicoPlot(values$data, output = TRUE)$ylim
+    ylim <- round(plot_AbanicoPlot(values$data, output = TRUE)$ylim, 3)
     sliderInput(inputId = "ylim",  sep="",
                 label = "Range y-axis",
                 min = ylim[1]*4,
-                max = round(ylim[2]*4, 3),
-                value = c(ylim[1], ylim[2]))
+                max = ylim[2]*4,
+                value = c(ylim[1], ylim[2]),
+                step = 0.01)
   })
 
 
@@ -279,7 +280,7 @@ function(input, output, session) {
     bar.col <- ifelse(input$bar == "custom",
                       adjustcolor(col = input$rgbBar, alpha.f = input$alpha.bar/100),
                       ifelse(input$bar == "none",
-                             input$bar,
+                             "transparent",
                              adjustcolor(col = input$bar, alpha.f = input$alpha.bar/100)))
 
 
@@ -288,7 +289,7 @@ function(input, output, session) {
     bar.col2 <- ifelse(input$bar2 == "custom",
                        adjustcolor(col = input$rgbBar2, alpha.f = input$alpha.bar/100),
                        ifelse(input$bar2 == "none",
-                              input$bar,
+                              "transparent",
                               adjustcolor(col = input$bar2, alpha.f = input$alpha.bar/100)))
 
     # if custom grid color get RGB from separate input panel or "none"
@@ -307,11 +308,10 @@ function(input, output, session) {
       if(!all(is.na(unlist(values$data_secondary))))
       {
         legend<- c(input$legendname, input$legendname2)
-        legend.pos<- input$legend.pos
       } else {
-        legend<- c(input$legendname, "")
-        legend.pos<- input$legend.pos
+        legend<- c(input$legendname)
       }
+      legend.pos <- input$legend.pos
     }
 
     # TODO: arg 'bar' handling (custom values, 1 or 2 bars)
@@ -341,7 +341,7 @@ function(input, output, session) {
                 plot.ratio = input$p.ratio,
                 z.0 = centrality,
                 log.z = input$logz,
-                summary = if (input$summary) input$stats else NA,
+                summary = if (input$summary) input$stats else "",
                 summary.pos = input$sumpos,
                 summary.method = input$summary.method,
                 col = c(color,color2),
