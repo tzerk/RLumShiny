@@ -82,8 +82,8 @@ function(input, output, session) {
     
     values$args <- list(
       data = values$data,
-      na.rm = TRUE, 
-      cex.global = input$cex, 
+      na.rm = TRUE,
+      cex.global = as.numeric(input$cex),
       pch = ifelse(input$pch == "custom", input$custompch, as.integer(input$pch) - 1),
       breaks = ifelse(input$breaks == "custom", input$breaks.num, input$breaks),
       xlim = input$xlim,
