@@ -136,7 +136,7 @@ function(request) {
                                           column(width = 6,
                                                  textInput(inputId = "xlab1",
                                                            label = "Label x-axis (upper)",
-                                                           value = "Relative error [%]")
+                                                           value = "Relative standard error [%]")
                                           ),
                                           column(width = 6,
                                                  textInput(inputId = "xlab2",
