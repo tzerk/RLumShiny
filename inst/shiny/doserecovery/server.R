@@ -99,14 +99,12 @@ function(input, output, session) {
     
     if (!is.null(hot_to_r(df_tmp)))
       values$data_secondary <- hot_to_r(df_tmp)
-    
   })
   
   
   output$xlim<- renderUI({
     
     data <- values$data
-    
     n <- max(sapply(data, nrow))
 
     sliderInput(inputId = "xlim", label = "Range x-axis",
@@ -154,9 +152,9 @@ function(input, output, session) {
 
     # save all arguments in a list
     values$args<- list(
-      values = values$data, 
+      values = values$data,
       error.range = input$error,
-      given.dose = given.dose,
+      given.dose = as.numeric(given.dose),
       summary = input$stats,
       summary.pos = input$sumpos,
       boxplot = input$boxplot,
@@ -185,9 +183,7 @@ function(input, output, session) {
       values$args$pch<- rep(values$args$pch, n)
       values$args$col<- rep(values$args$col, n)
     })
-
     }
-      
   })
   
   #### PLOT ####

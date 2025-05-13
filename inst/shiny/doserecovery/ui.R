@@ -65,14 +65,7 @@ function(request) {
                                                                            #"75 % Quartile" = "q75", #not implemented yet
                                                                            "Skewness" = "skewness",
                                                                            "Kurtosis" = "kurtosis")),
-                                            title = "Statistical parameters to be shown in the summary."),
-                                        br(),
-                                        div(align = "center", h5("Error range")),
-                                        div(align = "left",
-                                            numericInput(inputId = "error",
-                                                         label = "Symmetric error range (%)",
-                                                         value = 10, min = 0, max = 100, step = 1),
-                                            title = "Symmetric error range in percent will be shown as dashed lines in the plot. Set error.range to 0 to void plotting of error ranges.")
+                                            title = "Statistical parameters to be shown in the summary.")
                                ),##EndOf::Tab_2
 
                                # Tab 3: input that refer to the plot rather than the data
@@ -91,6 +84,12 @@ function(request) {
                                                           value = FALSE),
                                             title = "Optional preheat temperatures to be used for grouping the De values. If specified, the temperatures are assigned to the x-axis."),
                                         conditionalPanel(condition = 'input.preheat == true',
+                                                         div(align = "left",
+                                                             checkboxInput(inputId = "boxplot",
+                                                                           label = "Show as boxplot",
+                                                                           value = FALSE),
+                                                             title = "Plot values that are grouped by preheat temperature as boxplots."),
+
                                                          numericInput(inputId = "ph1", "PH Temperature #1", 180, min = 0),
                                                          numericInput(inputId = "ph2", "PH Temperature #2", 200, min = 0),
                                                          numericInput(inputId = "ph3", "PH Temperature #3", 220, min = 0),
@@ -117,12 +116,14 @@ function(request) {
                                                            value = "")
                                           )
                                         ),
-                                        div(align = "center", h5("Boxplot")),
+
+                                        div(align = "center", h5("Error range")),
                                         div(align = "left",
-                                            checkboxInput(inputId = "boxplot",
-                                                          label = "Plot as boxplot",
-                                                          value = FALSE),
-                                            title = "Optionally plot values that are grouped by preheat temperature as boxplots. Only possible when preheat vector is specified."),
+                                            numericInput(inputId = "error",
+                                                         label = "Symmetric error range (%)",
+                                                         value = 10, min = 0, max = 100, step = 1),
+                                            title = "Symmetric error range in percent that will be shown as dashed lines in the plot. It can be set to 0 to remove the error ranges."),
+
                                         div(align = "center", h5("Scaling")),
                                         sliderInput(inputId = "cex",
                                                     label = "Scaling factor",
