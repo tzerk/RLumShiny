@@ -91,6 +91,12 @@ function(request) {
                                                           value = FALSE),
                                             title = "Optional preheat temperatures to be used for grouping the De values. If specified, the temperatures are assigned to the x-axis."),
                                         conditionalPanel(condition = 'input.preheat == true',
+                                                         div(align = "left",
+                                                             checkboxInput(inputId = "boxplot",
+                                                                           label = "Show as boxplot",
+                                                                           value = FALSE),
+                                                             title = "Plot values that are grouped by preheat temperature as boxplots."),
+
                                                          numericInput(inputId = "ph1", "PH Temperature #1", 180, min = 0),
                                                          numericInput(inputId = "ph2", "PH Temperature #2", 200, min = 0),
                                                          numericInput(inputId = "ph3", "PH Temperature #3", 220, min = 0),
@@ -117,12 +123,6 @@ function(request) {
                                                            value = "")
                                           )
                                         ),
-                                        div(align = "center", h5("Boxplot")),
-                                        div(align = "left",
-                                            checkboxInput(inputId = "boxplot",
-                                                          label = "Plot as boxplot",
-                                                          value = FALSE),
-                                            title = "Optionally plot values that are grouped by preheat temperature as boxplots. Only possible when preheat vector is specified."),
                                         div(align = "center", h5("Scaling")),
                                         sliderInput(inputId = "cex",
                                                     label = "Scaling factor",
