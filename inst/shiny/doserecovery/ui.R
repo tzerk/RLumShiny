@@ -65,14 +65,7 @@ function(request) {
                                                                            #"75 % Quartile" = "q75", #not implemented yet
                                                                            "Skewness" = "skewness",
                                                                            "Kurtosis" = "kurtosis")),
-                                            title = "Statistical parameters to be shown in the summary."),
-                                        br(),
-                                        div(align = "center", h5("Error range")),
-                                        div(align = "left",
-                                            numericInput(inputId = "error",
-                                                         label = "Symmetric error range (%)",
-                                                         value = 10, min = 0, max = 100, step = 1),
-                                            title = "Symmetric error range in percent will be shown as dashed lines in the plot. Set error.range to 0 to void plotting of error ranges.")
+                                            title = "Statistical parameters to be shown in the summary.")
                                ),##EndOf::Tab_2
 
                                # Tab 3: input that refer to the plot rather than the data
@@ -123,6 +116,14 @@ function(request) {
                                                            value = "")
                                           )
                                         ),
+
+                                        div(align = "center", h5("Error range")),
+                                        div(align = "left",
+                                            numericInput(inputId = "error",
+                                                         label = "Symmetric error range (%)",
+                                                         value = 10, min = 0, max = 100, step = 1),
+                                            title = "Symmetric error range in percent that will be shown as dashed lines in the plot. It can be set to 0 to remove the error ranges."),
+
                                         div(align = "center", h5("Scaling")),
                                         sliderInput(inputId = "cex",
                                                     label = "Scaling factor",
