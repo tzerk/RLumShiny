@@ -155,7 +155,7 @@ function(input, output, session) {
       values = values$data,
       error.range = input$error,
       given.dose = as.numeric(given.dose),
-      summary = input$stats,
+      summary = as.character(input$stats),
       summary.pos = input$sumpos,
       boxplot = input$boxplot,
       legend = legend,
@@ -169,7 +169,7 @@ function(input, output, session) {
       xlim = input$xlim,
       ylim = input$ylim,
       cex = input$cex)
-    
+
     if (input$preheat) {
 
       n<- length(values$data[[1]][,1])
