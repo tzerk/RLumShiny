@@ -109,9 +109,9 @@ function(input, output, session) {
 
     sliderInput(inputId = "xlim", label = "Range x-axis",
                 min = 0, max = n*2,
-                value = c(1, n+1))
+                value = c(0, n) + 0.5)
   })
-  
+
   observe({
     updateTextInput(session, inputId = "xlab", 
                     value = if(input$preheat==TRUE){"Preheat Temperature [\u00B0C]"}else{"# Aliquot"})
