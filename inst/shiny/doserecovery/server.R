@@ -109,9 +109,9 @@ function(input, output, session) {
 
     sliderInput(inputId = "xlim", label = "Range x-axis",
                 min = 0, max = n*2,
-                value = c(1, n+1))
+                value = c(0, n) + 0.5)
   })
-  
+
   observe({
     updateTextInput(session, inputId = "xlab", 
                     value = if(input$preheat==TRUE){"Preheat Temperature [\u00B0C]"}else{"# Aliquot"})
@@ -126,17 +126,17 @@ function(input, output, session) {
     # if custom datapoint style get char from separate input panel
     pch <- ifelse(input$pch == "custom", input$custompch, as.integer(input$pch) - 1)
     pch2 <- ifelse(input$pch2 == "custom", input$custompch2, as.integer(input$pch2) - 1)
-    
+
     # if custom datapoint color get RGB code from separate input panel
     color <- ifelse(input$color == "custom", input$rgb, color<- input$color)
-    
+
     # if custom datapoint color get RGB code from separate input panel
     if(length(values$data) > 1) {
       color2 <- ifelse(input$color2 == "custom", input$rgb2, input$color2)
     } else {
-      color2 <- ifelse(input$preheat, color, "white")
+      color2 <- color
     }
-    
+
     if (length(values$data) == 1){
       given.dose<- input$dose
       legend<- input$legendname
@@ -155,7 +155,7 @@ function(input, output, session) {
       values = values$data,
       error.range = input$error,
       given.dose = as.numeric(given.dose),
-      summary = input$stats,
+      summary = as.character(input$stats),
       summary.pos = input$sumpos,
       boxplot = input$boxplot,
       legend = legend,
@@ -169,7 +169,7 @@ function(input, output, session) {
       xlim = input$xlim,
       ylim = input$ylim,
       cex = input$cex)
-    
+
     if (input$preheat) {
 
       n<- length(values$data[[1]][,1])
