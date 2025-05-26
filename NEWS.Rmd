@@ -34,6 +34,7 @@ output: github_document
 
 * App `doserecovery`:
   + Rework some user interface elements
+  + Add support for `given.dose = 0` to disable data normalization
 
 * App `histogram`:
   + Improve the step of the x-axis range slider
