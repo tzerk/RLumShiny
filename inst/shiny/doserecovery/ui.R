@@ -75,7 +75,7 @@ function(request) {
                                             numericInput(inputId = "dose",
                                                          label = "Given dose (primary data set)",
                                                          value = 2800),
-                                            title = "Given dose used for the dose recovery test to normalise data. If only one given dose is provided this given dose is valid for all input data sets (i.e., values is a list). Otherwise a given dose for each input data set has to be provided (e.g., given.dose = c(100,200)). If no given.dose values are plotted without normalisation (might be useful for preheat plateau tests). Note: Unit has to be the same as from the input values (e.g., Seconds or Gray)."),
+                                            title = "Given dose used for the dose recovery test to normalise data. If set to 0, values are plotted without normalisation (might be useful for preheat plateau tests). Note: Unit has to be the same as from the input values (e.g., Seconds or Gray)."),
                                         numericInput(inputId = "dose2", label = "Given dose (secondary data set)", value = 3000),
                                         div(align = "center", h5("Preheat temperatures")),
                                         div(align = "left",
@@ -137,17 +137,15 @@ function(request) {
                                         textInput(inputId = "xlab",
                                                   label = "Label x-axis",
                                                   value = "# Aliquot"),
-                                        # inject sliderInput from Server.R
+                                        # inject xlim sliderInput from server.R
                                         uiOutput(outputId = "xlim"),
                                         br(),
                                         div(align = "center", h5("Y-axis")),
                                         textInput(inputId = "ylab",
                                                   label = "Label y-axis",
                                                   value = "Normalised De"),
-                                        sliderInput(inputId = "ylim", label = "Range y-axis",
-                                                    min = 0, max = 3,
-                                                    value = c(0.75, 1.25),
-                                                    step = 0.01)
+                                        # inject ylim sliderInput from server.R
+                                        uiOutput(outputId = "ylim")
                                ),##EndOf::Tab_4
 
                                tabPanel("Datapoints",
