@@ -21,6 +21,12 @@ output: github_document
   Base function: `Luminescence::calc_Huntley2006()`.
   Keyword for `app_RLum()`: 'huntley2006'.
 
+* New application to determine weighted non-linear least-squares estimates of
+  the component parameters of an LM-OSL curve (Bulur 1996) for a given number
+  of components.
+  Base function: `Luminescence::fit_LMCurve()`.
+  Keyword for `app_RLum()`: 'lmcurve'.
+
 * New application to analyse CW-OSL curve data produced by a SUERC portable OSL
   reader and produces a combined plot of OSL/IRSL signal intensities, OSL/IRSL
   depletion ratios  and the IRSL/OSL ratio.

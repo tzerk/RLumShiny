@@ -44,6 +44,11 @@ RLumShinyAddin <- function() {
                          category = "plot",
                          description = "The function calculatse the expected sample specific fraction of saturation based on the model of Huntley (2006), using the approach as implemented in Kars et al. (2008) or Guralnik et al. (2015)"),
 
+    "lmcurve" = list(title = "LM Curve",
+                     keyword = "lmcurve",
+                     category = "plot",
+                     description = "The function determines weighted non-linear least-squares estimates of the component parameters of an LM-OSL curve (Bulur 1996) for a given number of components"),
+
     "portableOSL" = list(title = "Portable OSL",
                         keyword = "portableOSL",
                         category = "plot",
