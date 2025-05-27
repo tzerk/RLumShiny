@@ -1,14 +1,18 @@
-printCode <- function(input, output, session, n_input, fun, args) {
+printCode <- function(input, output, session, n_input, fun, args,
+                      join_inputs_in_list = TRUE) {
   
   # prepare code as text output
   str1 <- paste("file <- file.choose()",
                 "data <- data.table::fread(file, data.table = FALSE)",
                 sep = "\n")
   if (n_input == 2) {
-    str2 <- "file2 <- file.choose()"
-    str3 <- "data2 <- data.table::fread(file2, data.table = FALSE)"
-    str4 <- "data <- list(data, data2)"
-    str1 <- paste(str1, str2, str3, str4, sep = "\n")
+    str1 <- paste(str1,
+                  "file2 <- file.choose()",
+                  "data2 <- data.table::fread(file2, data.table = FALSE)",
+                  sep = "\n")
+    if (join_inputs_in_list)
+      str1 <- paste(str1,
+                    "data <- list(data, data2)", sep = "\n")
   }
   
   header <- paste("# To reproduce the plot in your local R environment",

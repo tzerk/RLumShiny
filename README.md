@@ -67,6 +67,7 @@ for a list of available apps and which keywords to use.
 | Fading measurement analysis and correction | fading | `analyse_FadingMeasurement`, `calc_FadingCorr` |
 | Fading correction after Huntley 2006 | huntley2006 | `calc_Huntley2006` |
 | Calculate Finite Mixture Model | finitemixture | `calc_FiniteMixture` |
+| Fit LM Curve | lmcurve | `fit_LMCurve` |
 | Test OSL/IRSL Stimulation Power | teststimulationpower | `plot_RLum` |
 | Scale Gamma Dose Rate† | scalegamma | `scale_GammaDose()` |
 | Model dose rate evolution in carbonate-rich samples | RCarb | `RCarb::model_DoseRate` |
