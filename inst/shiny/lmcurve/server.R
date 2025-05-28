@@ -130,7 +130,8 @@ function(input, output, session) {
 
   ## render the results for the photoionisation cross-section (CS)
   output$CS<- DT::renderDT(options = list(dom = 't'), {
-    res <- values$results@data$data
+    fit <- do.call(fit_LMCurve, c(values$args, plot = FALSE))
+    res <- fit@data$data
 
     ## photoionisation cross-section results
     cols <- paste0(c("cs", "rel_cs"), rep(1:input$n_components, each = 2))
