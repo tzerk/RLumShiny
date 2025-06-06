@@ -6,7 +6,7 @@ function(input, output, session) {
   if ("startData" %in% names(.GlobalEnv)) {
     data <- startData
   } else {
-    data <- IRSAR.RF.Data
+    data <- RF70Curves[[1]]
   }
   values <- reactiveValues(data_primary = data,
                            args = NULL,

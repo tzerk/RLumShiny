@@ -5,6 +5,6 @@ library(shiny)
 library(data.table)
 library(rhandsontable)
 
-data(ExampleData.RLum.Analysis)
+data(ExampleData.RF70Curves)
 
 enableBookmarking(store = "server")
