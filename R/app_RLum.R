@@ -22,6 +22,7 @@
 #' Fading Correction \tab *fading* \tab [Luminescence::analyse_FadingMeasurement], [Luminescence::calc_FadingCorr] \cr
 #' Finite Mixture \tab *finitemixture* \tab [Luminescence::calc_FiniteMixture] \cr
 #' Huntley (2006) \tab *huntley2006* \tab [Luminescence::calc_Huntley2006] \cr
+#' IRSAR RF \tab *irsarRF* \tab [Luminescence::analyse_IRSAR.RF] \cr
 #' LM Curve \tab *lmcurve* \tab [Luminescence::fit_LMCurve] \cr
 #' Portable OSL \tab *portableOSL* \tab [Luminescence::analyse_portableOSL] \cr
 #' Test Stimulation Power \tab *teststimulationpower* \tab  [Luminescence::plot_RLum] \cr
@@ -65,6 +66,7 @@
 #' app_RLum("fading")
 #' app_RLum("finitemixture")
 #' app_RLum("huntley2006")
+#' app_RLum("irsarRF")
 #' app_RLum("lmcurve")
 #' app_RLum("portableOSL")
 #' app_RLum("surfaceexposure")
@@ -90,6 +92,7 @@ app_RLum <- function(app = NULL, ...) {
                   "fading",
                   "finitemixture",
                   "huntley2006",
+                  "irsarRF",
                   "lmcurve",
                   "portableOSL",
                   "surfaceexposure",

@@ -44,6 +44,11 @@ RLumShinyAddin <- function() {
                          category = "plot",
                          description = "The function calculatse the expected sample specific fraction of saturation based on the model of Huntley (2006), using the approach as implemented in Kars et al. (2008) or Guralnik et al. (2015)"),
 
+    "irsarRF" = list(title = "IRSAR RF",
+                     keyword = "irsarRF",
+                     category = "plot",
+                     description = "The function analyses IRSAR RF measurements on K-feldspar samples performed using the protocol according to Erfurt et al. (2003) and beyond"),
+
     "lmcurve" = list(title = "LM Curve",
                      keyword = "lmcurve",
                      category = "plot",
