@@ -52,27 +52,18 @@ function(input, output, session) {
 
     P <- input$p
     delta <- input$delta
-    
+
     # validate method parameters
-    if (is.na(input$delta)) {
+    if (is.na(input$delta) || input$delta < 1) {
       updateNumericInput(session, "delta", value = 1)
       delta <- 1
-    }
-    else if (input$delta < 1) {
-      updateNumericInput(session, "delta", value = 1)
-      delta <- 1
-    }
-    
-    # validate method parameters
-    if (is.na(input$p)) {
-      updateNumericInput(session, "p", value = 1)
-      P <- 1
-    }
-    else if (input$p < 1) {
-      updateNumericInput(session, "p", value = 1)
-      P <- 1
     }
 
+    # validate method parameters
+    if (is.na(input$p) || input$p < 1) {
+      updateNumericInput(session, "p", value = 1)
+      P <- 1
+    }
 
     args <- list(values$data_primary)
     if (input$method == "convert_CW2pHMi")
@@ -100,9 +91,10 @@ function(input, output, session) {
       text(1, labels = paste(values$tdata, collapse = "\n"))
       return()
     }
-    
-    values$pargs <- list(values$tdata[,1], values$tdata[ ,2], 
-                  log = paste0(ifelse(input$logx, "x", ""), ifelse(input$logy, "y", "")),
+
+    log <- paste0(ifelse(input$logx, "x", ""), ifelse(input$logy, "y", ""))
+    values$pargs <- list(values$tdata[, 1], values$tdata[, 2],
+                  log = log,
                   main = input$main,
                   xlab = input$xlab,
                   ylab = input$ylab1,
@@ -122,7 +114,7 @@ function(input, output, session) {
            ylab = NA, 
            col = "red", 
            type = input$type,
-           log = paste0(ifelse(input$logx, "x", ""), ifelse(input$logy, "y", "")))
+           log = log)
       axis(side = 4, col = "red", col.axis = "red")
       mtext(input$ylab2, side = 4, line = 3, col = "red", cex = input$cex)
     }
