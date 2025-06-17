@@ -56,6 +56,9 @@ output: github_document
 * App `surfaceexposure`:
   + Rework user interface and add tooltips (#4)
 
+* App `transformCW`:
+  + Make the secondary axis label respect the scaling factor (#62)
+
 ## RLumShiny 0.2.4 (Release date: 2024-03-21)
 
 **This package version requires R >= 4.3!**

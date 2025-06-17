@@ -1,8 +1,7 @@
 ## Server.R
 ## MAIN FUNCTION
 function(input, output, session) {
-  
-  
+
   # input data (with default)
   values <- reactiveValues(data_primary = if ("startData" %in% names(.GlobalEnv)) startData else ExampleData.CW_OSL_Curve,
                            tdata = NULL,
@@ -125,9 +124,9 @@ function(input, output, session) {
            type = input$type,
            log = paste0(ifelse(input$logx, "x", ""), ifelse(input$logy, "y", "")))
       axis(side = 4, col = "red", col.axis = "red")
-      mtext(input$ylab2, side = 4, line = 3, col = "red")
+      mtext(input$ylab2, side = 4, line = 3, col = "red", cex = input$cex)
     }
-    
+
     output$exportScript <- downloadHandler(
       filename = function() { "transformedCW.txt" },
       content = function(file) {
@@ -155,6 +154,5 @@ function(input, output, session) {
     if (!is.null(values$tdata))
       values$tdata
   })
-  
 
 }##EndOf::function(input, output)
