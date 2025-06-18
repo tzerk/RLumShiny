@@ -1,8 +1,7 @@
 ## Server.R
 ## MAIN FUNCTION
 function(input, output, session) {
-  
-  
+
   # input data (with default)
   values <- reactiveValues(data = NULL, 
                            data_filtered = NULL, 
@@ -21,8 +20,8 @@ function(input, output, session) {
       return(NULL)
     
     # 1. Risoe .bin(x)
-    if (tools::file_ext(inFile$name) == "bin" || tools::file_ext(inFile$name) == "binx") {
-      
+    if (tools::file_ext(inFile$name) %in% c("bin", "binx")) {
+
       # rename temp file
       file <- paste0(inFile$datapath, ".", tools::file_ext(inFile$name))
       file.rename(inFile$datapath, file)
@@ -35,9 +34,8 @@ function(input, output, session) {
       values$positions <- unique(sapply(values$data, function(x) { x@records[[1]]@info$POSITION }))
       values$types <- unique(sapply(values$data[[1]]@records, function(x) { x@recordType }))
     }
-    
   })
-  
+
   output$positions <- renderUI({
     if (!is.null(values$positions))
       checkboxGroupInput("positions", "Positions", 
@@ -69,7 +67,6 @@ function(input, output, session) {
   
   ## --------------------- OUTPUT ------------------------------------------- ##
   output$positionTabs <- renderUI({
-    
     if (is.null(values$data_filtered))
       return(NULL)
     
@@ -78,11 +75,9 @@ function(input, output, session) {
                plotOutput(paste0("pos", pos))) 
     })
     do.call(tabsetPanel, c(id = "tab", tabs))
-    
   })
 
   observe({
-    
     input$tab
     values$data
     values$data_filtered
@@ -97,14 +92,16 @@ function(input, output, session) {
                                  x@records[[1]]@info$POSITION
                                })) == input$tab)
     print(pos)
-    
-    if (length(pos) > 0)
-      updateCheckboxGroupInput(session, "curves", 
-                               choices = 1:length(values$data_filtered[[pos]]),
-                               selected = 1:length(values$data_filtered[[pos]]),
+
+    if (length(pos) > 0) {
+      choices <- 1:length(values$data_filtered[[pos]])
+      updateCheckboxGroupInput(session, "curves",
+                               choices = choices,
+                               selected = choices,
                                inline = TRUE)
+    }
   })
-  
+
   observeEvent(input$export, {
     if (is.null(values$data_filtered))
       return(NULL)
@@ -114,8 +111,7 @@ function(input, output, session) {
   
   observe({
     pos_sel <- values$positions[as.numeric(input$positions)]
-    pos_sel_index <- which(values$positions %in% pos_sel)
-    
+
     for (i in 1:length(pos_sel))
       
       # Explanation on local({}):
@@ -123,7 +119,6 @@ function(input, output, session) {
       local({
         local_i <- i
         output[[paste0("pos", pos_sel[local_i])]] <- renderPlot({
-          
           if (is.null(values$data_filtered[[local_i]])) {
             plot(0, type = "n", axes = FALSE, ann = FALSE)
             return(NULL)
@@ -134,7 +129,5 @@ function(input, output, session) {
         })
       })
   })
-  
-  
-  
+
 }##EndOf::function(input, output)
