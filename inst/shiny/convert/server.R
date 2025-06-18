@@ -124,9 +124,9 @@ function(input, output, session) {
             plot(0, type = "n", axes = FALSE, ann = FALSE)
             return(NULL)
           } else {
-            plot(values$data_filtered[[local_i]], combine = TRUE)
+            plot(values$data_filtered[[local_i]],
+                 combine = length(values$data_filtered[[local_i]]) > 1)
           }
-          
         })
       })
   })
