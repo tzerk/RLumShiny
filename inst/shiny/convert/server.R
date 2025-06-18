@@ -59,11 +59,12 @@ function(input, output, session) {
       return(NULL)
     
     data_filtered <- values$data[as.numeric(input$positions)]
-    
-    values$data_filtered <- lapply(data_filtered, function(x) {
-      subset(x, recordType %in% input$curveTypes)
-    })
-    
+
+    if (length(data_filtered) > 0) {
+      values$data_filtered <- lapply(data_filtered, function(x) {
+        subset(x, recordType %in% input$curveTypes)
+      })
+    }
   })
   
   ## --------------------- OUTPUT ------------------------------------------- ##
