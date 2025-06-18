@@ -90,8 +90,12 @@ function(input, output, session) {
     
     if (is.null(values$data_filtered) || length(values$data_filtered) == 0)
       return(NULL)
-    
-    pos <- which(unique(sapply(values$data_filtered, function(x) { x@records[[1]]@info$POSITION })) == input$tab)
+
+    pos <- which(unique(sapply(values$data_filtered,
+                               function(x) {
+                                 if (is.null(x)) return(-1)
+                                 x@records[[1]]@info$POSITION
+                               })) == input$tab)
     print(pos)
     
     if (length(pos) > 0)
