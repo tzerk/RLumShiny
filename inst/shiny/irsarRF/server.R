@@ -82,6 +82,20 @@ function(input, output, session) {
     values$results <- do.call(analyse_IRSAR.RF, values$args)
   })
 
+  output$table_natural <- renderRHandsontable({
+    rhandsontable(values$data_primary@records[[1]]@data,
+                  height = 300,
+                  colHeaders = c("Time", "Signal"),
+                  rowHeaders = NULL)
+  })
+
+  output$table_regenerated <- renderRHandsontable({
+    rhandsontable(values$data_primary@records[[2]]@data,
+                  height = 300,
+                  colHeaders = c("Time", "Signal"),
+                  rowHeaders = NULL)
+  })
+
   output$ylab <- renderUI({
     struct <- structure_RLum(values$data_primary)
     resolution.RF <- round(mean(struct$x.max / struct$n.channels), digits = 1)
