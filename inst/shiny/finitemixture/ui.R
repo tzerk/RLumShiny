@@ -17,6 +17,7 @@ function(request) {
                                         # file upload button (data set 1)
                                         fileInput(inputId = "file",
                                                   label = strong("Primary data set"),
+                                                  placeholder = "A CSV file with two columns (De and De error)",
                                                   accept="text/plain, .csv, text/csv"),
                                         # rhandsontable input/output
                                         fluidRow(

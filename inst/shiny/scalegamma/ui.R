@@ -17,6 +17,7 @@ function(request) {
                                         # file upload button (data set 1)
                                         fileInput(inputId = "file",
                                                   label = strong("Primary data set"),
+                                                  placeholder = "A CSV file (see below for format)",
                                                   accept="text/plain, .csv, text/csv"),
                                         # rhandsontable input/output
                                         rHandsontableOutput(outputId = "table_in_primary"),

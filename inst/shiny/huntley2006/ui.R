@@ -17,6 +17,7 @@ function(request) {
                                         # file upload button (data set 1)
                                         fileInput(inputId = "file",
                                                   label = strong("Primary data set"),
+                                                  placeholder = "A CSV file with three columns (Dose [s], LxTx and LxTx error)",
                                                   accept="text/plain, .csv, text/csv"),
                                         # rhandsontable input/output
                                         fluidRow(

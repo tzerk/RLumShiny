@@ -14,10 +14,22 @@ function(request) {
                                         div(align = "center", h5("Data upload")),
                                         fileInput(inputId = "nat",
                                                   label = strong("Natural curve"),
+                                                  placeholder = "A CSV file with two columns (Time and Counts)",
                                                   accept="text/plain, .csv, text/csv"),
                                         fileInput(inputId = "reg",
                                                   label = strong("Regenerated curve"),
+                                                  placeholder = "A CSV file with two columns (Time and Counts)",
                                                   accept="text/plain, .csv, text/csv"),
+
+                                        # rhandsontable input/output
+                                        fluidRow(
+                                          column(width = 6,
+                                                 rHandsontableOutput(outputId = "table_natural")
+                                          ),
+                                          column(width = 6,
+                                                 rHandsontableOutput(outputId = "table_regenerated")
+                                          )
+                                        )
 
                                ),##EndOf::Tab_1
 

@@ -69,6 +69,13 @@ function(input, output, session) {
     values$results <- do.call(calc_FiniteMixture, values$args)
   })
 
+  output$table_in_primary <- renderRHandsontable({
+    rhandsontable(values$data_primary,
+                  height = 300,
+                  colHeaders = c("Dose", "Error"),
+                  rowHeaders = NULL)
+  })
+
   observe({
     # nested renderText({}) for code output on "R plot code" tab
     code.output <- callModule(RLumShiny:::printCode, "printCode", n_input = 1,
