@@ -24,7 +24,6 @@
 #' Huntley (2006) \tab *huntley2006* \tab [Luminescence::calc_Huntley2006] \cr
 #' IRSAR RF \tab *irsarRF* \tab [Luminescence::analyse_IRSAR.RF] \cr
 #' LM Curve \tab *lmcurve* \tab [Luminescence::fit_LMCurve] \cr
-#' Portable OSL \tab *portableOSL* \tab [Luminescence::analyse_portableOSL] \cr
 #' Test Stimulation Power \tab *teststimulationpower* \tab  [Luminescence::plot_RLum] \cr
 #' Scale Gamma Dose Rate \tab *scalegamma* \tab [Luminescence::scale_GammaDose] \cr
 #' RCarb app \tab *RCarb* \tab [RCarb::model_DoseRate]
@@ -68,7 +67,6 @@
 #' app_RLum("huntley2006")
 #' app_RLum("irsarRF")
 #' app_RLum("lmcurve")
-#' app_RLum("portableOSL")
 #' app_RLum("surfaceexposure")
 #' app_RLum("teststimulationpower")
 #' app_RLum("scalegamma")
@@ -94,7 +92,6 @@ app_RLum <- function(app = NULL, ...) {
                   "huntley2006",
                   "irsarRF",
                   "lmcurve",
-                  "portableOSL",
                   "surfaceexposure",
                   "teststimulationpower",
                   "scalegamma",
