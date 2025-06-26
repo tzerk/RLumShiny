@@ -38,16 +38,4 @@ Imports:
     knitr (>= 1.49)
 URL: https://tzerk.github.io/RLumShiny/
 BugReports: https://github.com/tzerk/RLumShiny/issues
-Collate:
-    'app_RLum.R'
-    'addin.R'
-    'chooser.R'
-    'jscolor.R'
-    'tooltip.R'
-    'popover.R'
-    'RLumShiny.R'
-    'module_aboutTab.R'
-    'module_exportTab.R'
-    'module_printCode.R'
-    'zzz.R'
 RoxygenNote: 7.3.2
