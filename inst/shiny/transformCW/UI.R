@@ -11,12 +11,13 @@ function(request) {
                    tabsetPanel(id = "tabs", type = "pill", selected = "Data",
                                # Tab 1: Data input
                                tabPanel("Data",
-                                        
+
                                         # informational text
                                         div(align = "center", h5("Data upload")),
                                         # file upload button (data set 1)
-                                        fileInput(inputId = "file", 
+                                        fileInput(inputId = "file",
                                                   label = strong("Primary data set"),
+                                                  placeholder = "A CSV file with two columns (Time and Counts)",
                                                   accept="text/plain, .csv, text/csv"),
                                         # rhandsontable input/output
                                         fluidRow(

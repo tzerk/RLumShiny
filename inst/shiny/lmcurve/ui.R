@@ -17,10 +17,12 @@ function(request) {
                                         # file upload button (data set 1)
                                         fileInput(inputId = "file",
                                                   label = strong("Primary data set"),
+                                                  placeholder = "A CSV file with two columns (Time and Counts)",
                                                   accept="text/plain, .csv, text/csv"),
                                         # file upload button (bg data set)
                                         fileInput(inputId = "file_bg",
                                                   label = strong("Background data set"),
+                                                  placeholder = "A CSV file with two columns (Time and Counts)",
                                                   accept="text/plain, .csv, text/csv"),
                                         # rhandsontable input/output
                                         fluidRow(

@@ -38,6 +38,8 @@ output: github_document
   Base function: `Luminescence::analyse_portableOSL()`.
   Keyword for `app_RLum()`: 'portableOSL'.
 
+* Added hints on file format and structure expected in each app (#45).
+
 * App `abanico`:
   + Fix a crash when the summary is disabled
   + Fix a crash when the 2σ bar color is set to none
