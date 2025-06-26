@@ -24,30 +24,18 @@ Encoding: UTF-8
 Depends:
     R (>= 4.3)
 Imports:
-    Luminescence (>= 1.0.1),
+    Luminescence (>= 1.1.0),
     shiny (>= 1.10.0),
     rhandsontable (>= 0.3.8),
-    data.table (>= 1.17.0),
+    data.table (>= 1.17.6),
     googleVis (>= 0.7.3),
     leaflet (>= 2.2.2),
-    shinydashboard (>= 0.7.2),
+    shinydashboard (>= 0.7.3),
     RCarb (>= 0.1.6),
     markdown (>= 1.13),
-    readxl (>= 1.4.3),
+    readxl (>= 1.4.5),
     DT (>= 0.33),
-    knitr (>= 1.49)
+    knitr (>= 1.50)
 URL: https://tzerk.github.io/RLumShiny/
 BugReports: https://github.com/tzerk/RLumShiny/issues
-Collate:
-    'app_RLum.R'
-    'addin.R'
-    'chooser.R'
-    'jscolor.R'
-    'tooltip.R'
-    'popover.R'
-    'RLumShiny.R'
-    'module_aboutTab.R'
-    'module_exportTab.R'
-    'module_printCode.R'
-    'zzz.R'
 RoxygenNote: 7.3.2
