@@ -17,5 +17,6 @@ _pkgdown.yml$
 pkgdown/
 ^\.github$
 NEWS.html
+README.html
 ^revdep$
 ^CRAN-SUBMISSION$
