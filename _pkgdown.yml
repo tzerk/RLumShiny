@@ -1,3 +1,4 @@
+url: https://tzerk.github.io/RLumShiny/
 navbar:
   title: "RLumShiny"
   type: inverse
@@ -14,6 +15,6 @@ navbar:
     - icon: fa-github
       text: "GitHub"
       href: https://github.com/tzerk/RLumShiny
-
-
+template:
+  bootstrap: 5
 

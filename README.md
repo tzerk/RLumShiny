@@ -129,15 +129,16 @@ requiring any format conversion.
 
 ## Contribute
 
-This package is part of the R Luminescence project. The is based on and
-evolves from ideas, contributions and constructive criticism of its
-users. Help us to maintain and develop the package, to find bugs and
-create new functions as well as a user-friendly design. Visit our
-[message board](https://r-luminescence.org) or write us an
-[e-mail](mailto:team@r-luminescence.org) if anything crosses your mind
-or if you want your new self-written shiny application to be to
-implemented. You are kindly invited to bring forward the package with
-us!
+This package is part of the R
+[Luminescence](https://r-lum.github.io/Luminescence/) project. The is
+based on and evolves from ideas, contributions and constructive
+criticism of its users. Help us to maintain and develop the package, to
+find bugs and create new functions as well as a user-friendly design.
+Visit [r-luminescence website](https://r-luminescence.org) or leave a
+message under <https://github.com/tzerk/RLumShiny/issues> if anything
+crosses your mind or if you want your new self-written shiny application
+to be to implemented. You are kindly invited to bring forward the
+package with us!
 
 ## Note
 
@@ -147,10 +148,10 @@ guarantee! For stable branches please visit the package on [CRAN
 
 ## License
 
-The `'RLumShiny'` package is licensed under the GPLv3. See these files
+The `'RLumShiny'` package is licensed under the GPL-3. See these files
 in the main directory for additional details:
 
-- LICENSE.note
+- [LICENSE.note](https://github.com/tzerk/RLumShiny/blob/master/LICENSE.note)
 
 ## Funding
 

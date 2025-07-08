@@ -1,4 +1,5 @@
 ^CRAN-RELEASE$
+^LICENSE$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 README.md$
@@ -17,5 +18,6 @@ _pkgdown.yml$
 pkgdown/
 ^\.github$
 NEWS.html
+README.html
 ^revdep$
 ^CRAN-SUBMISSION$

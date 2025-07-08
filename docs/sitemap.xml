@@ -1,14 +1,15 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
-<url><loc>/404.html</loc></url>
-<url><loc>/authors.html</loc></url>
-<url><loc>/index.html</loc></url>
-<url><loc>/news/index.html</loc></url>
-<url><loc>/reference/RLumShiny-package.html</loc></url>
-<url><loc>/reference/RLumShinyAddin.html</loc></url>
-<url><loc>/reference/app_RLum.html</loc></url>
-<url><loc>/reference/index.html</loc></url>
-<url><loc>/reference/jscolorInput.html</loc></url>
-<url><loc>/reference/popover.html</loc></url>
-<url><loc>/reference/tooltip.html</loc></url>
+<url><loc>https://tzerk.github.io/RLumShiny/404.html</loc></url>
+<url><loc>https://tzerk.github.io/RLumShiny/LICENSE-text.html</loc></url>
+<url><loc>https://tzerk.github.io/RLumShiny/authors.html</loc></url>
+<url><loc>https://tzerk.github.io/RLumShiny/index.html</loc></url>
+<url><loc>https://tzerk.github.io/RLumShiny/news/index.html</loc></url>
+<url><loc>https://tzerk.github.io/RLumShiny/reference/RLumShiny-package.html</loc></url>
+<url><loc>https://tzerk.github.io/RLumShiny/reference/RLumShinyAddin.html</loc></url>
+<url><loc>https://tzerk.github.io/RLumShiny/reference/app_RLum.html</loc></url>
+<url><loc>https://tzerk.github.io/RLumShiny/reference/index.html</loc></url>
+<url><loc>https://tzerk.github.io/RLumShiny/reference/jscolorInput.html</loc></url>
+<url><loc>https://tzerk.github.io/RLumShiny/reference/popover.html</loc></url>
+<url><loc>https://tzerk.github.io/RLumShiny/reference/tooltip.html</loc></url>
 </urlset>
 
