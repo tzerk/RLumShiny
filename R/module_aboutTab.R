@@ -10,7 +10,7 @@ aboutTab <- function(id, subdir) {
                  # a subfolder called "wwww"
                  img(src="RL_Logo.png", height = 100, width = 100, alt = "R.Lum"),
                  p("Links:"),
-                 a(href = "http://www.r-luminescence.org", "R.Luminescence project page", target="_blank"),
+                 a(href = "https://www.r-luminescence.org", "R.Luminescence project page", target="_blank"),
                  br(),hr(),
                  img(src='GitHub-Mark-32px.png', width='32px', height='32px'),
                  br(),

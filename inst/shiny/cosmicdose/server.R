@@ -121,5 +121,5 @@ function(input, output, session) {
                           "Dc error (Gy/ka)")
       table
     }
-  }, options=list(autoWidth = FALSE, paging = FALSE, processing = TRUE)) # jQuery DataTables options (http://datatables.net)
+  }, options=list(autoWidth = FALSE, paging = FALSE, processing = TRUE)) # jQuery DataTables options (https://datatables.net)
 }

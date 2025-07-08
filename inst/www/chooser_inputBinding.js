@@ -3,7 +3,7 @@
 Modified by: sebastian.kreutzer@u-bordeaux-montaigne.fr
 Date: 2017-07-28
 Modification:
-    > http://api.jquery.com/clone/ states:
+    > https://api.jquery.com/clone/ states:
     > As shown in the discussion for .append(), normally when an element is inserted somewhere in the DOM,
     > it is moved from its old location.
 

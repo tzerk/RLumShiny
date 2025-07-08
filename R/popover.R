@@ -76,4 +76,4 @@ popover <- function(
 }
 # helpPopup Button by Winston Chang from RStudio:
 # https://gist.github.com/jcheng5/5913297
-# Documentation: http://getbootstrap.com/javascript/#popovers-usage
+# Documentation: https://getbootstrap.com/javascript/#popovers-usage

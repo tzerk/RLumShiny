@@ -1,6 +1,6 @@
 ## Test environments
 
--   local Windows 11 x64 install, R 4.4.3 (2025-03-23)
+-   local Fedora 42 x64 install, R 4.5.0 (2025-04-11)
 -   win-builder (devel, release, oldrel)
 
 ## CRAN Notes
