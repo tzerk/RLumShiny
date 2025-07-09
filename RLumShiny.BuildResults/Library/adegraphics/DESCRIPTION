@@ -1,0 +1,45 @@
+Package: adegraphics
+Type: Package
+Title: An S4 Lattice-Based Package for the Representation of
+        Multivariate Data
+Version: 1.0-22
+Authors@R: c(
+   person("Stéphane", "Dray", email = "stephane.dray@univ-lyon1.fr", role = "aut", comment = c(ORCID = "0000-0003-0153-1105")),
+   person("Aurélie", "Siberchicot", role = c("aut", "cre"), email = "aurelie.siberchicot@univ-lyon1.fr", comment = c(ORCID = "0000-0002-7638-8318")),
+   person("Jean", "Thioulouse", email = "jean.thioulouse@univ-lyon1.fr", role = "ctb", comment = c(ORCID = "0000-0001-7664-0598")),
+   person("Alice", "Julien-Laferrière", role = "ctb")
+	)
+Description: Graphical functionalities for the representation of multivariate data. It is a complete re-implementation of the functions available in the 'ade4' package.
+Depends: R (>= 3.0.2)
+License: GPL (>= 2)
+Imports: ade4 (>= 1.7-13), graphics, grid, KernSmooth, lattice,
+        latticeExtra, methods, RColorBrewer, sp (>= 1.1-1), stats
+Suggests: car, Guerry, knitr, markdown, pixmap, rmarkdown, spdep,
+        splancs
+Collate: adeGsenv.R parameter.R utils.R utilstriangle.R genericMethod.R
+        utilsclass.R panelfunctions.R ADEg.R ADEgS.R utilsADEgS.R
+        ADEg.C1.R C1.barchart.R C1.curve.R C1.curves.R C1.density.R
+        C1.gauss.R C1.dotplot.R C1.hist.R C1.interval.R ADEg.S1.R
+        S1.boxplot.R S1.class.R S1.distri.R S1.label.R S1.match.R
+        ADEg.S2.R S2.arrow.R S2.class.R S2.corcircle.R S2.density.R
+        S2.distri.R S2.image.R S2.label.R S2.logo.R S2.match.R
+        S2.traject.R S2.value.R ADEg.T.R T.image.R T.value.R T.cont.R
+        ADEg.Tr.R Tr.class.R Tr.label.R Tr.match.R Tr.traject.R
+        addhist.R addline.R addpoint.R addsegment.R addtext.R
+        ade4-kplot.R ade4-scatter.R ade4-score.R ade4-plot.R
+        multiplot.R s.Spatial.R utilskey.R
+URL: http://pbil.univ-lyon1.fr/ADE-4/
+BugReports: https://github.com/adeverse/adegraphics/issues
+Encoding: UTF-8
+VignetteBuilder: knitr
+NeedsCompilation: no
+Packaged: 2025-04-07 08:38:49 UTC; siberchicot
+Author: Stéphane Dray [aut] (<https://orcid.org/0000-0003-0153-1105>),
+  Aurélie Siberchicot [aut, cre]
+    (<https://orcid.org/0000-0002-7638-8318>),
+  Jean Thioulouse [ctb] (<https://orcid.org/0000-0001-7664-0598>),
+  Alice Julien-Laferrière [ctb]
+Maintainer: Aurélie Siberchicot <aurelie.siberchicot@univ-lyon1.fr>
+Repository: CRAN
+Date/Publication: 2025-04-07 09:10:02 UTC
+Built: R 4.5.1; ; 2025-07-09 05:41:57 UTC; unix

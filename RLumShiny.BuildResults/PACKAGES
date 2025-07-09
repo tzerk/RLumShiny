@@ -1,0 +1,9 @@
+Package: RLumShiny
+Version: 0.2.5
+Depends: R (>= 4.3)
+Imports: Luminescence (>= 1.1.0), shiny (>= 1.11.1), rhandsontable (>= 0.3.8), data.table (>= 1.17.6),
+            googleVis (>= 0.7.3), leaflet (>= 2.2.2), shinydashboard (>= 0.7.3), RCarb (>= 0.1.6), markdown
+            (>= 1.13), readxl (>= 1.4.5), DT (>= 0.33), knitr (>= 1.50)
+License: GPL-3
+MD5sum: 3f1d01251dd7c3624b9c68aa9131f162
+NeedsCompilation: no

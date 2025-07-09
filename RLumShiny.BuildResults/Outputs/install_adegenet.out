@@ -1,0 +1,27 @@
+* installing *source* package ‘adegenet’ ...
+** this is package ‘adegenet’ version ‘2.1.11’
+** package ‘adegenet’ successfully unpacked and MD5 sums checked
+** using staged installation
+** libs
+using C compiler: ‘Homebrew clang version 16.0.6’
+using SDK: ‘’
+/opt/homebrew/opt/llvm@16/bin/clang  -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -c GLfunctions.c -o GLfunctions.o
+/opt/homebrew/opt/llvm@16/bin/clang  -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -c adesub.c -o adesub.o
+/opt/homebrew/opt/llvm@16/bin/clang  -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -c init.c -o init.o
+/opt/homebrew/opt/llvm@16/bin/clang  -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -c monmonier-utils.c -o monmonier-utils.o
+/opt/homebrew/opt/llvm@16/bin/clang  -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -c sharedAll.c -o sharedAll.o
+/opt/homebrew/opt/llvm@16/bin/clang  -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -c snpbin.c -o snpbin.o
+/opt/homebrew/opt/llvm@16/bin/clang -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -L/Library/Frameworks/R.framework/Resources/lib -L/opt/R/arm64/lib -o adegenet.so GLfunctions.o adesub.o init.o monmonier-utils.o sharedAll.o snpbin.o -F/Library/Frameworks/R.framework/.. -framework R
+installing to /Users/kreutzer/GitHub/RLumShiny/RLumShiny.BuildResults/Library/00LOCK-adegenet/00new/adegenet/libs
+** R
+** data
+** inst
+** byte-compile and prepare package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded from temporary location
+** checking absolute paths in shared objects and dynamic libraries
+** testing if installed package can be loaded from final location
+** testing if installed package keeps a record of temporary installation path
+* DONE (adegenet)

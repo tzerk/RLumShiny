@@ -1,0 +1,12 @@
+---
+title: "treespace worked example: Dengue trees"
+author: "Michelle Kendall, Thibaut Jombart"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{treespace worked example: Dengue trees}
+  \usepackage[utf8]{inputenc}
+---
+
+[This vignette](https://thibautjombart.github.io/treespace/articles/DengueVignette.html) demonstrates the use of *treespace* to compare a collection of trees. 

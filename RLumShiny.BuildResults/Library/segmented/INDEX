@@ -1,0 +1,60 @@
+aapc                    Average annual per cent change in segmented
+                        trend analysis
+broken.line             Fitted values for segmented relationships
+confint.segmented       Confidence intervals for breakpoints
+confint.segmented.lme   Confidence intervals in segmented mixed models
+confint.stepmented      Confidence intervals for jumpoints in
+                        stepmented regression
+davies.test             Testing for a change in the slope
+down                    Down syndrome in babies
+draw.history            History for the breakpoint estimates
+fitted.segmented.lme    Fitted values for segmented mixed fits
+globTempAnom            Global temperature anomalies 1850-2023
+intercept               Intercept estimates from segmented
+                        relationships
+lines.segmented         Bars for interval estimate of the breakpoints
+lines.stepmented        Bars for interval estimate of the breakpoints
+model.matrix.segmented
+                        Design matrix for segmented fits
+model.matrix.stepmented
+                        Design matrix for stepmented fits
+plant                   Plan organ dataset
+plot.segmented          Plot method for segmented objects
+plot.segmented.lme      Plot method for segmented mixed objects
+plot.stepmented         Plot method for stepmented objects
+points.segmented        Points method for segmented objects
+predict.segmented       Predict method for segmented model fits
+predict.stepmented      Predict method for stepmented model fits
+print.segmented         Print method for the segmented class
+print.segmented.lme     Print method for the segmented.lme class
+pscore.test             Testing for existence of one breakpoint
+pwr.seg                 Power Analysis in segmented regression
+seg                     Specifying a segmented/stepmented term in the
+                        segreg/stepreg formula
+seg.control             Auxiliary for controlling segmented/stepmented
+                        model fitting
+seg.lm.fit              Fitter Functions for Segmented Linear Models
+segmented               Segmented relationships in regression models
+segmented-package       Segmented Relationships in Regression Models
+                        with Breakpoints / Changepoints Estimation
+                        (with Possibly Random Effects)
+segmented.lme           Segmented relationships in linear mixed models
+segreg                  Fitting segmented/stepmented regression
+selgmented              Selecting the number of breakpoints in
+                        segmented regression
+slope                   Slope estimates from segmented/stepmented
+                        relationships
+stagnant                Stagnant band height data
+step.lm.fit             Fitter Functions for stepmented Linear Models
+stepmented              stepmented relationships in regression models
+summary.segmented       Summarizing model fits for segmented regression
+summary.segmented.lme   Summarizing model fits for segmented
+                        mixed-effects regression
+summary.stepmented      Summarizing model fits for stepmented
+                        regression
+vcov.segmented          Variance-Covariance Matrix for a Fitted
+                        Segmented Model
+vcov.segmented.lme      Variance-Covariance Matrix for a Fitted
+                        Segmented Mixed Model
+vcov.stepmented         Variance-Covariance Matrix for a Fitted
+                        Stepmented Model

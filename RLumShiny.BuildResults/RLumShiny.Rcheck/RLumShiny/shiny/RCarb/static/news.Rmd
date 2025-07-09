@@ -1,0 +1,13 @@
+## News and changes
+
+### Version 0.1.2
+* Fix minor issue related to a more recent version of `'shiny'` that prevented 
+the app from starting
+
+### Version 0.1.1
+
+* Support for 'RCarb' 0.1.3 added
+
+### Version 0.1.0
+
+* Initial version 

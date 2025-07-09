@@ -1,0 +1,41 @@
+Package: treespace
+Title: Statistical Exploration of Landscapes of Phylogenetic Trees
+Date: 2023-09-07
+Version: 1.1.4.3
+Authors@R: c(TJ = person("Thibaut", "Jombart", email="thibautjombart@gmail.com", role = "aut", comment = c(ORCID = "0000-0003-2226-8692")),
+ 	     MK = person("Michelle", "Kendall", email="michelle.kendall@warwick.ac.uk", role = c("aut", "cre"), comment = c(ORCID = "0000-0001-7344-7071")),
+	     JAG = person("Jacob", "Almagro-Garcia", role = "aut", comment = c(ORCID = "0000-0002-0595-7333")),
+	     CC = person("Caroline", "Colijn", role = "aut", comment = c(ORCID = "0000-0001-6097-6708")))
+Description: Tools for the exploration of distributions of phylogenetic trees.
+    This package includes a 'shiny' interface which can be started from R using
+    treespaceServer(). 
+    For further details see Jombart et al. (2017) <DOI:10.1111/1755-0998.12676>.
+Depends: R (>= 3.4.0), ape, ade4
+Imports: adegenet, adegraphics, combinat, compiler, distory, fields,
+        htmlwidgets, MASS, methods, parallel, phangorn, phytools, Rcpp,
+        rgl, RLumShiny, scatterD3, shiny, shinyBS, utils
+LinkingTo: Rcpp
+Suggests: ggplot2, igraph, knitr, pander, RColorBrewer, reshape2,
+        rmarkdown, sf, testthat
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Collate: RcppExports.R metrics.R medTree.R treespace.R findGroves.R
+        plotGroves.R plotTreeDiff.R servers.R transmissionTrees.R
+        data.R makeCollapsedTree.R relatedTreeDist.R simulateIndTree.R
+        tipsMRCAdepths.R treeConcordance.R
+RoxygenNote: 7.2.3
+VignetteBuilder: knitr
+URL: https://cran.r-project.org/package=treespace,
+        https://github.com/thibautjombart/treespace
+BugReports: https://github.com/thibautjombart/treespace/issues
+NeedsCompilation: yes
+Packaged: 2023-09-07 15:27:18 UTC; michellekendall
+Repository: CRAN
+Date/Publication: 2023-09-07 16:10:02 UTC
+Author: Thibaut Jombart [aut] (<https://orcid.org/0000-0003-2226-8692>),
+  Michelle Kendall [aut, cre] (<https://orcid.org/0000-0001-7344-7071>),
+  Jacob Almagro-Garcia [aut] (<https://orcid.org/0000-0002-0595-7333>),
+  Caroline Colijn [aut] (<https://orcid.org/0000-0001-6097-6708>)
+Maintainer: Michelle Kendall <michelle.kendall@warwick.ac.uk>
+Built: R 4.5.1; aarch64-apple-darwin20; 2025-07-09 05:42:29 UTC; unix

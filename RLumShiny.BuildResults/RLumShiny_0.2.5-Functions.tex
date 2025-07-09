@@ -1,0 +1,16 @@
+\begin{table}[ht]
+\centering
+\begin{tabular}{rllllllll}
+  \hline
+ & Name & Title & Description & Version & m.Date & m.Time & Author & Citation \\ 
+  \hline
+1 & app\_RLum & Run Luminescence shiny apps & A wrapper for  shiny::runApp  to start interactive shiny apps for the R package Luminescence.  The RLumShiny package provides a single function from which all shiny apps can be started:  app\_RLum() . It essentially only takes one argument, which is a unique keyword specifying which application to start. See the table below for a list of available shiny apps and which keywords to use. If no keyword is used a dashboard will be started instead, from which an application can be started.  lcl  Application name:      Keyword:      Function:    Abanico Plot    abanico     Luminescence::plot\_AbanicoPlot    Histogram    histogram     Luminescence::plot\_Histogram    Kernel Density Estimate Plot    KDE     Luminescence::plot\_KDE    Radial Plot    radialplot     Luminescence::plot\_RadialPlot    Aliquot Size    aliquotsize     Luminescence::calc\_AliquotSize    Dose Recovery Test    doserecovery     Luminescence::plot\_DRTResults    Cosmic Dose Rate    cosmicdose      Luminescence::calc\_CosmicDoseRate    CW Curve Transformation    transformCW     Luminescence::convert\_CW2pHMi ,  Luminescence::convert\_CW2pLM ,  Luminescence::convert\_CW2pLMi ,  Luminescence::convert\_CW2pPMi    Filter Combinations    filter     Luminescence::plot\_FilterCombinations    Fast Ratio    fastratio     Luminescence::calc\_FastRatio    Fading Correction    fading     Luminescence::analyse\_FadingMeasurement ,  Luminescence::calc\_FadingCorr    Finite Mixture    finitemixture     Luminescence::calc\_FiniteMixture    Huntley (2006)    huntley2006     Luminescence::calc\_Huntley2006    IRSAR RF    irsarRF     Luminescence::analyse\_IRSAR.RF    LM Curve    lmcurve     Luminescence::fit\_LMCurve    Test Stimulation Power    teststimulationpower      Luminescence::plot\_RLum    Scale Gamma Dose Rate    scalegamma     Luminescence::scale\_GammaDose    RCarb app    RCarb     RCarb::model\_DoseRate    The  app\_RLum()  function is just a wrapper for  shiny::runApp . Via the  ...  argument further arguments can be directly passed to  shiny::runApp . See  ?shiny::runApp  for further details on valid arguments. &  &  &  & Christoph Burow, University of Cologne (Germany)$<$br /$>$ , RLum Developer Team & Burow, C., 2025. app\_RLum(): Run Luminescence shiny apps. In: Burow, C., Wolpert, U.T., Kreutzer, S., Colombo, M., 2025. RLumShiny: 'Shiny' Applications for the R Package 'Luminescence'. R package version 0.2.5. https://tzerk.github.io/RLumShiny/
+ \\ 
+  2 & jscolorInput & Create a JSColor picker input widget & Creates a JSColor (Javascript/HTML Color Picker) widget to be used in shiny applications. &  &  &  &  &  \\ 
+  3 & popover & Create a bootstrap button with popover & Add small overlays of content for housing secondary information. &  &  &  &  &  \\ 
+  4 & RLumShinyAddin & RLumShiny Dashboard Addin & RLumShiny dashboard &  &  &  &  &  \\ 
+  5 & tooltip & Create a bootstrap tooltip & Create bootstrap tooltips for any HTML element to be used in shiny applications. &  &  &  &  &  \\ 
+   \hline
+\end{tabular}
+\end{table}
+

@@ -1,0 +1,13 @@
+---
+title: "Comparing trees by tip label categories"
+author: "Michelle Kendall"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Comparing trees by tip label categories}
+  \usepackage[utf8]{inputenc}
+---
+
+We introduce distance measures between trees with 'related' tip labels in a recent bioRxiv preprint, [*Comparing phylogenetic trees according to tip label categories*](https://doi.org/10.1101/251710).
+In [this vignette](https://thibautjombart.github.io/treespace/articles/tipCategories.html) we provide an overview of the measures and present some simple examples.

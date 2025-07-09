@@ -1,0 +1,29 @@
+.render.server.info     Auxiliary functions
+DengueBEASTMCC          Dengue fever BEAST MCC tree
+DengueSeqs              Dengue fever sequences
+DengueTrees             BEAST analysis of Dengue fever
+findGroves              Identify clusters of similar trees
+findMRCIs               Find MRCIs
+fluTrees                BEAST analysis of seasonal influenza (A/H3N2)
+linearMrca              Linear MRCA function
+makeCollapsedTree       Collapse a tree into a single tip per category
+medTree                 Geometric median tree function
+multiDist               Metric function for 'multiPhylo' input
+plotGroves              Scatterplot of groups of trees
+plotGrovesD3            Scatterplot of groups of trees using
+                        'scatterD3'
+plotTreeDiff            Plot tree differences
+refTreeDist             Metric function for comparing a reference
+                        'phylo' to 'multiPhylo' input
+relatedTreeDist         Tree distance when trees have "related" tips
+simulateIndTree         Simulate randomised "individuals" tree
+tipDiff                 Find tip position differences
+tipsMRCAdepths          Tip-tip MRCA depths
+treeConcordance         Tree concordance
+treeDist                Metric function
+treeVec                 Tree vector function
+treespace               Phylogenetic tree exploration
+treespaceServer         Web-based tree explorer
+wiwMedTree              Median transmission tree
+wiwTreeDist             Transmission tree distance
+woodmiceTrees           Bootstrap trees from woodmouse dataset

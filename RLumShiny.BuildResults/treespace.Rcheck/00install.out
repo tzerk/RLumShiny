@@ -1,0 +1,25 @@
+* installing *source* package ‘treespace’ ...
+** this is package ‘treespace’ version ‘1.1.4.3’
+** package ‘treespace’ successfully unpacked and MD5 sums checked
+** using staged installation
+** libs
+using C++ compiler: ‘Homebrew clang version 16.0.6’
+using SDK: ‘’
+/opt/homebrew/opt/llvm@16/bin/clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2   -c CPP_update_combinations.cpp -o CPP_update_combinations.o
+/opt/homebrew/opt/llvm@16/bin/clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2   -c RcppExports.cpp -o RcppExports.o
+/opt/homebrew/opt/llvm@16/bin/clang++ -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -L/Library/Frameworks/R.framework/Resources/lib -L/opt/R/arm64/lib -o treespace.so CPP_update_combinations.o RcppExports.o -F/Library/Frameworks/R.framework/.. -framework R
+installing to /Users/kreutzer/GitHub/RLumShiny/RLumShiny.BuildResults/treespace.Rcheck/00LOCK-treespace/00new/treespace/libs
+** R
+** data
+*** moving datasets to lazyload DB
+** inst
+** byte-compile and prepare package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** installing vignettes
+** testing if installed package can be loaded from temporary location
+** checking absolute paths in shared objects and dynamic libraries
+** testing if installed package can be loaded from final location
+** testing if installed package keeps a record of temporary installation path
+* DONE (treespace)

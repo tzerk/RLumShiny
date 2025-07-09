@@ -1,0 +1,36 @@
+* installing *source* package ‘ade4’ ...
+** this is package ‘ade4’ version ‘1.7-23’
+** package ‘ade4’ successfully unpacked and MD5 sums checked
+** using staged installation
+** libs
+using C compiler: ‘Homebrew clang version 16.0.6’
+using C++ compiler: ‘Homebrew clang version 16.0.6’
+using SDK: ‘’
+/opt/homebrew/opt/llvm@16/bin/clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include' -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppArmadillo/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2   -c RcppExports.cpp -o RcppExports.o
+/opt/homebrew/opt/llvm@16/bin/clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include' -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppArmadillo/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2   -c ade4libCpp.cpp -o ade4libCpp.o
+/opt/homebrew/opt/llvm@16/bin/clang  -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include' -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppArmadillo/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -c adesub.c -o adesub.o
+/opt/homebrew/opt/llvm@16/bin/clang  -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include' -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppArmadillo/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -c divsub.c -o divsub.o
+/opt/homebrew/opt/llvm@16/bin/clang  -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include' -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppArmadillo/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -c fourthcorner.c -o fourthcorner.o
+/opt/homebrew/opt/llvm@16/bin/clang  -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include' -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppArmadillo/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -c init.c -o init.o
+/opt/homebrew/opt/llvm@16/bin/clang  -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include' -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppArmadillo/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -c phylog.c -o phylog.o
+/opt/homebrew/opt/llvm@16/bin/clang  -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include' -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppArmadillo/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -c testamova.c -o testamova.o
+/opt/homebrew/opt/llvm@16/bin/clang  -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include' -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppArmadillo/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -c testdim.c -o testdim.o
+/opt/homebrew/opt/llvm@16/bin/clang  -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include' -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppArmadillo/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -c testrlq.c -o testrlq.o
+/opt/homebrew/opt/llvm@16/bin/clang  -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include' -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppArmadillo/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -c tests.c -o tests.o
+/opt/homebrew/opt/llvm@16/bin/clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include' -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppArmadillo/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2   -c testsCpp.cpp -o testsCpp.o
+/opt/homebrew/opt/llvm@16/bin/clang++ -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -L/Library/Frameworks/R.framework/Resources/lib -L/opt/R/arm64/lib -o ade4.so RcppExports.o ade4libCpp.o adesub.o divsub.o fourthcorner.o init.o phylog.o testamova.o testdim.o testrlq.o tests.o testsCpp.o -L/Library/Frameworks/R.framework/Resources/lib -lRlapack -L/Library/Frameworks/R.framework/Resources/lib -lRblas -L/opt/gfortran/lib/gcc/aarch64-apple-darwin20.0/14.2.0 -L/opt/gfortran/lib -lemutls_w -lheapt_w -lgfortran -lquadmath -F/Library/Frameworks/R.framework/.. -framework R
+installing to /Users/kreutzer/GitHub/RLumShiny/RLumShiny.BuildResults/Library/00LOCK-ade4/00new/ade4/libs
+** R
+** data
+** inst
+** byte-compile and prepare package for lazy loading
+** help
+*** installing help indices
+*** copying figures
+** building package indices
+** installing vignettes
+** testing if installed package can be loaded from temporary location
+** checking absolute paths in shared objects and dynamic libraries
+** testing if installed package can be loaded from final location
+** testing if installed package keeps a record of temporary installation path
+* DONE (ade4)

@@ -1,0 +1,43 @@
+Package: RLumShiny
+Type: Package
+Title: 'Shiny' Applications for the R Package 'Luminescence'
+Version: 0.2.5
+Date: 2025-07-09
+Authors@R: c(
+    person("Christoph", "Burow", role = c("aut", "cre"), email = "christoph.burow@gmx.net", comment = c(ORCID = "0000-0002-5023-4046")),
+    person("Urs Tilmann", "Wolpert", role = "aut"),
+    person("Sebastian", "Kreutzer", role = "aut", comment = c(ORCID = "0000-0002-0734-2199")),
+    person("Marco", "Colombo", role = c("aut"), comment = c(ORCID = "0000-0001-6672-0623")),
+    person(family = "R Luminescence Package Team", role = "ctb"),
+    person("Jan", "Odvarko", role = "cph", comment = "jscolor.js in www/jscolor"),
+    person(family = "AnalytixWare", role = "cph", comment = "ShinySky package" ),
+    person(family = "RStudio", role = "cph", comment = "chooser_inputBinding.js in www/ and chooser.R in R/"))
+Maintainer: Christoph Burow <christoph.burow@gmx.net>
+Description: A collection of 'shiny' applications for the R package
+    'Luminescence'. These mainly, but not exclusively, include applications for
+    plotting chronometric data from e.g. luminescence or radiocarbon dating. It
+    further provides access to bootstraps tooltip and popover functionality and
+    contains the 'jscolor.js' library with a custom 'shiny' output binding.
+License: GPL-3
+Encoding: UTF-8
+Depends: R (>= 4.3)
+Imports: Luminescence (>= 1.1.0), shiny (>= 1.11.1), rhandsontable (>=
+        0.3.8), data.table (>= 1.17.6), googleVis (>= 0.7.3), leaflet
+        (>= 2.2.2), shinydashboard (>= 0.7.3), RCarb (>= 0.1.6),
+        markdown (>= 1.13), readxl (>= 1.4.5), DT (>= 0.33), knitr (>=
+        1.50)
+URL: https://tzerk.github.io/RLumShiny/
+BugReports: https://github.com/tzerk/RLumShiny/issues
+RoxygenNote: 7.3.2
+NeedsCompilation: no
+Packaged: 2025-07-09 05:40:28 UTC; kreutzer
+Author: Christoph Burow [aut, cre] (ORCID:
+    <https://orcid.org/0000-0002-5023-4046>),
+  Urs Tilmann Wolpert [aut],
+  Sebastian Kreutzer [aut] (ORCID:
+    <https://orcid.org/0000-0002-0734-2199>),
+  Marco Colombo [aut] (ORCID: <https://orcid.org/0000-0001-6672-0623>),
+  R Luminescence Package Team [ctb],
+  Jan Odvarko [cph] (jscolor.js in www/jscolor),
+  AnalytixWare [cph] (ShinySky package),
+  RStudio [cph] (chooser_inputBinding.js in www/ and chooser.R in R/)

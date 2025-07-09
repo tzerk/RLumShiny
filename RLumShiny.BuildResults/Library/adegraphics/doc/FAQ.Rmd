@@ -1,0 +1,98 @@
+---
+title: "Frequently Asked Questions"
+author: "Aurélie Siberchicot, Stéphane Dray, Jean Thioulouse"
+date: '`r Sys.Date()`'
+output:
+  html_vignette:
+    number_sections: yes
+    toc: yes
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Frequently Asked Questions} 
+  %!\VignetteEncoding{UTF-8}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r}
+set.seed(2564)
+library(ade4)
+library(adegraphics)
+```
+
+
+# How to personalize plots 
+
+## How to update title axes?
+
+```{r}
+df <- data.frame(x = rep(1:10,1), 
+                 y = rep(1:10, each = 10), 
+                 ms_li = runif(100, min = -5, max = 4))
+s.value(df[, 1:2], df$ms_li, 
+        paxes.draw = TRUE)
+```
+
+### Size titles on axes
+
+`xlab.cex` and `ylab.cex` manage the size titles on the `x` and `y` axes.
+```{r}
+s.value(df[, 1:2], df$ms_li, 
+        paxes.draw = TRUE,
+        xlab = "Longitude", xlab.cex = 0.5,
+        ylab = "Latitude", ylab.cex = 0.5
+        )
+```
+
+
+### Size labels on axes
+
+`scales.x.cex` and `scales.y.cex` manage the sizes labels on the `x` and `y` axes.
+
+```{r}
+s.value(df[, 1:2], df$ms_li, 
+        paxes.draw = TRUE,
+        scales.x.cex = 0.5,
+        scales.y.cex = 0.5
+        )
+```
+
+
+
+### Margin of axis
+
+`layout.heights = list(bottom.padding = 1)` manages the margin of the bottom axis.
+This enlarges the space for a larger title axis.
+
+```{r}
+s.value(df[, 1:2], df$ms_li, 
+        paxes.draw = TRUE,
+        xlab = "Longitude", xlab.cex = 2,
+        ylab = "Latitude", ylab.cex = 2,
+        layout.heights = list(bottom.padding = 2)
+        )
+```
+
+
+## How to update label's boxes ?
+```{r}
+x0 <- runif(50, -2, 2)
+y0 <- runif(50, -2, 2)
+s.label(data.frame(x0, y0))
+```
+
+### Remove boxes around labels
+```{r}
+s.label(data.frame(x0, y0), plabels.boxes.border = 0)
+s.label(data.frame(x0, y0), plabels.boxes.draw = FALSE, ppoints.cex = 0)
+```
+
+### Color of label's boxes
+```{r}
+s.label(data.frame(x0, y0), plabels.boxes.col = "orange")
+```
+
+### Border of label's boxes
+```{r}
+s.label(data.frame(x0, y0), plabels.boxes.border = "blue", plabels.boxes.lwd = 2)
+```
+

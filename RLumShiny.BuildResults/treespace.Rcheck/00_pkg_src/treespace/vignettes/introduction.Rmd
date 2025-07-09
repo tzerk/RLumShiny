@@ -1,0 +1,12 @@
+---
+title: "Exploration of landscapes of phylogenetic trees"
+author: "Thibaut Jombart, Michelle Kendall"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Exploration of landscapes of phylogenetic trees}
+  \usepackage[utf8]{inputenc}
+---
+
+*treespace* implements new methods for the exploration and analysis of distributions of phylogenetic trees for a given set of taxa. See [this vignette](https://thibautjombart.github.io/treespace/articles/introduction.html) for a step-by-step guide to installing and using the package.

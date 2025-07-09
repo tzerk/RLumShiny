@@ -1,0 +1,21 @@
+		CHANGES IN DISTORY VERSION 1.4.5
+
+
+OTHER CHANGES
+
+    o Changed error() call to Rf_error() in C++ file to conform with
+      the "noRemap" option (from R 4.5.0).
+
+
+
+		CHANGES IN DISTORY VERSION 1.4.4
+
+
+NEW FEATURES
+
+    o Calls to is.binary.tree() have been replaced by calls to
+      is.binary.phylo().
+
+    o The file NAMESPACE has been updated.
+
+    o EP is taking over as maintainer of distory.
