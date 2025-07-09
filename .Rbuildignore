@@ -1,5 +1,4 @@
 ^CRAN-RELEASE$
-^LICENSE$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 README.md$
