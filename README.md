@@ -5,7 +5,7 @@
 
 <!-- badges: start -->
 
-[![CRAN](https://www.r-pkg.org/badges/version/RLumShiny)](https://cran.rstudio.com/package=RLumShiny)
+[![CRAN](https://www.r-pkg.org/badges/version/RLumShiny)](https://CRAN.R-project.org/package=RLumShiny)
 [![CRAN
 DOI](https://img.shields.io/badge/doi-10.32614/CRAN.package.RLumShiny-blue.svg)](https://doi.org/10.32614/CRAN.package.RLumShiny)
 [![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/RLumShiny)](https://www.r-pkg.org/pkg/RLumShiny)
