@@ -59,6 +59,7 @@ for a list of available apps and which keywords to use.
 | Kernel Density Estimate Plot | KDE | `plot_KDE` |
 | Radial Plot | radialplot | `plot_RadialPlot` |
 | Dose Recovery Test | doserecovery | `plot_DRTResults` |
+| Dose Response Curve | doseresponsecurve | `plot_DoseResponseCurve` |
 | Cosmic Dose Rate | cosmicdose | `calc_CosmicDoseRate` |
 | Calculate Aliquot Size | aliquotsize | `calc_AliquotSize` |
 | CW Curve Transformation | transformCW | `convert_CW2pHMi`, `convert_CW2pLM`, `convert_CW2pLMi`, `convert_CW2pPMi` |

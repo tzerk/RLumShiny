@@ -15,6 +15,7 @@
 #' Radial Plot \tab *radialplot* \tab [Luminescence::plot_RadialPlot] \cr
 #' Aliquot Size \tab *aliquotsize* \tab [Luminescence::calc_AliquotSize] \cr
 #' Dose Recovery Test \tab *doserecovery* \tab [Luminescence::plot_DRTResults] \cr
+#' Dose ResponseCurve \tab *doseresponsecurve* \tab [Luminescence::plot_DoseResponseCurve] \cr
 #' Cosmic Dose Rate \tab *cosmicdose*  \tab [Luminescence::calc_CosmicDoseRate] \cr
 #' CW Curve Transformation \tab *transformCW* \tab [Luminescence::convert_CW2pHMi], [Luminescence::convert_CW2pLM], [Luminescence::convert_CW2pLMi], [Luminescence::convert_CW2pPMi] \cr
 #' Filter Combinations \tab *filter* \tab [Luminescence::plot_FilterCombinations] \cr
@@ -55,6 +56,7 @@
 #' app_RLum("KDE")
 #' app_RLum("radialplot")
 #' app_RLum("doserecovery")
+#' app_RLum("doseresponsecurve")
 #'
 #' # Further apps
 #' app_RLum("aliquotsize")
@@ -81,6 +83,7 @@ app_RLum <- function(app = NULL, ...) {
                   "aliquotsize",
                   "cosmicdose",
                   "doserecovery",
+                  "doseresponsecurve",
                   "histogram",
                   "KDE",
                   "radialplot",
