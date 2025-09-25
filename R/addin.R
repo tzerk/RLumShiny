@@ -34,6 +34,11 @@ RLumShinyAddin <- function() {
                           category = "plot",
                           description = "The function provides a standardised plot output for dose recovery test measurements."),
 
+    "doseresponsecurve" = list(title = "Dose Response Curve",
+                               keyword = "doseresponsecurve",
+                               category = "plot",
+                               description = "Plot a dose-response curve for luminescence data (Lx/Tx against dose)."),
+
     "finitemixture" = list(title = "Finite Mixture",
                            keyword = "finitemixture",
                            category = "plot",

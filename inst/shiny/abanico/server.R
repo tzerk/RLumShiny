@@ -113,7 +113,6 @@ function(input, output, session) {
 
     if (!is.null(hot_to_r(df_tmp)))
       values$data_secondary <- hot_to_r(df_tmp)
-
   })
 
   # check and read in file (DATA SET 1)
@@ -146,12 +145,12 @@ function(input, output, session) {
     } else {
       sd<- unlist(lapply(data, function(x) x[,2]))
     }
-    prec<- 1/sd
+    prec <- max(1 / sd)
     sliderInput(inputId = "xlim", sep="",
                 label = "Range x-axis",
                 min = 0,
-                max = round(max(prec)*2, 3),
-                value = max(prec)*1.05)
+                max = round(prec * 2, 3),
+                value = prec * 1.05)
   })## EndOf::renderUI()
 
   # dynamically inject sliderInput for z-axis range
