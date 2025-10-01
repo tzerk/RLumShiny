@@ -93,18 +93,19 @@ function(input, output, session) {
     
     values$results_corr <- try(do.call(calc_FadingCorr, values$args_corr))
   })
-  
-  
-  
+
   observe({
     # nested renderText({}) for code output on "R plot code" tab
-    code.output <- callModule(RLumShiny:::printCode, "printCode", n_input = 1, 
-                              fun = "analyse_FadingMeasurement(data,", args = values$args)
-    
+    code.output <- callModule(RLumShiny:::printCode, "printCode",
+                              n_inputs = 1,
+                              list(name = "analyse_FadingMeasurement",
+                                   arg1 = "data",
+                                   args = values$args))
+
     output$plotCode<- renderText({
       code.output
     })##EndOf::renderText({})
-    
+
     callModule(RLumShiny:::exportCodeHandler, "export", code = code.output)
     callModule(RLumShiny:::exportPlotHandler, "export", fun = "analyse_FadingMeasurement", args = values$args)
   })
@@ -118,22 +119,20 @@ function(input, output, session) {
       gval <- c(values$results@data$fading_results$FIT, values$results@data$fading_results$SD)
       tc <- values$results@data$fading_results$TC
     }
-    
-    
-    paste(
-      "# To reproduce the plot in your local R environment",
-      "# copy and run the following code to your R console.",
-      "library(Luminescence)", "\n",
-      "calc_FadingCorr(",
-      paste0("age.faded = c(", values$args_corr$age.faded[1], ", ",  values$args_corr$age.faded[2], "),"),
-      paste0("g_value = c(", gval[1], ", ", gval[2], "),"),
-      paste0("tc = ", tc, ", "),
-      paste0("tc.g_value = ", input$tc_gval, ","),
-      paste0("n.MC = 1000)"),
-      
-      sep = "\n")
+
+    args <- list(dummy = NA, # the first argument is removed by printCode()
+                 age.faded = c(values$args_corr$age.faded[1],
+                               values$args_corr$age.faded[2]),
+                 g_value = c(gval[1], gval[2]),
+                 tc = tc,
+                 tc.g_value = input$tc_gval,
+                 n.MC = 1000)
+    callModule(RLumShiny:::printCode, "printCode",
+                              n_inputs = 0,
+                              list(name = "calc_FadingCorr",
+                                   args = args))
   })
-  
+
   output$results <- renderText({
     if (is.null(values$results))
       return(NULL)
@@ -167,5 +166,5 @@ function(input, output, session) {
       tags$b("Age "), tags$em("(corrected): "), signif(res$AGE, 3), " &plusmn; ", signif(res$AGE.ERROR, 3), " ka"
     ))
   })
-  
+
 }##EndOf::function(input, output)

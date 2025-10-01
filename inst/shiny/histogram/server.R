@@ -104,21 +104,23 @@ function(input, output, session) {
     validate(need(input$xlim, "Just wait a second..."))
     do.call(plot_Histogram, args = values$args)
   })##EndOf::renderPlot({})
-  
+
   observe({
     # nested renderText({}) for code output on "R plot code" tab
-    code.output <- callModule(RLumShiny:::printCode, "printCode", n_input = 1, 
-                              fun = "plot_Histogram(data,", args = values$args)
-    
+    code.output <- callModule(RLumShiny:::printCode, "printCode",
+                              n_inputs = 1,
+                              list(name = "plot_Histogram",
+                                   arg1 = "data",
+                                   args = values$args))
+
     output$plotCode<- renderText({
       code.output
     })##EndOf::renderText({})
-    
+
     callModule(RLumShiny:::exportCodeHandler, "export", code = code.output)
     callModule(RLumShiny:::exportPlotHandler, "export", fun = "plot_Histogram", args = values$args)
   })
-  
-  
+
   # renderTable() that prints the data to the second tab
   output$dataset<- DT::renderDT(
     options = list(pageLength = 10, autoWidth = FALSE),

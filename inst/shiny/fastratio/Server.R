@@ -129,19 +129,21 @@ function(input, output, session) {
       tags$b("L3 end: "), signif(res$t_L3_end, 2), " / ", res$Ch_L3_end, " / ", signif(res$Cts_L3, 2)
     ))
   })
-  
+
   observe({
     # nested renderText({}) for code output on "R plot code" tab
-    code.output <- callModule(RLumShiny:::printCode, "printCode", n_input = 1, 
-                              fun = "calc_FastRatio(data,", args = values$args)
-    
+    code.output <- callModule(RLumShiny:::printCode, "printCode",
+                              n_inputs = 1,
+                              list(name = "calc_FastRatio",
+                                   arg1 = "data",
+                                   args = values$args))
+
     output$plotCode<- renderText({
       code.output
     })##EndOf::renderText({})
-    
+
     callModule(RLumShiny:::exportCodeHandler, "export", code = code.output)
     callModule(RLumShiny:::exportPlotHandler, "export", fun = "calc_FastRatio", args = values$args)
   })
-  
-  
+
 }##EndOf::function(input, output)

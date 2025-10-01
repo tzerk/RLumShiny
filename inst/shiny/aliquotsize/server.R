@@ -89,8 +89,10 @@ function(input, output, session) {
     } else {
       values$args$packing.density <- NULL
     }
-    code.output <- callModule(RLumShiny:::printCode, "printCode", n_input = 0,
-                              fun = "calc_AliquotSize(", args = values$args)
+    code.output <- callModule(RLumShiny:::printCode, "printCode",
+                              n_inputs = 0,
+                              list(name = "calc_AliquotSize",
+                                   args = values$args))
 
     output$plotCode<- renderText({
       code.output

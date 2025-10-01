@@ -296,17 +296,20 @@ function(input, output, session) {
     do.call(plot_RadialPlot, args = values$args)
     
   })##EndOf::renderPlot({})
-  
+
   observe({
-    
+
     # nested renderText({}) for code output on "R plot code" tab
-    code.output <- callModule(RLumShiny:::printCode, "printCode", n_input = 2, 
-                              fun = "plot_RadialPlot(data,", args = values$args)
-    
+    code.output <- callModule(RLumShiny:::printCode, "printCode",
+                              n_inputs = 2,
+                              list(name = "plot_RadialPlot",
+                                   arg1 = "data",
+                                   args = values$args))
+
     output$plotCode<- renderText({
       code.output
     })##EndOf::renderText({})
-    
+
     callModule(RLumShiny:::exportCodeHandler, "export", code = code.output)
     callModule(RLumShiny:::exportPlotHandler, "export", fun = "plot_RadialPlot", args = values$args)
     

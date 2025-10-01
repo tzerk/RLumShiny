@@ -58,6 +58,7 @@ function(input, output, session) {
 
     values$args.plot <- list(
       # plot_DoseResponseCurve arguments
+      object = NULL, # will be set further down
       plot_extended = input$extended,
       density_rug = input$density_rug,
       box = input$box,
@@ -94,11 +95,16 @@ function(input, output, session) {
 
   observe({
     # nested renderText({}) for code output on "R plot code" tab
-    args <- values$args.plot
     code.output <- callModule(RLumShiny:::printCode, "printCode",
-                              n_input = 1,
-                              fun = "plot_DoseResponseCurve(object = data,",
-                              args = args)
+                              n_inputs = 1,
+                              list(name = "fit_DoseResponseCurve",
+                                   arg1 = "data",
+                                   args = values$args.fit,
+                                   rets = "fit"),
+                              list(name = "plot_DoseResponseCurve",
+                                   arg1 = "fit",
+                                   args = values$args.plot)
+                              )
 
     output$plotCode <- renderText(code.output)
 

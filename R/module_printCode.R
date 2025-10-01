@@ -1,36 +1,81 @@
-printCode <- function(input, output, session, n_input, fun, args,
-                      join_inputs_in_list = TRUE) {
+#' Print the code used to load the data and generate the plots
+#'
+#' @param input,output,session
+#' Reactive objects used by shiny.
+#'
+#' @param ...
+#' Each function is represented as a named lists with elements `name` (the
+#' function name), `arg1` (the name of the first argument), `args` (a list of
+#' names and values for additional arguments), and optionally `rets` (the name
+#' of the object returned).
+#'
+#' @param n_inputs
+#' Number of input dataset used by the app.
+#'
+#' @param join_inputs_into_list
+#' Whether the inputs should be joined into a single list. This is ignored
+#' unless `n_inputs > 1`.
+#'
+#' @noRd
+printCode <- function(input, output, session, ...,
+                      n_inputs, join_inputs_into_list = TRUE) {
+  preamble <- .format_preamble(n_inputs, join_inputs_into_list)
+  fun.call <- sapply(list(...), .format_function_call)
+  paste0(preamble, paste(fun.call, collapse = "\n"), sep = "\n")
+}
 
-  # prepare code as text output
-  str1 <- paste("file <- file.choose()",
-                "data <- data.table::fread(file, data.table = FALSE)",
-                sep = "\n")
-  if (n_input == 2) {
-    str1 <- paste(str1,
-                  "file2 <- file.choose()",
-                  "data2 <- data.table::fread(file2, data.table = FALSE)",
-                  sep = "\n")
-    if (join_inputs_in_list)
-      str1 <- paste(str1,
-                    "data <- list(data, data2)", sep = "\n")
+## Format the preamble section
+.format_preamble <- function(n_inputs, join_into_list = TRUE) {
+  template <- function(idx, n_inputs) {
+    ## don't use file1 and data1 if there is only one input
+    if (idx == 1 && n_inputs == 1) idx <- ""
+    sprintf(paste("file%s <- file.choose()",
+                  "data%s <- data.table::fread(file%s, data.table = FALSE)",
+                  sep = "\n"),
+            idx, idx, idx)
   }
 
-  header <- paste("# To reproduce the plot in your local R environment",
-                  "# copy and run the following code to your R console.",
-                  "",
-                  "library(Luminescence)",
-                  if (n_input > 0) paste(str1, "\n"),
+  ## header lines
+  head <- paste("# To reproduce the plot in your local R environment",
+                "# copy and run the following code to your R console.",
+                "",
+                "library(Luminescence)",
+                "",
+                sep = "\n")
+
+  ## code to read the inputs
+  read <- NULL
+  for (idx in seq_len(n_inputs)) {
+    read <- paste(read, template(idx, n_inputs), sep = "\n")
+  }
+
+  ## optionally join multiple inputs into a single list
+  if (n_inputs > 1 && join_into_list) {
+    inputs <- paste0("data", 1:n_inputs, collapse = ", ")
+    read <- paste(read,
+                  sprintf("data <- list(%s)", inputs),
                   sep = "\n")
+  }
 
+  ## return the complete preamble
+  paste0(head, read, ifelse(n_inputs > 0, "\n", ""), sep = "\n")
+}
+
+## Format a complete function call
+.format_function_call <- function(fun) {
+  rets <- if (!is.null(fun$rets)) paste(fun$rets, "<- ") else ""
+  sprintf("%s%s(%s)\n", rets, fun$name, .format_args(fun$arg1, fun$args))
+}
+
+## Format a list of arguments into a comma-separated string
+.format_args <- function(arg1, args) {
   names <- names(args)
-
   if (is.null(names))
     names <- rep(NA, length(args))
-
   names[which(names == "")] <- NA
 
-  verb.arg <- paste(mapply(function(name, arg) {
-    if (all(inherits(arg, "character")))
+  args <- paste(mapply(function(name, arg) {
+    if (inherits(arg, "character"))
       arg <- paste0("'", arg, "'")
     if (inherits(arg, "list"))
       arg <- deparse(arg)
@@ -44,8 +89,7 @@ printCode <- function(input, output, session, n_input, fun, args,
       arg
   }, names[-1], args[-1]), collapse = ",\n")
 
-  funCall <- paste0(fun, "\n", verb.arg, ")")
-  code.output <- paste0(header, "\n", funCall, sep = "\n")
-
-  return(code.output)
+  if (is.null(arg1))
+    return(args)
+  paste(arg1, args, sep = ",\n")
 }

@@ -396,8 +396,10 @@ function(input, output, session) {
   observe({
     # nested renderText({}) for code output on "R plot code" tab
     code.output <- callModule(RLumShiny:::printCode, "printCode",
-                              n_input = ifelse(!all(is.na(unlist(values$data_secondary))), 2, 1),
-                              fun = "plot_AbanicoPlot(data,", args = values$args)
+                              n_inputs = ifelse(!all(is.na(unlist(values$data_secondary))), 2, 1),
+                              list(name = "plot_AbanicoPlot",
+                                   arg1 = "data",
+                                   args = values$args))
 
     output$plotCode<- renderText({
       code.output
