@@ -96,29 +96,32 @@ function(instance, td, row, col, prop, value, cellProperties) {
       plot_single = TRUE,
       verbose = FALSE
     )
-    
+
     # sanitise final list by removing all NULL elements
     args[sapply(args, is.null)] <- NULL
-    
+
     # return
     values$args <- args
   })
-  
-  
+
+
   ## SHINY MODULES ----
   observe({
     # nested renderText({}) for code output on "R plot code" tab
-    code.output <- callModule(RLumShiny:::printCode, "printCode", n_input = 1, 
-                              fun = paste0("scale_GammaDose(data,"), args = values$args)
-    
+    code.output <- callModule(RLumShiny:::printCode, "printCode",
+                              n_inputs = 1,
+                              list(name = "scale_GammaDose",
+                                   arg1 = "data",
+                                   args = values$args))
+
     output$plotCode<- renderText({
       code.output
     })##EndOf::renderText({})
-    
+
     callModule(RLumShiny:::exportCodeHandler, "export", code = code.output)
     callModule(RLumShiny:::exportPlotHandler, "export", fun = "scale_GammaDose", args = values$args)
   })
-  
+
   ## MAIN ----
   
   ## Calculate results

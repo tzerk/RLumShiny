@@ -107,13 +107,15 @@ function(input, output, session) {
 
   observe({
     # nested renderText({}) for code output on "R plot code" tab
-    fun <- 'data <- set_RLum("RLum.Analysis",
-                 records = list(set_RLum("RLum.Data.Curve", data = as.matrix(data)),
+    lum <- '# create an RLum.Analysis object
+data <- set_RLum("RLum.Analysis",
+                 records = list(set_RLum("RLum.Data.Curve", data = as.matrix(data1)),
                                 set_RLum("RLum.Data.Curve", data = as.matrix(data2))))'
-    code.output <- callModule(RLumShiny:::printCode, "printCode", n_input = 2,
-                              join_inputs_in_list = FALSE,
-                              fun = paste0(fun, "\nanalyse_IRSAR.RF(data,"),
-                              args = values$args)
+    code.output <- callModule(RLumShiny:::printCode, "printCode",
+                              n_inputs = 2, join_inputs_into_list = FALSE,
+                              list(name = paste0(lum, "\n\nanalyse_IRSAR.RF"),
+                                   arg1 = "data",
+                                   args = values$args))
 
     output$plotCode<- renderText({
       code.output

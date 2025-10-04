@@ -116,9 +116,10 @@ function(input, output, session) {
   observe({
     # nested renderText({}) for code output on "R plot code" tab
     code.output <- callModule(RLumShiny:::printCode, "printCode",
-                              n_input = 2, join_inputs_in_list = FALSE,
-                              fun = "fit_LMCurve(values = data,\nvalues.bg = data2,",
-                              args = values$args[-2]) # remove values.bg
+                              n_inputs = 2, join_inputs_into_list = FALSE,
+                              list(name = "fit_LMCurve",
+                                   arg1 = "values = data1,\nvalues.bg = data2",
+                                   args = values$args[-2])) # remove values.bg
 
     output$plotCode<- renderText({
       code.output

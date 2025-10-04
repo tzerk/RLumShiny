@@ -126,18 +126,21 @@ function(input, output, session) {
       },#EO content =,
       contentType = "text"
     )#EndOf::dowmloadHandler()
-    
+
   })
-  
+
   observe({
     # nested renderText({}) for code output on "R plot code" tab
-    code.output <- callModule(RLumShiny:::printCode, "printCode", n_input = 1, 
-                              fun = paste0(input$method, "(data,"), args = values$args)
-    
+    code.output <- callModule(RLumShiny:::printCode, "printCode",
+                              n_inputs = 1,
+                              list(name = input$method,
+                                   arg1 = "data",
+                                   args = values$pargs))
+
     output$plotCode<- renderText({
       code.output
     })##EndOf::renderText({})
-    
+
     callModule(RLumShiny:::exportCodeHandler, "export", code = code.output)
     callModule(RLumShiny:::exportPlotHandler, "export", fun = "plot", args = values$pargs)
   })
