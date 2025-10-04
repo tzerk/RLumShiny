@@ -375,7 +375,7 @@ function(input, output, session) {
                 kde = input$kde,
                 hist = input$histogram,
                 dots = input$dots,
-                frame = input$frame)
+                frame = as.integer(input$frame))
   })
 
   # render Abanico Plot
