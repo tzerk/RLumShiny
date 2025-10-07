@@ -11,12 +11,12 @@ function(request) {
                    tabsetPanel(id = "tabs", type = "pill", selected = "Data",
                                # Tab 1: Data input
                                tabPanel("Data",
-                                        
+
                                         # informational text
                                         div(align = "center", h5("Data upload")),
                                         # file upload button (data set 1)
-                                        fileInput(inputId = "file", 
-                                                  label = strong("Measurement file"),
+                                        fileInput(inputId = "file",
+                                                  label = strong("Measurement file (.bin, .binx)"),
                                                   accept="application/octet-stream, .bin, .binx"),
                                         # import
                                         actionButton(inputId = "import", label = "Import", class = "btn btn-success"),

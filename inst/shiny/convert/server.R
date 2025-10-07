@@ -18,18 +18,13 @@ function(input, output, session) {
     
     if(is.null(inFile)) 
       return(NULL)
-    
+
     # 1. Risoe .bin(x)
     if (tools::file_ext(inFile$name) %in% c("bin", "binx")) {
-
-      # rename temp file
-      file <- paste0(inFile$datapath, ".", tools::file_ext(inFile$name))
-      file.rename(inFile$datapath, file)
-      
       # import the file
-      values$data <- read_BIN2R(file, fastForward = TRUE, verbose = FALSE)
+      values$data <- read_BIN2R(inFile$datapath, fastForward = TRUE, verbose = FALSE)
       values$data_filtered <- values$data
-      
+
       # set some diagnostic values
       values$positions <- unique(sapply(values$data, function(x) { x@records[[1]]@info$POSITION }))
       values$types <- unique(sapply(values$data[[1]]@records, function(x) { x@recordType }))
@@ -38,19 +33,19 @@ function(input, output, session) {
 
   output$positions <- renderUI({
     if (!is.null(values$positions))
-      checkboxGroupInput("positions", "Positions", 
-                         choiceNames = as.character(values$positions), choiceValues = 1:length(values$positions), 
+      checkboxGroupInput("positions", "Positions",
+                         choiceNames = as.character(values$positions),
+                         choiceValues = 1:length(values$positions),
                          selected = 1:length(values$positions),
                          inline = TRUE)
   })
-  
+
   output$curveTypes <- renderUI({
     if (!is.null(values$types))
       checkboxGroupInput("curveTypes", "Curve types", 
                          choices = values$types, selected = values$types)
   })
-  
-  
+
   ## FILTER ----
   observe({
     if (is.null(values$data))
@@ -105,16 +100,19 @@ function(input, output, session) {
   observeEvent(input$export, {
     if (is.null(values$data_filtered))
       return(NULL)
-    
+
     do.call(input$targetFile, values$data_filtered)
   })
-  
+
   observe({
     pos_sel <- values$positions[as.numeric(input$positions)]
 
     for (i in 1:length(pos_sel))
-      
+
       # Explanation on local({}):
+      # Need local so that each item gets its own number. Without it, the value
+      # of i in the renderPlot() will be the same across all instances, because
+      # of when the expression is evaluated.
       # https://gist.github.com/wch/5436415/
       local({
         local_i <- i
