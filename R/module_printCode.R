@@ -7,7 +7,7 @@
 #' Each function is represented as a named lists with elements `name` (the
 #' function name), `arg1` (the name of the first argument), `args` (a list of
 #' names and values for additional arguments), and optionally `rets` (the name
-#' of the object returned).
+#' of the object returned) and `info` (a comment to be prepended).
 #'
 #' @param n_inputs
 #' Number of input dataset used by the app.
@@ -64,6 +64,8 @@ printCode <- function(input, output, session, ...,
 ## Format a complete function call
 .format_function_call <- function(fun) {
   rets <- if (!is.null(fun$rets)) paste(fun$rets, "<- ") else ""
+  if (!is.null(fun$info))
+    rets <- paste0("# ", fun$info, "\n", rets)
   sprintf("%s%s(%s)\n", rets, fun$name, .format_args(fun$arg1, fun$args))
 }
 
