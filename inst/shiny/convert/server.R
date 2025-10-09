@@ -3,15 +3,16 @@
 function(input, output, session) {
 
   # input data (with default)
-  values <- reactiveValues(data = NULL, 
-                           data_filtered = NULL, 
-                           positions = NULL, 
-                           types = NULL)
-  
+  values <- reactiveValues(data = NULL,
+                           data_filtered = NULL,
+                           positions = NULL,
+                           types = NULL,
+                           filename = NULL)
+
   session$onSessionEnded(function() {
     stopApp()
   })
-  
+
   # check and read in file (DATA SET 1)
   observeEvent(input$import, {
     inFile<- input$file
@@ -28,6 +29,7 @@ function(input, output, session) {
       # set some diagnostic values
       values$positions <- unique(sapply(values$data, function(x) { x@records[[1]]@info$POSITION }))
       values$types <- unique(sapply(values$data[[1]]@records, function(x) { x@recordType }))
+      values$filename <- inFile$name
     }
   })
 
@@ -97,12 +99,30 @@ function(input, output, session) {
     }
   })
 
-  observeEvent(input$export, {
-    if (is.null(values$data_filtered))
-      return(NULL)
+  output$export <- downloadHandler(
+      filename = function() {
+        ## write_RLum2CSV() generates multiple csv files, so we zip them up
+        ext <- if (input$targetFile == "csv") "zip" else input$targetFile
+        sprintf("filtered_%s.%s",
+                tools::file_path_sans_ext(values$filename), ext)
+      },
+      content = function(file) {
+        if (input$targetFile == "binx") {
+          out <- convert_RLum2Risoe.BINfileData(values$data_filtered)
+          write_R2BIN(out, file = file)
+        } else if (input$targetFile == "csv") {
+          path <- dirname(file)
+          write_RLum2CSV(values$data_filtered, path = path)
 
-    do.call(input$targetFile, values$data_filtered)
-  })
+          ## set the -j flag to remove the absolute paths, otherwise the zip
+          ## file contains the name of the temp directory (9X are already in
+          ## the default flags for utils::zip())
+          utils::zip(file,
+                     files = list.files(path, pattern = ".csv$", full.names = TRUE),
+                     flags = "-j9X")
+        }
+      }
+  )
 
   observe({
     pos_sel <- values$positions[as.numeric(input$positions)]
