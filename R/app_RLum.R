@@ -109,10 +109,12 @@ app_RLum <- function(app = NULL, ...) {
   } else {
 
     # check if keyword is valid
-    if (!any(grepl(app, valid_apps, ignore.case = TRUE)))
+    match.idx <- grepl(app, valid_apps, ignore.case = TRUE)
+    if (!any(match.idx))
       return(message(paste0("Invalid app name: ", app, " \n Valid options are: ", paste(valid_apps, collapse = ", "))))
 
     # start application
+    app <- valid_apps[match.idx]
     app <- shiny::runApp(system.file(paste0("shiny/", app), package = "RLumShiny"), launch.browser = TRUE,  ...)
   }
 }
