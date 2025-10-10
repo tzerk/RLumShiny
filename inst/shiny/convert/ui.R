@@ -11,12 +11,12 @@ function(request) {
                    tabsetPanel(id = "tabs", type = "pill", selected = "Data",
                                # Tab 1: Data input
                                tabPanel("Data",
-                                        
+
                                         # informational text
                                         div(align = "center", h5("Data upload")),
                                         # file upload button (data set 1)
-                                        fileInput(inputId = "file", 
-                                                  label = strong("Measurement file"),
+                                        fileInput(inputId = "file",
+                                                  label = strong("Measurement file (.bin, .binx)"),
                                                   accept="application/octet-stream, .bin, .binx"),
                                         # import
                                         actionButton(inputId = "import", label = "Import", class = "btn btn-success"),
@@ -25,28 +25,30 @@ function(request) {
                                         fluidRow(
                                           column(width = 6,
                                                  uiOutput("positions")
-                                                 
+
                                           ),
                                           column(width = 6,
                                                  uiOutput("curveTypes")
                                           )
                                         )
                                ),##EndOf::Tab_1
-                               
+
                                tabPanel("Curves",
                                         div(align = "center", h5("(De)select individual curves")),
                                         checkboxGroupInput("curves", "Curves")
                                ),##EndOf::Tab_2
 
                                tabPanel("Export",
-                                        selectInput("targetFile", label = "Export to...", 
-                                                    choices = list(".bin(x)" = "write_R2BIN",
-                                                                   ".csv" = "write_RLum2CSV")),
-                                        actionButton("export", "Download file", class = "btn btn-success")
+                                        selectInput("targetFile", label = "Export to...",
+                                                    choices = list("BINX" = "binx",
+                                                                   "CSV" = "csv")),
+                                        downloadButton("export",
+                                                       label = "Download file",
+                                                       class = "btn btn-success")
                                         )
                    )##EndOf::tabsetPanel
       ),##EndOf::sidebarPanel
-      
+
       # 3 - output panel
       mainPanel(width = 7,
                 # insert css code inside <head></head> of the generated HTML file:
