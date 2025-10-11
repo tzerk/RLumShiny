@@ -11,6 +11,12 @@ output: github_document
 
 * Made `app_RLum()` ignore case differences when matching app names.
 
+* New application to analyse CW-OSL curve data produced by a SUERC portable OSL
+  reader and produces a combined plot of OSL/IRSL signal intensities, OSL/IRSL
+  depletion ratios  and the IRSL/OSL ratio.
+  Base function: `Luminescence::analyse_portableOSL()`.
+  Keyword for `app_RLum()`: 'portableOSL'.
+
 ## RLumShiny 0.2.5 (Release date: 2025-07-12)
 
 * New application to either estimate the number of grains on an aliquot or to

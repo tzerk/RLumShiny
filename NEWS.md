@@ -37,6 +37,12 @@
   for a given number of components. Base function:
   `Luminescence::fit_LMCurve()`. Keyword for `app_RLum()`: ‘lmcurve’.
 
+- New application to analyse CW-OSL curve data produced by a SUERC
+  portable OSL reader and produces a combined plot of OSL/IRSL signal
+  intensities, OSL/IRSL depletion ratios and the IRSL/OSL ratio. Base
+  function: `Luminescence::analyse_portableOSL()`. Keyword for
+  `app_RLum()`: ‘portableOSL’.
+
 - Added hints on file format and structure expected in each app (#45).
 
 - App `abanico`:

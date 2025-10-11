@@ -8,25 +8,10 @@ function(request) {
       # elements
       sidebarPanel(width = 5,
                    # include a tabs in the input panel for easier navigation
-                   tabsetPanel(id = "tabs", type = "pill", selected = "Data",
-                               # Tab 1: Data input
-                               tabPanel("Data",
-
-                                        # informational text
-                                        div(align = "center", h5("Data upload")),
-                                        # file upload button (data set 1)
-                                        fileInput(inputId = "file",
-                                                  label = strong("Primary data set"),
-                                                  placeholder = "A CSV file with two columns (Time and Counts)",
-                                                  accept="text/plain, .csv, text/csv"),
-                                        # rhandsontable input/output
-                                        fluidRow(
-                                          column(width = 6,
-                                                 rHandsontableOutput(outputId = "table_in_primary")
-                                          )
-                                        )
-
-                               ),##EndOf::Tab_1
+                   tabsetPanel(id = "tabs", type = "pill", selected = "Import",
+                               RLumShiny:::importTab("import",
+                                                     label = "Measurement file (.psl)",
+                                                     accept = "text/plain, .psl"),
 
                                tabPanel("Method",
                                         div(align = "center", h5("Input data preprocessing")),
