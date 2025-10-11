@@ -9,6 +9,8 @@ output: github_document
   Base function: `Luminescence::plot_DoseResponseCurve()`.
   Keyword for `app_RLum()`: 'doseresponsecurve'.
 
+* Made `app_RLum()` ignore case differences when matching app names.
+
 * New application to analyse CW-OSL curve data produced by a SUERC portable OSL
   reader and produces a combined plot of OSL/IRSL signal intensities, OSL/IRSL
   depletion ratios  and the IRSL/OSL ratio.
