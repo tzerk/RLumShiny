@@ -59,6 +59,11 @@ RLumShinyAddin <- function() {
                      category = "plot",
                      description = "The function determines weighted non-linear least-squares estimates of the component parameters of an LM-OSL curve (Bulur 1996) for a given number of components"),
 
+    "portableOSL" = list(title = "Portable OSL",
+                        keyword = "portableOSL",
+                        category = "plot",
+                        description = "The function analyses CW-OSL curve data produced by a SUERC portable OSL reader and produces a combined plot of OSL/IRSL signal intensities, OSL/IRSL depletion ratios  and the IRSL/OSL ratio."),
+
     "radialplot" = list(title = "Radial Plot",
                         keyword = "radialplot",
                         category = "plot",

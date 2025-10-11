@@ -32,7 +32,13 @@ function(input, output, session) {
     if(is.null(inFile))
       return(NULL) # if no file was uploaded return NULL
 
-    values$data_primary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath
+    ## read psl file
+    if (tools::file_ext(inFile$name) == "psl") {
+      # import the file as RLum.Analysis object
+      values$data_primary <- read_PSL2R(inFile$datapath,
+                                        fastForward = TRUE,
+                                        verbose = FALSE)
+    }
   })
 
   observeEvent(input$table_in_primary, {

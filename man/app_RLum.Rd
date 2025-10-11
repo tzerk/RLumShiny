@@ -28,6 +28,7 @@ Kernel Density Estimate Plot \tab \emph{KDE} \tab \link[Luminescence:plot_KDE]{L
 Radial Plot \tab \emph{radialplot} \tab \link[Luminescence:plot_RadialPlot]{Luminescence::plot_RadialPlot} \cr
 Aliquot Size \tab \emph{aliquotsize} \tab \link[Luminescence:calc_AliquotSize]{Luminescence::calc_AliquotSize} \cr
 Dose Recovery Test \tab \emph{doserecovery} \tab \link[Luminescence:plot_DRTResults]{Luminescence::plot_DRTResults} \cr
+Dose ResponseCurve \tab \emph{doseresponsecurve} \tab \link[Luminescence:plot_DoseResponseCurve]{Luminescence::plot_DoseResponseCurve} \cr
 Cosmic Dose Rate \tab \emph{cosmicdose}  \tab \link[Luminescence:calc_CosmicDoseRate]{Luminescence::calc_CosmicDoseRate} \cr
 CW Curve Transformation \tab \emph{transformCW} \tab \link[Luminescence:convert_CW2pHMi]{Luminescence::convert_CW2pHMi}, \link[Luminescence:convert_CW2pLM]{Luminescence::convert_CW2pLM}, \link[Luminescence:convert_CW2pLMi]{Luminescence::convert_CW2pLMi}, \link[Luminescence:convert_CW2pPMi]{Luminescence::convert_CW2pPMi} \cr
 Filter Combinations \tab \emph{filter} \tab \link[Luminescence:plot_FilterCombinations]{Luminescence::plot_FilterCombinations} \cr
@@ -37,6 +38,7 @@ Finite Mixture \tab \emph{finitemixture} \tab \link[Luminescence:calc_FiniteMixt
 Huntley (2006) \tab \emph{huntley2006} \tab \link[Luminescence:calc_Huntley2006]{Luminescence::calc_Huntley2006} \cr
 IRSAR RF \tab \emph{irsarRF} \tab \link[Luminescence:analyse_IRSAR.RF]{Luminescence::analyse_IRSAR.RF} \cr
 LM Curve \tab \emph{lmcurve} \tab \link[Luminescence:fit_LMCurve]{Luminescence::fit_LMCurve} \cr
+Portable OSL \tab \emph{portableOSL} \tab \link[Luminescence:analyse_portableOSL]{Luminescence::analyse_portableOSL} \cr
 Test Stimulation Power \tab \emph{teststimulationpower} \tab  \link[Luminescence:plot_RLum]{Luminescence::plot_RLum} \cr
 Scale Gamma Dose Rate \tab \emph{scalegamma} \tab \link[Luminescence:scale_GammaDose]{Luminescence::scale_GammaDose} \cr
 RCarb app \tab \emph{RCarb} \tab \link[RCarb:model_DoseRate]{RCarb::model_DoseRate}
@@ -58,6 +60,7 @@ app_RLum("histogram")
 app_RLum("KDE")
 app_RLum("radialplot")
 app_RLum("doserecovery")
+app_RLum("doseresponsecurve")
 
 # Further apps
 app_RLum("aliquotsize")
@@ -70,6 +73,7 @@ app_RLum("finitemixture")
 app_RLum("huntley2006")
 app_RLum("irsarRF")
 app_RLum("lmcurve")
+app_RLum("portableOSL")
 app_RLum("surfaceexposure")
 app_RLum("teststimulationpower")
 app_RLum("scalegamma")
