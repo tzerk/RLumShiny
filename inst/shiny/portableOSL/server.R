@@ -7,15 +7,6 @@ function(input, output, session) {
     data <- startData
   } else {
     data <- merge_RLum(ExampleData.portableOSL)
-
-    ## add coordinates so that the surface mode works
-    sample.names <- unique(sapply(data@records, function(x) x@info$settings$Sample))
-    data@records <- lapply(data@records, function(x) {
-      name <- x@info$settings$Sample
-      set.seed(match(name, sample.names))
-      x@info$settings$Sample <- paste0(name, "_x:", runif(1), "|y:", runif(1))
-      x
-    })
   }
   values <- reactiveValues(data_primary = data,
                            args = NULL,
