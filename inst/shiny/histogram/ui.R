@@ -1,6 +1,6 @@
 function(request) {
   fluidPage(
-    titlePanel(NULL, windowTitle = "RLumShiny - Histogram"),
+    titlePanel("Histogram Plot", windowTitle = "RLumShiny - Histogram Plot"),
     sidebarLayout(
       sidebarPanel(width = 5,
 
