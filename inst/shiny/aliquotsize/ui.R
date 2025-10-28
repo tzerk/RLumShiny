@@ -17,7 +17,7 @@ function(request) {
                                         div(align = "left",
                                             sliderInput(inputId = "grain_size",
                                                         label = "Range of grain sizes (microns)",
-                                                        min = 0, max = 1000,
+                                                        min = 0.001, max = 1000,
                                                         value = c(100, 200),
                                                         step = 1),
                                             title = "Minimum and maximum grain size."),
