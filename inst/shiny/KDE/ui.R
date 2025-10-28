@@ -86,14 +86,7 @@ function(request) {
                                                                            "Skewness" = "skewness",
                                                                            "Kurtosis" = "kurtosis",
                                                                            "% in 2 sigma range" = "in.2s")),
-                                            title = "Statistical parameters to be shown in the summary"),
-
-                                        div(align = "center", h5("Additional options")),
-                                        div(align = "left",
-                                            checkboxInput(inputId = "cumulative",
-                                                          label = "Show individual data",
-                                                          value = TRUE),
-                                            title = "Show cumulative individual data.")
+                                            title = "Statistical parameters to be shown in the summary.")
 
                                ),##EndOf::Tab_2
 
@@ -117,16 +110,24 @@ function(request) {
                                                     value = 1.0, step = 0.1),
 
                                         div(align = "center", h5("Further options")),
-                                        fluidRow(
-                                          column(width = 6,
-                                                 checkboxInput(inputId = "rug",
-                                                               label = "Add rug",
-                                                               value = TRUE)
-                                          ),
-                                          column(width = 6,
-                                                 checkboxInput(inputId = "boxplot",
-                                                               label = "Add boxplot",
-                                                               value = TRUE))
+                                        div(align = "left",
+                                            checkboxInput(inputId = "cumulative",
+                                                          label = "Show individual data",
+                                                          value = TRUE),
+                                            title = "Show cumulative individual data."),
+
+                                        conditionalPanel(condition = "input.cumulative == true",
+                                                         fluidRow(
+                                                             column(width = 6,
+                                                                    checkboxInput(inputId = "rug",
+                                                                                  label = "Add rug",
+                                                                                  value = TRUE)
+                                                                    ),
+                                                             column(width = 6,
+                                                                    checkboxInput(inputId = "boxplot",
+                                                                                  label = "Add boxplot",
+                                                                                  value = TRUE))
+                                                         )
                                         )
                                ),##EndOf::Tab_3
 
