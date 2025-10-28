@@ -1,7 +1,7 @@
 ## UI.R
 function(request) {
   fluidPage(
-    titlePanel(NULL, windowTitle = "RLumShiny - Dose Response Curve"),
+    titlePanel("Dose Response Curve", windowTitle = "RLumShiny - Dose Response Curve"),
     sidebarLayout(
       # 2- width = 5 -> refers to twitters bootstrap grid system
       # where the the maximum width is 12 that is to be shared between all

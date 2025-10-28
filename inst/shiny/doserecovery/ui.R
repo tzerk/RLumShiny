@@ -1,6 +1,6 @@
 function(request) {
   fluidPage(
-    titlePanel(NULL, windowTitle = "RLumShiny - DRT"),
+    titlePanel("Dose Recovery", windowTitle = "RLumShiny - Dose Recovery"),
     sidebarLayout(
       sidebarPanel(width = 5,
 

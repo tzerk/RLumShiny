@@ -1,7 +1,7 @@
 ## UI.R
 function(request) {
   fluidPage(
-    titlePanel(NULL, windowTitle = "RLumShiny - Aliquot Size"),
+    titlePanel("Aliquot Size", windowTitle = "RLumShiny - Aliquot Size"),
     sidebarLayout(
       # 2- width = 5 -> refers to twitters bootstrap grid system
       # where the the maximum width is 12 that is to be shared between all
@@ -17,7 +17,7 @@ function(request) {
                                         div(align = "left",
                                             sliderInput(inputId = "grain_size",
                                                         label = "Range of grain sizes (microns)",
-                                                        min = 0, max = 1000,
+                                                        min = 0.001, max = 1000,
                                                         value = c(100, 200),
                                                         step = 1),
                                             title = "Minimum and maximum grain size."),

@@ -9,13 +9,13 @@ output: github_document
   Base function: `Luminescence::plot_DoseResponseCurve()`.
   Keyword for `app_RLum()`: 'doseresponsecurve'.
 
-* Made `app_RLum()` ignore case differences when matching app names.
-
 * New application to analyse CW-OSL curve data produced by a SUERC portable OSL
   reader and produces a combined plot of OSL/IRSL signal intensities, OSL/IRSL
   depletion ratios  and the IRSL/OSL ratio.
   Base function: `Luminescence::analyse_portableOSL()`.
   Keyword for `app_RLum()`: 'portableOSL'.
+
+* Made `app_RLum()` ignore case differences when matching app names.
 
 ## RLumShiny 0.2.5 (Release date: 2025-07-12)
 

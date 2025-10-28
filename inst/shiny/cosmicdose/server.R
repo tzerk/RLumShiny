@@ -10,7 +10,6 @@ function(input, output, session) {
     if (id == "degDecMin") {
       x <- c(sum(input$degN_1, input$decMinN/60),
             sum(input$degE_1, input$decMinE/60))
-
     }
 
     if (id == "degMinSec") {
@@ -62,6 +61,12 @@ function(input, output, session) {
     # get absorber properties
     depth <- na.omit(c(input$depth_1, input$depth_2, input$depth_3, input$depth_4, input$depth_5))
     density <- na.omit(c(input$density_1, input$density_2, input$density_3, input$density_4, input$density_5))
+
+    ## don't crash on previously set values (issue #23)
+    if (input$mode == "sAxS") {
+      density <- density[1]
+    }
+
     t <- get_RLum(calc_CosmicDoseRate(depth = as.numeric(depth),
                                      density = as.numeric(density),
                                      latitude = lat,
@@ -95,7 +100,6 @@ function(input, output, session) {
         "Cosmic dose rate (uncorrected): ","<font size='3'>", "<code>", round(t$d0, 3), "Gy/ka", "</code>", "</font>", "<br>",
         "Geomagnetic latitude: ","<font size='3'>", "<code>", round(t$geom_lat, 2), "\u00b0", "</code>", "</font>", "<br>",
         "Cosmic dose rate (corrected): ","<font size='3'>", "<code>", round(t$dc, 3),"\u00b1", round(t$dc/100*input$error, 3), "Gy/ka", "</code>", "<br> ", "</font>"
-
       )
     }
   })
@@ -107,12 +111,7 @@ function(input, output, session) {
     input$refresh
 
     if(input$mode == "sAxS") {
-
       t<- get_results()
-
-      ## work around for issue #23
-      if (is.null(t$depth))
-        t$depth <- NA
       table<- as.data.frame(cbind(t$depth, t$total_absorber.gcm2, round(t$d0, 3), round(t$dc,3), round(t$dc/100*input$error, 3)))
       colnames(table)<- c("Depth (m)",
                           "Absorber (g/cm\u00b2)",

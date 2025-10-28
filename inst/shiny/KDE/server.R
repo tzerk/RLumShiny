@@ -100,35 +100,31 @@ function(input, output, session) {
       values$data_secondary <- hot_to_r(df_tmp)
     
   })
-  
-  
+
   # dynamically inject sliderInput for x-axis range
   output$xlim<- renderUI({
-    
     data <- do.call(rbind, values$data)
-    
-    sliderInput(inputId = "xlim", 
+
+    rng <- range(data[, 1])
+    sliderInput(inputId = "xlim",
                 label = "Range x-axis",
-                min = min(data[,1])*0.25,
-                max = max(data[,1])*1.75,
-                value = c(min(data[,1])*0.9, max(data[,1])*1.1))
-    
+                min = signif(rng[1] * 0.25, 3),
+                max = signif(rng[2] * 1.75, 3),
+                value = rng * c(0.9, 1.1))
   })## EndOf::renderUI()
-  
+
   # dynamically inject sliderInput for KDE bandwidth
   output$bw<- renderUI({
-    
     data <- do.call(rbind, values$data)
-    
-    sliderInput(inputId = "bw", 
-                label = "KDE bandwidth", 
-                min = round(bw.nrd0(data[,1])/4, 3),
-                max = round(bw.nrd0(data[,1])*4, 3),
-                value = bw.nrd0(data[,1]))
-    
+
+    bw <- bw.nrd0(data[, 1])
+    sliderInput(inputId = "bw",
+                label = "KDE bandwidth",
+                min = signif(bw / 4, 3),
+                max = signif(bw * 4, 3),
+                value = bw)
   })## EndOf::renderUI()
-  
-  
+
   observe({
     # make sure that input panels are registered on non-active tabs.
     # by default tabs are suspended and input variables are hence
@@ -141,11 +137,10 @@ function(input, output, session) {
     
     # check if any summary stats are activated, else NA
     summary <- if (input$summary) input$stats else ""
-    logx <- ifelse(input$logx, "x", "")
-    
+
     # if custom datapoint color get RGB code from separate input panel
     color <- ifelse(input$color == "custom", input$rgb, input$color)
-    
+
     # if custom datapoint color get RGB code from separate input panel
     if(!all(is.na(unlist(values$data_secondary)))) {
       color2 <- ifelse(input$color2 == "custom", input$rgb2, input$color2)
@@ -154,9 +149,9 @@ function(input, output, session) {
     }
     
     values$args <- list(
-      data = values$data, 
-      cex = input$cex, 
-      log = logx,
+      data = values$data,
+      cex = input$cex,
+      log = ifelse(input$logx, "x", ""),
       xlab = input$xlab,
       ylab = c(input$ylab1, input$ylab2),
       main = input$main,

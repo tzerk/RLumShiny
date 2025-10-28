@@ -10,7 +10,7 @@ function(request) {
   }
 
   fluidPage(
-    titlePanel(NULL, windowTitle = "RLumShiny - CosmicDose"),
+    titlePanel("Cosmic Dose", windowTitle = "RLumShiny - Cosmic Dose"),
     includeCSS("./www/style.css"),
     fluidRow(
       column(width = 3,

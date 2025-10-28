@@ -1,7 +1,7 @@
 ## UI.R
 function(request) {
   fluidPage(
-    titlePanel(NULL, windowTitle = "RLumShiny - transformCW"),
+    titlePanel("transformCW", windowTitle = "RLumShiny - transformCW"),
     sidebarLayout(
       # 2- width = 5 -> refers to twitters bootstrap grid system
       # where the the maximum width is 12 that is to be shared between all
@@ -26,9 +26,9 @@ function(request) {
                                           ),
                                           column(width = 6)
                                         )
-                                        
+
                                ),##EndOf::Tab_1
-                               
+
                                tabPanel("Method",
                                         hr(),
                                         div(align = "center", h5("Transformation settings")),
