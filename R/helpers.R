@@ -23,6 +23,7 @@ pointSymbolChooser <- function(inputId, selected, label = "Style") {
                           "filled Diamond"="18",
                           "solid Circle"="19",
                           "Bullet (smaller Circle)"="20",
+                          "filled Circle w/outline"="21",
                           "Custom"="custom"))
 }
 
