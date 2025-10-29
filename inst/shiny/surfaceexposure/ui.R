@@ -142,7 +142,7 @@ function(request) {
                                                                          "Triangles up and down"="12",
                                                                          "Square plus"="13",
                                                                          "Circle cross"="14",
-                                                                         "Square and Triangle down"="15",
+                                                                         "Square and Triangle up"="15",
                                                                          "filled Square"="16",
                                                                          "filled Circle"="17",
                                                                          "filled Triangle point up"="18",
