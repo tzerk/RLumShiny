@@ -8,25 +8,20 @@ function(request) {
       # elements
       sidebarPanel(width = 5,
                    # include a tabs in the input panel for easier navigation
-                   tabsetPanel(id = "tabs", type = "pill", selected = "Data",
+                   tabsetPanel(id = "tabs", type = "pill", selected = "Import",
                                # Tab 1: Data input
-                               tabPanel("Data",
-
-                                        # informational text
-                                        div(align = "center", h5("Data upload")),
-                                        # file upload button (data set 1)
-                                        fileInput(inputId = "file",
-                                                  label = strong("Primary data set"),
-                                                  placeholder = "A CSV file with two columns (De and De error)",
-                                                  accept="text/plain, .csv, text/csv"),
-                                        # rhandsontable input/output
-                                        fluidRow(
-                                          column(width = 6,
-                                                 rHandsontableOutput(outputId = "table_in_primary")
-                                          )
-                                        )
-
-                               ),##EndOf::Tab_1
+                               RLumShiny:::importTab("import",
+                                                     "CSV file with two columns (De and De error)",
+                                                     "text/csv, .csv",
+                                                     callback = function() {
+                                                       # rhandsontable input/output
+                                                       fluidRow(
+                                                           column(width = 6,
+                                                                  rHandsontableOutput(outputId = "table_in_primary")
+                                                                  )
+                                                       )
+                                                     }
+                               ), ## EndOf::Tab_1
 
                                tabPanel("Method",
                                         div(align = "center", h5("Model parameters")),
