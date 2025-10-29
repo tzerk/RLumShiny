@@ -8,19 +8,13 @@ function(request) {
       # elements
       sidebarPanel(width = 5,
                    # include a tabs in the input panel for easier navigation
-                   tabsetPanel(id = "tabs", type = "pill", selected = "Data",
+                   tabsetPanel(id = "tabs", type = "pill", selected = "Import",
                                # Tab 1: Data input
-                               tabPanel("Data",
-
-                                        # informational text
-                                        div(align = "center", h5("Data upload")),
-                                        # file upload button (data set 1)
-                                        fileInput(inputId = "file",
-                                                  label = strong("Measurement file (.bin, .binx)"),
-                                                  accept="application/octet-stream, .bin, .binx"),
-                                        # import
-                                        actionButton(inputId = "import", label = "Import", class = "btn btn-success"),
-                                        tags$hr(),
+                               RLumShiny:::importTab("import",
+                                                     "BIN(X) file (.bin, .binx)",
+                                                     "application/octet-stream, .bin, .binx"
+                                                     ),
+                               tabPanel("Curve Selection",
                                         # dynamic elements depending on input file
                                         fluidRow(
                                           column(width = 6,
@@ -30,10 +24,8 @@ function(request) {
                                           column(width = 6,
                                                  uiOutput("curveTypes")
                                           )
-                                        )
-                               ),##EndOf::Tab_1
+                                        ),
 
-                               tabPanel("Curves",
                                         div(align = "center", h5("(De)select individual curves")),
                                         checkboxGroupInput("curves", "Curves")
                                ),##EndOf::Tab_2
