@@ -140,7 +140,9 @@ function(request) {
                                                   label = "Label x-axis",
                                                   value = "# Aliquot"),
                                         # inject xlim sliderInput from server.R
-                                        uiOutput(outputId = "xlim"),
+                                        conditionalPanel(condition = 'input.preheat != true',
+                                                         uiOutput(outputId = "xlim")
+                                        ),
                                         br(),
                                         div(align = "center", h5("Y-axis")),
                                         textInput(inputId = "ylab",
