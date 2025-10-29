@@ -148,8 +148,8 @@ function(input, output, session) {
     outputOptions(x = output, name = "ylim", suspendWhenHidden = FALSE)
 
     # if custom datapoint style get char from separate input panel
-    pch <- ifelse(input$pch == "custom", input$custompch, as.integer(input$pch) - 1)
-    pch2 <- ifelse(input$pch2 == "custom", input$custompch2, as.integer(input$pch2) - 1)
+    pch <- ifelse(input$pch == "custom", input$custompch, as.integer(input$pch))
+    pch2 <- ifelse(input$pch2 == "custom", input$custompch2, as.integer(input$pch2))
 
     # if custom datapoint color get RGB code from separate input panel
     color <- ifelse(input$color == "custom", input$rgb, color<- input$color)

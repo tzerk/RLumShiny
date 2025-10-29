@@ -77,14 +77,14 @@ function(input, output, session) {
                                      alpha.f = input$alpha.bars/100))
     rugs.color <- ifelse(input$rugsColor == "custom", input$rugsRgb, input$rugsColor)
     normal.color <- ifelse(input$normalColor == "custom", input$normalRgb, input$normalColor)
-    
+
     colors<- c(bars.color, rugs.color, normal.color, pch.color)
-    
+
     values$args <- list(
       data = values$data,
       na.rm = TRUE,
       cex.global = as.numeric(input$cex),
-      pch = ifelse(input$pch == "custom", input$custompch, as.integer(input$pch) - 1),
+      pch = ifelse(input$pch == "custom", input$custompch, as.integer(input$pch)),
       breaks = ifelse(input$breaks == "custom", input$breaks.num, input$breaks),
       xlim = input$xlim,
       summary.pos = input$sumpos, 

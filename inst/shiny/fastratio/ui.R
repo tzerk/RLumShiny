@@ -8,27 +8,22 @@ function(request) {
       # elements
       sidebarPanel(width = 5,
                    # include a tabs in the input panel for easier navigation
-                   tabsetPanel(id = "tabs", type = "pill", selected = "Data",
+                   tabsetPanel(id = "tabs", type = "pill", selected = "Import",
                                # Tab 1: Data input
-                               tabPanel("Data",
+                               RLumShiny:::importTab("import",
+                                                     "XSYG file (.xsyg) or CSV file with two columns (Time and Counts)",
+                                                     "application/xml, .xsyg, text/csv, .csv",
+                                                     callback = function() {
+                                                       # rhandsontable input/output
+                                                       fluidRow(
+                                                           column(width = 6,
+                                                                  rHandsontableOutput(outputId = "table_in_primary")
+                                                                  ),
+                                                           column(width = 6)
+                                                       )
+                                                     }
+                               ), ## EndOf::Tab_1
 
-                                        # informational text
-                                        div(align = "center", h5("Data upload")),
-                                        # file upload button (data set 1)
-                                        fileInput(inputId = "file",
-                                                  label = strong("Primary data set"),
-                                                  placeholder = "A CSV file with two columns (Time and Counts)",
-                                                  accept="text/plain, .csv, text/csv"),
-                                        # rhandsontable input/output
-                                        fluidRow(
-                                          column(width = 6,
-                                                 rHandsontableOutput(outputId = "table_in_primary")
-                                          ),
-                                          column(width = 6)
-                                        )
-                                        
-                               ),##EndOf::Tab_1
-                               
                                tabPanel("Method",
                                         div(align = "center", h5("Input data preprocessing")),
                                         sliderInput(inputId = "deadchannels", "Dead channels", value = c(1, 1000), min = 1, max = 1000, step = 1, 
@@ -123,8 +118,6 @@ function(request) {
                                                  numericInput(inputId = "x1", label = "...from the medium component", value = 0.1, min = 0.1, max = 100, step = 0.1)
                                           )
                                         )
-                                        
-                                        
                                ),
                                
                                tabPanel("Experimental",
@@ -148,41 +141,18 @@ function(request) {
                                                      choices = c("Line" = "l",
                                                                  "Points" = "p",
                                                                  "Line+Points" = "b")),
-                                        
+
                                         fluidRow(
                                           column(width = 6,
-                                                 selectInput(inputId = "pch",
-                                                             label = "Style",
-                                                             selected = "1",
-                                                             choices = c("Square"= "0",
-                                                                         "Circle"="1",
-                                                                         "Triangle point up"="2",
-                                                                         "Plus"="3",
-                                                                         "Cross"="4",
-                                                                         "Diamond"="5",
-                                                                         "Triangle point down"="6",
-                                                                         "Square cross"="7",
-                                                                         "Star"="8",
-                                                                         "Diamond plus"="9",
-                                                                         "Circle plus"="10",
-                                                                         "Triangles up and down"="11",
-                                                                         "Square plus"="12",
-                                                                         "Circle cross"="13",
-                                                                         "Square and Triangle down"="14",
-                                                                         "filled Square"="15",
-                                                                         "filled Circle"="16",
-                                                                         "filled Triangle point up"="17",
-                                                                         "filled Diamond"="18",
-                                                                         "solid Circle"="19",
-                                                                         "Bullet (smaller Circle)"="20",
-                                                                         "Custom"="custom"))
+                                                 pointSymbolChooser(inputId = "pch",
+                                                                    label = "Style",
+                                                                    selected = "1")
                                           ),
                                           column(width = 6,
                                                  # show only if custom symbol is desired
                                                  conditionalPanel(condition = "input.pch == 'custom'",
-                                                                  textInput(inputId = "custompch", 
-                                                                            label = "Insert character", 
-                                                                            value = "?"))
+                                                                  customSymbolChooser(inputId = "custompch")
+                                                 )
                                           )
                                         ),
                                         fluidRow(

@@ -99,10 +99,10 @@ function(input, output, session) {
                   xlab = input$xlab,
                   ylab = input$ylab1,
                   type = input$type,
-                  pch = ifelse(input$pch != "custom", as.integer(input$pch) - 1, input$custompch),
+                  pch = ifelse(input$pch == "custom", input$custompch, as.integer(input$pch)),
                   col = ifelse(input$color != "custom", input$color, input$jscol1),
                   bty = "n")
-    
+
     par(mar=c(5,4,4,5)+.1, cex = input$cex)
     do.call(plot, values$pargs)
     

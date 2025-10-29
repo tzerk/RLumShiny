@@ -242,10 +242,10 @@ function(input, output, session) {
     }
 
     # if custom datapoint style get char from separate input panel
-    pch<- ifelse(input$pch == "custom", input$custompch, as.integer(input$pch)-1)
+    pch <- ifelse(input$pch == "custom", input$custompch, as.integer(input$pch))
 
     # if custom datapoint style get char from separate input panel
-    pch2<- ifelse(input$pch2 == "custom", input$custompch2, as.integer(input$pch2)-1)
+    pch2 <- ifelse(input$pch2 == "custom", input$custompch2, as.integer(input$pch2))
 
     # create numeric vector of lines
     line <- sapply(1:8, function(x) input[[paste0("line", x)]])

@@ -44,7 +44,6 @@ function(input, output, session) {
       # generic plot arguments
       main = input$main,
       type = input$type,
-      pch = rep(ifelse(input$pch == "custom", input$custompch, as.numeric(input$pch)), 6),
       cex = input$cex,
       xlab = input$xlab,
       ylab = ifelse(input$normalise, paste("normalised", input$ylab), input$ylab),

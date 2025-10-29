@@ -1,4 +1,4 @@
-importTab <- function(id, label, accept) {
+importTab <- function(id, label, accept, callback = function() NULL) {
 
   ## create a namespace function using the provided id
   ns <- NS(id)
@@ -15,6 +15,9 @@ importTab <- function(id, label, accept) {
            # import
            actionButton(inputId = "import",
                         label = "Import",
-                        class = "btn btn-success")
+                        class = "btn btn-success"),
+
+           ## callback function
+           callback()
            )
 }

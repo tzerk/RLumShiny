@@ -1,8 +1,7 @@
 ## Server.R
 ## MAIN FUNCTION
 function(input, output, session) {
-  
-  
+
   # input data (with default)
   values <- reactiveValues(data_primary = if ("startData" %in% names(.GlobalEnv)) startData else ExampleData.DeValues$CA1,
                            data_secondary = setNames(as.data.frame(matrix(NA_real_, nrow = 5, ncol = 2)), c("x", "y")),
@@ -113,8 +112,7 @@ function(input, output, session) {
                 max = max(centValue.data[,1])*1.1,
                 value = mean(centValue.data[,1]))
   })## EndOf::renderUI()
-  
-  
+
   # dynamically inject sliderInput for z-axis range
   output$xlim<- renderUI({
     
@@ -174,12 +172,12 @@ function(input, output, session) {
     } else {
       color2<- adjustcolor("white", alpha.f = 0)
     }
-    
+
     # if custom datapoint style get char from separate input panel
-    pch<- ifelse(input$pch == "custom", input$custompch, as.integer(input$pch)-1)
-    
+    pch <- ifelse(input$pch == "custom", input$custompch, as.integer(input$pch))
+
     # if custom datapoint style get char from separate input panel
-    pch2<- ifelse(input$pch2 == "custom", input$custompch2, as.integer(input$pch2)-1)
+    pch2 <- ifelse(input$pch2 == "custom", input$custompch2, as.integer(input$pch2))
 
     lwd2 <- input$lwd2
     lty2 <- as.integer(input$lty2)
@@ -204,8 +202,7 @@ function(input, output, session) {
     
     # create char vector of line labels
     line.label <- sapply(1:8, function(x) input[[paste0("labline", x)]])
-    
-    
+
     # if custom bar color get RGB from separate input panel or "none"
     bar.col <- ifelse(input$bar == "custom", 
                       adjustcolor(col = input$rgbBar, 
@@ -336,14 +333,12 @@ function(input, output, session) {
       } else {
       }
     })##EndOf::renterTable()
-  
-  
+
   # renderTable() to print the results of the
   # central age model (CAM)
   output$CAM<- DT::renderDT(
     options = list(pageLength = 10, autoWidth = FALSE),
     {
-      
       data <- values$data
       
       t<- as.data.frame(matrix(nrow = length(data), ncol = 7))

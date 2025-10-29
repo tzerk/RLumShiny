@@ -140,7 +140,9 @@ function(request) {
                                                   label = "Label x-axis",
                                                   value = "# Aliquot"),
                                         # inject xlim sliderInput from server.R
-                                        uiOutput(outputId = "xlim"),
+                                        conditionalPanel(condition = 'input.preheat != true',
+                                                         uiOutput(outputId = "xlim")
+                                        ),
                                         br(),
                                         div(align = "center", h5("Y-axis")),
                                         textInput(inputId = "ylab",
@@ -154,38 +156,15 @@ function(request) {
                                         div(align = "center", h5("Primary data set")),
                                         fluidRow(
                                           column(width = 6,
-                                                 selectInput(inputId = "pch",
-                                                             label = "Style",
-                                                             selected = "17",
-                                                             choices = c("Square"= "1",
-                                                                         "Circle"="2",
-                                                                         "Triangle point up"="3",
-                                                                         "Plus"="4",
-                                                                         "Cross"="5",
-                                                                         "Diamond"="6",
-                                                                         "Triangle point down"="7",
-                                                                         "Square cross"="8",
-                                                                         "Star"="9",
-                                                                         "Diamond plus"="10",
-                                                                         "Circle plus"="11",
-                                                                         "Triangles up and down"="12",
-                                                                         "Square plus"="13",
-                                                                         "Circle cross"="14",
-                                                                         "Square and Triangle down"="15",
-                                                                         "filled Square"="16",
-                                                                         "filled Circle"="17",
-                                                                         "filled Triangle point up"="18",
-                                                                         "filled Diamond"="19",
-                                                                         "solid Circle"="20",
-                                                                         "Bullet (smaller Circle)"="21",
-                                                                         "Custom"="custom"))
+                                                 pointSymbolChooser(inputId = "pch",
+                                                                    label = "Style",
+                                                                    selected = "16")
                                           ),
                                           column(width = 6,
                                                  # show only if custom symbol is desired
                                                  conditionalPanel(condition = "input.pch == 'custom'",
-                                                                  textInput(inputId = "custompch",
-                                                                            label = "Insert character",
-                                                                            value = "?"))
+                                                                  customSymbolChooser(inputId = "custompch")
+                                                                  )
                                           )
                                         ),
                                         fluidRow(
@@ -210,38 +189,15 @@ function(request) {
                                         fluidRow(
                                           column(width = 6,
                                                  ## DATA SET 2
-                                                 selectInput(inputId = "pch2",
-                                                             label = "Style",
-                                                             selected = "17",
-                                                             choices = c("Square"= "1",
-                                                                         "Circle"="2",
-                                                                         "Triangle point up"="3",
-                                                                         "Plus"="4",
-                                                                         "Cross"="5",
-                                                                         "Diamond"="6",
-                                                                         "Triangle point down"="7",
-                                                                         "Square cross"="8",
-                                                                         "Star"="9",
-                                                                         "Diamond plus"="10",
-                                                                         "Circle plus"="11",
-                                                                         "Triangles up and down"="12",
-                                                                         "Square plus"="13",
-                                                                         "Circle cross"="14",
-                                                                         "Square and Triangle down"="15",
-                                                                         "filled Square"="16",
-                                                                         "filled Circle"="17",
-                                                                         "filled Triangle point up"="18",
-                                                                         "filled Diamond"="19",
-                                                                         "solid Circle"="20",
-                                                                         "Bullet (smaller Circle)"="21",
-                                                                         "Custom"="custom"))
+                                                 pointSymbolChooser(inputId = "pch2",
+                                                                    label = "Style",
+                                                                    selected = "16")
                                           ),
                                           column(width = 6,
                                                  # show only if custom symbol is desired
                                                  conditionalPanel(condition = "input.pch2 == 'custom'",
-                                                                  textInput(inputId = "custompch2",
-                                                                            label = "Insert character",
-                                                                            value = "?"))
+                                                                  customSymbolChooser(inputId = "custompch2")
+                                                                  )
                                           )
                                         ),
                                         fluidRow(

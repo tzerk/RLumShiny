@@ -211,7 +211,7 @@ function(input, output, session) {
       Ddot = if (input$doserate) input$ddot else NULL,
       D0  = if (input$doserate) input$d0 else NULL,
       verbose = FALSE,
-      pch = ifelse(input$pch == "custom", input$custompch, as.numeric(input$pch) - 1),
+      pch = ifelse(input$pch == "custom", input$custompch, as.numeric(input$pch)),
       bg = ifelse(input$color == "custom", input$jscol1, input$color),
       cex = input$cex,
       legend = input$legend,
