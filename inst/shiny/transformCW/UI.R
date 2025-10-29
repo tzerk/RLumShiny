@@ -53,7 +53,9 @@ function(request) {
 
                                         radioButtons("type", "Type", selected = "l", inline = TRUE,
                                                      choices = c("Line" = "l",
-                                                                 "Points" = "p")),
+                                                                 "Points" = "p",
+                                                                 "Line+Points" = "b")),
+                                        conditionalPanel(condition = "input.type != 'l'",
                                                          fluidRow(
                                                            column(width = 6,
                                                                   pointSymbolChooser(inputId = "pch",
@@ -65,6 +67,7 @@ function(request) {
                                                                                    customSymbolChooser(inputId = "custompch")
                                                                                    )
                                                                   )
+                                                         )
                                         ),
                                         fluidRow(
                                           column(width = 6,
