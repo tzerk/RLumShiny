@@ -100,14 +100,14 @@ function(input, output, session) {
   })
 
   output$table_in_primary <- renderRHandsontable({
-    rhandsontable(values$data_primary,
+    rhandsontable(values$data_primary[, 1:2],
                   height = 300,
                   colHeaders = c("Time", "Counts"),
                   rowHeaders = NULL)
   })
 
   output$table_bg <- renderRHandsontable({
-    rhandsontable(values$data_bg,
+    rhandsontable(values$data_bg[, 1:2],
                   height = 300,
                   colHeaders = c("Time", "Counts"),
                   rowHeaders = NULL)
@@ -136,8 +136,8 @@ function(input, output, session) {
 
     ## photoionisation cross-section results
     cols <- paste0(c("cs", "rel_cs"), rep(1:input$n_components, each = 2))
-    cs.abs <- res[, paste0("cs", 1:input$n_components)]
-    cs.rel <- res[, paste0("rel_cs", 1:input$n_components)]
+    cs.abs <- res[, cols]
+    cs.rel <- res[, cols]
     vals <- data.frame(comp = 1:input$n_components,
                        cs = as.numeric(cs.abs),
                        rel = as.numeric(cs.rel))
