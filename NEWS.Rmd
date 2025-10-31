@@ -15,6 +15,11 @@ output: github_document
   Base function: `Luminescence::analyse_portableOSL()`.
   Keyword for `app_RLum()`: 'portableOSL'.
 
+* New application to analyse a standard SAR protocol measurements introduced
+  by Murray and Wintle (2000) with CW-OSL curves.
+  Base function: `Luminescence::analyse_SAR.CWOSL()`.
+  Keyword for `app_RLum()`: 'sarCWOSL'.
+
 * Made `app_RLum()` ignore case differences when matching app names.
 
 ## RLumShiny 0.2.5 (Release date: 2025-07-12)
