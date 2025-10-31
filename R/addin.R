@@ -69,6 +69,11 @@ RLumShinyAddin <- function() {
                         category = "plot",
                         description = "A Galbraith's radial plot is produced on a logarithmic or a linear scale."),
 
+    "sarCWOSL" = list(title = "SAR CWOSL",
+                      keyword = "sarCWOSL",
+                      category = "plot",
+                      description = "The function analyses a standard SAR protocol measurements introduced by Murray and Wintle (2000) with CW-OSL curves."),
+
     "histogram" = list(title = "Histogram",
                        keyword = "histogram",
                        category = "plot",

@@ -67,7 +67,9 @@ for a list of available apps and which keywords to use.
 | Calculate Fast Ratio | fastratio | `calc_FastRatio` |
 | Fading measurement analysis and correction | fading | `analyse_FadingMeasurement`, `calc_FadingCorr` |
 | Fading correction after Huntley 2006 | huntley2006 | `calc_Huntley2006` |
-| Analyse IRSAR RF measurements | irsarRF | `analyze_IRSAR.RF` |
+| Analyse IRSAR RF measurements | irsarRF | `analyse_IRSAR.RF` |
+| Analyse Portable OSL | portableOSL | `analyse_portableOSL` |
+| Analyse SAR CWOSL data | sarCWOSL | `analyse_SAR.CWOSL` |
 | Calculate Finite Mixture Model | finitemixture | `calc_FiniteMixture` |
 | Fit LM Curve | lmcurve | `fit_LMCurve` |
 | Test OSL/IRSL Stimulation Power | teststimulationpower | `plot_RLum` |
