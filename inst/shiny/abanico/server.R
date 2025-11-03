@@ -155,11 +155,11 @@ function(input, output, session) {
 
   # dynamically inject sliderInput for z-axis range
   output$zlim<- renderUI({
-
     data<- unlist(lapply(values$data, function(x) x[,1]))
-
     min<- min(data)
     max<- max(data)
+    if (input$logz)
+      min <- max(min, 0.01)
     sliderInput(inputId = "zlim",  sep="",
                 label = "Range z-axis",
                 min = min*0.25,
@@ -182,7 +182,7 @@ function(input, output, session) {
   # dynamically inject sliderInput for KDE bandwidth
   output$bw<- renderUI({
     data<- unlist(lapply(values$data, function(x) x[,1]))
-    if(input$logz == TRUE) {
+    if (input$logz && all(data > 0)) {
       data<- log(data)
       min<- 0.001
       value<- bw.nrd0(data)*2
