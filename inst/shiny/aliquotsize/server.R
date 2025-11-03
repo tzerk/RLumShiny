@@ -92,7 +92,8 @@ function(input, output, session) {
     code.output <- callModule(RLumShiny:::printCode, "printCode",
                               n_inputs = 0,
                               list(name = "calc_AliquotSize",
-                                   args = values$args))
+                                   args = c(dummy = NA, # the first argument is removed by printCode()
+                                            values$args)))
 
     output$plotCode<- renderText({
       code.output
