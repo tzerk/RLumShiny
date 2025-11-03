@@ -80,7 +80,7 @@ printCode <- function(input, output, session, ...,
     if (inherits(arg, "list"))
       arg <- deparse(arg)
     if (length(arg) > 1)
-      arg <- paste0("c(", paste(arg, collapse = ", "))
+      arg <- paste0("c(", paste(arg, collapse = ", "), ")")
     if (is.null(arg))
       arg <- "NULL"
     if (!is.na(name))
