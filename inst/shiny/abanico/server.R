@@ -301,7 +301,7 @@ function(input, output, session) {
     # workaround: if no legend wanted set label to NA and hide
     # symbol on coordinates -999, -999
     if(input$showlegend == FALSE) {
-      legend<- c(NA,NA)
+      legend <- NULL
       legend.pos<- c(-999,-999)
     } else {
       if(!all(is.na(unlist(values$data_secondary))))

@@ -234,17 +234,16 @@ function(input, output, session) {
     # workaround: if no legend wanted set label to NA and hide
     # symbol on coordinates -999, -999
     if(input$showlegend == FALSE) {
-      legend<- c(NA,NA)
+      legend <- NULL
       legend.pos<- c(-999,-999)
     } else {
       if(!all(is.na(unlist(values$data_secondary))))
       {
         legend<- c(input$legendname, input$legendname2)
-        legend.pos<- input$legend.pos
       } else {
         legend<- c(input$legendname)
-        legend.pos<- input$legend.pos
       }
+      legend.pos <- input$legend.pos
     }
 
     # plot radial Plot
