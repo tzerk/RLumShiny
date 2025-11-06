@@ -7,11 +7,11 @@ function(input, output, session) {
                            tdata = NULL,
                            args = NULL,
                            pargs = NULL)
-  
+
   session$onSessionEnded(function() {
     stopApp()
   })
-  
+
   # check and read in file (DATA SET 1)
   observeEvent(input$file, {
     inFile<- input$file
@@ -20,18 +20,19 @@ function(input, output, session) {
       return(NULL) # if no file was uploaded return NULL
     
     values$data_primary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath 
+    if (ncol(values$data_primary))
+      values$data_primary <- values$data_primary[, 1:2]
   })
-  
+
   output$table_in_primary <- renderRHandsontable({
     rhandsontable(values$data_primary, 
                   height = 300, 
                   colHeaders = c("Time", "Signal"), 
                   rowHeaders = NULL)
   })
-  
+
   observeEvent(input$table_in_primary, {
-    
-    # Workaround for rhandsontable issue #138 
+    # Workaround for rhandsontable issue #138
     # https://github.com/jrowen/rhandsontable/issues/138
     # See detailed explanation in abanico application
     df_tmp <- input$table_in_primary
@@ -42,14 +43,13 @@ function(input, output, session) {
                                         length(df_tmp$params$columns)))
     if (df_tmp$changes$event == "afterRemoveRow")
       df_tmp$changes$event <- "afterChange"
-    
+
     if (!is.null(hot_to_r(df_tmp)))
       values$data_primary <- hot_to_r(df_tmp)
   })
-  
+
   # TRANSFORM DATA
   observe({
-
     P <- input$p
     delta <- input$delta
 
@@ -72,20 +72,19 @@ function(input, output, session) {
     if (input$method == "convert_CW2pLMi" || input$method == "convert_CW2pPMi")
       if (P >= 1)
         args <- append(args, P)
-    
+
     values$args <- args
-    
+
     # values$export_args <- args
     values$tdata <- try(do.call(input$method, args))
   })
-  
+
   output$main_plot <- renderPlot({
-    
     # be reactive on method changes
     input$method
     input$delta
     input$p
-    
+
     if (inherits(values$tdata, "try-error")) {
       plot(1, type="n", axes=F, xlab="", ylab="")
       text(1, labels = paste(values$tdata, collapse = "\n"))
@@ -105,7 +104,7 @@ function(input, output, session) {
 
     par(mar=c(5,4,4,5)+.1, cex = input$cex)
     do.call(plot, values$pargs)
-    
+
     if (input$showCW) {
       par(new = TRUE)
       plot(values$data_primary, 
@@ -126,7 +125,6 @@ function(input, output, session) {
       },#EO content =,
       contentType = "text"
     )#EndOf::dowmloadHandler()
-
   })
 
   observe({

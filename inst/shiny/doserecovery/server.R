@@ -2,40 +2,44 @@
 ###                        MAIN PROGRAM                                    ###
 ##############################################################################
 function(input, output, session) {
-  
+
   # input data (with default)
   values <- reactiveValues(data_primary =  if ("startData" %in% names(.GlobalEnv)) startData else ExampleData.DeValues$BT998[7:11,],
                            data_secondary =  setNames(as.data.frame(matrix(NA_real_, nrow = 5, ncol = 2)), c("x", "y")),
                            data = NULL,
                            args = NULL)
-  
+
   session$onSessionEnded(function() {
     stopApp()
   })
-  
+
   # check and read in file (DATA SET 1)
   observeEvent(input$file1, {
     inFile<- input$file1
     
     if(is.null(inFile)) 
       return(NULL) # if no file was uploaded return NULL
-    
-    values$data_primary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath 
+
+    values$data_primary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath
+    if (ncol(values$data_primary > 2))
+      values$data_primary <- values$data_primary[, 1:2]
   })
-  
+
   # check and read in file (DATA SET 2)
   observeEvent(input$file2, {
     inFile<- input$file2
     
     if(is.null(inFile)) 
       return(NULL) # if no file was uploaded return NULL
-    
-    values$data_secondary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath 
+
+    values$data_secondary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath
+    if (ncol(values$data_secondary > 2))
+      values$data_secondary <- values$data_secondary[, 1:2]
   })
-  
+
   ### GET DATA SETS
   observe({
-    
+
     data <- list(values$data_primary, values$data_secondary)
     data <- lapply(data, function(x) { 
       x_tmp <- x[complete.cases(x), ]
@@ -44,47 +48,43 @@ function(input, output, session) {
     })
     data <- data[!sapply(data, is.null)]
     data <- lapply(data, function(x) setNames(x, c("Dose", "Error")))
-    
+
     values$data <- data
   })
-  
+
   output$table_in_primary <- renderRHandsontable({
     rhandsontable(values$data_primary, 
                   height = 300, 
                   colHeaders = c("Dose", "Error"), 
                   rowHeaders = NULL)
   })
-  
+
   observeEvent(input$table_in_primary, {
-    
     # Workaround for rhandsontable issue #138 
     # https://github.com/jrowen/rhandsontable/issues/138
     df_tmp <- input$table_in_primary
     row_names <-  as.list(as.character(seq_len(length(df_tmp$data))))
-    
+
     df_tmp$params$rRowHeaders <- row_names
     df_tmp$params$rowHeaders <- row_names
     df_tmp$params$rDataDim <- as.list(c(length(row_names),
                                         length(df_tmp$params$columns)))
-    
+
     if (df_tmp$changes$event == "afterRemoveRow")
       df_tmp$changes$event <- "afterChange"
-    
+
     if (!is.null(hot_to_r(df_tmp)))
       values$data_primary <- hot_to_r(df_tmp)
   })
-  
-  
+
   output$table_in_secondary <- renderRHandsontable({
-    
     rhandsontable(values$data_secondary, 
                   height = 300,
                   colHeaders = c("Dose", "Error"), 
                   rowHeaders = NULL)
   })
-  
+
   observeEvent(input$table_in_secondary, {
-    
     # Workaround for rhandsontable issue #138 
     # https://github.com/jrowen/rhandsontable/issues/138
     # See detailed explanation above
@@ -96,7 +96,7 @@ function(input, output, session) {
                                         length(df_tmp$params$columns)))
     if (df_tmp$changes$event == "afterRemoveRow")
       df_tmp$changes$event <- "afterChange"
-    
+
     if (!is.null(hot_to_r(df_tmp)))
       values$data_secondary <- hot_to_r(df_tmp)
   })

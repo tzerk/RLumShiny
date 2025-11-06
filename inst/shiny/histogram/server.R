@@ -1,15 +1,15 @@
 ## Server.R
 ## MAIN FUNCTION
 function(input, output, session) {
-  
+
   # input data (with default)
   values <- reactiveValues(data = if ("startData" %in% names(.GlobalEnv)) startData else ExampleData.DeValues$CA1, 
                            args = NULL)
-  
+
   session$onSessionEnded(function() {
     stopApp()
   })
-  
+
   # check and read in file (DATA SET 1)
   observeEvent(input$file1, {
     inFile<- input$file1
@@ -18,12 +18,12 @@ function(input, output, session) {
       return(NULL) # if no file was uploaded return NULL
     
     values$data <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath 
+    if (ncol(values$data > 2))
+      values$data <- values$data[, 1:2]
   })
-  
-  
+
   # dynamically inject sliderInput for x-axis range
   output$xlim<- renderUI({
-    
     # check if file is loaded
     # # case 1: yes -> slinderInput with custom values
     xlim.plot<- range(hist(values$data[ ,1], plot = FALSE)$breaks)
@@ -43,9 +43,8 @@ function(input, output, session) {
                   colHeaders = c("Dose", "Error"), 
                   rowHeaders = NULL)
   })
-  
+
   observeEvent(input$table_in_primary, {
-    
     # Workaround for rhandsontable issue #138 
     # https://github.com/jrowen/rhandsontable/issues/138
     # See detailed explanation in abanico application
@@ -57,17 +56,17 @@ function(input, output, session) {
                                         length(df_tmp$params$columns)))
     if (df_tmp$changes$event == "afterRemoveRow")
       df_tmp$changes$event <- "afterChange"
-    
+
     if (!is.null(hot_to_r(df_tmp)))
       values$data <- hot_to_r(df_tmp)
   })
-  
+
   observe({
     # make sure that input panels are registered on non-active tabs.
     # by default tabs are suspended and input variables are hence
     # not available
     outputOptions(x = output, name = "xlim", suspendWhenHidden = FALSE)
-    
+
     # color of plor elements
     pch.color <- ifelse(input$pchColor == "custom", input$pchRgb, input$pchColor)
     bars.color <- ifelse(input$barsColor == "custom", 
@@ -98,8 +97,7 @@ function(input, output, session) {
       ylab = c(input$ylab1, input$ylab2),
       colour = colors)
   })
-  
-  
+
   output$main_plot <- renderPlot({
     validate(need(input$xlim, "Just wait a second..."))
     do.call(plot_Histogram, args = values$args)
@@ -136,13 +134,12 @@ function(input, output, session) {
       sort="disable")
     return(options)
   })
-  
+
   # renderTable() to print the results of the
   # central age model (CAM)
   output$CAM<- DT::renderDT(
     options = list(pageLength = 10, autoWidth = FALSE),
     {
-      
       t<- as.data.frame(matrix(nrow = length(list(values$data)), ncol = 7))
       colnames(t)<- c("Data set","n", "log data", "Central dose", "SE abs.", "OD (%)", "OD error (%)")
       res<- lapply(list(values$data), function(x) { calc_CentralDose(x, verbose = FALSE, plot = FALSE) })
@@ -154,5 +151,5 @@ function(input, output, session) {
       }
       t
     })##EndOf::renterTable()
-  
+
 }##EndOf::function(input, output)
