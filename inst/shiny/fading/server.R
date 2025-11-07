@@ -20,9 +20,16 @@ function(input, output, session) {
     
     if(is.null(inFile)) 
       return(NULL) # if no file was uploaded return NULL
-    
-    values$data_primary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath 
+
+    removeNotification("invalid_input")
     values$data_primary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath
+    if (ncol(values$data_primary) < 3) {
+      showNotification("Input data should contain 3 columns",
+                       type = "error",
+                       id = "invalid_input",
+                       duration = NULL)
+      return(NULL)
+    }
     if (ncol(values$data_primary > 3))
       values$data_primary <- values$data_primary[, 1:3]
   })
