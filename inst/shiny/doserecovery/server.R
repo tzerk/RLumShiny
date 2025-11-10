@@ -172,7 +172,7 @@ function(input, output, session) {
 
     legend.pos <- input$legend.pos
     if (!input$showlegend) {
-      legend <- NA
+      legend <- NULL
       legend.pos <- c(-999, -999)
     }
 
