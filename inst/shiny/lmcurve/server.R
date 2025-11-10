@@ -26,6 +26,8 @@ function(input, output, session) {
       return(NULL) # if no file was uploaded return NULL
 
     values$data_primary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath
+    if (ncol(values$data_primary > 2))
+      values$data_primary <- values$data_primary[, 1:2]
   })
 
   # check and read in file (BG DATA SET)
@@ -35,10 +37,11 @@ function(input, output, session) {
       return(NULL) # if no file was uploaded return NULL
 
     values$data_bg <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath
+    if (ncol(values$data_bg > 2))
+      values$data_bg <- values$data_bg[, 1:2]
   })
 
   observeEvent(input$table_in_primary, {
-
     # Workaround for rhandsontable issue #138
     # https://github.com/jrowen/rhandsontable/issues/138
     # See detailed explanation in abanico application
@@ -56,7 +59,6 @@ function(input, output, session) {
   })
 
   observeEvent(input$table_bg, {
-
     # Workaround for rhandsontable issue #138
     # https://github.com/jrowen/rhandsontable/issues/138
     # See detailed explanation in abanico application
@@ -100,14 +102,14 @@ function(input, output, session) {
   })
 
   output$table_in_primary <- renderRHandsontable({
-    rhandsontable(values$data_primary[, 1:2],
+    rhandsontable(values$data_primary,
                   height = 300,
                   colHeaders = c("Time", "Counts"),
                   rowHeaders = NULL)
   })
 
   output$table_bg <- renderRHandsontable({
-    rhandsontable(values$data_bg[, 1:2],
+    rhandsontable(values$data_bg,
                   height = 300,
                   colHeaders = c("Time", "Counts"),
                   rowHeaders = NULL)

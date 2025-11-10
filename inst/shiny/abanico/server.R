@@ -89,7 +89,6 @@ function(input, output, session) {
   })
 
   output$table_in_secondary <- renderRHandsontable({
-
     rhandsontable(values$data_secondary,
                   height = 300,
                   colHeaders = c("Dose", "Error"),
@@ -123,6 +122,8 @@ function(input, output, session) {
       return(NULL) # if no file was uploaded return NULL
 
     values$data_primary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath
+    if (ncol(values$data_primary > 2))
+      values$data_primary <- values$data_primary[, 1:2]
   })
 
   # check and read in file (DATA SET 2)
@@ -133,6 +134,8 @@ function(input, output, session) {
       return(NULL) # if no file was uploaded return NULL
 
     values$data_secondary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath
+    if (ncol(values$data_secondary > 2))
+      values$data_secondary <- values$data_secondary[, 1:2]
   })
 
   # dynamically inject sliderInput for x-axis range
@@ -155,11 +158,11 @@ function(input, output, session) {
 
   # dynamically inject sliderInput for z-axis range
   output$zlim<- renderUI({
-
     data<- unlist(lapply(values$data, function(x) x[,1]))
-
     min<- min(data)
     max<- max(data)
+    if (input$logz)
+      min <- max(min, 0.01)
     sliderInput(inputId = "zlim",  sep="",
                 label = "Range z-axis",
                 min = min*0.25,
@@ -182,7 +185,7 @@ function(input, output, session) {
   # dynamically inject sliderInput for KDE bandwidth
   output$bw<- renderUI({
     data<- unlist(lapply(values$data, function(x) x[,1]))
-    if(input$logz == TRUE) {
+    if (input$logz && all(data > 0)) {
       data<- log(data)
       min<- 0.001
       value<- bw.nrd0(data)*2
@@ -301,7 +304,7 @@ function(input, output, session) {
     # workaround: if no legend wanted set label to NA and hide
     # symbol on coordinates -999, -999
     if(input$showlegend == FALSE) {
-      legend<- c(NA,NA)
+      legend <- NULL
       legend.pos<- c(-999,-999)
     } else {
       if(!all(is.na(unlist(values$data_secondary))))

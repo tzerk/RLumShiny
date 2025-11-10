@@ -1,7 +1,7 @@
 ## Server.R
 ## MAIN FUNCTION
 function(input, output, session) {
-  
+
   # input data (with default)
   values <- reactiveValues(data_primary = if ("startData" %in% names(.GlobalEnv)) startData else ExampleData.Fading$fading.data$IR50,
                            data = NULL,
@@ -9,28 +9,38 @@ function(input, output, session) {
                            args_corr = NULL,
                            results = NULL,
                            results_corr = NULL)
-  
+
   session$onSessionEnded(function() {
     stopApp()
   })
-  
+
   # check and read in file (DATA SET 1)
   observeEvent(input$file, {
     inFile<- input$file
     
     if(is.null(inFile)) 
       return(NULL) # if no file was uploaded return NULL
-    
-    values$data_primary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath 
+
+    removeNotification("invalid_input")
+    values$data_primary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath
+    if (ncol(values$data_primary) < 3) {
+      showNotification("Input data should contain 3 columns",
+                       type = "error",
+                       id = "invalid_input",
+                       duration = NULL)
+      return(NULL)
+    }
+    if (ncol(values$data_primary > 3))
+      values$data_primary <- values$data_primary[, 1:3]
   })
-  
+
   output$table_in_primary <- renderRHandsontable({
     rhandsontable(values$data_primary, 
                   height = 300, 
                   colHeaders = c("LxTx", "LxTx error", "Time since irradiation"), 
                   rowHeaders = NULL)
   })
-  
+
   observeEvent(input$table_in_primary, {
     
     # Workaround for rhandsontable issue #138 
@@ -44,16 +54,16 @@ function(input, output, session) {
                                         length(df_tmp$params$columns)))
     if (df_tmp$changes$event == "afterRemoveRow")
       df_tmp$changes$event <- "afterChange"
-    
+
     if (!is.null(hot_to_r(df_tmp)))
       values$data_primary <- hot_to_r(df_tmp)
   })
-  
+
   # Arguments
   observe({
-    
+
     values$data <- values$data_primary
-    
+
     values$args <- list(
       object = values$data,
       structure = c("Lx", "Tx"),
@@ -69,18 +79,18 @@ function(input, output, session) {
   output$main_plot <- renderPlot({
     values$results <- try(do.call(analyse_FadingMeasurement, values$args))
   })
-  
+
   # MAIN (calc_FadingCorr) ----
   observe({
     if (!input$override_gval)
       if (is.null(values$results))
         return(NULL)
-    
+
     if (inherits(values$results, "try-error"))
       return(NULL)
-    
+
     values$results@originator <- "analyse_FadingMeasurement"
-    
+
     values$args_corr <- list(
       age.faded = c(input$age_faded, input$age_error_faded),
       g_value = if (input$override_gval) c(input$g_value, input$g_value_error) else values$results,
@@ -90,7 +100,7 @@ function(input, output, session) {
       txtProgressBar = FALSE,
       n.MC = 1000
     )
-    
+
     values$results_corr <- try(do.call(calc_FadingCorr, values$args_corr))
   })
 
@@ -109,9 +119,9 @@ function(input, output, session) {
     callModule(RLumShiny:::exportCodeHandler, "export", code = code.output)
     callModule(RLumShiny:::exportPlotHandler, "export", fun = "analyse_FadingMeasurement", args = values$args)
   })
-  
+
   output$corrCode <- renderText({
-    
+
     if (input$override_gval) {
       gval <- values$args_corr$g_value
       tc <- input$tc
@@ -138,10 +148,10 @@ function(input, output, session) {
       return(NULL)
     if (inherits(values$results, "try-error"))
       return(NULL)
-    
+
     gval <- get_RLum(values$results)
     rho <- get_RLum(values$results, "rho_prime")
-    
+
     HTML(paste0(
         tags$hr(), 
         tags$b("g-value: "), signif(gval$FIT, 3), " &plusmn; ", signif(gval$SD, 3), " %/decade", tags$br(),
@@ -150,16 +160,16 @@ function(input, output, session) {
         " &rho;': ", signif(rho$MEAN, 3), " &plusmn; ", signif(rho$SD, 3), tags$br(),
         " &raquo; log10(&rho;'): ", signif(log10(rho$MEAN), 3), " &plusmn; ", signif(rho$SD / (rho$MEAN * log(10, base = exp(1))), 3)
       ))
-    
+
   })
-  
+
   output$results_corr <- renderText({
-    
+
     if (is.null(values$results_corr) || inherits(values$results_corr, "try-error"))
       res <- data.frame(AGE = NA, AGE.ERROR = NA)
     else
       res <- get_RLum(values$results_corr)
-    
+
     HTML(paste0(
       tags$hr(),
       tags$b("Age "), tags$em("(faded): "), input$age_faded, " &plusmn; ", input$age_error_faded, " ka", tags$br(),

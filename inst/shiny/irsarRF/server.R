@@ -23,6 +23,8 @@ function(input, output, session) {
       return(NULL) # if no file was uploaded return NULL
 
     nat <- fread(file = inFile$datapath, data.table = FALSE)
+    if (ncol(nat) > 2)
+      nat <- nat[, 1:2]
     values$data_primary@records[[1]]@data <- as.matrix(nat)
   })
 
@@ -33,6 +35,8 @@ function(input, output, session) {
       return(NULL) # if no file was uploaded return NULL
 
     reg <- fread(file = inFile$datapath, data.table = FALSE)
+    if (ncol(reg) > 2)
+      reg <- reg[, 1:2]
     values$data_primary@records[[2]]@data <- as.matrix(reg)
   })
 

@@ -25,6 +25,8 @@ function(input, output, session) {
       return(NULL) # if no file was uploaded return NULL
 
     data <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath
+    if (ncol(data) > 3)
+      data <- data[, 1:3]
 
     if (ncol(data) == 2) {
       data$error <- 0.0001
@@ -48,7 +50,6 @@ function(input, output, session) {
   })
 
   observeEvent(input$table_in_primary, {
-
     # Workaround for rhandsontable issue #138
     # https://github.com/jrowen/rhandsontable/issues/138
     # See detailed explanation in abanico application
@@ -134,11 +135,8 @@ function(input, output, session) {
                         value = range(pretty(data[ ,1])))
   })
 
-
   observe({
-
     if (input$global_fit) {
-
       # split data frame to list
       if (!all(is.na(values$data$group))) {
         data <- values$data[complete.cases(values$data), ]

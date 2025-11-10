@@ -88,8 +88,10 @@ function(input, output, session) {
     input$refresh
 
     if(input$mode == "sAsS" || input$mode == "xAsS") {
-
       t<- get_results()
+      if (!inherits(t, "data.frame"))
+        return()
+
       HTML(
         if(input$mode=="xAsS") {
           paste("Sample depth: ","<font size='3'>", "<code>",

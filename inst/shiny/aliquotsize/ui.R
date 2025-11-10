@@ -52,12 +52,12 @@ function(request) {
                                         fluidRow(
                                             column(width = 6,
                                                    conditionalPanel("input.mode == 'pd'",
-                                                                    numericInput(inputId = "packing_density",
-                                                                                 label = "Packing density",
-                                                                                 value = 0.65,
-                                                                                 min = 0.1,
-                                                                                 max = 0.95,
-                                                                                 step = 0.05),
+                                                                    sliderInput(inputId = "packing_density",
+                                                                                label = "Packing density",
+                                                                                value = 0.65,
+                                                                                min = 0.05,
+                                                                                max = 0.95,
+                                                                                step = 0.05),
                                                                     title = "Empirical value for the mean packing density."
                                                                     ),
                                                    conditionalPanel("input.mode == 'pd'",

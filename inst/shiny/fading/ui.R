@@ -1,7 +1,7 @@
 ## UI.R
 function(request) {
   fluidPage(
-    titlePanel("Fading", windowTitle = "RLumShiny - Fading"),
+    titlePanel("Fading Measurement", windowTitle = "RLumShiny - Fading"),
     sidebarLayout(
       # 2- width = 5 -> refers to twitters bootstrap grid system
       # where the the maximum width is 12 that is to be shared between all
@@ -70,18 +70,18 @@ function(request) {
                                                                   numericInput(inputId = "tc_gval", HTML("T<sub>c, g-value</sub>"),
                                                                                min = 0, step = 1, value = 172800))
                                                          )
-                                                         
+
                                         )
-                                        
+
                                ),
-                               
+
                                # Tab 4: modify axis parameters
-                               
+
                                RLumShiny:::exportTab("export", filename = "analyseFading"),
                                RLumShiny:::aboutTab("about", "fading")
                    )##EndOf::tabsetPanel
       ),##EndOf::sidebarPanel
-      
+
       # 3 - output panel
       mainPanel(width = 7,
                 # insert css code inside <head></head> of the generated HTML file:

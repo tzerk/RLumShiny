@@ -1,16 +1,16 @@
 ## MAIN FUNCTION
 function(input, output, session) {
-  
+
   # input data (with default)
   values <- reactiveValues(data_primary = if ("startData" %in% names(.GlobalEnv)) startData else ExampleData.DeValues$CA1,
                            data_secondary = setNames(as.data.frame(matrix(NA_real_, nrow = 5, ncol = 2)), c("x", "y")),
                            data = NULL,
                            args = NULL)
-  
+
   session$onSessionEnded(function() {
     stopApp()
   })
-  
+
   # check and read in file (DATA SET 1)
   observeEvent(input$file1, {
     inFile<- input$file1
@@ -19,8 +19,10 @@ function(input, output, session) {
       return(NULL) # if no file was uploaded return NULL
     
     values$data_primary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath 
+    if (ncol(values$data_primary > 2))
+      values$data_primary <- values$data_primary[, 1:2]
   })
-  
+
   # check and read in file (DATA SET 2)
   observeEvent(input$file2, {
     inFile<- input$file2
@@ -29,12 +31,12 @@ function(input, output, session) {
       return(NULL) # if no file was uploaded return NULL
     
     values$data_secondary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath 
+    if (ncol(values$data_secondary > 2))
+      values$data_secondary <- values$data_secondary[, 1:2]
   })
-  
-  
+
   ### GET DATA SETS
   observe({
-    
     ### GET DATA
     data <- list(values$data_primary, values$data_secondary)
     data <- lapply(data, function(x) { 
@@ -44,48 +46,44 @@ function(input, output, session) {
     })
     data <- data[!sapply(data, is.null)]
     data <- lapply(data, function(x) setNames(x, c("Dose", "Error")))
-    
+
     values$data <- data
   })
-  
+
   output$table_in_primary <- renderRHandsontable({
     rhandsontable(values$data_primary, 
                   height = 300, 
                   colHeaders = c("Dose", "Error"), 
                   rowHeaders = NULL)
   })
-  
+
   observeEvent(input$table_in_primary, {
-    
-    # Workaround for rhandsontable issue #138 
+    # Workaround for rhandsontable issue #138
     # https://github.com/jrowen/rhandsontable/issues/138
     df_tmp <- input$table_in_primary
     row_names <-  as.list(as.character(seq_len(length(df_tmp$data))))
-    
+
     df_tmp$params$rRowHeaders <- row_names
     df_tmp$params$rowHeaders <- row_names
     df_tmp$params$rDataDim <- as.list(c(length(row_names),
                                         length(df_tmp$params$columns)))
-    
+
     if (df_tmp$changes$event == "afterRemoveRow")
       df_tmp$changes$event <- "afterChange"
-    
+
     if (!is.null(hot_to_r(df_tmp)))
       values$data_primary <- hot_to_r(df_tmp)
   })
-  
+
   output$table_in_secondary <- renderRHandsontable({
-    
     rhandsontable(values$data_secondary, 
                   height = 300,
                   colHeaders = c("Dose", "Error"), 
                   rowHeaders = NULL)
   })
-  
-  
+
   observeEvent(input$table_in_secondary, {
-    
-    # Workaround for rhandsontable issue #138 
+    # Workaround for rhandsontable issue #138
     # https://github.com/jrowen/rhandsontable/issues/138
     df_tmp <- input$table_in_secondary
     row_names <-  as.list(as.character(seq_len(length(df_tmp$data))))
@@ -95,16 +93,15 @@ function(input, output, session) {
                                         length(df_tmp$params$columns)))
     if (df_tmp$changes$event == "afterRemoveRow")
       df_tmp$changes$event <- "afterChange"
-    
+
     if (!is.null(hot_to_r(df_tmp)))
       values$data_secondary <- hot_to_r(df_tmp)
-    
+
   })
 
   # dynamically inject sliderInput for x-axis range
   output$xlim<- renderUI({
     data <- do.call(rbind, values$data)
-
     rng <- range(data[, 1])
     sliderInput(inputId = "xlim",
                 label = "Range x-axis",
@@ -131,10 +128,10 @@ function(input, output, session) {
     # not available
     outputOptions(x = output, name = "xlim", suspendWhenHidden = FALSE)
     outputOptions(x = output, name = "bw", suspendWhenHidden = FALSE)
-    
+
     # refresh plot on button press
     input$refresh
-    
+
     # check if any summary stats are activated, else NA
     summary <- if (input$summary) input$stats else ""
 
@@ -147,7 +144,7 @@ function(input, output, session) {
     } else {
       color2<- adjustcolor("white", alpha.f = 0)
     }
-    
+
     values$args <- list(
       data = values$data,
       cex = input$cex,
@@ -166,7 +163,7 @@ function(input, output, session) {
       xlim = input$xlim,
       col = c(color, color2))
   })
-  
+
   output$main_plot <- renderPlot({
     # validate(need()) makes sure that all data are available to
     # renderUI({}) before plotting and will wait until there
@@ -177,7 +174,6 @@ function(input, output, session) {
 
     do.call(plot_KDE, args = values$args)
   })##EndOf::renderPlot({})
-
 
   observe({
     # nested renderText({}) for code output on "R plot code" tab
@@ -217,15 +213,14 @@ function(input, output, session) {
       }
     })##EndOf::renderDT()
 
-
   # renderTable() to print the results of the
   # central age model (CAM)
   output$CAM<- DT::renderDT(
     options = list(pageLength = 10, autoWidth = FALSE),
     {
-      
+
       data <- values$data
-      
+
       t<- as.data.frame(matrix(nrow = length(data), ncol = 7))
       colnames(t)<- c("Data set","n", "log data", "Central dose", "SE abs.", "OD (%)", "OD error (%)")
       res<- lapply(data, function(x) { calc_CentralDose(x, verbose = FALSE, plot = FALSE) })
