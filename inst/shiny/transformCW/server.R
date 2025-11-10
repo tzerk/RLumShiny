@@ -67,10 +67,8 @@ function(input, output, session) {
 
     args <- list(values$data_primary)
     if (input$method == "convert_CW2pHMi")
-      if (delta >= 1)
         args <- append(args, delta)
     if (input$method == "convert_CW2pLMi" || input$method == "convert_CW2pPMi")
-      if (P >= 1)
         args <- append(args, P)
 
     values$args <- args
