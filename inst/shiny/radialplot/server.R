@@ -60,25 +60,12 @@ function(input, output, session) {
   })
 
   observeEvent(input$table_in_primary, {
-    # Workaround for rhandsontable issue #138
-    # https://github.com/jrowen/rhandsontable/issues/138
-    df_tmp <- input$table_in_primary
-    row_names <-  as.list(as.character(seq_len(length(df_tmp$data))))
-
-    df_tmp$params$rRowHeaders <- row_names
-    df_tmp$params$rowHeaders <- row_names
-    df_tmp$params$rDataDim <- as.list(c(length(row_names),
-                                        length(df_tmp$params$columns)))
-
-    if (df_tmp$changes$event == "afterRemoveRow")
-      df_tmp$changes$event <- "afterChange"
-
-    if (!is.null(hot_to_r(df_tmp)))
-      values$data_primary <- hot_to_r(df_tmp)
+    res <- rhandsontable_workaround(input$table_in_primary, values)
+    if (!is.null(res))
+      values$data_primary <- res
   })
 
   output$table_in_secondary <- renderRHandsontable({
-    
     rhandsontable(values$data_secondary, 
                   height = 300,
                   colHeaders = c("Dose", "Error"), 
@@ -86,20 +73,9 @@ function(input, output, session) {
   })
 
   observeEvent(input$table_in_secondary, {
-    # Workaround for rhandsontable issue #138
-    # https://github.com/jrowen/rhandsontable/issues/138
-    df_tmp <- input$table_in_secondary
-    row_names <-  as.list(as.character(seq_len(length(df_tmp$data))))
-    df_tmp$params$rRowHeaders <- row_names
-    df_tmp$params$rowHeaders <- row_names
-    df_tmp$params$rDataDim <- as.list(c(length(row_names),
-                                        length(df_tmp$params$columns)))
-    if (df_tmp$changes$event == "afterRemoveRow")
-      df_tmp$changes$event <- "afterChange"
-
-    if (!is.null(hot_to_r(df_tmp)))
-      values$data_secondary <- hot_to_r(df_tmp)
-
+    res <- rhandsontable_workaround(input$table_in_secondary, values)
+    if (!is.null(res))
+      values$data_secondary <- res
   })
 
   # dynamically inject sliderInput for central value
