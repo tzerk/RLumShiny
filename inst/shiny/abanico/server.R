@@ -59,33 +59,9 @@ function(input, output, session) {
   })
 
   observeEvent(input$table_in_primary, {
-
-    # Workaround for rhandsontable issue #138
-    # https://github.com/jrowen/rhandsontable/issues/138
-    # Desc.: the rownames are not updated when copying values in the table
-    # that exceed the current number of rows; hence, we have to manually
-    # update the rownames before running hot_to_r(), which would crash otherwise
-
-    # to modify the rhandsontable we need to create a local non-reactive variable
-    df_tmp <- input$table_in_primary
-    row_names <-  as.list(as.character(seq_len(length(df_tmp$data))))
-
-    # now overwrite the erroneous entries in the list: 'rRowHeaders', 'rowHeaders'
-    # and 'rDataDim'
-    df_tmp$params$rRowHeaders <- row_names
-    df_tmp$params$rowHeaders <- row_names
-    df_tmp$params$rDataDim <- as.list(c(length(row_names),
-                                        length(df_tmp$params$columns)))
-
-    # With the above workaround we run into the problem that the 'afterRemoveRow'
-    # event checked in rhandsontable:::toR also tries to remove the surplus rowname(s)
-    # For now, we can overwrite the event and handle the 'afterRemoveRow' as a usual
-    # 'afterChange' event
-    if (df_tmp$changes$event == "afterRemoveRow")
-      df_tmp$changes$event <- "afterChange"
-
-    if (!is.null(hot_to_r(df_tmp)))
-      values$data_primary <- hot_to_r(df_tmp)
+    res <- rhandsontable_workaround(input$table_in_primary, values)
+    if (!is.null(res))
+      values$data_primary <- res
   })
 
   output$table_in_secondary <- renderRHandsontable({
@@ -95,23 +71,10 @@ function(input, output, session) {
                   rowHeaders = NULL)
   })
 
-
   observeEvent(input$table_in_secondary, {
-
-    # Workaround for rhandsontable issue #138
-    # https://github.com/jrowen/rhandsontable/issues/138
-    # See detailed explanation above
-    df_tmp <- input$table_in_secondary
-    row_names <-  as.list(as.character(seq_len(length(df_tmp$data))))
-    df_tmp$params$rRowHeaders <- row_names
-    df_tmp$params$rowHeaders <- row_names
-    df_tmp$params$rDataDim <- as.list(c(length(row_names),
-                                        length(df_tmp$params$columns)))
-    if (df_tmp$changes$event == "afterRemoveRow")
-      df_tmp$changes$event <- "afterChange"
-
-    if (!is.null(hot_to_r(df_tmp)))
-      values$data_secondary <- hot_to_r(df_tmp)
+    res <- rhandsontable_workaround(input$table_in_secondary, values)
+    if (!is.null(res))
+      values$data_secondary <- res
   })
 
   # check and read in file (DATA SET 1)
