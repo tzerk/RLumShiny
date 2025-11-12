@@ -22,6 +22,9 @@ function(input, output, session) {
     if (is.null(inFile))
       return(NULL) # if no file was uploaded return NULL
 
+    ## remove existing notifications
+    removeNotification(id = "notification")
+
     nat <- fread(file = inFile$datapath, data.table = FALSE)
     if (ncol(nat) > 2)
       nat <- nat[, 1:2]
@@ -33,6 +36,9 @@ function(input, output, session) {
     inFile <- input$reg
     if (is.null(inFile))
       return(NULL) # if no file was uploaded return NULL
+
+    ## remove existing notifications
+    removeNotification(id = "notification")
 
     reg <- fread(file = inFile$datapath, data.table = FALSE)
     if (ncol(reg) > 2)
@@ -83,7 +89,9 @@ function(input, output, session) {
   })
 
   output$main_plot <- renderPlot({
-    values$results <- do.call(analyse_IRSAR.RF, values$args)
+    res <- tryNotify(do.call(analyse_IRSAR.RF, values$args))
+    if (inherits(res, "RLum.Results"))
+      values$results <- res
   })
 
   output$table_natural <- renderRHandsontable({

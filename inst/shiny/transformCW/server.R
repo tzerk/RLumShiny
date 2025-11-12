@@ -63,7 +63,7 @@ function(input, output, session) {
     values$args <- args
 
     # values$export_args <- args
-    values$tdata <- try(do.call(input$method, args))
+    values$tdata <- tryNotify(do.call(input$method, args))
   })
 
   output$main_plot <- renderPlot({

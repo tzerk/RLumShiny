@@ -121,7 +121,6 @@ function(input, output, session) {
   })## EndOf::renderUI()
 
   observe({
-
     # refresh plot on button press
     input$refresh
 
@@ -169,6 +168,7 @@ function(input, output, session) {
 
     # create numeric vector of lines
     line <- sapply(1:8, function(x) input[[paste0("line", x)]])
+    line <- as.numeric(line[!is.na(line)])
 
     # create char vector of line colors
     line.col <- sapply(1:8, function(x) input[[paste0("colline", x)]])
@@ -194,7 +194,7 @@ function(input, output, session) {
                               input$bar,
                               adjustcolor(col = input$bar2, 
                                           alpha.f = input$alpha.bar/100)))
-    
+
     # if custom grid color get RGB from separate input panel or "none"
     grid.col <- ifelse(input$grid == "custom",
                        adjustcolor(col = input$rgbGrid, 
@@ -261,8 +261,9 @@ function(input, output, session) {
       need(expr = input$zlim, message = 'Waiting for data... Please wait!')
     )
 
-    do.call(plot_RadialPlot, args = values$args)
-
+    ## remove existing notifications
+    removeNotification(id = "notification")
+    tryNotify(do.call(plot_RadialPlot, args = values$args))
   })##EndOf::renderPlot({})
 
   observe({

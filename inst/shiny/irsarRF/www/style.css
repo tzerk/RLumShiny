@@ -67,3 +67,7 @@ input[type="text"],input[type="number"],input[type="email"],input[type="url"],in
 input,textarea,.uneditable-input{
 	width: auto;
 }
+
+#shiny-notification-panel {
+  width: 800px
+}

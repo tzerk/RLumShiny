@@ -56,7 +56,12 @@ function(input, output, session) {
   })
 
   output$main_plot <- renderPlot({
-    values$results <- do.call(calc_FiniteMixture, values$args)
+    res <- tryNotify(do.call(calc_FiniteMixture, values$args))
+    if (inherits(res, "RLum.Results")) {
+      ## remove existing notifications
+      removeNotification(id = "notification")
+      values$results <- res
+    }
   })
 
   output$table_in_primary <- renderRHandsontable({

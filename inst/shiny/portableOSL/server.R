@@ -64,7 +64,12 @@ function(input, output, session) {
   })
 
   output$main_plot <- renderPlot({
-    values$results <- do.call(analyse_portableOSL, values$args)
+    ## remove existing notifications
+    removeNotification(id = "notification")
+
+    res <- tryNotify(do.call(analyse_portableOSL, values$args))
+    if (inherits(res, "RLum.Results"))
+      values$results <- res
   })
 
   observe({

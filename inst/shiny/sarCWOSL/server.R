@@ -57,20 +57,7 @@ function(input, output, session) {
 
   output$main_plot <- renderPlot({
     set.seed(1)
-    values$results <- tryCatch(do.call(analyse_SAR.CWOSL, values$args),
-                               message = function(e) {
-                                 showNotification(e$message,
-                                                  type = "error",
-                                                  id = "notification",
-                                                  duration = NULL)
-                               },
-                               warning = function(w) {
-                                 showNotification(w$message,
-                                                  type = "warning",
-                                                  id = "notification",
-                                                  duration = NULL)
-                                 tryInvokeRestart("muffleWarning")
-                               })
+    values$results <- tryNotify(do.call(analyse_SAR.CWOSL, values$args))
     if (inherits(values$results, "RLum.Results")) {
       removeNotification(id = "notification")
     }

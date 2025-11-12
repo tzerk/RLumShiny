@@ -68,3 +68,6 @@ input,textarea,.uneditable-input{
 	width: auto;
 	}
 
+#shiny-notification-panel {
+  width: 800px
+}

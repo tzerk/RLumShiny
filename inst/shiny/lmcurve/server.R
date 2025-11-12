@@ -76,7 +76,14 @@ function(input, output, session) {
   })
 
   output$main_plot <- renderPlot({
-    values$results <- do.call(fit_LMCurve, values$args)
+    res <- tryNotify(do.call(fit_LMCurve, values$args))
+    if (inherits(res, "RLum.Results")) {
+      if (!inherits(res$fit, "try-error")) {
+        ## remove existing notifications
+        removeNotification(id = "notification")
+      }
+      values$results <- res
+    }
   })
 
   output$table_in_primary <- renderRHandsontable({

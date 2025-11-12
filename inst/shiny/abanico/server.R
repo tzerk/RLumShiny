@@ -52,6 +52,9 @@ function(input, output, session) {
   })
 
   output$table_in_primary <- renderRHandsontable({
+    ## remove existing notifications
+    removeNotification(id = "notification")
+
     rhandsontable(values$data_primary,
                   height = 300,
                   colHeaders = c("Dose", "Error"),
@@ -65,6 +68,9 @@ function(input, output, session) {
   })
 
   output$table_in_secondary <- renderRHandsontable({
+    ## remove existing notifications
+    removeNotification(id = "notification")
+
     rhandsontable(values$data_secondary,
                   height = 300,
                   colHeaders = c("Dose", "Error"),
@@ -355,8 +361,7 @@ function(input, output, session) {
              need(expr = input$centralityNumeric, message = 'Waiting for data... Please wait!'))
 
     # plot Abanico Plot
-    do.call(what = plot_AbanicoPlot, args = values$args)
-
+    tryNotify(do.call(what = plot_AbanicoPlot, args = values$args))
   })##EndOf::renderPlot({})
 
   observe({

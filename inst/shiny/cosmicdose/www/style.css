@@ -82,3 +82,6 @@ input,textarea,.uneditable-input{
  padding: 5px 19px;
 }
 
+#shiny-notification-panel {
+  width: 800px
+}
