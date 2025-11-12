@@ -169,6 +169,7 @@ function(input, output, session) {
 
     # create numeric vector of lines
     line <- sapply(1:8, function(x) input[[paste0("line", x)]])
+    line <- as.numeric(line[!is.na(line)])
 
     # create char vector of line colors
     line.col <- sapply(1:8, function(x) input[[paste0("colline", x)]])
