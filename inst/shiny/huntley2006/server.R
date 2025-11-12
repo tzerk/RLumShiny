@@ -29,6 +29,9 @@ function(input, output, session) {
   })
 
   observe({
+    ## remove existing notifications
+    removeNotification(id = "notification")
+
     values$args <- list(
       # calc_Huntley2006 arguments
       data = values$data_primary,
@@ -57,8 +60,10 @@ function(input, output, session) {
   output$main_plot <- renderPlot({
     showNotification(id = "progress", duration = NULL, "This may take a while")
     set.seed(1)
-    values$results <- do.call(calc_Huntley2006, values$args)
+    res <- tryNotify(do.call(calc_Huntley2006, values$args))
     removeNotification(id = "progress")
+    if (inherits(res, "RLum.Results"))
+      values$results <- res
   })
 
   output$table_in_primary <- renderRHandsontable({

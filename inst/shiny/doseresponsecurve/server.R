@@ -64,10 +64,15 @@ function(input, output, session) {
 
   observe({
     values$data_primary
-    values$fit <- do.call(fit_DoseResponseCurve, values$args.fit)
+    res <- tryNotify(do.call(fit_DoseResponseCurve, values$args.fit))
+    if (inherits(res, "RLum.Results"))
+      values$fit <- res
   })
 
   output$main_plot <- renderPlot({
+    ## remove existing notifications
+    removeNotification(id = "notification")
+
     ## modify the object to plot_DoseResponseCurve() to be the fitted object
     args <- values$args.plot
     args$object <- values$fit

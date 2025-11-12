@@ -20,7 +20,6 @@ function(input, output, session) {
     return(x)
   }
 
-
   # coordinate conversion
   coords <- reactive({
     if(input$coords != "decDeg") {
@@ -67,23 +66,26 @@ function(input, output, session) {
       density <- density[1]
     }
 
-    t <- get_RLum(calc_CosmicDoseRate(depth = as.numeric(depth),
-                                     density = as.numeric(density),
-                                     latitude = lat,
-                                     longitude = long,
-                                     altitude = as.numeric(input$altitude),
-                                     corr.fieldChanges = input$corr,
-                                     est.age = input$estage,
-                                     half.depth = input$half,
-                                     verbose = FALSE,
-                                     error = input$error), "summary")
-    return(t)
+    ## remove existing notifications
+    removeNotification(id = "notification")
+
+    res <- tryNotify(calc_CosmicDoseRate(depth = as.numeric(depth),
+                                         density = as.numeric(density),
+                                         latitude = lat,
+                                         longitude = long,
+                                         altitude = as.numeric(input$altitude),
+                                         corr.fieldChanges = input$corr,
+                                         est.age = input$estage,
+                                         half.depth = input$half,
+                                         verbose = FALSE,
+                                         error = input$error))
+    if (inherits(res, "RLum.Results"))
+      get_RLum(res, "summary")
   })
 
 
   # render results for mode 1 and 2
   output$results<- renderUI({
-
     # refresh plot on button press
     input$refresh
 
@@ -108,7 +110,6 @@ function(input, output, session) {
 
   # render results for mode 3
   output$resultsTable<- DT::renderDT({
-
     # refresh plot on button press
     input$refresh
 

@@ -192,13 +192,16 @@ function(input, output, session) {
   #### PLOT ####
   output$main_plot <- renderPlot({
 
+    ## remove existing notifications
+    removeNotification(id = "notification")
+
     validate(
       need(expr = input$ylim, message = 'Waiting for data... Please wait!'),
       need(expr = input$xlim, message = 'Waiting for data... Please wait!')
     )
 
     # plot DRT Results
-    do.call(what = plot_DRTResults, args = values$args)
+    tryNotify(do.call(what = plot_DRTResults, args = values$args))
   })
 
   observe({

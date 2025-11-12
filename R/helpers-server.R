@@ -1,3 +1,23 @@
+tryNotify <- function(expr, id = "notification") {
+  notify <- function(ew, id, type) {
+    showNotification(conditionMessage(ew),
+                     id = id, type = type, duration = NULL)
+  }
+  tryCatch(
+      withCallingHandlers(
+          expr,
+          message = function(m) {
+            notify(m, id = id, type = ifelse(grepl("Error", m$message),
+                                             "error", "default"))
+          },
+          warning = function(w) {
+            notify(w, id = id, type = "warning")
+          }),
+      error = function(e) {
+        notify(e, id = id, type = "error")
+      })
+}
+
 rhandsontable_workaround <- function(table, values) {
   # Workaround for rhandsontable issue #138
   # https://github.com/jrowen/rhandsontable/issues/138

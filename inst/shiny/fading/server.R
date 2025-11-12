@@ -62,10 +62,15 @@ function(input, output, session) {
       plot_singlePanels = 3
     )
   })
-  
-  # MAIN (analyse_FadingMeasurement) ---- 
+
+  # MAIN (analyse_FadingMeasurement) ----
   output$main_plot <- renderPlot({
-    values$results <- try(do.call(analyse_FadingMeasurement, values$args))
+    ## remove existing notifications
+    removeNotification(id = "notification")
+
+    res <- tryNotify(do.call(analyse_FadingMeasurement, values$args))
+    if (inherits(res, "RLum.Results"))
+      values$results <- res
   })
 
   # MAIN (calc_FadingCorr) ----

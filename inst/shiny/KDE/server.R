@@ -14,11 +14,11 @@ function(input, output, session) {
   # check and read in file (DATA SET 1)
   observeEvent(input$file1, {
     inFile<- input$file1
-    
-    if(is.null(inFile)) 
+
+    if(is.null(inFile))
       return(NULL) # if no file was uploaded return NULL
-    
-    values$data_primary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath 
+
+    values$data_primary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath
     if (ncol(values$data_primary > 2))
       values$data_primary <- values$data_primary[, 1:2]
   })
@@ -26,11 +26,11 @@ function(input, output, session) {
   # check and read in file (DATA SET 2)
   observeEvent(input$file2, {
     inFile<- input$file2
-    
-    if(is.null(inFile)) 
+
+    if(is.null(inFile))
       return(NULL) # if no file was uploaded return NULL
-    
-    values$data_secondary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath 
+
+    values$data_secondary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath
     if (ncol(values$data_secondary > 2))
       values$data_secondary <- values$data_secondary[, 1:2]
   })
@@ -39,7 +39,7 @@ function(input, output, session) {
   observe({
     ### GET DATA
     data <- list(values$data_primary, values$data_secondary)
-    data <- lapply(data, function(x) { 
+    data <- lapply(data, function(x) {
       x_tmp <- x[complete.cases(x), ]
       if (nrow(x_tmp) == 0) return(NULL)
       else return(x_tmp)
@@ -51,6 +51,9 @@ function(input, output, session) {
   })
 
   output$table_in_primary <- renderRHandsontable({
+    ## remove existing notifications
+    removeNotification(id = "notification")
+
     rhandsontable(values$data_primary,
                   height = 300,
                   colHeaders = c("Dose", "Error"),
@@ -64,6 +67,9 @@ function(input, output, session) {
   })
 
   output$table_in_secondary <- renderRHandsontable({
+    ## remove existing notifications
+    removeNotification(id = "notification")
+
     rhandsontable(values$data_secondary,
                   height = 300,
                   colHeaders = c("Dose", "Error"),
@@ -90,7 +96,6 @@ function(input, output, session) {
   # dynamically inject sliderInput for KDE bandwidth
   output$bw<- renderUI({
     data <- do.call(rbind, values$data)
-
     bw <- bw.nrd0(data[, 1])
     sliderInput(inputId = "bw",
                 label = "KDE bandwidth",
@@ -130,7 +135,7 @@ function(input, output, session) {
       ylab = c(input$ylab1, input$ylab2),
       main = input$main,
       values.cumulative = input$cumulative,
-      na.rm = TRUE, 
+      na.rm = TRUE,
       rug = input$rug,
       boxplot = input$boxplot,
       summary = summary,
@@ -149,7 +154,9 @@ function(input, output, session) {
       need(expr = input$bw, message = 'Waiting for data... Please wait!')
     )
 
-    do.call(plot_KDE, args = values$args)
+    res <- tryNotify(do.call(plot_KDE, args = values$args))
+    if (inherits(res, "RLum.Results"))
+      res
   })##EndOf::renderPlot({})
 
   observe({

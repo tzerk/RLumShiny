@@ -72,3 +72,7 @@ input,textarea,.uneditable-input{
   margin-top: 13px;
   margin-bottom: 0px;
 }
+
+#shiny-notification-panel {
+  width: 800px
+}

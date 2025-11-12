@@ -89,7 +89,11 @@ function(input, output, session) {
 
   output$main_plot <- renderPlot({
     validate(need(input$xlim, "Just wait a second..."))
-    do.call(plot_Histogram, args = values$args)
+    res <- tryNotify(do.call(plot_Histogram, args = values$args))
+    if (inherits(res, "RLum.Results")) {
+      ## remove existing notifications
+      removeNotification(id = "notification")
+    }
   })##EndOf::renderPlot({})
 
   observe({
