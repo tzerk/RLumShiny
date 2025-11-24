@@ -94,7 +94,9 @@ function(input, output, session) {
       n.MC = 1000
     )
 
-    values$results_corr <- try(do.call(calc_FadingCorr, values$args_corr))
+    res <- tryNotify(do.call(calc_FadingCorr, values$args_corr))
+    if (inherits(res, "RLum.Results"))
+      values$results_corr <- res
   })
 
   observe({
@@ -146,7 +148,7 @@ function(input, output, session) {
     rho <- get_RLum(values$results, "rho_prime")
 
     HTML(paste0(
-        tags$hr(), 
+        tags$hr(),
         tags$b("g-value: "), signif(gval$FIT, 3), " &plusmn; ", signif(gval$SD, 3), " %/decade", tags$br(),
         tags$b("g-value"), tags$sub("2days"), ": ", signif(gval$G_VALUE_2DAYS, 3), " &plusmn; ", signif(gval$G_VALUE_2DAYS.ERROR, 3), " %/decade", tags$br(),
         tags$b("t"), tags$sub("c"), ": ", gval$TC, tags$br(),
