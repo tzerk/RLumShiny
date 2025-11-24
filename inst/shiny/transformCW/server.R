@@ -15,19 +15,19 @@ function(input, output, session) {
   # check and read in file (DATA SET 1)
   observeEvent(input$file, {
     inFile<- input$file
-    
-    if(is.null(inFile)) 
+
+    if(is.null(inFile))
       return(NULL) # if no file was uploaded return NULL
-    
-    values$data_primary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath 
-    if (ncol(values$data_primary))
+
+    values$data_primary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath
+    if (ncol(values$data_primary) > 2)
       values$data_primary <- values$data_primary[, 1:2]
   })
 
   output$table_in_primary <- renderRHandsontable({
-    rhandsontable(values$data_primary, 
-                  height = 300, 
-                  colHeaders = c("Time", "Signal"), 
+    rhandsontable(values$data_primary,
+                  height = 300,
+                  colHeaders = c("Time", "Signal"),
                   rowHeaders = NULL)
   })
 

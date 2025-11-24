@@ -17,8 +17,8 @@ function(input, output, session) {
   # check and read in file (DATA SET 1)
   observeEvent(input$file, {
     inFile<- input$file
-    
-    if(is.null(inFile)) 
+
+    if(is.null(inFile))
       return(NULL) # if no file was uploaded return NULL
 
     removeNotification("invalid_input")
@@ -30,7 +30,7 @@ function(input, output, session) {
                        duration = NULL)
       return(NULL)
     }
-    if (ncol(values$data_primary > 3))
+    if (ncol(values$data_primary) > 3)
       values$data_primary <- values$data_primary[, 1:3]
   })
 
