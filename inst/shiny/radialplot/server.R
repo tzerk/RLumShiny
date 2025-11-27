@@ -221,10 +221,10 @@ function(input, output, session) {
 
     # plot radial Plot
     values$args <- list(
-      data = values$data, 
+      data = values$data,
       xlim = c(0, input$xlim),
-      zlim = input$zlim, 
-      xlab = c(input$xlab1, input$xlab2), 
+      zlim = as.numeric(input$zlim),
+      xlab = c(input$xlab1, input$xlab2),
       ylab = input$ylab,
       zlab = input$zlab,
       y.ticks = input$yticks,
