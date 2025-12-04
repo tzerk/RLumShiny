@@ -98,11 +98,11 @@ function(input, output, session) {
       sd<- xlim.data[,2] 
     }
     prec<- 1/sd
-    
-    sliderInput(inputId = "xlim", 
+
+    sliderInput(inputId = "xlim",
                 label = "Range x-axis",
-                min = 0, 
-                max = round(max(prec)*2, 3),
+                min = round(max(prec) / 1.75, 3),
+                max = round(max(prec) * 1.75, 3),
                 value = max(prec)*1.05, round=FALSE, step=0.001)
 
   })## EndOf::renderUI()
