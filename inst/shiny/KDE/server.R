@@ -141,7 +141,7 @@ function(input, output, session) {
       summary = summary,
       summary.pos = input$sumpos,
       summary.method = input$summary.method,
-      bw = input$bw,
+      bw = as.numeric(input$bw),
       xlim = input$xlim,
       col = c(color, color2))
   })
