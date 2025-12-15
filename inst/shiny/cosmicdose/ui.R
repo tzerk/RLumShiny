@@ -11,7 +11,7 @@ function(request) {
 
   fluidPage(
     titlePanel("Cosmic Dose", windowTitle = "RLumShiny - Cosmic Dose"),
-    includeCSS("./www/style.css"),
+
     fluidRow(
       column(width = 3,
              div(align = "center", span(class="label label-info", "Site")),
@@ -34,7 +34,7 @@ function(request) {
                                          numericInput(inputId = "degN_1", label = p(class="h","N: \uB0"), value = 50, step = 1),
                                          numericInput(inputId = "degE_1", label = p(class="h","E: \uB0"), value = 6, step = 1)
                                   ),
-                                  column(width = 4, offset = 2,
+                                  column(width = 6, offset = 1,
                                          numericInput(inputId = "decMinN", label = p(class="h","Decimal \u27"), value = 55.61417, step = 0.000001),
                                          numericInput(inputId = "decMinE", label = p(class="h","Decimal \u27"), value = 56.24717, step = 0.000001)
                                   )
@@ -42,15 +42,15 @@ function(request) {
                ),
                conditionalPanel(condition = "input.coords == 'degMinSec'",
                                 fluidRow(
-                                  column(width = 3, offset = 0,
+                                  column(width = 4,
                                          numericInput(inputId = "degN_2", label = p(class="h","N: \uB0"), value = 50, step = 1),
                                          numericInput(inputId = "degE_2", label = p(class="h","E: \uB0"), value = 6, step = 1)
                                   ),
-                                  column(width = 3,  offset = 1,
+                                  column(width = 4,
                                          numericInput(inputId = "minN", label = p(class="h","\u27"), value = 55, step = 1),
                                          numericInput(inputId = "minE", label = p(class="h","\u27"), value = 56, step = 1)
                                   ),
-                                  column(width = 3, offset = 1,
+                                  column(width = 4,
                                          numericInput(inputId = "secN", label = p(class="h","\u27\u27"), value = 36.85, step = 0.01),
                                          numericInput(inputId = "secE", label = p(class="h","\u27\u27"), value = 14.83, step = 0.01)
                                   )
