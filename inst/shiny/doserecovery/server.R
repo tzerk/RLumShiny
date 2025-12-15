@@ -83,7 +83,7 @@ function(input, output, session) {
     n <- max(sapply(data, nrow))
 
     sliderInput(inputId = "xlim", label = "Range x-axis",
-                min = 0, max = n*2,
+                min = 0, max = n + 1,
                 value = c(0, n) + 0.5)
   })
 
