@@ -37,4 +37,4 @@ Imports:
  knitr (>= 1.50)
 URL: https://tzerk.github.io/RLumShiny/
 BugReports: https://github.com/tzerk/RLumShiny/issues
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3

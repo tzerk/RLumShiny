@@ -39,7 +39,7 @@ Huntley (2006) \tab \emph{huntley2006} \tab \link[Luminescence:calc_Huntley2006]
 IRSAR RF \tab \emph{irsarRF} \tab \link[Luminescence:analyse_IRSAR.RF]{Luminescence::analyse_IRSAR.RF} \cr
 LM Curve \tab \emph{lmcurve} \tab \link[Luminescence:fit_LMCurve]{Luminescence::fit_LMCurve} \cr
 Portable OSL \tab \emph{portableOSL} \tab \link[Luminescence:analyse_portableOSL]{Luminescence::analyse_portableOSL} \cr
-SAR OSL \tab \emph{sarOSL} \tab \link[Luminescence:analyse_SAR.CWOSL]{Luminescence::analyse_SAR.CWOSL} \cr
+SAR CWOSL \tab \emph{sarCWOSL} \tab \link[Luminescence:analyse_SAR.CWOSL]{Luminescence::analyse_SAR.CWOSL} \cr
 Test Stimulation Power \tab \emph{teststimulationpower} \tab  \link[Luminescence:plot_RLum]{Luminescence::plot_RLum} \cr
 Scale Gamma Dose Rate \tab \emph{scalegamma} \tab \link[Luminescence:scale_GammaDose]{Luminescence::scale_GammaDose} \cr
 RCarb app \tab \emph{RCarb} \tab \link[RCarb:model_DoseRate]{RCarb::model_DoseRate}
