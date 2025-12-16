@@ -21,20 +21,20 @@ Description: A collection of 'shiny' applications for the R package
 License: GPL-3 | file LICENSE
 Encoding: UTF-8
 Depends:
- R (>= 4.3)
+ R (>= 4.4)
 Imports:
- Luminescence (>= 1.1.0),
+ Luminescence (>= 1.1.2),
  shiny (>= 1.11.1),
  rhandsontable (>= 0.3.8),
  data.table (>= 1.17.6),
  googleVis (>= 0.7.3),
- leaflet (>= 2.2.2),
+ leaflet (>= 2.2.3),
  shinydashboard (>= 0.7.3),
  RCarb (>= 0.1.6),
- markdown (>= 1.13),
+ markdown (>= 2.0),
  readxl (>= 1.4.5),
- DT (>= 0.33),
+ DT (>= 0.34),
  knitr (>= 1.50)
 URL: https://tzerk.github.io/RLumShiny/
 BugReports: https://github.com/tzerk/RLumShiny/issues
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3

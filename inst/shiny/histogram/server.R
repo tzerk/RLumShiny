@@ -13,12 +13,12 @@ function(input, output, session) {
   # check and read in file (DATA SET 1)
   observeEvent(input$file1, {
     inFile<- input$file1
-    
-    if(is.null(inFile)) 
+
+    if(is.null(inFile))
       return(NULL) # if no file was uploaded return NULL
-    
-    values$data <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath 
-    if (ncol(values$data > 2))
+
+    values$data <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath
+    if (ncol(values$data) > 2)
       values$data <- values$data[, 1:2]
   })
 

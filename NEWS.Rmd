@@ -5,6 +5,8 @@ output: github_document
 
 ## Current development version (`r Sys.Date()`)
 
+**This package version requires R > 4.4!**
+
 * New application to plot a dose-response curve for luminescence data.
   Base function: `Luminescence::plot_DoseResponseCurve()`.
   Keyword for `app_RLum()`: 'doseresponsecurve'.

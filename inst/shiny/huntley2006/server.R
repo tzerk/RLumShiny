@@ -24,7 +24,7 @@ function(input, output, session) {
       return(NULL) # if no file was uploaded return NULL
 
     values$data_primary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath
-    if (ncol(values$data_primary > 3))
+    if (ncol(values$data_primary) > 3)
       values$data_primary <- values$data_primary[, 1:3]
   })
 

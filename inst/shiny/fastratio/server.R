@@ -27,7 +27,7 @@ function(input, output, session) {
                                                 data.table = FALSE)
                                   )
     if (inherits(values$data_primary, "data.frame") &&
-        ncol(values$data_primary > 2))
+        ncol(values$data_primary) > 2)
       values$data_primary <- values$data_primary[, 1:2]
 
     updateSliderInput(session, "deadchannels", value = c(1, nrow(values$data_primary)), max = nrow(values$data_primary))

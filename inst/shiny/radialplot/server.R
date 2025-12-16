@@ -15,24 +15,24 @@ function(input, output, session) {
   # check and read in file (DATA SET 1)
   observeEvent(input$file1, {
     inFile<- input$file1
-    
-    if(is.null(inFile)) 
+
+    if(is.null(inFile))
       return(NULL) # if no file was uploaded return NULL
-    
-    values$data_primary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath 
-    if (ncol(values$data_primary > 2))
+
+    values$data_primary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath
+    if (ncol(values$data_primary) > 2)
       values$data_primary <- values$data_primary[, 1:2]
   })
 
   # check and read in file (DATA SET 2)
   observeEvent(input$file2, {
     inFile<- input$file2
-    
-    if(is.null(inFile)) 
+
+    if(is.null(inFile))
       return(NULL) # if no file was uploaded return NULL
-    
-    values$data_secondary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath 
-    if (ncol(values$data_secondary > 2))
+
+    values$data_secondary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath
+    if (ncol(values$data_secondary) > 2)
       values$data_secondary <- values$data_secondary[, 1:2]
   })
 
@@ -98,11 +98,11 @@ function(input, output, session) {
       sd<- xlim.data[,2] 
     }
     prec<- 1/sd
-    
-    sliderInput(inputId = "xlim", 
+
+    sliderInput(inputId = "xlim",
                 label = "Range x-axis",
-                min = 0, 
-                max = round(max(prec)*2, 3),
+                min = round(max(prec) / 1.75, 3),
+                max = round(max(prec) * 1.75, 3),
                 value = max(prec)*1.05, round=FALSE, step=0.001)
 
   })## EndOf::renderUI()
@@ -221,10 +221,10 @@ function(input, output, session) {
 
     # plot radial Plot
     values$args <- list(
-      data = values$data, 
+      data = values$data,
       xlim = c(0, input$xlim),
-      zlim = input$zlim, 
-      xlab = c(input$xlab1, input$xlab2), 
+      zlim = as.numeric(input$zlim),
+      xlab = c(input$xlab1, input$xlab2),
       ylab = input$ylab,
       zlab = input$zlab,
       y.ticks = input$yticks,

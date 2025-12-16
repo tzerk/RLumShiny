@@ -34,8 +34,7 @@ function(input, output, session) {
     }
 
     # return data frame
-    d <- data.frame(Lat = LatLong[1], Long = LatLong[2], tip = "Site")
-    return(d)
+    data.frame(Lat = LatLong[1], Long = LatLong[2])
   })
 
   # render OpenStreetMap
@@ -43,17 +42,18 @@ function(input, output, session) {
     # refresh plot on button press
     input$refresh
 
-    m <- leaflet::leaflet() |>
+    coords <- coords()
+    leaflet::leaflet() |>
       leaflet::addTiles() |>
-      leaflet::setView(coords()$Long, coords()$Lat, zoom = 17) |>
-      leaflet::addPopups(coords()$Long, coords()$Lat, 'Sampling site')
+      leaflet::setView(coords$Long, coords$Lat, zoom = 17) |>
+      leaflet::addPopups(coords$Long, coords$Lat, 'Sampling site')
   })
 
 
   # get results from calc_CosmicDoseRate() function
   get_results<- reactive({
     # get coordinates
-    coords<- as.vector(coords()[,1:2])
+    coords<- coords()
     lat <- coords$Lat
     long <- coords$Long
 

@@ -2,7 +2,6 @@
 on:
   push:
     branches:
-      - dev_*
       - master
   pull_request:
     branches:

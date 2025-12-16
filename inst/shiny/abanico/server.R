@@ -91,7 +91,7 @@ function(input, output, session) {
       return(NULL) # if no file was uploaded return NULL
 
     values$data_primary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath
-    if (ncol(values$data_primary > 2))
+    if (ncol(values$data_primary) > 2)
       values$data_primary <- values$data_primary[, 1:2]
   })
 
@@ -103,7 +103,7 @@ function(input, output, session) {
       return(NULL) # if no file was uploaded return NULL
 
     values$data_secondary <- fread(file = inFile$datapath, data.table = FALSE) # inFile[1] contains filepath
-    if (ncol(values$data_secondary > 2))
+    if (ncol(values$data_secondary) > 2)
       values$data_secondary <- values$data_secondary[, 1:2]
   })
 
