@@ -42,7 +42,7 @@ function(input, output, session) {
   })
 
   observeEvent(input$table_in_primary, {
-    res <- rhandsontable_workaround(input$table_in_primary, values)
+    res <- RLumShiny:::rhandsontable_workaround(input$table_in_primary)
     if (!is.null(res))
       values$data_primary <- res
   })
@@ -68,7 +68,7 @@ function(input, output, session) {
     ## remove existing notifications
     removeNotification(id = "notification")
 
-    res <- tryNotify(do.call(analyse_FadingMeasurement, values$args))
+    res <- RLumShiny:::tryNotify(do.call(analyse_FadingMeasurement, values$args))
     if (inherits(res, "RLum.Results"))
       values$results <- res
   })
@@ -94,7 +94,7 @@ function(input, output, session) {
       n.MC = 1000
     )
 
-    res <- tryNotify(do.call(calc_FadingCorr, values$args_corr))
+    res <- RLumShiny:::tryNotify(do.call(calc_FadingCorr, values$args_corr))
     if (inherits(res, "RLum.Results"))
       values$results_corr <- res
   })

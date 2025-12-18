@@ -29,7 +29,7 @@ function(input, output, session) {
   })
 
   observeEvent(input$table_in_primary, {
-    res <- rhandsontable_workaround(input$table_in_primary, values)
+    res <- RLumShiny:::rhandsontable_workaround(input$table_in_primary)
     if (!is.null(res))
       values$data_primary <- res
   })
@@ -56,7 +56,7 @@ function(input, output, session) {
   })
 
   output$main_plot <- renderPlot({
-    res <- tryNotify(do.call(calc_FiniteMixture, values$args))
+    res <- RLumShiny:::tryNotify(do.call(calc_FiniteMixture, values$args))
     if (inherits(res, "RLum.Results")) {
       ## remove existing notifications
       removeNotification(id = "notification")

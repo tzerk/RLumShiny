@@ -50,7 +50,7 @@ function(input, output, session) {
   })
 
   observeEvent(input$table_in_primary, {
-    values$data <- rhandsontable_workaround(input$table_in_primary, values)
+    values$data <- RLumShiny:::rhandsontable_workaround(input$table_in_primary)
   })
 
   output$global_fit_ages <- renderUI({

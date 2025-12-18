@@ -45,7 +45,7 @@ function(input, output, session) {
   })
 
   observeEvent(input$table_in_primary, {
-    res <- rhandsontable_workaround(input$table_in_primary, values)
+    res <- RLumShiny:::rhandsontable_workaround(input$table_in_primary)
     if (!is.null(res))
       values$data <- res
   })
@@ -89,7 +89,7 @@ function(input, output, session) {
 
   output$main_plot <- renderPlot({
     validate(need(input$xlim, "Just wait a second..."))
-    res <- tryNotify(do.call(plot_Histogram, args = values$args))
+    res <- RLumShiny:::tryNotify(do.call(plot_Histogram, args = values$args))
     if (inherits(res, "RLum.Results")) {
       ## remove existing notifications
       removeNotification(id = "notification")

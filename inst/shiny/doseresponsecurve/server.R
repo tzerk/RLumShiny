@@ -31,7 +31,7 @@ function(input, output, session) {
   })
 
   observeEvent(input$table_in_primary, {
-    res <- rhandsontable_workaround(input$table_in_primary, values)
+    res <- RLumShiny:::rhandsontable_workaround(input$table_in_primary)
     if (!is.null(res))
       values$data_primary <- res
   })
@@ -66,7 +66,7 @@ function(input, output, session) {
 
   observe({
     values$data_primary
-    res <- tryNotify(do.call(fit_DoseResponseCurve, values$args.fit))
+    res <- RLumShiny:::tryNotify(do.call(fit_DoseResponseCurve, values$args.fit))
     if (inherits(res, "RLum.Results"))
       values$fit <- res
   })

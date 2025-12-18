@@ -144,14 +144,14 @@ function(request) {
 
                                         fluidRow(
                                           column(width = 6,
-                                                 pointSymbolChooser(inputId = "pch",
+                                                 RLumShiny:::pointSymbolChooser(inputId = "pch",
                                                                     label = "Style",
                                                                     selected = "1")
                                           ),
                                           column(width = 6,
                                                  # show only if custom symbol is desired
                                                  conditionalPanel(condition = "input.pch == 'custom'",
-                                                                  customSymbolChooser(inputId = "custompch")
+                                                                  RLumShiny:::customSymbolChooser(inputId = "custompch")
                                                  )
                                           )
                                         ),

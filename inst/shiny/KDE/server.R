@@ -61,7 +61,7 @@ function(input, output, session) {
   })
 
   observeEvent(input$table_in_primary, {
-    res <- rhandsontable_workaround(input$table_in_primary, values)
+    res <- RLumShiny:::rhandsontable_workaround(input$table_in_primary)
     if (!is.null(res))
       values$data_primary <- res
   })
@@ -77,7 +77,7 @@ function(input, output, session) {
   })
 
   observeEvent(input$table_in_secondary, {
-    res <- rhandsontable_workaround(input$table_in_secondary, values)
+    res <- RLumShiny:::rhandsontable_workaround(input$table_in_secondary)
     if (!is.null(res))
       values$data_secondary <- res
   })
@@ -154,7 +154,7 @@ function(input, output, session) {
       need(expr = input$bw, message = 'Waiting for data... Please wait!')
     )
 
-    res <- tryNotify(do.call(plot_KDE, args = values$args))
+    res <- RLumShiny:::tryNotify(do.call(plot_KDE, args = values$args))
     if (inherits(res, "RLum.Results"))
       res
   })##EndOf::renderPlot({})

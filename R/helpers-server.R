@@ -1,3 +1,6 @@
+#' Internal helper to generate a notification for warnings and errors
+#'
+#' @noRd
 tryNotify <- function(expr, id = "notification") {
   notify <- function(ew, id, type) {
     showNotification(conditionMessage(ew),
@@ -18,7 +21,10 @@ tryNotify <- function(expr, id = "notification") {
       })
 }
 
-rhandsontable_workaround <- function(table, values) {
+#' Internal helper to work around an issue in rhandsontable
+#'
+#' @noRd
+rhandsontable_workaround <- function(table) {
   # Workaround for rhandsontable issue #138
   # https://github.com/jrowen/rhandsontable/issues/138
   # Desc.: the rownames are not updated when copying values in the table

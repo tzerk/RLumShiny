@@ -57,7 +57,7 @@ function(input, output, session) {
 
   output$main_plot <- renderPlot({
     set.seed(1)
-    values$results <- tryNotify(do.call(analyse_SAR.CWOSL, values$args))
+    values$results <- RLumShiny:::tryNotify(do.call(analyse_SAR.CWOSL, values$args))
     if (inherits(values$results, "RLum.Results")) {
       removeNotification(id = "notification")
     }

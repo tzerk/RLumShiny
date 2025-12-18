@@ -62,7 +62,7 @@ function(input, output, session) {
   })
 
   observeEvent(input$table_in_primary, {
-    res <- rhandsontable_workaround(input$table_in_primary, values)
+    res <- RLumShiny:::rhandsontable_workaround(input$table_in_primary)
     if (!is.null(res))
       values$data_primary <- res
   })
@@ -78,7 +78,7 @@ function(input, output, session) {
   })
 
   observeEvent(input$table_in_secondary, {
-    res <- rhandsontable_workaround(input$table_in_secondary, values)
+    res <- RLumShiny:::rhandsontable_workaround(input$table_in_secondary)
     if (!is.null(res))
       values$data_secondary <- res
   })
@@ -361,7 +361,7 @@ function(input, output, session) {
              need(expr = input$centralityNumeric, message = 'Waiting for data... Please wait!'))
 
     # plot Abanico Plot
-    tryNotify(do.call(what = plot_AbanicoPlot, args = values$args))
+    RLumShiny:::tryNotify(do.call(what = plot_AbanicoPlot, args = values$args))
   })##EndOf::renderPlot({})
 
   observe({

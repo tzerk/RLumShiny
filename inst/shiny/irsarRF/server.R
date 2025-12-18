@@ -89,7 +89,7 @@ function(input, output, session) {
   })
 
   output$main_plot <- renderPlot({
-    res <- tryNotify(do.call(analyse_IRSAR.RF, values$args))
+    res <- RLumShiny:::tryNotify(do.call(analyse_IRSAR.RF, values$args))
     if (inherits(res, "RLum.Results"))
       values$results <- res
   })

@@ -32,7 +32,7 @@ function(input, output, session) {
   })
 
   observeEvent(input$table_in_primary, {
-    res <- rhandsontable_workaround(input$table_in_primary, values)
+    res <- RLumShiny:::rhandsontable_workaround(input$table_in_primary)
     if (!is.null(res))
       values$data_primary <- res
   })
@@ -63,7 +63,7 @@ function(input, output, session) {
     values$args <- args
 
     # values$export_args <- args
-    values$tdata <- tryNotify(do.call(input$method, args))
+    values$tdata <- RLumShiny:::tryNotify(do.call(input$method, args))
   })
 
   output$main_plot <- renderPlot({

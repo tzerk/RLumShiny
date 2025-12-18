@@ -42,13 +42,13 @@ function(input, output, session) {
   })
 
   observeEvent(input$table_in_primary, {
-    res <- rhandsontable_workaround(input$table_in_primary, values)
+    res <- RLumShiny:::rhandsontable_workaround(input$table_in_primary)
     if (!is.null(res))
       values$data_primary <- res
   })
 
   observeEvent(input$table_bg, {
-    res <- rhandsontable_workaround(input$table_bg, values)
+    res <- RLumShiny:::rhandsontable_workaround(input$table_bg)
     if (!is.null(res))
       values$data_bg <- res
   })
@@ -76,7 +76,7 @@ function(input, output, session) {
   })
 
   output$main_plot <- renderPlot({
-    res <- tryNotify(do.call(fit_LMCurve, values$args))
+    res <- RLumShiny:::tryNotify(do.call(fit_LMCurve, values$args))
     if (inherits(res, "RLum.Results")) {
       if (!inherits(res$fit, "try-error")) {
         ## remove existing notifications

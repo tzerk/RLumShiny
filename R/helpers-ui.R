@@ -1,3 +1,6 @@
+#' Internal helper function to choose the symbol for points
+#'
+#' @noRd
 pointSymbolChooser <- function(inputId, selected, label = "Style") {
   selectInput(inputId = inputId,
               label = label,
@@ -27,6 +30,9 @@ pointSymbolChooser <- function(inputId, selected, label = "Style") {
                           "Custom"="custom"))
 }
 
+#' Internal helper function to choose a custom symbol
+#'
+#' @noRd
 customSymbolChooser <- function(inputId, label = "Insert character") {
   textInput(inputId = inputId,
             label = label,

@@ -44,7 +44,7 @@ function(input, output, session) {
       values$args$grains.counted <- input$grains_counted
       values$args$packing.density <- NULL
     }
-    tryNotify(values$results <- do.call(calc_AliquotSize, values$args))
+    RLumShiny:::tryNotify(values$results <- do.call(calc_AliquotSize, values$args))
   })
 
   # Render numeric results in a data table

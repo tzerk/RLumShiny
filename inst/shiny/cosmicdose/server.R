@@ -69,7 +69,7 @@ function(input, output, session) {
     ## remove existing notifications
     removeNotification(id = "notification")
 
-    res <- tryNotify(calc_CosmicDoseRate(depth = as.numeric(depth),
+    res <- RLumShiny:::tryNotify(calc_CosmicDoseRate(depth = as.numeric(depth),
                                          density = as.numeric(density),
                                          latitude = lat,
                                          longitude = long,

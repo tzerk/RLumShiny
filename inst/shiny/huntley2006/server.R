@@ -60,7 +60,7 @@ function(input, output, session) {
   output$main_plot <- renderPlot({
     showNotification(id = "progress", duration = NULL, "This may take a while")
     set.seed(1)
-    res <- tryNotify(do.call(calc_Huntley2006, values$args))
+    res <- RLumShiny:::tryNotify(do.call(calc_Huntley2006, values$args))
     removeNotification(id = "progress")
     if (inherits(res, "RLum.Results"))
       values$results <- res
@@ -74,7 +74,7 @@ function(input, output, session) {
   })
 
   observeEvent(input$table_in_primary, {
-    res <- rhandsontable_workaround(input$table_in_primary, values)
+    res <- RLumShiny:::rhandsontable_workaround(input$table_in_primary)
     if (!is.null(res))
       values$data_primary <- res
   })
