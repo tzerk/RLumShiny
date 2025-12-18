@@ -1,6 +1,6 @@
 ## Test environments
 
--   local Fedora 42 x64 install, R 4.5.0 (2025-04-11)
+-   local Fedora 42 x64 install, R 4.5.2 (2025-10-31)
 -   win-builder (devel, release, oldrel)
 
 ## CRAN Notes
@@ -13,16 +13,15 @@ There were no ERRORs, WARNINGs or NOTEs.
 
 ### devel
 
-There was 1 ERROR.
+Status: OK
 
-"Package required and available but unsuitable version: 'shiny'"
+### release
 
-The package source for 'shiny' 1.11.1 is already available, just not yet
-built for R-devel on windows.
+Status: OK
 
 ### oldrel
 
-There was 1 NOTE.
+Status: 1 NOTE
 
 "Author field differs from that derived from Authors\@R"
 
