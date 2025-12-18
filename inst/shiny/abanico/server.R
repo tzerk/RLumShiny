@@ -62,7 +62,7 @@ function(input, output, session) {
   })
 
   observeEvent(input$table_in_primary, {
-    res <- rhandsontable_workaround(input$table_in_primary, values)
+    res <- rhandsontable_workaround(input$table_in_primary)
     if (!is.null(res))
       values$data_primary <- res
   })
@@ -78,7 +78,7 @@ function(input, output, session) {
   })
 
   observeEvent(input$table_in_secondary, {
-    res <- rhandsontable_workaround(input$table_in_secondary, values)
+    res <- rhandsontable_workaround(input$table_in_secondary)
     if (!is.null(res))
       values$data_secondary <- res
   })

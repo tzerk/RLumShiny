@@ -42,13 +42,13 @@ function(input, output, session) {
   })
 
   observeEvent(input$table_in_primary, {
-    res <- rhandsontable_workaround(input$table_in_primary, values)
+    res <- rhandsontable_workaround(input$table_in_primary)
     if (!is.null(res))
       values$data_primary <- res
   })
 
   observeEvent(input$table_bg, {
-    res <- rhandsontable_workaround(input$table_bg, values)
+    res <- rhandsontable_workaround(input$table_bg)
     if (!is.null(res))
       values$data_bg <- res
   })
