@@ -67,7 +67,7 @@ function(input, output, session) {
     ## remove existing notifications
     removeNotification(id = "notification")
 
-    res <- tryNotify(do.call(analyse_portableOSL, values$args))
+    res <- RLumShiny:::tryNotify(do.call(analyse_portableOSL, values$args))
     if (inherits(res, "RLum.Results"))
       values$results <- res
   })

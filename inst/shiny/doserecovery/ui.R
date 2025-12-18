@@ -156,14 +156,14 @@ function(request) {
                                         div(align = "center", h5("Primary data set")),
                                         fluidRow(
                                           column(width = 6,
-                                                 pointSymbolChooser(inputId = "pch",
+                                                 RLumShiny:::pointSymbolChooser(inputId = "pch",
                                                                     label = "Style",
                                                                     selected = "16")
                                           ),
                                           column(width = 6,
                                                  # show only if custom symbol is desired
                                                  conditionalPanel(condition = "input.pch == 'custom'",
-                                                                  customSymbolChooser(inputId = "custompch")
+                                                                  RLumShiny:::customSymbolChooser(inputId = "custompch")
                                                                   )
                                           )
                                         ),
@@ -189,14 +189,14 @@ function(request) {
                                         fluidRow(
                                           column(width = 6,
                                                  ## DATA SET 2
-                                                 pointSymbolChooser(inputId = "pch2",
+                                                 RLumShiny:::pointSymbolChooser(inputId = "pch2",
                                                                     label = "Style",
                                                                     selected = "16")
                                           ),
                                           column(width = 6,
                                                  # show only if custom symbol is desired
                                                  conditionalPanel(condition = "input.pch2 == 'custom'",
-                                                                  customSymbolChooser(inputId = "custompch2")
+                                                                  RLumShiny:::customSymbolChooser(inputId = "custompch2")
                                                                   )
                                           )
                                         ),
