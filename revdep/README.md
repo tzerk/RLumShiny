@@ -1,25 +1,25 @@
 # Platform
 
-|field    |value                                                                             |
-|:--------|:---------------------------------------------------------------------------------|
-|version  |R version 4.5.2 (2025-10-31)                                                      |
-|os       |Nobara Linux 43 (KDE Plasma Desktop Edition)                                      |
-|system   |x86_64, linux-gnu                                                                 |
-|ui       |RStudio                                                                           |
-|language |(EN)                                                                              |
-|collate  |en_GB.utf8                                                                        |
-|ctype    |en_GB.utf8                                                                        |
-|tz       |Europe/Berlin                                                                     |
-|date     |2025-12-18                                                                        |
-|rstudio  |2025.05.1+513 Mariposa Orchid (desktop)                                           |
-|pandoc   |3.4 @ /usr/lib/rstudio/resources/app/bin/quarto/bin/tools/x86_64/ (via rmarkdown) |
-|quarto   |1.6.42 @ /usr/lib/rstudio/resources/app/bin/quarto/bin/quarto                     |
+|field    |value                                                         |
+|:--------|:-------------------------------------------------------------|
+|version  |R version 4.5.2 (2025-10-31)                                  |
+|os       |Nobara Linux 43 (KDE Plasma Desktop Edition)                  |
+|system   |x86_64, linux-gnu                                             |
+|ui       |RStudio                                                       |
+|language |(EN)                                                          |
+|collate  |en_GB.utf8                                                    |
+|ctype    |en_GB.utf8                                                    |
+|tz       |Europe/Berlin                                                 |
+|date     |2025-12-28                                                    |
+|rstudio  |2025.05.1+513 Mariposa Orchid (desktop)                       |
+|pandoc   |NA                                                            |
+|quarto   |1.6.42 @ /usr/lib/rstudio/resources/app/bin/quarto/bin/quarto |
 
 # Dependencies
 
 |package           |old        |new        |Δ  |
 |:-----------------|:----------|:----------|:--|
-|RLumShiny         |0.2.5      |0.2.6      |*  |
+|RLumShiny         |0.2.6      |0.2.7      |*  |
 |askpass           |1.2.1      |1.2.1      |   |
 |base64enc         |0.1-3      |0.1-3      |   |
 |bbmle             |1.0.25.1   |1.0.25.1   |   |
@@ -34,13 +34,13 @@
 |crayon            |1.5.3      |1.5.3      |   |
 |crosstalk         |1.2.2      |1.2.2      |   |
 |curl              |7.0.0      |7.0.0      |   |
-|data.table        |1.17.8     |1.17.8     |   |
+|data.table        |1.18.0     |1.18.0     |   |
 |DBI               |1.2.3      |1.2.3      |   |
 |deldir            |2.0-4      |2.0-4      |   |
 |DEoptim           |2.2-8      |2.2-8      |   |
 |digest            |0.6.39     |0.6.39     |   |
 |DT                |0.34.0     |0.34.0     |   |
-|e1071             |1.7-16     |1.7-16     |   |
+|e1071             |1.7-17     |1.7-17     |   |
 |evaluate          |1.0.5      |1.0.5      |   |
 |farver            |2.1.2      |2.1.2      |   |
 |fastmap           |1.2.0      |1.2.0      |   |
@@ -57,7 +57,7 @@
 |interp            |1.1-6      |1.1-6      |   |
 |jquerylib         |0.1.4      |0.1.4      |   |
 |jsonlite          |2.0.0      |2.0.0      |   |
-|knitr             |1.50       |1.50       |   |
+|knitr             |1.51       |1.51       |   |
 |labeling          |0.4.3      |0.4.3      |   |
 |lamW              |2.2.5      |2.2.5      |   |
 |later             |1.4.4      |1.4.4      |   |
@@ -65,7 +65,7 @@
 |leaflet           |2.2.3      |2.2.3      |   |
 |leaflet.providers |2.0.0      |2.0.0      |   |
 |lifecycle         |1.0.4      |1.0.4      |   |
-|litedown          |0.8        |0.8        |   |
+|litedown          |0.9        |0.9        |   |
 |Luminescence      |1.1.2      |1.1.2      |   |
 |magrittr          |2.0.4      |2.0.4      |   |
 |markdown          |2.0        |2.0        |   |
