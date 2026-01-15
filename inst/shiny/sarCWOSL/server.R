@@ -37,6 +37,8 @@ function(input, output, session) {
   })
 
   observe({
+    ## remove existing notifications
+    removeNotification(id = "notification")
     values$args <- list(
       # analyse_SAR.CWOSL arguments
       object = values$data_primary,
@@ -64,9 +66,6 @@ function(input, output, session) {
   output$main_plot <- renderPlot({
     set.seed(1)
     values$results <- RLumShiny:::tryNotify(do.call(analyse_SAR.CWOSL, values$args))
-    if (inherits(values$results, "RLum.Results")) {
-      removeNotification(id = "notification")
-    }
   })
 
   observe({
