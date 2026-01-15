@@ -55,6 +55,12 @@ function(input, output, session) {
     )
   })
 
+  observeEvent(input$signal_integral, {
+    ## background integral cannot overlap with signal integral
+    updateSliderInput(inputId = "background_integral",
+                      min = max(input$signal_integral) + 1)
+  })
+
   output$main_plot <- renderPlot({
     set.seed(1)
     values$results <- RLumShiny:::tryNotify(do.call(analyse_SAR.CWOSL, values$args))
