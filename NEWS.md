@@ -6,6 +6,12 @@
 - This is a hotfix release to fix a problem with the way internal
   functions are accessed when the package is loaded.
 
+- App `sarCWOSL`:
+
+  - Made the backgroud integral slider adjust according to the value of
+    the signal integral slider to avoid overlaps that would generate an
+    error in Luminescence.
+
 ## RLumShiny 0.2.6 (Release date: 2025-12-18)
 
 **This package version requires R \> 4.4!**

@@ -25,9 +25,9 @@ function(input, output, session) {
       return(NULL) # if no file was uploaded return NULL
 
     values$data_primary <- switch(tools::file_ext(inFile$name),
-                                  "xsyg" = read_XSYG2R(inFile$datapath,
-                                                       fastForward = TRUE,
-                                                       verbose = FALSE)
+                                  "xsyg" = merge_RLum(read_XSYG2R(inFile$datapath,
+                                                                  fastForward = TRUE,
+                                                                  verbose = FALSE))
                                   )
   })
 
@@ -37,6 +37,8 @@ function(input, output, session) {
   })
 
   observe({
+    ## remove existing notifications
+    removeNotification(id = "notification")
     values$args <- list(
       # analyse_SAR.CWOSL arguments
       object = values$data_primary,
@@ -55,12 +57,15 @@ function(input, output, session) {
     )
   })
 
+  observeEvent(input$signal_integral, {
+    ## background integral cannot overlap with signal integral
+    updateSliderInput(inputId = "background_integral",
+                      min = max(input$signal_integral) + 1)
+  })
+
   output$main_plot <- renderPlot({
     set.seed(1)
     values$results <- RLumShiny:::tryNotify(do.call(analyse_SAR.CWOSL, values$args))
-    if (inherits(values$results, "RLum.Results")) {
-      removeNotification(id = "notification")
-    }
   })
 
   observe({
