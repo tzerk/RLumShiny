@@ -25,9 +25,9 @@ function(input, output, session) {
       return(NULL) # if no file was uploaded return NULL
 
     values$data_primary <- switch(tools::file_ext(inFile$name),
-                                  "xsyg" = merge_RLum(read_XSYG2R(inFile$datapath,
-                                                                  fastForward = TRUE,
-                                                                  verbose = FALSE))
+                                  "xsyg" = read_XSYG2R(inFile$datapath,
+                                                       fastForward = TRUE,
+                                                       verbose = FALSE)
                                   )
   })
 
