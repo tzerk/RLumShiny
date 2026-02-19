@@ -23,7 +23,7 @@ Encoding: UTF-8
 Depends:
  R (>= 4.4)
 Imports:
- Luminescence (>= 1.1.2),
+ Luminescence (>= 1.1.2.9000),
  shiny (>= 1.11.1),
  rhandsontable (>= 0.3.8),
  data.table (>= 1.17.6),

@@ -29,7 +29,7 @@ output: github_document
 
 * New application to analyse CW-OSL curve data produced by a SUERC portable OSL
   reader and produces a combined plot of OSL/IRSL signal intensities, OSL/IRSL
-  depletion ratios  and the IRSL/OSL ratio.
+  depletion ratios and the IRSL/OSL ratio.
   Base function: `Luminescence::analyse_portableOSL()`.
   Keyword for `app_RLum()`: 'portableOSL'.
 

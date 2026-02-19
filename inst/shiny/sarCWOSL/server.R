@@ -42,10 +42,8 @@ function(input, output, session) {
     values$args <- list(
       # analyse_SAR.CWOSL arguments
       object = values$data_primary,
-      signal.integral.min = min(input$signal_integral),
-      signal.integral.max = max(input$signal_integral),
-      background.integral.min = min(input$background_integral),
-      background.integral.max = max(input$background_integral),
+      signal_integral = input$signal_integral[1]:input$signal_integral[2],
+      background_integral = input$background_integral[1]:input$background_integral[2],
       legend = input$showlegend,
       legend.pos = input$legend_pos,
       verbose = FALSE,

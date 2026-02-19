@@ -36,7 +36,7 @@ function(input, output, session) {
     values$args <- list(
       # analyse_portableOSL arguments
       object = values$data_primary,
-      signal.integral = input$signal_integral,
+      signal_integral = input$signal_integral[1]:input$signal_integral[2],
       invert = input$invert,
       normalise = input$normalise,
       mode = input$mode,
