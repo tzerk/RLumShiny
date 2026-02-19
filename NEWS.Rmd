@@ -6,6 +6,10 @@ output: github_document
 
 ## Current development version (`r Sys.Date()`)
 
+* App `finitemixture:`
+  + Don't allow the minimum and maximum number of components coicide, as
+    Luminescence doesn't support specifying only one component.
+
 * App `sarCWOSL`:
   + Remove incorrect merging of the object imported.
 
