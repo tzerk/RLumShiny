@@ -89,9 +89,13 @@ function(input, output, session) {
   })
 
   output$main_plot <- renderPlot({
+    showNotification(id = "progress", duration = NULL, "This may take a while")
     res <- RLumShiny:::tryNotify(do.call(analyse_IRSAR.RF, values$args))
-    if (inherits(res, "RLum.Results"))
+    removeNotification(id = "progress")
+    if (inherits(res, "RLum.Results")) {
       values$results <- res
+      removeNotification(id = "notification")
+    }
   })
 
   output$table_natural <- renderRHandsontable({

@@ -6,6 +6,8 @@
 - App `finitemixture:`
   - Don’t allow the minimum and maximum number of components coicide, as
     Luminescence doesn’t support specifying only one component.
+- App `irsarRF:`
+  - Remove an error notification once the plot succeeds.
 - App `sarCWOSL`:
   - Remove incorrect merging of the object imported.
 
