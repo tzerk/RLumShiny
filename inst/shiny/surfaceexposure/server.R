@@ -227,7 +227,7 @@ function(input, output, session) {
   })
 
   ## ERROR HANDLING ----
-  output$error <- renderText({
+  output$console <- renderText({
     # invalidate all reactive values
     if (!is.null(values$error)) {
       values$results <- NULL
