@@ -64,6 +64,11 @@ function(input, output, session) {
                 step = 1)
   })
 
+  ## this is to avoid recomputing everything while changing the number of MC
+  ## iterations using the arrows, as otherwise a new computation is started
+  ## for each click, causing a potentially massive slowdown
+  n_MC <- debounce(reactive(if (input$n_MC == 0) NULL else input$n_MC), 500)
+
   observe({
     values$args <- list(
       # analyse_IRSAR.RF arguments
@@ -71,7 +76,7 @@ function(input, output, session) {
       method = input$method,
       RF_nat.lim = input$RF_nat,
       RF_reg.lim = input$RF_reg,
-      n.MC = if (input$n_MC == 0) NULL else input$n_MC,
+      n.MC = n_MC(),
       method_control = list(show_density = input$show_density,
                             show_fit = input$show_fit),
       plot_reduced = !input$show_residuals,
@@ -89,9 +94,13 @@ function(input, output, session) {
   })
 
   output$main_plot <- renderPlot({
+    showNotification(id = "progress", duration = NULL, "This may take a while")
     res <- RLumShiny:::tryNotify(do.call(analyse_IRSAR.RF, values$args))
-    if (inherits(res, "RLum.Results"))
+    removeNotification(id = "progress")
+    if (inherits(res, "RLum.Results")) {
       values$results <- res
+      removeNotification(id = "notification")
+    }
   })
 
   output$table_natural <- renderRHandsontable({

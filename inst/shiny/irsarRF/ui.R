@@ -59,8 +59,8 @@ function(request) {
                                         div(align = "left",
                                             numericInput(inputId = "n_MC",
                                                          label = "Monte Carlo iterations",
-                                                         value = 10, step = 10,
-                                                         min = 0, max = 100),
+                                                         value = 50, step = 10,
+                                                         min = 0, max = 200),
                                             title = "Number of Monte Carlo runs for the estimation of the start parameter (FIT) or of the error (SLIDE and VSLIDE). This value can be set to 0 to skip the MC runs.")
                                ),
 
