@@ -40,7 +40,7 @@ function(input, output, session) {
   # TRANSFORM DATA
   observe({
     P <- input$p
-    delta <- input$delta
+    delta <- as.numeric(input$delta)
 
     # validate method parameters
     if (is.na(input$delta) || input$delta < 1) {

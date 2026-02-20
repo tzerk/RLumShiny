@@ -258,7 +258,6 @@ function(request) {
                 # divide output in separate tabs via tabsetPanel
                 tabsetPanel(
                   tabPanel("Plot",
-                           htmlOutput("error"),
                            plotOutput(outputId = "main_plot", height = "500px"),
                            htmlOutput(outputId = "console")),
                   tabPanel("R code", verbatimTextOutput("plotCode"))

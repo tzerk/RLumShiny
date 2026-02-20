@@ -56,8 +56,8 @@ function(input, output, session) {
   observe({
     values$args <- list(
       # fit_LMCurve arguments
-      values = values$data_primary,
-      values.bg = values$data_bg,
+      object = values$data_primary,
+      object.bg = values$data_bg,
       n.components = input$n_components,
       bg.subtraction = input$bg_subtraction,
       input.dataType = input$datatype,
