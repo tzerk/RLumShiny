@@ -34,7 +34,7 @@ function(input, output, session) {
       values$data_primary <- res
   })
 
-  observeEvent(input$n_components, {
+  n.components.range <- reactive({
     n.components <- input$n_components
     ## don't let the slider limits overlap, as calc_FiniteMixture() throws an
     ## error if only one component is specified
@@ -46,6 +46,7 @@ function(input, output, session) {
       n.components
       updateSliderInput(session, "n_components", value = n.components)
     }
+    n.components[1]:n.components[2]
   })
 
   observe({
@@ -53,7 +54,7 @@ function(input, output, session) {
       # calc_FiniteMixture arguments
       data = values$data_primary,
       sigmab = max(input$sigmab, 0.01),
-      n.components = input$n_components[1]:input$n_components[2],
+      n.components = n.components.range(),
       pdf.weight = input$pdf_weight,
       pdf.sigma = if (input$pdf_sigma) "sigma" else "se",
       pdf.colors = input$pdf_colors,
