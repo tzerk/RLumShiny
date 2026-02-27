@@ -6,16 +6,9 @@
 ## Date:    Thu June 22 2017
 ##+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 shinyServer(function(input, output, session) {
-
-  session$onSessionEnded(function() {
-    stopApp()
-  })
-  
   #check for own set filter dataset
   output$filters <- renderUI({
-
     if(!is.null(input$own_file)){
-
       ##rename file in path
       file.rename(
         from = input$own_file$datapath,
@@ -38,42 +31,130 @@ shinyServer(function(input, output, session) {
 
   })
 
-  # Transmission: Prepare data + plot
-  output$filterPlot <- renderPlot({
+   # Transmission: Prepare data + plot
+   ## Interactive plot
+   output$filterPlot_interactive <- plotly::renderPlotly({
+     req(input$interactive)
 
-    if (length(input$filterInput$right) != 0) {
+     if (length(input$filterInput$right) != 0) {
       data <- lapply(input$filterInput$right, function(x) {
-        as.matrix(readxl::read_excel(
+        as.matrix(suppressWarnings(readxl::read_excel(
           path = database_path,
           sheet = x,
           skip = 14
-        ))
+        )))
 
       })
 
-   filter.matrix <- plot_FilterCombinations(filters = data,
-                              xlim = input$range,
-                              main = input$main,
-                              legend = input$legend,
-                              legend.text = input$filterInput$right,
-                              interactive = FALSE)
-      if(input$stimulationInput == "NA"){
-        NA}
-      if(input$stimulationInput == "violett"){
-        rect(402, 0, 408, 1, col = "purple", lty = 0)}
-      if(input$stimulationInput == "green"){
-        rect(505, 0, 545, 1, col = "green", lty = 0)}
-      if(input$stimulationInput == "blue"){
-        rect(455, 0, 462, 1, col = "blue", lty = 0)}
-      if(input$stimulationInput == "infrared"){
-        rect(847, 0, 853, 1, col = "red", lty = 0)}
-     if(input$stimulationInput == "custom"){
-       rect(input$stimulationInput_custom_centre - input$stimulationInput_custom_width/2, 0,
-            input$stimulationInput_custom_centre + input$stimulationInput_custom_width/2, 1,
-            col = input$rec_colour, lty = 0)}
+      ## main plot
+      p <- plot_FilterCombinations(
+        filters = data,
+        xlim = input$range,
+        main = input$main,
+        legend = input$legend,
+        show_net_transmission = input$net_transmission,
+        legend.text = input$filterInput$right,
+        interactive = TRUE,
+        .shiny_server = TRUE)
 
+       ## translation of the standard plot with the
+       ## help of ChatGPT5
+       shapes <- list()
+
+      if (input$stimulationInput == "violett") {
+        shapes <- list(list(
+          type = "rect",
+          x0 = 402, x1 = 408,
+          y0 = 0,   y1 = 1,
+          fillcolor = "purple",
+          line = list(width = 0)
+        ))
+      }
+      if (input$stimulationInput == "green") {
+        shapes <- list(list(
+          type = "rect",
+          x0 = 505, x1 = 545,
+          y0 = 0,   y1 = 1,
+          fillcolor = "green",
+          line = list(width = 0)
+        ))
+      }
+      if (input$stimulationInput == "blue") {
+        shapes <- list(list(
+          type = "rect",
+          x0 = 455, x1 = 462,
+          y0 = 0,   y1 = 1,
+          fillcolor = "blue",
+          line = list(width = 0)
+        ))
+      }
+      if (input$stimulationInput == "infrared") {
+        shapes <- list(list(
+          type = "rect",
+          x0 = 847, x1 = 853,
+          y0 = 0,   y1 = 1,
+          fillcolor = "red",
+          line = list(width = 0)
+        ))
+      }
+      if (input$stimulationInput == "custom") {
+        shapes <- list(list(
+          type = "rect",
+          x0 = input$stimulationInput_custom_centre -
+               input$stimulationInput_custom_width / 2,
+          x1 = input$stimulationInput_custom_centre +
+               input$stimulationInput_custom_width / 2,
+          y0 = 0, y1 = 1,
+          fillcolor = input$rec_colour,
+          line = list(width = 0)
+        ))
     }
-  })
+
+       ## return the comined plot
+       plotly::layout(p, shapes = shapes)
+
+     }})
+
+   ## Standard plot
+    output$filterPlot <- renderPlot({
+      shiny::req(input$interactive)
+
+      if (length(input$filterInput$right) != 0) {
+        data <- lapply(input$filterInput$right, function(x) {
+          as.matrix(suppressWarnings(readxl::read_excel(
+            path = database_path,
+            sheet = x,
+            skip = 14
+          )))
+
+        })
+
+      plot_FilterCombinations(
+          filters = data,
+          xlim = input$range,
+          main = input$main,
+          legend = input$legend,
+          show_net_transmission = input$net_transmission,
+          legend.text = input$filterInput$right,
+          interactive = FALSE)
+
+         if(input$stimulationInput == "NA"){
+           NA}
+         if(input$stimulationInput == "violett"){
+           rect(402, 0, 408, 1, col = "purple", lty = 0)}
+         if(input$stimulationInput == "green"){
+           rect(505, 0, 545, 1, col = "green", lty = 0)}
+         if(input$stimulationInput == "blue"){
+           rect(455, 0, 462, 1, col = "blue", lty = 0)}
+         if(input$stimulationInput == "infrared"){
+           rect(847, 0, 853, 1, col = "red", lty = 0)}
+        if(input$stimulationInput == "custom"){
+          rect(input$stimulationInput_custom_centre - input$stimulationInput_custom_width/2, 0,
+               input$stimulationInput_custom_centre + input$stimulationInput_custom_width/2, 1,
+               col = input$rec_colour, lty = 0)}
+
+      }
+    })
 
   # Optical Density: Prepare data + plot
   output$densityPlot <- renderPlot({
@@ -98,7 +179,7 @@ shinyServer(function(input, output, session) {
           path = database_path,
           sheet = x,
           col_names = FALSE,
-          n_max = 7)),
+          n_max = 14)),
           stringsAsFactors = FALSE)
 
         ##change column names & remove unwanted characters
@@ -116,7 +197,7 @@ shinyServer(function(input, output, session) {
       })
 
 
-      data.table::rbindlist(data)
+      data.table::rbindlist(data, fill = TRUE)
 
 
 
@@ -180,12 +261,14 @@ shinyServer(function(input, output, session) {
 
         })
 
-        filter.matrix <- plot_FilterCombinations(filters = data,
-                                                 xlim = input$range,
-                                                 main = input$main,
-                                                 legend = input$legend,
-                                                 legend.text = input$filterInput$right,
-                                                 interactive = FALSE)
+        filter.matrix <- plot_FilterCombinations(
+          filters = data,
+          xlim = input$range,
+          main = input$main,
+          legend = input$legend,
+          legend.text = input$filterInput$right,
+          interactive = FALSE
+        )
 
         write.csv(filter.matrix$filter_matrix, file)
       }

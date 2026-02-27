@@ -9,14 +9,15 @@ library(shiny)
 library(Luminescence)
 library(readxl)
 library(RLumShiny)
+require(plotly)
 
 ##check whether a real database exists or the template should be loaded
-if(dir.exists("Data")){
+if (dir.exists("Data")) {
   ##set to first file
   database_path <- list.files("Data/", full.names = TRUE)[1]
 
   ##check whether this is a real XLSX file
-  if(rev(strsplit(database_path, split = ".", fixed = TRUE)[[1]])[1] != "xlsx"){
+  if (rev(strsplit(database_path, split = ".", fixed = TRUE)[[1]])[1] != "xlsx") {
     stop("The filter database file needs to be of type 'xlsx'!")
 
   }

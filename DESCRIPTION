@@ -32,6 +32,7 @@ Imports:
  shinydashboard (>= 0.7.3),
  RCarb (>= 0.1.6),
  markdown (>= 2.0),
+ plotly (>= 4.12.0),
  readxl (>= 1.4.5),
  DT (>= 0.34),
  knitr (>= 1.50)

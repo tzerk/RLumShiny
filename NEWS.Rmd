@@ -6,6 +6,9 @@ output: github_document
 
 ## Current development version (`r Sys.Date()`)
 
+* App `filter`:
+  + Add support for interactive mode via the `plotly` package.
+
 * App `finitemixture:`
   + Don't allow the minimum and maximum number of components coicide, as
     Luminescence doesn't support specifying only one component.

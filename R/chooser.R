@@ -3,14 +3,7 @@
 ## (https://github.com/rstudio/shiny-examples) under the MIT License
 ##+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 chooserInput <- function(inputId, leftLabel, rightLabel, leftChoices, rightChoices,
-                         size = 5, multiple = FALSE) {
-
-  shiny::registerInputHandler("shinyjsexamples.chooser", function(data, ...) {
-    if (is.null(data))
-      NULL
-    else
-      list(left=as.character(data$left), right=as.character(data$right))
-  }, force = TRUE)
+                         size = 15, multiple = FALSE) {
 
   leftChoices <- lapply(leftChoices, tags$option)
   rightChoices <- lapply(rightChoices, tags$option)
@@ -23,22 +16,29 @@ chooserInput <- function(inputId, leftLabel, rightLabel, leftChoices, rightChoic
   tagList(
     singleton(tags$head(
       tags$head(tags$script(src = "RLumShiny/chooser_inputBinding.js")),
-      tags$style(type="text/css",
+      tags$style(type = "text/css",
                  HTML(".chooser-container { display: inline-block; }")
       )
     )),
-    div(id=inputId, class="chooser",
+    div(id = inputId, class = "chooser",
         div(class = "chooser-container chooser-left-container",
-            tags$select(class="left", size=size, multiple=multiple, leftChoices)
+            tags$select(class = "left", size = size, multiple = multiple, leftChoices)
         ),
         div(class = "chooser-container chooser-center-container",
-            icon("fas fa-arrow-alt-circle-right", "right-arrow fa-2x"),
+            icon("fas fa-arrow-alt-circle-right", "right-arrow fa-3x"),
             tags$br(),
-            icon("fas fa-arrow-alt-circle-left", "left-arrow fa-2x")
+            icon("fas fa-arrow-alt-circle-left", "left-arrow fa-3xs")
         ),
         div(class = "chooser-container chooser-right-container",
-            tags$select(class="right", size=size, multiple=multiple, rightChoices)
+            tags$select(class = "right", size = size, multiple = multiple, rightChoices)
         )
     )
   )
 }
+
+registerInputHandler("shinyjsexamples.chooser", function(data, ...) {
+  if (is.null(data))
+    NULL
+  else
+    list(left = as.character(data$left), right = as.character(data$right))
+}, force = TRUE)
