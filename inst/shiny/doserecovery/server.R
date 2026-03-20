@@ -164,7 +164,7 @@ function(input, output, session) {
 
     # save all arguments in a list
     values$args<- list(
-      values = values$data,
+      object = values$data,
       error.range = input$error,
       given.dose = as.numeric(given.dose),
       summary = as.character(input$stats),
