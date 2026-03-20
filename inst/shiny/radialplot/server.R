@@ -165,7 +165,7 @@ function(input, output, session) {
 
     ## unset values if the secondary dataset is missing, as the length of
     ## these arguments must match the number of datasets available
-    if (all(is.na(unlist(values$data_secondary)))) {
+    if (length(values$data) < 2) {
       color2 <- NULL
       pch2 <- NULL
       lty2 <- NULL
