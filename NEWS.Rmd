@@ -6,6 +6,10 @@ output: github_document
 
 ## Current development version (`r Sys.Date()`)
 
+* App `abanico`:
+  + The computation of the y-axis limits no longer requires drawing the
+    entire plot in a separate window.
+
 * App `filter`:
   + Add support for interactive mode via the `plotly` package.
 

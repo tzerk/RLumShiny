@@ -141,7 +141,12 @@ function(input, output, session) {
 
 
   output$ylim<- renderUI({
-    ylim <- round(plot_AbanicoPlot(values$data, output = TRUE)$ylim, 3)
+    data <- unlist(lapply(values$data, function(x) {
+      z <- if (input$logz) log(x[, 1]) else x[, 1]
+      se <- if (input$logz) sd(x[, 2] / x[, 1]) else sd(x[, 2])
+      (z - mean(z)) / se
+    }))
+    ylim <- range(data, na.rm = TRUE)
     sliderInput(inputId = "ylim",  sep="",
                 label = "Range y-axis",
                 min = ylim[1]*4,
