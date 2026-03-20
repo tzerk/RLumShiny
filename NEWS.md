@@ -6,6 +6,11 @@
 - App `abanico`:
   - The computation of the y-axis limits no longer requires drawing the
     entire plot in a separate window.
+  - Show the ui elements regarding the secondary dataset only when the
+    corresponding data is present.
+- App `doserecovery`:
+  - Show the ui elements regarding the secondary dataset only when the
+    corresponding data is present.
 - App `filter`:
   - Add support for interactive mode via the `plotly` package.
 - App `finitemixture:`
@@ -13,6 +18,12 @@
     Luminescence doesn’t support specifying only one component.
 - App `irsarRF:`
   - Remove an error notification once the plot succeeds.
+- App `KDE`:
+  - Show the ui elements regarding the secondary dataset only when the
+    corresponding data is present.
+- App `radialplot`:
+  - Show the ui elements regarding the secondary dataset only when the
+    corresponding data is present.
 - App `sarCWOSL`:
   - Remove incorrect merging of the object imported.
 

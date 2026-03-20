@@ -107,6 +107,15 @@ function(input, output, session) {
       values$data_secondary <- values$data_secondary[, 1:2]
   })
 
+  ## show panels in the ui only when the secondary data has been provided
+  output$hasSecondaryData <- reactive({
+    req(input$table_in_secondary)
+    df <- hot_to_r(input$table_in_secondary)
+    any(!is.na(df) & df != "")
+
+  })
+  outputOptions(output, "hasSecondaryData", suspendWhenHidden = FALSE)
+
   # dynamically inject sliderInput for x-axis range
   output$xlim<- renderUI({
 
