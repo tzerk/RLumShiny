@@ -41,7 +41,7 @@ function(input, output, session) {
 
     ### GET DATA
     data <- list(values$data_primary, values$data_secondary)
-    data <- lapply(data, function(x) { 
+    data <- lapply(data, function(x) {
       x_tmp <- x[complete.cases(x), ]
       if (nrow(x_tmp) == 0) return(NULL)
       else return(x_tmp)
@@ -53,9 +53,9 @@ function(input, output, session) {
   })
 
   output$table_in_primary <- renderRHandsontable({
-    rhandsontable(values$data_primary, 
-                  height = 300, 
-                  colHeaders = c("Dose", "Error"), 
+    rhandsontable(values$data_primary,
+                  height = 300,
+                  colHeaders = c("Dose", "Error"),
                   rowHeaders = NULL)
   })
 
@@ -66,9 +66,9 @@ function(input, output, session) {
   })
 
   output$table_in_secondary <- renderRHandsontable({
-    rhandsontable(values$data_secondary, 
+    rhandsontable(values$data_secondary,
                   height = 300,
-                  colHeaders = c("Dose", "Error"), 
+                  colHeaders = c("Dose", "Error"),
                   rowHeaders = NULL)
   })
 
@@ -78,12 +78,21 @@ function(input, output, session) {
       values$data_secondary <- res
   })
 
+  ## show panels in the ui only when the secondary data has been provided
+  output$hasSecondaryData <- reactive({
+    req(input$table_in_secondary)
+    df <- hot_to_r(input$table_in_secondary)
+    any(!is.na(df) & df != "")
+
+  })
+  outputOptions(output, "hasSecondaryData", suspendWhenHidden = FALSE)
+
   # dynamically inject sliderInput for central value
   output$centValue<- renderUI({
     centValue.data <- do.call(rbind, values$data)
-    sliderInput(inputId = "centValue", 
+    sliderInput(inputId = "centValue",
                 label = "Central Value",
-                min = min(centValue.data[,1])*0.9, 
+                min = min(centValue.data[,1])*0.9,
                 max = max(centValue.data[,1])*1.1,
                 value = mean(centValue.data[,1]))
   })## EndOf::renderUI()
@@ -95,7 +104,7 @@ function(input, output, session) {
     if(input$logz == TRUE) {
       sd<- xlim.data[,2] / xlim.data[,1]
     } else {
-      sd<- xlim.data[,2] 
+      sd<- xlim.data[,2]
     }
     prec<- 1/sd
 
@@ -156,7 +165,7 @@ function(input, output, session) {
 
     ## unset values if the secondary dataset is missing, as the length of
     ## these arguments must match the number of datasets available
-    if (all(is.na(unlist(values$data_secondary)))) {
+    if (length(values$data) < 2) {
       color2 <- NULL
       pch2 <- NULL
       lty2 <- NULL
@@ -177,31 +186,31 @@ function(input, output, session) {
     line.label <- sapply(1:8, function(x) input[[paste0("labline", x)]])
 
     # if custom bar color get RGB from separate input panel or "none"
-    bar.col <- ifelse(input$bar == "custom", 
-                      adjustcolor(col = input$rgbBar, 
+    bar.col <- ifelse(input$bar == "custom",
+                      adjustcolor(col = input$rgbBar,
                                   alpha.f = input$alpha.bar/100),
                       ifelse(input$bar == "none",
                              input$bar,
-                             adjustcolor(col = input$bar, 
+                             adjustcolor(col = input$bar,
                                          alpha.f = input$alpha.bar/100)))
 
     # if custom bar color get RGB from separate input panel or "none"
     # SECONDARY DATA SET
     bar.col2 <- ifelse(input$bar2 == "custom",
-                       adjustcolor(col = input$rgbBar2, 
+                       adjustcolor(col = input$rgbBar2,
                                    alpha.f = input$alpha.bar/100),
                        ifelse(input$bar2 == "none",
                               input$bar,
-                              adjustcolor(col = input$bar2, 
+                              adjustcolor(col = input$bar2,
                                           alpha.f = input$alpha.bar/100)))
 
     # if custom grid color get RGB from separate input panel or "none"
     grid.col <- ifelse(input$grid == "custom",
-                       adjustcolor(col = input$rgbGrid, 
+                       adjustcolor(col = input$rgbGrid,
                                    alpha.f = input$alpha.grid/100),
                        ifelse(input$grid == "none",
                               input$grid,
-                              adjustcolor(col = input$grid, 
+                              adjustcolor(col = input$grid,
                                           alpha.f = input$alpha.grid/100)))
 
     # workaround: if no legend wanted set label to NA and hide
@@ -242,11 +251,11 @@ function(input, output, session) {
       stats = input$statlabels %||% "none",
       plot.ratio = input$curvature,
       summary = if (input$summary) input$stats else "",
-      summary.pos = input$sumpos, 
-      legend = legend, 
+      summary.pos = input$sumpos,
+      legend = legend,
       legend.pos = legend.pos,
-      na.rm = TRUE, 
-      central.value = input$centValue, 
+      na.rm = TRUE,
+      central.value = input$centValue,
       centrality = input$centrality,
       lwd = c(input$lwd, lwd2),
       lty = c(as.integer(input$lty), lty2))

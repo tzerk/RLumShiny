@@ -374,23 +374,24 @@ function(request) {
                                                                   jscolorInput(inputId = "jscol1"))
                                           )
                                         ),
-                                        br(),
-                                        div(align = "center", h5("Secondary data set")),
-                                        fluidRow(
-                                          column(width = 6,
+                                        conditionalPanel(condition = "output.hasSecondaryData == true",
+                                          br(),
+                                          div(align = "center", h5("Secondary data set")),
+                                          fluidRow(
+                                            column(width = 6,
                                                  ## DATA SET 2
                                                  RLumShiny:::pointSymbolChooser(inputId = "pch2",
                                                                     selected = "16")
-                                          ),
-                                          column(width = 6,
+                                            ),
+                                            column(width = 6,
                                                  # show only if custom symbol is desired
                                                  conditionalPanel(condition = "input.pch2 == 'custom'",
                                                                   RLumShiny:::customSymbolChooser(inputId = "custompch2")
                                                                   )
-                                          )
-                                        ),
-                                        fluidRow(
-                                          column(width = 6,
+                                            )
+                                          ),
+                                          fluidRow(
+                                            column(width = 6,
                                                  selectInput(inputId = "color2", label = "Datapoint color",
                                                              selected = "#b22222",
                                                              choices = list("Black" = "black",
@@ -399,12 +400,13 @@ function(request) {
                                                                             "Green" = "#6E8B3D",
                                                                             "Blue" = "#428bca",
                                                                             "Custom" = "custom"))
-                                          ),
-                                          column(width = 6,
+                                            ),
+                                            column(width = 6,
                                                  # show only if custom color is desired
                                                  conditionalPanel(condition = "input.color2 == 'custom'",
                                                                   HTML("Choose a color<br>"),
                                                                   jscolorInput(inputId = "jscol2"))
+                                            )
                                           )
                                         )
                                ),##EndOf::Tab_5
@@ -702,10 +704,12 @@ function(request) {
                                                            label = "Primary data label",
                                                            value = "primary data")
                                           ),
-                                          column(width = 6,
+                                          conditionalPanel(condition = "output.hasSecondaryData == true",
+                                            column(width = 6,
                                                  textInput(inputId = "legendname2",
                                                            label = "Secondary data label",
                                                            value = "secondary data")
+                                            )
                                           )
                                         )
                                ),##EndOf::Tab_8

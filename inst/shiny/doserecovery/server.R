@@ -41,7 +41,7 @@ function(input, output, session) {
   observe({
 
     data <- list(values$data_primary, values$data_secondary)
-    data <- lapply(data, function(x) { 
+    data <- lapply(data, function(x) {
       x_tmp <- x[complete.cases(x), ]
       if (nrow(x_tmp) == 0) return(NULL)
       else return(x_tmp)
@@ -53,9 +53,9 @@ function(input, output, session) {
   })
 
   output$table_in_primary <- renderRHandsontable({
-    rhandsontable(values$data_primary, 
-                  height = 300, 
-                  colHeaders = c("Dose", "Error"), 
+    rhandsontable(values$data_primary,
+                  height = 300,
+                  colHeaders = c("Dose", "Error"),
                   rowHeaders = NULL)
   })
 
@@ -66,9 +66,9 @@ function(input, output, session) {
   })
 
   output$table_in_secondary <- renderRHandsontable({
-    rhandsontable(values$data_secondary, 
+    rhandsontable(values$data_secondary,
                   height = 300,
-                  colHeaders = c("Dose", "Error"), 
+                  colHeaders = c("Dose", "Error"),
                   rowHeaders = NULL)
   })
 
@@ -77,6 +77,15 @@ function(input, output, session) {
     if (!is.null(res))
       values$data_secondary <- res
   })
+
+  ## show panels in the ui only when the secondary data has been provided
+  output$hasSecondaryData <- reactive({
+    req(input$table_in_secondary)
+    df <- hot_to_r(input$table_in_secondary)
+    any(!is.na(df) & df != "")
+
+  })
+  outputOptions(output, "hasSecondaryData", suspendWhenHidden = FALSE)
 
   output$xlim<- renderUI({
     data <- values$data
@@ -155,7 +164,7 @@ function(input, output, session) {
 
     # save all arguments in a list
     values$args<- list(
-      values = values$data,
+      object = values$data,
       error.range = input$error,
       given.dose = as.numeric(given.dose),
       summary = as.character(input$stats),

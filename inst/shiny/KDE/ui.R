@@ -178,9 +178,10 @@ function(request) {
                                                                                label = "Choose a color"))
                                           )
                                         ),
-                                        div(align = "center", h5("Secondary data set")),
-                                        fluidRow(
-                                          column(width = 6,
+                                        conditionalPanel(condition = "output.hasSecondaryData == true",
+                                          div(align = "center", h5("Secondary data set")),
+                                          fluidRow(
+                                            column(width = 6,
                                                  selectInput(inputId = "color2", label = "Datapoint color",
                                                              selected = "#b22222",
                                                              choices = list("Black" = "black",
@@ -189,12 +190,14 @@ function(request) {
                                                                             "Green" = "#6E8B3D",
                                                                             "Blue" = "#428bca",
                                                                             "Custom" = "custom"))
-                                          ),
-                                          column(width = 6,
+                                            ),
+
+                                            column(width = 6,
                                                  # show only if custom color is desired
                                                  conditionalPanel(condition = "input.color2 == 'custom'",
                                                                   jscolorInput(inputId = "rgb2",
                                                                                label = "Choose a color"))
+                                            )
                                           )
                                         )
                                ),##EndOf::Tab_5

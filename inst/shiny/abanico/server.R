@@ -107,6 +107,15 @@ function(input, output, session) {
       values$data_secondary <- values$data_secondary[, 1:2]
   })
 
+  ## show panels in the ui only when the secondary data has been provided
+  output$hasSecondaryData <- reactive({
+    req(input$table_in_secondary)
+    df <- hot_to_r(input$table_in_secondary)
+    any(!is.na(df) & df != "")
+
+  })
+  outputOptions(output, "hasSecondaryData", suspendWhenHidden = FALSE)
+
   # dynamically inject sliderInput for x-axis range
   output$xlim<- renderUI({
 
@@ -141,7 +150,12 @@ function(input, output, session) {
 
 
   output$ylim<- renderUI({
-    ylim <- round(plot_AbanicoPlot(values$data, output = TRUE)$ylim, 3)
+    data <- unlist(lapply(values$data, function(x) {
+      z <- if (input$logz) log(x[, 1]) else x[, 1]
+      se <- if (input$logz) sd(x[, 2] / x[, 1]) else sd(x[, 2])
+      (z - mean(z)) / se
+    }))
+    ylim <- range(data, na.rm = TRUE)
     sliderInput(inputId = "ylim",  sep="",
                 label = "Range y-axis",
                 min = ylim[1]*4,
