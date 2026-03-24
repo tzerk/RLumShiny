@@ -184,7 +184,7 @@ function(input, output, session) {
 
     if (input$preheat) {
 
-      n<- length(values$data[[1]][,1])
+      n <- max(sapply(values$data, nrow))
       ph<- c(input$ph1, input$ph2, input$ph3, input$ph4, input$ph5, input$ph6, input$ph7, input$ph8)
       ph<- ph[1:n]
 
