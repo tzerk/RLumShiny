@@ -89,7 +89,7 @@ function(input, output, session) {
 
   output$xlim<- renderUI({
     data <- values$data
-    n <- max(sapply(data, nrow))
+    n <- max(vapply(data, nrow, integer(1)), 0)
 
     sliderInput(inputId = "xlim", label = "Range x-axis",
                 min = 0, max = n + 1,
@@ -97,7 +97,8 @@ function(input, output, session) {
   })
 
   output$ylim <- renderUI({
-    data <- values$data[[1]]
+    ## head() handles the case when values$data is an empty list()
+    data <- head(values$data, 1)
     req(input$dose)
     if (input$dose[[1]] == 0) {
       ylim <- range(pretty(c(data[, 1] + data[, 2], data[, 1] - data[, 2])))
