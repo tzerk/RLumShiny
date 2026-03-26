@@ -29,6 +29,12 @@ function(input, output, session) {
                                                        fastForward = TRUE,
                                                        verbose = FALSE)
                                   )
+    max.channels <- max(vapply(get_RLum(values$data_primary[[1]],
+                                        recordType = c("^OSL", "^IRSL")),
+                               nrow, FUN.VALUE = numeric(1)))
+    updateSliderInput(session, "background_integral",
+                      value = c(max(max.channels - 100, 10), max.channels),
+                      max = max.channels)
   })
 
   observeEvent(input$table_in_primary, {
