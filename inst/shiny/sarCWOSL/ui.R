@@ -23,13 +23,18 @@ function(request) {
                                                     max = 1000,
                                                     step = 1,
                                                     dragRange = TRUE),
-                                        sliderInput(inputId = "background_integral",
+                                        checkboxInput(inputId = "sub_bg_integral",
+                                                      label = "Subtract the background integral",
+                                                      value = TRUE),
+                                        conditionalPanel(condition = "input.sub_bg_integral == true",
+                                            sliderInput(inputId = "background_integral",
                                                     "Background integral",
                                                     value = c(900, 1000),
                                                     min = 1,
                                                     max = 1000,
                                                     step = 1,
                                                     dragRange = TRUE)
+                                        )
                                ),
 
                                tabPanel("Plot",
