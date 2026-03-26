@@ -28,6 +28,7 @@
   - Remove incorrect merging of the object imported.
   - Set the maximum number of channels according to the input file,
     instead of capping it arbitrarily at 1000 (#99)
+  - Add support for disabling the background integral subtraction.
 
 ## RLumShiny 0.2.7 (Release date: 2026-01-18)
 

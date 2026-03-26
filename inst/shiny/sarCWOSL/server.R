@@ -45,11 +45,18 @@ function(input, output, session) {
   observe({
     ## remove existing notifications
     removeNotification(id = "notification")
+
+    ## background integral subtraction
+    if (input$sub_bg_integral)
+      background_integral <- input$background_integral[1]:input$background_integral[2]
+    else
+      background_integral <- NA
+
     values$args <- list(
       # analyse_SAR.CWOSL arguments
       object = values$data_primary,
       signal_integral = input$signal_integral[1]:input$signal_integral[2],
-      background_integral = input$background_integral[1]:input$background_integral[2],
+      background_integral = background_integral,
       legend = input$showlegend,
       legend.pos = input$legend_pos,
       verbose = FALSE,
