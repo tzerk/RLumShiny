@@ -1,10 +1,10 @@
 #' Internal helper to generate a notification for warnings and errors
 #'
 #' @noRd
-tryNotify <- function(expr, id = "notification") {
+tryNotify <- function(expr, id = "notification", duration = 10) {
   notify <- function(ew, id, type) {
     showNotification(conditionMessage(ew),
-                     id = id, type = type, duration = NULL)
+                     id = id, type = type, duration = duration)
   }
   tryCatch(
       withCallingHandlers(

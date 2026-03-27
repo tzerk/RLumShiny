@@ -40,15 +40,7 @@ function(input, output, session) {
                       max = max.channels)
   })
 
-  observeEvent(input$table_in_primary, {
-    ## remove existing notifications
-    removeNotification(id = "notification")
-  })
-
   observe({
-    ## remove existing notifications
-    removeNotification(id = "notification")
-
     ## background integral subtraction
     if (input$sub_bg_integral)
       background_integral <- input$background_integral[1]:input$background_integral[2]
