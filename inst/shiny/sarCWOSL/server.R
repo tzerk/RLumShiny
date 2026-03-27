@@ -62,7 +62,7 @@ function(input, output, session) {
       verbose = FALSE,
       # generic plot arguments
       log = paste0("", ifelse(input$logx, "x", ""), ifelse(input$logy, "y", "")),
-      main = input$main,
+      main = if (nchar(input$main) > 0) input$main else NULL,
       cex = input$cex,
       plot_onePage = TRUE
     )

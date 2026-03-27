@@ -41,7 +41,7 @@ function(request) {
                                         div(align = "center", h5("Plot elements")),
                                         textInput(inputId = "main",
                                                   label = "Title",
-                                                  value = "Growth Curve"),
+                                                  value = ""),
 
                                         br(),
                                         div(align = "center", h5("Axes")),
