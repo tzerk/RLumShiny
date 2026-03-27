@@ -29,23 +29,18 @@ function(input, output, session) {
                                                        fastForward = TRUE,
                                                        verbose = FALSE)
                                   )
-    max.channels <- max(vapply(get_RLum(values$data_primary[[1]],
-                                        recordType = c("^OSL", "^IRSL")),
-                               nrow, FUN.VALUE = numeric(1)))
+    RLumShiny:::tryNotify(valid.records <- get_RLum(values$data_primary[[1]],
+                                                    recordType = c("^OSL", "^IRSL")))
+    if (length(valid.records) == 0) {
+      return(NULL)
+    }
+    max.channels <- max(vapply(valid.records, nrow, FUN.VALUE = numeric(1)))
     updateSliderInput(session, "background_integral",
                       value = c(max(max.channels - 100, 10), max.channels),
                       max = max.channels)
   })
 
-  observeEvent(input$table_in_primary, {
-    ## remove existing notifications
-    removeNotification(id = "notification")
-  })
-
   observe({
-    ## remove existing notifications
-    removeNotification(id = "notification")
-
     ## background integral subtraction
     if (input$sub_bg_integral)
       background_integral <- input$background_integral[1]:input$background_integral[2]
@@ -57,12 +52,14 @@ function(input, output, session) {
       object = values$data_primary,
       signal_integral = input$signal_integral[1]:input$signal_integral[2],
       background_integral = background_integral,
+      verbose = FALSE,
+      # plot_DoseResponseCurve arguments
       legend = input$showlegend,
       legend.pos = input$legend_pos,
-      verbose = FALSE,
+      density_rug = input$showrug,
       # generic plot arguments
       log = paste0("", ifelse(input$logx, "x", ""), ifelse(input$logy, "y", "")),
-      main = input$main,
+      main = if (nchar(input$main) > 0) input$main else NULL,
       cex = input$cex,
       plot_onePage = TRUE
     )

@@ -72,9 +72,6 @@ function(input, output, session) {
   })
 
   output$main_plot <- renderPlot({
-    ## remove existing notifications
-    removeNotification(id = "notification")
-
     ## modify the object to plot_DoseResponseCurve() to be the fitted object
     args <- values$args.plot
     args$object <- values$fit
