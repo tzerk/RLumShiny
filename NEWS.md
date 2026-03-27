@@ -31,6 +31,8 @@
   - Add support for disabling the background integral subtraction.
   - Leave the plot title empty so that the one from
     `analyse_SAR.CWOSL()` is used by default.
+  - Allow controlling the drawing of the rug in the dose response curve
+    plot.
 
 ## RLumShiny 0.2.7 (Release date: 2026-01-18)
 

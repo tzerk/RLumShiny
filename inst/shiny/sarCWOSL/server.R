@@ -52,9 +52,11 @@ function(input, output, session) {
       object = values$data_primary,
       signal_integral = input$signal_integral[1]:input$signal_integral[2],
       background_integral = background_integral,
+      verbose = FALSE,
+      # plot_DoseResponseCurve arguments
       legend = input$showlegend,
       legend.pos = input$legend_pos,
-      verbose = FALSE,
+      density_rug = input$showrug,
       # generic plot arguments
       log = paste0("", ifelse(input$logx, "x", ""), ifelse(input$logy, "y", "")),
       main = if (nchar(input$main) > 0) input$main else NULL,

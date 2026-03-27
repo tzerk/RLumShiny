@@ -60,11 +60,19 @@ function(request) {
                                         ),
 
                                         br(),
-                                        div(align = "center", h5("Legend")),
-                                        checkboxInput(inputId = "showlegend",
-                                                      label = "Show legend",
-                                                      value = TRUE),
-
+                                        div(align = "center", h5("Dose response curve")),
+                                        fluidRow(
+                                            column(width = 6,
+                                                   checkboxInput(inputId = "showlegend",
+                                                                 label = "Show legend",
+                                                                 value = TRUE)
+                                                   ),
+                                            column(width = 6,
+                                                   checkboxInput(inputId = "showrug",
+                                                                 label = "Show rug",
+                                                                 value = TRUE)
+                                                   )
+                                        ),
                                         selectInput(inputId = "legend_pos",
                                                     label = "Legend position",
                                                     selected = "topright",
