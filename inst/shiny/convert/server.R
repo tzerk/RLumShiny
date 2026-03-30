@@ -2,6 +2,11 @@
 ## MAIN FUNCTION
 function(input, output, session) {
 
+  get_unique_positions <- function(data) {
+    unique(sapply(data,
+                  function(x) x@records[[1]]@info$POSITION))
+  }
+
   # input data (with default)
   values <- reactiveValues(data = NULL,
                            data_filtered = NULL,
@@ -14,21 +19,23 @@ function(input, output, session) {
   })
 
   # check and read in file (DATA SET 1)
-  observeEvent(input$import, {
+  observeEvent(input$file, {
     inFile<- input$file
     
     if(is.null(inFile)) 
       return(NULL)
 
     # 1. Risoe .bin(x)
-    if (tools::file_ext(inFile$name) %in% c("bin", "binx")) {
+    if (tolower(tools::file_ext(inFile$name)) %in% c("bin", "binx")) {
       # import the file
       values$data <- read_BIN2R(inFile$datapath, fastForward = TRUE, verbose = FALSE)
       values$data_filtered <- values$data
 
       # set some diagnostic values
-      values$positions <- unique(sapply(values$data, function(x) { x@records[[1]]@info$POSITION }))
-      values$types <- unique(sapply(values$data[[1]]@records, function(x) { x@recordType }))
+      values$positions <- sort(get_unique_positions(values$data))
+      values$types <- unique(unlist(lapply(values$data, function(data) {
+        sapply(data@records, function(x) x@recordType)
+      })))
       values$filename <- inFile$name
     }
   })
