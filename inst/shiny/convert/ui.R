@@ -14,7 +14,11 @@ function(request) {
                                                      "BIN(X) file (.bin, .binx)",
                                                      "application/octet-stream, .bin, .binx"
                                                      ),
-                               tabPanel("Curve Selection",
+
+                               # Tab 2: Curve selection
+                               RLumShiny:::selectTab("select",
+                                                     callback = function() {
+                                   list(
                                         # dynamic elements depending on input file
                                         fluidRow(
                                           column(width = 6,
@@ -28,7 +32,8 @@ function(request) {
 
                                         div(align = "center", h5("(De)select individual curves")),
                                         checkboxGroupInput("curves", "Curves")
-                               ),##EndOf::Tab_2
+                                   )
+                               }),
 
                                tabPanel("Export",
                                         selectInput("targetFile", label = "Export to...",
