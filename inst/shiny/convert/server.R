@@ -7,6 +7,14 @@ function(input, output, session) {
                   function(x) x@records[[1]]@info$POSITION))
   }
 
+  get_unique_types <- function(data) {
+    unique(unlist(lapply(data, function(dt) {
+      if (is.null(dt))
+        return(NULL)
+      sapply(dt@records, function(x) x@recordType)
+    })))
+  }
+
   # input data (with default)
   values <- reactiveValues(data = NULL,
                            data_filtered = NULL,
@@ -33,9 +41,7 @@ function(input, output, session) {
 
       # set some diagnostic values
       values$positions <- sort(get_unique_positions(values$data))
-      values$types <- unique(unlist(lapply(values$data, function(data) {
-        sapply(data@records, function(x) x@recordType)
-      })))
+      values$types <- get_unique_types(values$data)
       values$filename <- inFile$name
     }
   })
