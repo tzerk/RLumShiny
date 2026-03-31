@@ -55,9 +55,9 @@ function(input, output, session) {
                          inline = TRUE)
   })
 
-  output$curveTypes <- renderUI({
+  output$recordTypes <- renderUI({
     if (!is.null(values$types))
-      checkboxGroupInput("curveTypes", "Curve types", 
+      checkboxGroupInput("recordTypes", "Record types",
                          choices = values$types, selected = values$types)
   })
 
@@ -65,16 +65,16 @@ function(input, output, session) {
   observe({
     if (is.null(values$data))
       return(NULL)
-    
+
     data_filtered <- values$data[as.numeric(input$positions)]
 
     if (length(data_filtered) > 0) {
       values$data_filtered <- lapply(data_filtered, function(x) {
-        subset(x, recordType %in% input$curveTypes)
+        subset(x, recordType %in% input$recordTypes)
       })
     }
   })
-  
+
   ## --------------------- OUTPUT ------------------------------------------- ##
   output$positionTabs <- renderUI({
     if (is.null(values$data_filtered))
@@ -91,8 +91,8 @@ function(input, output, session) {
     input$tab
     values$data
     values$data_filtered
-    input$curveTypes
-    
+    input$recordTypes
+
     if (is.null(values$data_filtered) || length(values$data_filtered) == 0)
       return(NULL)
 

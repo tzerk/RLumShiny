@@ -26,7 +26,7 @@ function(request) {
 
                                           ),
                                           column(width = 6,
-                                                 uiOutput("curveTypes")
+                                                 uiOutput("recordTypes")
                                           )
                                         ),
 
