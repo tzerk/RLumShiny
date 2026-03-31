@@ -50,3 +50,22 @@ rhandsontable_workaround <- function(table) {
     return(NULL)
   hot_to_r(df_tmp)
 }
+
+#' Retrieve the unique positions in a list of RLum.Analysis objects
+#'
+#' @noRd
+get_unique_positions <- function(data) {
+  unique(sapply(data, function(x) c(x@records[[1]]@info$position,
+                                    x@records[[1]]@info$POSITION)))
+}
+
+#' Retrieve the unique record types in a list of RLum.Analysis objects
+#'
+#' @noRd
+get_unique_types <- function(data) {
+  unique(unlist(lapply(data, function(dt) {
+    if (is.null(dt))
+      return(NULL)
+    sapply(dt@records, function(x) x@recordType)
+  })))
+}

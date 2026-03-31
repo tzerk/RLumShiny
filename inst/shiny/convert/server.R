@@ -2,19 +2,6 @@
 ## MAIN FUNCTION
 function(input, output, session) {
 
-  get_unique_positions <- function(data) {
-    unique(sapply(data,
-                  function(x) x@records[[1]]@info$POSITION))
-  }
-
-  get_unique_types <- function(data) {
-    unique(unlist(lapply(data, function(dt) {
-      if (is.null(dt))
-        return(NULL)
-      sapply(dt@records, function(x) x@recordType)
-    })))
-  }
-
   # input data (with default)
   values <- reactiveValues(data = NULL,
                            data_filtered = NULL,
