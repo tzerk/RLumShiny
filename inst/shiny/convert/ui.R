@@ -12,15 +12,11 @@ function(request) {
                                # Tab 1: Data input
                                RLumShiny:::importTab("import",
                                                      "BIN(X) file (.bin, .binx)",
-                                                     "application/octet-stream, .bin, .binx"
-                                                     ),
-
-                               # Tab 2: Curve selection
-                               RLumShiny:::selectTab("select",
+                                                     "application/octet-stream, .bin, .binx",
                                                      callback = function() {
                                    list(
-                                        # dynamic elements depending on input file
-                                        fluidRow(
+                                       div(align = "center", h5("Curve selection")),
+                                       fluidRow(
                                           column(width = 6,
                                                  uiOutput("positions")
 
