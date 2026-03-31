@@ -12,11 +12,6 @@ importTab <- function(id, label, accept, callback = function() NULL) {
                      label = strong(label),
                      accept = accept),
 
-           # import
-           actionButton(inputId = "import",
-                        label = "Import",
-                        class = "btn btn-success"),
-
            ## callback function
            callback()
            )
