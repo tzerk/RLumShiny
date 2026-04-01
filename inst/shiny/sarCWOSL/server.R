@@ -98,11 +98,11 @@ function(input, output, session) {
 
   output$positions <- renderUI({
     positions <- sort(get_unique_positions(values$data_primary))
-    checkboxGroupInput("positions", "Positions",
-                       choiceNames = positions,
-                       choiceValues = seq_along(positions),
-                       selected = seq_along(positions),
-                       inline = TRUE)
+    radioButtons("positions", "Positions",
+                 choiceNames = positions,
+                 choiceValues = seq_along(positions),
+                 selected = 1,
+                 inline = TRUE)
   })
 
   output$recordTypes <- renderUI({
