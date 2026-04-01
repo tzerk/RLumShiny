@@ -12,23 +12,24 @@ function(request) {
                                # Tab 1: Data input
                                RLumShiny:::importTab("import",
                                                      "BIN(X) file (.bin, .binx)",
-                                                     "application/octet-stream, .bin, .binx"
-                                                     ),
-                               tabPanel("Curve Selection",
-                                        # dynamic elements depending on input file
-                                        fluidRow(
+                                                     "application/octet-stream, .bin, .binx",
+                                                     callback = function() {
+                                   list(
+                                       div(align = "center", h5("Curve selection")),
+                                       fluidRow(
                                           column(width = 6,
                                                  uiOutput("positions")
 
                                           ),
                                           column(width = 6,
-                                                 uiOutput("curveTypes")
+                                                 uiOutput("recordTypes")
                                           )
                                         ),
 
                                         div(align = "center", h5("(De)select individual curves")),
                                         checkboxGroupInput("curves", "Curves")
-                               ),##EndOf::Tab_2
+                                   )
+                               }),
 
                                tabPanel("Export",
                                         selectInput("targetFile", label = "Export to...",

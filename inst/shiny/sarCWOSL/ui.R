@@ -12,7 +12,25 @@ function(request) {
                                # Tab 1: Data input
                                RLumShiny:::importTab("import",
                                                      "XSYG file (.xsyg)",
-                                                     "application/xml, .xsyg"),
+                                                     "application/xml, .xsyg",
+                                                     callback = function() {
+
+                                   list(
+                                       div(align = "center", h5("Curve selection")),
+                                       fluidRow(
+                                           column(width = 6,
+                                                  uiOutput("positions")
+
+                                           ),
+                                           column(width = 6,
+                                                  uiOutput("recordTypes")
+                                           )
+                                       ),
+
+                                       div(align = "center", h5("(De)select individual curves")),
+                                       checkboxGroupInput("curves", "Curves")
+                                   )
+                               }),
 
                                tabPanel("Method",
                                         div(align = "center", h5("Input data preprocessing")),

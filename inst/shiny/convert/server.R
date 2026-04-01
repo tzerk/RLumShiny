@@ -14,21 +14,21 @@ function(input, output, session) {
   })
 
   # check and read in file (DATA SET 1)
-  observeEvent(input$import, {
+  observeEvent(input$file, {
     inFile<- input$file
     
     if(is.null(inFile)) 
       return(NULL)
 
     # 1. Risoe .bin(x)
-    if (tools::file_ext(inFile$name) %in% c("bin", "binx")) {
+    if (tolower(tools::file_ext(inFile$name)) %in% c("bin", "binx")) {
       # import the file
       values$data <- read_BIN2R(inFile$datapath, fastForward = TRUE, verbose = FALSE)
       values$data_filtered <- values$data
 
       # set some diagnostic values
-      values$positions <- unique(sapply(values$data, function(x) { x@records[[1]]@info$POSITION }))
-      values$types <- unique(sapply(values$data[[1]]@records, function(x) { x@recordType }))
+      values$positions <- sort(get_unique_positions(values$data))
+      values$types <- get_unique_types(values$data)
       values$filename <- inFile$name
     }
   })
@@ -42,9 +42,9 @@ function(input, output, session) {
                          inline = TRUE)
   })
 
-  output$curveTypes <- renderUI({
+  output$recordTypes <- renderUI({
     if (!is.null(values$types))
-      checkboxGroupInput("curveTypes", "Curve types", 
+      checkboxGroupInput("recordTypes", "Record types",
                          choices = values$types, selected = values$types)
   })
 
@@ -52,16 +52,16 @@ function(input, output, session) {
   observe({
     if (is.null(values$data))
       return(NULL)
-    
+
     data_filtered <- values$data[as.numeric(input$positions)]
 
     if (length(data_filtered) > 0) {
       values$data_filtered <- lapply(data_filtered, function(x) {
-        subset(x, recordType %in% input$curveTypes)
+        subset(x, recordType %in% input$recordTypes)
       })
     }
   })
-  
+
   ## --------------------- OUTPUT ------------------------------------------- ##
   output$positionTabs <- renderUI({
     if (is.null(values$data_filtered))
@@ -78,8 +78,8 @@ function(input, output, session) {
     input$tab
     values$data
     values$data_filtered
-    input$curveTypes
-    
+    input$recordTypes
+
     if (is.null(values$data_filtered) || length(values$data_filtered) == 0)
       return(NULL)
 

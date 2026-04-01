@@ -3,6 +3,21 @@
 function(input, output, session) {
   options(shiny.maxRequestSize = 30 * 1024^2) # 30MB upload limit
 
+  make_selection <- function(positions, recordTypes) {
+    if (length(positions) == 0 || length(recordTypes) == 0)
+      return(NULL)
+
+    data_filtered <- values$data_primary[as.numeric(input$positions)]
+    data_filtered <- lapply(data_filtered, function(x) {
+      subset(x, recordType %in% recordTypes)
+    })
+
+    if (length(data_filtered) == 0)
+      return(NULL)
+
+    data_filtered
+  }
+
   # input data (with default)
   if ("startData" %in% names(.GlobalEnv)) {
     data <- startData
@@ -11,6 +26,7 @@ function(input, output, session) {
   }
 
   values <- reactiveValues(data_primary = object,
+                           data_filtered = NULL,
                            args = NULL,
                            results = NULL)
 
@@ -29,6 +45,7 @@ function(input, output, session) {
                                                        fastForward = TRUE,
                                                        verbose = FALSE)
                                   )
+
     RLumShiny:::tryNotify(valid.records <- get_RLum(values$data_primary[[1]],
                                                     recordType = c("^OSL", "^IRSL")))
     if (length(valid.records) == 0) {
@@ -40,6 +57,14 @@ function(input, output, session) {
                       max = max.channels)
   })
 
+  observeEvent(input$positions, {
+    values$data_filtered <- make_selection(input$positions, input$recordTypes)
+  })
+
+  observeEvent(input$recordTypes, {
+    values$data_filtered <- make_selection(input$positions, input$recordTypes)
+  })
+
   observe({
     ## background integral subtraction
     if (input$sub_bg_integral)
@@ -49,7 +74,7 @@ function(input, output, session) {
 
     values$args <- list(
       # analyse_SAR.CWOSL arguments
-      object = values$data_primary,
+      object = values$data_filtered %||% values$data_primary,
       signal_integral = input$signal_integral[1]:input$signal_integral[2],
       background_integral = background_integral,
       verbose = FALSE,
@@ -69,6 +94,22 @@ function(input, output, session) {
     ## background integral cannot overlap with signal integral
     updateSliderInput(inputId = "background_integral",
                       min = max(input$signal_integral) + 1)
+  })
+
+  output$positions <- renderUI({
+    positions <- sort(get_unique_positions(values$data_primary))
+    radioButtons("positions", "Positions",
+                 choiceNames = positions,
+                 choiceValues = seq_along(positions),
+                 selected = 1,
+                 inline = TRUE)
+  })
+
+  output$recordTypes <- renderUI({
+    types <- sort(get_unique_types(values$data_primary))
+    checkboxGroupInput("recordTypes", "Record types",
+                       choices = types,
+                       selected = types)
   })
 
   output$main_plot <- renderPlot({
