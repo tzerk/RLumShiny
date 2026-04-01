@@ -27,7 +27,6 @@ function(input, output, session) {
 
   values <- reactiveValues(data_primary = object,
                            data_filtered = NULL,
-                           types = sort(get_unique_types(object)),
                            args = NULL,
                            results = NULL)
 
@@ -46,7 +45,6 @@ function(input, output, session) {
                                                        fastForward = TRUE,
                                                        verbose = FALSE)
                                   )
-    values$types <- sort(get_unique_types(values$data_primary))
 
     RLumShiny:::tryNotify(valid.records <- get_RLum(values$data_primary[[1]],
                                                     recordType = c("^OSL", "^IRSL")))
@@ -108,9 +106,10 @@ function(input, output, session) {
   })
 
   output$recordTypes <- renderUI({
+    types <- sort(get_unique_types(values$data_primary))
     checkboxGroupInput("recordTypes", "Record types",
-                       choices = values$types,
-                       selected = values$types)
+                       choices = types,
+                       selected = types)
   })
 
   output$main_plot <- renderPlot({
