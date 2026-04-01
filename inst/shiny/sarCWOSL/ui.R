@@ -28,7 +28,7 @@ function(request) {
                                        ),
 
                                        div(align = "center", h5("(De)select individual curves")),
-                                       checkboxGroupInput("curves", "Curves")
+                                       uiOutput("curves")
                                    )
                                }),
 

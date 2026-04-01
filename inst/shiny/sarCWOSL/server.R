@@ -65,6 +65,12 @@ function(input, output, session) {
     values$data_filtered <- make_selection(input$positions, input$recordTypes)
   })
 
+  observeEvent(input$curves, {
+    data <- values$data_filtered %||% values$data_primary
+    values$data_filtered <- get_RLum(data, record.id = as.integer(input$curves),
+                                     drop = FALSE)
+  })
+
   observe({
     ## background integral subtraction
     if (input$sub_bg_integral)
@@ -110,6 +116,15 @@ function(input, output, session) {
     checkboxGroupInput("recordTypes", "Record types",
                        choices = types,
                        selected = types)
+  })
+
+  output$curves <- renderUI({
+    data <- values$data_filtered %||% values$data_primary
+    choices <- seq_along(data[[1]]@records)
+    checkboxGroupInput("curves", "Curves",
+                       choices = choices,
+                       selected = choices,
+                       inline = TRUE)
   })
 
   output$main_plot <- renderPlot({
