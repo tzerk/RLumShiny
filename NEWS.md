@@ -34,6 +34,7 @@
   - Allow controlling the drawing of the rug in the dose response curve
     plot.
   - Add support for curve selection from the user interface.
+  - Add support for BIN/BINX files.
 
 ## RLumShiny 0.2.7 (Release date: 2026-01-18)
 

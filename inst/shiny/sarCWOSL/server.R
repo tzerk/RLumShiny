@@ -44,8 +44,14 @@ function(input, output, session) {
     if(is.null(inFile))
       return(NULL) # if no file was uploaded return NULL
 
-    values$data_primary <- switch(tools::file_ext(inFile$name),
+    values$data_primary <- switch(tolower(tools::file_ext(inFile$name)),
                                   "xsyg" = read_XSYG2R(inFile$datapath,
+                                                       fastForward = TRUE,
+                                                       verbose = FALSE),
+                                  "bin" = read_BIN2R(inFile$datapath,
+                                                     fastForward = TRUE,
+                                                     verbose = FALSE),
+                                  "binx" = read_BIN2R(inFile$datapath,
                                                        fastForward = TRUE,
                                                        verbose = FALSE)
                                   )
