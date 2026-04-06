@@ -171,9 +171,9 @@ function(input, output, session) {
   observe({
     # nested renderText({}) for code output on "R plot code" tab
     code.output <- callModule(RLumShiny:::printCode, "printCode",
-                              n_inputs = 2, join_inputs_into_list = FALSE,
+                              n_inputs = 1,
                               list(name = "analyse_SAR.CWOSL",
-                                   arg1 = "data",
+                                   arg1 = "object = data",
                                    args = values$args))
 
     output$plotCode<- renderText({
