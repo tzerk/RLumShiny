@@ -18,6 +18,10 @@ function(input, output, session) {
     data_filtered
   }
 
+  get_uids <- function(data) {
+    sapply(data@records, function(x) x@.uid)
+  }
+
   # input data (with default)
   if ("startData" %in% names(.GlobalEnv)) {
     data <- startData
@@ -46,6 +50,13 @@ function(input, output, session) {
                                                        verbose = FALSE)
                                   )
 
+    ## The only way to identify curves in an RLum.Analysis object is by
+    ## using their uids. Therefore, we keep the list of uids in the primary
+    ## data, which is updated when the selected position is changed.
+    ## This allows us to keep the curve checkboxes reflect which curves are
+    ## selected/deselected.
+    values$uids <- get_uids(values$data_primary[[1]])
+
     RLumShiny:::tryNotify(valid.records <- get_RLum(values$data_primary[[1]],
                                                     recordType = c("^OSL", "^IRSL")))
     if (length(valid.records) == 0) {
@@ -59,10 +70,33 @@ function(input, output, session) {
 
   observeEvent(input$positions, {
     values$data_filtered <- make_selection(input$positions, input$recordTypes)
+    values$uids <- get_uids(values$data_primary[[as.integer(input$positions)]])
   })
 
   observeEvent(input$recordTypes, {
     values$data_filtered <- make_selection(input$positions, input$recordTypes)
+  })
+
+  observeEvent(input$curves, {
+    data <- values$data_filtered %||% values$data_primary
+
+    ## uids of the curves in the current object
+    available.uids <- get_uids(data[[1]])
+
+    ## uids of the selected curves
+    selected.uids <- values$uids[as.integer(input$curves)]
+
+    if (length(selected.uids) < length(available.uids)) {
+      ## a curve was deselected
+      record.id <- match(selected.uids, available.uids)
+    } else {
+      ## a curve was reselected after being deselected: we restore the
+      ## primary data before applying the selection
+      record.id <- match(selected.uids, values$uids)
+      data <- values$data_primary[as.integer(input$positions)]
+    }
+    values$data_filtered <- get_RLum(data, record.id = record.id,
+                                     drop = FALSE)
   })
 
   observe({
@@ -110,6 +144,17 @@ function(input, output, session) {
     checkboxGroupInput("recordTypes", "Record types",
                        choices = types,
                        selected = types)
+  })
+
+  output$curves <- renderUI({
+    req(input$positions)
+    choices <- seq_along(values$data_primary[[as.integer(input$positions)]]@records)
+    data <- values$data_filtered %||% values$data_primary
+    uids <- get_uids(data[[1]])
+    checkboxGroupInput("curves", "Curves",
+                       choices = choices,
+                       selected = match(uids, values$uids),
+                       inline = TRUE)
   })
 
   output$main_plot <- renderPlot({
