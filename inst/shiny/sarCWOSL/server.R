@@ -31,6 +31,7 @@ function(input, output, session) {
 
   values <- reactiveValues(data_primary = object,
                            data_filtered = NULL,
+                           file_extension = NULL,
                            args = NULL,
                            results = NULL)
 
@@ -44,8 +45,15 @@ function(input, output, session) {
     if(is.null(inFile))
       return(NULL) # if no file was uploaded return NULL
 
-    values$data_primary <- switch(tools::file_ext(inFile$name),
+    values$file_extension <- tolower(tools::file_ext(inFile$name))
+    values$data_primary <- switch(values$file_extension,
                                   "xsyg" = read_XSYG2R(inFile$datapath,
+                                                       fastForward = TRUE,
+                                                       verbose = FALSE),
+                                  "bin" = read_BIN2R(inFile$datapath,
+                                                     fastForward = TRUE,
+                                                     verbose = FALSE),
+                                  "binx" = read_BIN2R(inFile$datapath,
                                                        fastForward = TRUE,
                                                        verbose = FALSE)
                                   )
@@ -165,9 +173,10 @@ function(input, output, session) {
   observe({
     # nested renderText({}) for code output on "R plot code" tab
     code.output <- callModule(RLumShiny:::printCode, "printCode",
-                              n_inputs = 2, join_inputs_into_list = FALSE,
+                              n_inputs = 1,
+                              extension = values$file_extension %||% "csv",
                               list(name = "analyse_SAR.CWOSL",
-                                   arg1 = "data",
+                                   arg1 = "object = data",
                                    args = values$args))
 
     output$plotCode<- renderText({

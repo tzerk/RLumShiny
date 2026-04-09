@@ -18,7 +18,8 @@ function(input, output, session) {
     if(is.null(inFile))
       return(NULL) # if no file was uploaded return NULL
 
-    values$data_primary <- switch(tools::file_ext(inFile$name),
+    values$file_extension <- tolower(tools::file_ext(inFile$name))
+    values$data_primary <- switch(values$file_extension,
                                   ## FIXME(mcol): hardcoded curve
                                   "xsyg" = read_XSYG2R(inFile$datapath,
                                                        fastForward = TRUE,
@@ -143,6 +144,7 @@ function(input, output, session) {
   observe({
     # nested renderText({}) for code output on "R plot code" tab
     code.output <- callModule(RLumShiny:::printCode, "printCode",
+                              extension = values$file_extension %||% "csv",
                               n_inputs = 1,
                               list(name = "calc_FastRatio",
                                    arg1 = "data",

@@ -11,8 +11,8 @@ function(request) {
                    tabsetPanel(id = "tabs", type = "pill", selected = "Import",
                                # Tab 1: Data input
                                RLumShiny:::importTab("import",
-                                                     "XSYG file (.xsyg)",
-                                                     "application/xml, .xsyg",
+                                                     "XSYG file (.xsyg) or BIN/BINX (.bin/.binx)",
+                                                     "application/xml, .xsyg, application/octet-stream, .bin, .binx",
                                                      callback = function() {
 
                                    list(
