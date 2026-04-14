@@ -27,8 +27,8 @@ function(input, output, session) {
       values$data_filtered <- values$data
 
       # set some diagnostic values
-      values$positions <- sort(get_unique_positions(values$data))
-      values$types <- get_unique_types(values$data)
+      values$positions <- sort(RLumShiny:::get_unique_positions(values$data))
+      values$types <- RLumShiny:::get_unique_types(values$data)
       values$filename <- inFile$name
     }
   })
@@ -66,10 +66,10 @@ function(input, output, session) {
   output$positionTabs <- renderUI({
     if (is.null(values$data_filtered))
       return(NULL)
-    
+
     tabs <- lapply(values$positions[as.numeric(input$positions)], function(pos) {
       tabPanel(pos,
-               plotOutput(paste0("pos", pos))) 
+               plotOutput(paste0("pos", pos)))
     })
     do.call(tabsetPanel, c(id = "tab", tabs))
   })

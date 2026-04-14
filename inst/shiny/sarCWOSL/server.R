@@ -139,7 +139,7 @@ function(input, output, session) {
   })
 
   output$positions <- renderUI({
-    positions <- sort(get_unique_positions(values$data_primary))
+    positions <- sort(RLumShiny:::get_unique_positions(values$data_primary))
     radioButtons("positions", "Positions",
                  choiceNames = positions,
                  choiceValues = seq_along(positions),
@@ -148,7 +148,7 @@ function(input, output, session) {
   })
 
   output$recordTypes <- renderUI({
-    types <- sort(get_unique_types(values$data_primary))
+    types <- sort(RLumShiny:::get_unique_types(values$data_primary))
     checkboxGroupInput("recordTypes", "Record types",
                        choices = types,
                        selected = types)
