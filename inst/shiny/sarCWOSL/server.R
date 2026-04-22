@@ -120,6 +120,9 @@ function(input, output, session) {
       signal_integral = input$signal_integral[1]:input$signal_integral[2],
       background_integral = background_integral,
       verbose = FALSE,
+      # fit_DoseResponseCurve arguments
+      mode = input$mode,
+      fit.method = input$fit_method,
       # plot_DoseResponseCurve arguments
       legend = input$showlegend,
       legend.pos = input$legend_pos,
