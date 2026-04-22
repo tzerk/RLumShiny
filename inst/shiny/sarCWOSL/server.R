@@ -33,7 +33,7 @@ function(input, output, session) {
                            data_filtered = NULL,
                            file_extension = NULL,
                            args = NULL,
-                           results = NULL)
+                           results = list())
 
   session$onSessionEnded(function() {
     stopApp()
@@ -108,6 +108,8 @@ function(input, output, session) {
   })
 
   observe({
+    req(input$positions)
+
     ## background integral subtraction
     if (input$sub_bg_integral)
       background_integral <- input$background_integral[1]:input$background_integral[2]
@@ -120,6 +122,9 @@ function(input, output, session) {
       signal_integral = input$signal_integral[1]:input$signal_integral[2],
       background_integral = background_integral,
       verbose = FALSE,
+      # fit_DoseResponseCurve arguments
+      mode = input$mode,
+      fit.method = input$fit_method,
       # plot_DoseResponseCurve arguments
       legend = input$showlegend,
       legend.pos = input$legend_pos,
@@ -166,9 +171,32 @@ function(input, output, session) {
   })
 
   output$main_plot <- renderPlot({
+    req(input$positions)
     set.seed(1)
-    values$results <- RLumShiny:::tryNotify(do.call(analyse_SAR.CWOSL, values$args))
+    results <- RLumShiny:::tryNotify(do.call(analyse_SAR.CWOSL, values$args))
+
+    ## store the results obtained for this position
+    values$results[[input$positions]] <- results$data
   })
+
+  output$results <- DT::renderDT({
+    data <- as.data.frame(data.table::rbindlist(values$results))
+
+    ## remove internal columns
+    rm.idx <- grep("^\\.", colnames(data))
+    data <- data[, -rm.idx]
+
+    ## remove columns for secondary model parameters
+    rm.idx <- match(c("D01", "D01.ERROR", "D02", "D02.ERROR", "R", "R.ERROR",
+                      "Dc", "D63"), colnames(data))
+    data <- data[, -rm.idx]
+
+    ## round numerical columns
+    num.idx <- sapply(data, is.numeric)
+    data[num.idx] <- lapply(data[num.idx], round, digits = 3)
+
+    data
+  }, options = list(pageLength = 10))
 
   observe({
     # nested renderText({}) for code output on "R plot code" tab

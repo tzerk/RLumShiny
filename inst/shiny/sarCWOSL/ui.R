@@ -52,7 +52,24 @@ function(request) {
                                                     max = 1000,
                                                     step = 1,
                                                     dragRange = TRUE)
-                                        )
+                                        ),
+                                        radioButtons(inputId = "mode",
+                                                     label = "Mode",
+                                                     selected = "interpolation",
+                                                     choices = c("interpolation" = "interpolation",
+                                                                 "extrapolation" = "extrapolation")
+                                                     ),
+                                        selectInput(inputId = "fit_method",
+                                                    "Fit method",
+                                                    selected = "EXP",
+                                                    choices = list("EXP" = "EXP",
+                                                                   "LIN" = "LIN",
+                                                                   "QDR" = "QDR",
+                                                                   "GOK" = "GOK",
+                                                                   "EXP OR LIN" = "EXP OR LIN",
+                                                                   "EXP+LIN" = "EXP+LIN",
+                                                                   "EXP+EXP" = "EXP+EXP",
+                                                                   "OTOR" = "OTOR"))
                                ),
 
                                tabPanel("Plot",
@@ -126,6 +143,7 @@ function(request) {
                 fluidRow(
                   tabsetPanel(
                     tabPanel("Plot", plotOutput(outputId = "main_plot", height = "600px")),
+                    tabPanel("Results", DT::DTOutput("results")),
                     tabPanel("R code", verbatimTextOutput("plotCode"))
                   )
                 )
