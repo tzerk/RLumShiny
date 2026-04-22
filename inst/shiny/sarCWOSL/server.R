@@ -108,6 +108,8 @@ function(input, output, session) {
   })
 
   observe({
+    req(input$positions)
+
     ## background integral subtraction
     if (input$sub_bg_integral)
       background_integral <- input$background_integral[1]:input$background_integral[2]
@@ -169,6 +171,7 @@ function(input, output, session) {
   })
 
   output$main_plot <- renderPlot({
+    req(input$positions)
     set.seed(1)
     values$results <- RLumShiny:::tryNotify(do.call(analyse_SAR.CWOSL, values$args))
   })
