@@ -143,6 +143,7 @@ function(request) {
                 fluidRow(
                   tabsetPanel(
                     tabPanel("Plot", plotOutput(outputId = "main_plot", height = "600px")),
+                    tabPanel("Results", DT::DTOutput("results")),
                     tabPanel("R code", verbatimTextOutput("plotCode"))
                   )
                 )

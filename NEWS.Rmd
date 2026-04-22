@@ -47,6 +47,7 @@ output: github_document
   + Add support for choosing the fit mode (interpolation or extrapolation) and
     fit method (`EXP`, `LIN`, `QDR`, `GOK`, `OTOR`, etc) for the dose response
     curve.
+  + Report the results obtained for each position selected in the Results tab.
 
 ## RLumShiny 0.2.7 (Release date: 2026-01-18)
 
