@@ -28,7 +28,7 @@ shinyUI(
               div(
                 radioButtons("import_header", label = "1st row is column header?",
                              choiceNames = c("yes", "no"), choiceValues = list(TRUE, FALSE), inline = TRUE),
-                selectInput("import_sep", label = "Column separator", choices = c(",",";","&","$")),
+                selectInput("import_sep", label = "Column separator", choices = c(",",";","&","$"), width = '200px'),
                 actionButton("load_file", label = "Load from file ...", icon("import", lib = "glyphicon"),
                              style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
                 actionButton("load_example", label = "Load example data"),
@@ -47,15 +47,18 @@ shinyUI(
                  ),
                  column(6,
                    numericInput(
-                     inputId = "n.MC", label = "MC runs", value = 100, min = 1, max = 10000, width = "100%")
-                 )
+                     inputId = "n.MC", label = "MC runs", value = 100, min = 1, max = 10000, width = "100%")),
                 ),
                 div(
                  actionButton("run_calculation",
                                label = "Run calculation",
                                icon = icon("play-circle"),
                                style="color: #fff; background-color: #337ab7; border-color: #2e6da4"
-                  ), align = "center")
+                  ), align = "center"),
+                hr(),
+                div(
+                 verbatimTextOutput("error_log")
+                ),
                 ),##tabPanel
               tabPanel(
                 title = "Input template",

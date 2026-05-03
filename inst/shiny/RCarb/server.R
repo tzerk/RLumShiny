@@ -7,13 +7,12 @@
 shinyServer(function(input, output, session) {
     # Initialisation ------------------------------------------------------------------------------
     ##we run RCarb one time and create the table we need
-    df <- RCarb::model_DoseRate(data = Example_Data[1,], n.MC = NULL, plot = FALSE, verbose = FALSE)
+    df <- RCarb::model_DoseRate(data = NULL)
     df <- df[-1,]
 
     ##make table reactive
     values <- reactiveValues(
-        df = df
-    )
+        df = df)
 
     ##render table
     output$df <- renderRHandsontable({
@@ -42,13 +41,9 @@ shinyServer(function(input, output, session) {
     })
 
     #feedback changes in the table
-    observe({
-      if (!is.null(input$df)) {
-            values$df <- hot_to_r(input$df)
-        }
-
-
-    })
+    observeEvent(input$df, {
+      values$df <- hot_to_r(input$df)
+    }, ignoreNULL = TRUE)
 
     # Load example data ---------------------------------------------------------------------------
     observeEvent(input$load_example, {
@@ -97,48 +92,90 @@ shinyServer(function(input, output, session) {
     })
 
     # Calculation ---------------------------------------------------------------------------------
-    observeEvent(input$run_calculation, {
+    ## set error character
+    errors <- reactiveVal(character())
 
+    observeEvent(input$run_calculation, {
      ##check input and return null if needed
      if(nrow(values$df) == 0){
          message("Input data has 0 rows, nothing was done!")
          return(NULL)
      }
 
+     ## track row selections
+     sel_r <- input$df_select$select$r
+
+     if(is.null(sel_r))
+       sel_r <- 1:nrow(values$df)
+
      ##get temp dir
      temp_dir <- tempdir()
 
      ##run with progressbar
      withProgress(
-         message = "Running calculations ...", min = 0, max = nrow(values$df), {
+         message = "Running calculations ...", min = 0, max = nrow(values$df[sel_r,]), {
 
         ##run calculation and create plots
-        for(i in 1:nrow(values$df)){
+        for(i in sel_r){
              incProgress(i)
              temp_files[[i]] <<- paste0(temp_dir,"/SAMPLE_",i,".png")
              png(file = temp_files[[i]], bg = "transparent", width = 800, height = 400, res = 100)
-             values$df[i,] <- RCarb::model_DoseRate(
-                 data =  values$df[i,1:29],
+              tmp <- tryCatch({
+               RCarb::model_DoseRate(
+                 data = values$df[i,1:29],
                  DR_conv_factors = input$conversion_factors,
                  length_step = input$length_step,
                  max_time = input$max_time,
                  n.MC = input$n.MC,
                  verbose = TRUE,
                  plot = TRUE,
-                 mfrow = c(1,2)
-                 )
-             dev.off()
+                 mfrow = c(1,2))
+              },
+              error = function(e) {
+                errors(c(errors(), paste0("Error: Sample ", values$df[i,1], ": ", e$message)))
+                message("Error: ", e$message)
+
+              }, warning = function(w) {
+                message("Warning caught: ", w$message)
+
+              })
+
+            if(is.null(tmp)) {
+              values$df[i,] <- values$df[i,1:29]
+              plot(
+                NA,
+                NA,
+                xlim = c(-1, 1),
+                ylim = c(-1, 1),
+                xlab = "",
+                ylab = "",
+                main = values$df[i, 1]
+              )
+              text(x = 0, y = 0, "Error")
+
+             } else {
+              values$df[i,] <- tmp
+              errors(character())
+
+             }
+
+          dev.off()
          }
 
      })#end progressbar
 
+     output$error_log <- renderPrint({
+       writeLines(errors())
+     })
+
      ##show first plot
      output$plot <- renderImage({
              ##grep correct aliquot
-             temp_aliquot <- paste0("SAMPLE_1.png")
+             temp_files[vapply(temp_files, is.null, logical(1))] <- NULL
+             temp_aliquot <- temp_files[[order(unlist(temp_files))[1]]]
 
              ##set filename
-             filename <- temp_files[[grep(pattern = temp_aliquot, x = temp_files,fixed = TRUE)]]
+             filename <- temp_files[[grep(pattern = temp_aliquot, x = temp_files, fixed = TRUE)]]
 
              #Return a list containing the filename and alt text
              list(src = filename,
@@ -147,7 +184,6 @@ shinyServer(function(input, output, session) {
          }, deleteFile = FALSE)
 
     })
-
 
     # Graphical output ----------------------------------------------------------------------------
     observeEvent(input$df_select, {
@@ -163,7 +199,6 @@ shinyServer(function(input, output, session) {
 
         ##render image
         output$plot <- renderImage({
-
             ##set filename
             filename <- temp_files[[grep(pattern = temp_aliquot, x = temp_files, fixed = TRUE)]]
 
