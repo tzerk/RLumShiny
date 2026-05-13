@@ -1,5 +1,10 @@
 ## News and changes
 
+### Version 0.1.3
+* Supported running selected records only, if the corresponding rows are selected.
+* Support for changes in `'RCarb'` (v0.1.8) that will speed up the start of the app.
+* Add better error catching to avoid the app freezes. 
+
 ### Version 0.1.2
 * Fix minor issue related to a more recent version of `'shiny'` that prevented 
 the app from starting

@@ -30,7 +30,7 @@ Imports:
  googleVis (>= 0.7.3),
  leaflet (>= 2.2.3),
  shinydashboard (>= 0.7.3),
- RCarb (>= 0.1.7),
+ RCarb (>= 0.1.8),
  markdown (>= 2.0),
  plotly (>= 4.12.0),
  readxl (>= 1.4.5),

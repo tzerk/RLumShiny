@@ -33,6 +33,14 @@ output: github_document
 * App `radialplot`:
   + Show the ui elements regarding the secondary dataset only when the
     corresponding data is present.
+    
+* App `RCarb`:
+  + Add support to run selected records only. This way single records can be
+    tested without modifying the table, i.e. deleting rows, which was the only 
+    option in the past. Selected records are run through the
+    selection of rows in the table. 
+  + Adaptation for changes in the underlying function in `'RCarb'` that will
+    considerably boost the start of the app (requires `'RCarb'` >= v0.1.8)
 
 * App `sarCWOSL`:
   + Remove incorrect merging of the object imported.
