@@ -194,7 +194,8 @@ function(input, output, session) {
     results <- RLumShiny:::tryNotify(do.call(analyse_SAR.CWOSL, values$args))
 
     ## store the results obtained for this position
-    values$results[[input$positions]] <- results$data
+    if (inherits(results, "RLum.Results"))
+      values$results[[input$positions]] <- results$data
   })
 
   getResultsTable <- function(onlyHighlights = FALSE) {
