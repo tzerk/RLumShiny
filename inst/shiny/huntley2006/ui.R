@@ -85,8 +85,8 @@ function(request) {
                                           column(width = 6,
                                                  radioButtons(inputId = "fit_method",
                                                               label = "Fit method",
-                                                              selected = "EXP",
-                                                              choices = c("Single saturating exponential (EXP)" = "EXP",
+                                                              selected = "SSE",
+                                                              choices = c("Single saturating exponential (SSE)" = "SSE",
                                                                           "General-order kinetics (GOK)" = "GOK")
                                                               )
                                           ),

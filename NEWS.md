@@ -20,8 +20,9 @@
 - App `filter`:
   - Add support for interactive mode via the `plotly` package.
 - App `finitemixture:`
-  - Don’t allow the minimum and maximum number of components coicide, as
-    Luminescence doesn’t support specifying only one component.
+  - Don’t allow the minimum and maximum number of components to
+    coincide, as Luminescence doesn’t support specifying only one
+    component.
 - App `irsarRF:`
   - Remove an error notification once the plot succeeds.
 - App `KDE`:
@@ -50,7 +51,7 @@
   - Add support for curve selection from the user interface.
   - Add support for BIN/BINX files.
   - Add support for choosing the fit mode (interpolation or
-    extrapolation) and fit method (`EXP`, `LIN`, `QDR`, `GOK`, `OTOR`,
+    extrapolation) and fit method (`SSE`, `LIN`, `QDR`, `GOK`, `OTOR`,
     etc) for the dose response curve.
   - Add button to analyze all curves.
   - Report the results obtained for each position selected in the
