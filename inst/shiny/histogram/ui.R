@@ -70,10 +70,10 @@ function(request) {
                                                                choices = c("n" = "n",
                                                                            "Mean" = "mean",
                                                                            "Median" = "median",
-                                                                           "rel. Standard deviation" = "sdrel",
-                                                                           "abs. Standard deviation" = "sdabs",
-                                                                           "rel. Standard error" = "serel",
-                                                                           "abs. Standard error" = "seabs",
+                                                                           "rel. Standard deviation" = "sd.rel",
+                                                                           "abs. Standard deviation" = "sd.abs",
+                                                                           "rel. Standard error" = "se.rel",
+                                                                           "abs. Standard error" = "se.abs",
                                                                            "Skewness" = "skewness",
                                                                            "Kurtosis" = "kurtosis"
                                                                            # "% in 2 sigma range" = "in.2s"

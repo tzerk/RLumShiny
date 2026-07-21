@@ -71,13 +71,13 @@ function(request) {
                                                                            "weighted Mean" = "mean.weighted",
                                                                            "Median" = "median",
                                                                            "weighted Median" = "median.weighted",
-                                                                           "rel. Standard deviation" = "sdrel",
-                                                                           "abs. Standard deviation" = "sdabs",
-                                                                           "rel. Standard error" = "serel",
-                                                                           "abs. Standard error" = "seabs",
+                                                                           "rel. Standard deviation" = "sd.rel",
+                                                                           "abs. Standard deviation" = "sd.abs",
+                                                                           "rel. Standard error" = "se.rel",
+                                                                           "abs. Standard error" = "se.abs",
                                                                            #"25 % Quartile" = "q25", #not implemented yet
                                                                            #"75 % Quartile" = "q75", #not implemented yet
-                                                                           "KDEmax"  = "kdemax",
+                                                                           "KDEmax" = "kde.max",
                                                                            "Skewness" = "skewness",
                                                                            "Kurtosis" = "kurtosis")
                                                                ),
