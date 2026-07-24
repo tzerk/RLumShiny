@@ -88,7 +88,7 @@ function(input, output, session) {
   })
 
   output$main_plot <- renderPlot({
-    validate(need(input$xlim, "Just wait a second..."))
+    validate(need(input$xlim, "Waiting for data... Please wait!"))
     res <- RLumShiny:::tryNotify(do.call(plot_Histogram, args = values$args))
     if (inherits(res, "RLum.Results")) {
       ## remove existing notifications
