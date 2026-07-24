@@ -266,7 +266,7 @@ function(input, output, session) {
     # validate(need()) makes sure that all data are available to
     # renderUI({}) before plotting and will wait until there
     validate(
-      need(expr = input$centValue, message = 'Waiting for data... Please wait!'),
+      need(expr = input$centValue, message = ''),
       need(expr = input$zlim, message = 'Waiting for data... Please wait!')
     )
 
