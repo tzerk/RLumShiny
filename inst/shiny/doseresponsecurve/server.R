@@ -19,8 +19,7 @@ function(input, output, session) {
   values <- reactiveValues(data_primary = data,
                            args.fit = NULL,
                            args.plot = NULL,
-                           fit = NULL,
-                           results = NULL)
+                           fit = NULL)
 
   session$onSessionEnded(function() {
     stopApp()
@@ -83,7 +82,10 @@ function(input, output, session) {
   })
 
   output$main_plot <- renderPlot({
-    values$results <- do.call(plot_DoseResponseCurve, get_plot_args())
+    ## modify the object to plot_DoseResponseCurve() to be the fitted object
+    args <- values$args.plot
+    args$object <- values$fit
+    do.call(plot_DoseResponseCurve, args)
   })
 
   output$table_in_primary <- renderRHandsontable({

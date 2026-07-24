@@ -9,8 +9,7 @@ function(input, output, session) {
     data <- ExampleData.DeValues$CA1
   }
   values <- reactiveValues(data_primary = data,
-                           args = NULL,
-                           results = NULL)
+                           args = NULL)
 
   session$onSessionEnded(function() {
     stopApp()
@@ -75,7 +74,6 @@ function(input, output, session) {
     if (inherits(res, "RLum.Results")) {
       ## remove existing notifications
       removeNotification(id = "notification")
-      values$results <- res
     }
   })
 

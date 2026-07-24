@@ -9,8 +9,7 @@ function(input, output, session) {
     data <- ExampleData.Fading$equivalentDose.data$IR50
   }
   values <- reactiveValues(data_primary = data,
-                           args = NULL,
-                           results = NULL)
+                           args = NULL)
 
   session$onSessionEnded(function() {
     stopApp()
@@ -60,10 +59,8 @@ function(input, output, session) {
   output$main_plot <- renderPlot({
     showNotification(id = "progress", duration = NULL, "This may take a while")
     set.seed(1)
-    res <- RLumShiny:::tryNotify(do.call(calc_Huntley2006, values$args))
+    RLumShiny:::tryNotify(do.call(calc_Huntley2006, values$args))
     removeNotification(id = "progress")
-    if (inherits(res, "RLum.Results"))
-      values$results <- res
   })
 
   output$table_in_primary <- renderRHandsontable({

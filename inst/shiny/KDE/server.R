@@ -162,10 +162,7 @@ function(input, output, session) {
       need(expr = input$xlim, message = ''),
       need(expr = input$bw, message = 'Waiting for data... Please wait!')
     )
-
-    res <- RLumShiny:::tryNotify(do.call(plot_KDE, args = values$args))
-    if (inherits(res, "RLum.Results"))
-      res
+    RLumShiny:::tryNotify(do.call(plot_KDE, args = values$args))
   })##EndOf::renderPlot({})
 
   observe({

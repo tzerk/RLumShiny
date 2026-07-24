@@ -9,8 +9,7 @@ function(input, output, session) {
     data <- RF70Curves[[1]]
   }
   values <- reactiveValues(data_primary = data,
-                           args = NULL,
-                           results = NULL)
+                           args = NULL)
 
   session$onSessionEnded(function() {
     stopApp()
@@ -98,7 +97,6 @@ function(input, output, session) {
     res <- RLumShiny:::tryNotify(do.call(analyse_IRSAR.RF, values$args))
     removeNotification(id = "progress")
     if (inherits(res, "RLum.Results")) {
-      values$results <- res
       removeNotification(id = "notification")
     }
   })
