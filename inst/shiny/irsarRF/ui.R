@@ -88,23 +88,14 @@ function(request) {
                                                       label = "Show legend",
                                                       value = TRUE),
 
-                                        selectInput(inputId = "legend_pos",
-                                                    label = "Legend position",
-                                                    selected = "top",
-                                                    choices = c("Top" = "top",
-                                                                "Top left" = "topleft",
-                                                                "Top right"= "topright",
-                                                                "Center" = "center",
-                                                                "Bottom" = "bottom",
-                                                                "Bottom left" = "bottomleft",
-                                                                "Bottom right" = "bottomright")),
+                                        RLumShiny:::legendPositionChooser(inputId = "legend_pos",
+                                                                          selected = "top"),
 
                                         div(align = "center", h5("Scaling")),
                                         sliderInput(inputId = "cex",
                                                     label = "Scaling factor",
                                                     min = 0.5, max = 2,
                                                     value = 1.0, step = 0.1)
-
                                ),##EndOf::Tab_3
 
                                tabPanel("Axis",

@@ -143,6 +143,7 @@ function(input, output, session) {
       xlab = input$xlab,
       ylab = c(input$ylab1, input$ylab2),
       main = input$main,
+      mtext = input$mtext,
       values.cumulative = input$cumulative,
       na.rm = TRUE,
       rug = input$rug,
@@ -162,10 +163,7 @@ function(input, output, session) {
       need(expr = input$xlim, message = ''),
       need(expr = input$bw, message = 'Waiting for data... Please wait!')
     )
-
-    res <- RLumShiny:::tryNotify(do.call(plot_KDE, args = values$args))
-    if (inherits(res, "RLum.Results"))
-      res
+    RLumShiny:::tryNotify(do.call(plot_KDE, args = values$args))
   })##EndOf::renderPlot({})
 
   observe({

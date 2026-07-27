@@ -9,8 +9,7 @@ function(input, output, session) {
     data <- RF70Curves[[1]]
   }
   values <- reactiveValues(data_primary = data,
-                           args = NULL,
-                           results = NULL)
+                           args = NULL)
 
   session$onSessionEnded(function() {
     stopApp()
@@ -64,18 +63,32 @@ function(input, output, session) {
                 step = 1)
   })
 
+  rf_nat_init <- reactiveVal(FALSE)
+  rf_reg_init <- reactiveVal(FALSE)
+
+  observeEvent(input$RF_nat, {
+    if (rf_nat_init()) values$args$RF_nat.lim <- input$RF_nat
+    rf_nat_init(TRUE)
+  })
+
+  observeEvent(input$RF_reg, {
+    if (rf_reg_init()) values$args$RF_reg.lim <- input$RF_reg
+    rf_reg_init(TRUE)
+  })
+
   ## this is to avoid recomputing everything while changing the number of MC
   ## iterations using the arrows, as otherwise a new computation is started
   ## for each click, causing a potentially massive slowdown
   n_MC <- debounce(reactive(if (input$n_MC == 0) NULL else input$n_MC), 500)
 
   observe({
+    req(input$ylab)
     values$args <- list(
       # analyse_IRSAR.RF arguments
       object = values$data_primary,
       method = input$method,
-      RF_nat.lim = input$RF_nat,
-      RF_reg.lim = input$RF_reg,
+      RF_nat.lim = isolate(input$RF_nat),
+      RF_reg.lim = isolate(input$RF_reg),
       n.MC = n_MC(),
       method_control = list(show_density = input$show_density,
                             show_fit = input$show_fit),
@@ -90,15 +103,14 @@ function(input, output, session) {
       legend = input$legend,
       legend.pos = input$legend_pos
     )
-    outputOptions(x = output, name = "ylab", suspendWhenHidden = FALSE)
   })
 
   output$main_plot <- renderPlot({
+    req(values$args)
     showNotification(id = "progress", duration = NULL, "This may take a while")
     res <- RLumShiny:::tryNotify(do.call(analyse_IRSAR.RF, values$args))
     removeNotification(id = "progress")
     if (inherits(res, "RLum.Results")) {
-      values$results <- res
       removeNotification(id = "notification")
     }
   })
@@ -124,7 +136,7 @@ function(input, output, session) {
               label = "Label y-axis",
               value = paste0("IR-RF [cts / ", resolution.RF, "s]"))
   })
-
+  outputOptions(x = output, name = "ylab", suspendWhenHidden = FALSE)
 
   observe({
     # nested renderText({}) for code output on "R plot code" tab

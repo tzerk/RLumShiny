@@ -109,6 +109,7 @@ function(input, output, session) {
 
   observe({
     req(input$positions)
+    req(input$curves)
 
     ## background integral subtraction
     if (input$sub_bg_integral)
@@ -179,8 +180,11 @@ function(input, output, session) {
     results <- RLumShiny:::tryNotify(do.call(analyse_SAR.CWOSL, values$args))
 
     ## store the results obtained for each position
-    for (pos in results$data$POS) {
-      values$results[[pos]] <- results$data[results$data$POS == pos, ]
+    if (inherits(results, "RLum.Results")) {
+      for (pos in results$data$POS) {
+        if (is.na(pos)) next()
+        values$results[[pos]] <- results$data[results$data$POS == pos, ]
+      }
     }
 
     ## restore arguments
@@ -190,11 +194,13 @@ function(input, output, session) {
 
   output$main_plot <- renderPlot({
     req(input$positions)
+    req(values$args)
     set.seed(1)
     results <- RLumShiny:::tryNotify(do.call(analyse_SAR.CWOSL, values$args))
 
     ## store the results obtained for this position
-    values$results[[input$positions]] <- results$data
+    if (inherits(results, "RLum.Results"))
+      isolate(values$results[[input$positions]] <- results$data)
   })
 
   getResultsTable <- function(onlyHighlights = FALSE) {
@@ -206,8 +212,12 @@ function(input, output, session) {
 
     if (onlyHighlights) {
       ## remove columns for secondary model parameters
-      rm.idx <- match(c("D01", "D01.ERROR", "D02", "D02.ERROR", "R", "R.ERROR",
-                        "Dc", "D63", "HPDI68_L", "HPDI68_U", "HPDI95_L", "HPDI95_U",
+      rm.idx <- match(c("D01", "D01.ERROR", "D02", "D02.ERROR",
+                        "R", "R.LOWER", "R.UPPER",
+                        "Dc", "Dc.LOWER", "Dc.UPPER",
+                        "D63", "D63.LOWER", "D63.UPPER",
+                        "D80", "D80.LOWER", "D80.UPPER",
+                        "HPDI68_L", "HPDI68_U", "HPDI95_L", "HPDI95_U",
                         "signal.range", "background.range",
                         "signal.range.Tx", "background.range.Tx", "UID"),
                       colnames(data))

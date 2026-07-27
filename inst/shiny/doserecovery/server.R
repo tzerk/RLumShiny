@@ -202,7 +202,7 @@ function(input, output, session) {
     removeNotification(id = "notification")
 
     validate(
-      need(expr = input$ylim, message = 'Waiting for data... Please wait!'),
+      need(expr = input$ylim, message = ''),
       need(expr = input$xlim, message = 'Waiting for data... Please wait!')
     )
 

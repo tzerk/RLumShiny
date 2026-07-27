@@ -24,7 +24,6 @@ function(request) {
                                ), ## EndOf::Tab_1
 
                                tabPanel("Method",
-
                                         div(align = "center", h5("Fitting")),
                                         radioButtons(inputId = "mode",
                                                      label = "Mode",
@@ -36,14 +35,14 @@ function(request) {
 
                                         selectInput(inputId = "fit_method",
                                                     "Fit method",
-                                                    selected = "EXP",
-                                                    choices = list("EXP" = "EXP",
+                                                    selected = "SSE",
+                                                    choices = list("SSE" = "SSE",
                                                                    "LIN" = "LIN",
                                                                    "QDR" = "QDR",
                                                                    "GOK" = "GOK",
-                                                                   "EXP OR LIN" = "EXP OR LIN",
-                                                                   "EXP+LIN" = "EXP+LIN",
-                                                                   "EXP+EXP" = "EXP+EXP",
+                                                                   "SSE OR LIN" = "SSE OR LIN",
+                                                                   "SSE+LIN" = "SSE+LIN",
+                                                                   "DSE" = "DSE",
                                                                    "OTOR" = "OTOR")),
 
                                         selectInput(inputId = "fit_weights",
@@ -114,56 +113,46 @@ function(request) {
                                         ),
 
                                         br(),
-                                        div(align = "center", h5("Axes")),
-                                        textInput(inputId = "xlab",
-                                                  label = "Label x-axis",
-                                                  value = "Dose [s]"),
-                                        textInput(inputId = "ylab",
-                                                  label = "Label y-axis",
-                                                  value = "Luminescence [a.u.]"),
-
-                                        conditionalPanel(condition = "input.mode != 'extrapolation'",
-                                                         fluidRow(
-                                                             column(width = 6,
-                                                                    checkboxInput(inputId = "logx",
-                                                                                  label = "Logarithmic x-axis",
-                                                                                  value = FALSE)
-                                                                    ),
-                                                             column(width = 6,
-                                                                    checkboxInput(inputId = "logy",
-                                                                                  label = "Logarithmic y-axis",
-                                                                                  value = FALSE)
-                                                                    )
-                                                         )
-                                        ),
-
-                                        br(),
-                                        div(align = "center", h5("Legend")),
-                                        checkboxInput(inputId = "showlegend",
-                                                      label = "Show legend",
-                                                      value = TRUE),
-
-                                        selectInput(inputId = "legend_pos",
-                                                    label = "Legend position",
-                                                    selected = "topright",
-                                                    choices = c("Top" = "top",
-                                                                "Top left" = "topleft",
-                                                                "Top right"= "topright",
-                                                                "Left" = "left",
-                                                                "Center" = "center",
-                                                                "Right" = "right",
-                                                                "Bottom" = "bottom",
-                                                                "Bottom left" = "bottomleft",
-                                                                "Bottom right" = "bottomright")),
-
-                                        br(),
                                         div(align = "center", h5("Scaling")),
                                         sliderInput(inputId = "cex",
                                                     label = "Scaling factor",
                                                     min = 0.5, max = 2,
                                                     value = 1.0, step = 0.1)
+                               ),
 
-                               ),##EndOf::Tab_3
+                               tabPanel("Axis",
+                                        div(align = "center", h5("X-axis")),
+                                        textInput(inputId = "xlab",
+                                                  label = "Label x-axis",
+                                                  value = "Dose [s]"),
+
+                                        conditionalPanel(condition = "input.mode != 'extrapolation'",
+                                                         checkboxInput(inputId = "logx",
+                                                                       label = "Logarithmic x-axis",
+                                                                       value = FALSE)
+                                        ),
+
+                                        div(align = "center", h5("Y-axis")),
+                                        textInput(inputId = "ylab",
+                                                  label = "Label y-axis",
+                                                  value = "Luminescence [a.u.]"),
+
+                                        conditionalPanel(condition = "input.mode != 'extrapolation'",
+                                                         checkboxInput(inputId = "logy",
+                                                                       label = "Logarithmic y-axis",
+                                                                       value = FALSE)
+                                        )
+                               ),
+
+                               tabPanel("Legend",
+                                        div(align = "center", h5("Legend")),
+                                        checkboxInput(inputId = "showlegend",
+                                                      label = "Show legend",
+                                                      value = TRUE),
+
+                                        RLumShiny:::legendPositionChooser(inputId = "legend_pos",
+                                                                          selected = "topright"),
+                               ),
 
                                RLumShiny:::exportTab("export", filename = "doseresponsecurve"),
                                RLumShiny:::aboutTab("about", "doseresponsecurve")

@@ -64,14 +64,14 @@ function(request) {
                                                      ),
                                         selectInput(inputId = "fit_method",
                                                     "Fit method",
-                                                    selected = "EXP",
-                                                    choices = list("EXP" = "EXP",
+                                                    selected = "SSE",
+                                                    choices = list("SSE" = "SSE",
                                                                    "LIN" = "LIN",
                                                                    "QDR" = "QDR",
                                                                    "GOK" = "GOK",
-                                                                   "EXP OR LIN" = "EXP OR LIN",
-                                                                   "EXP+LIN" = "EXP+LIN",
-                                                                   "EXP+EXP" = "EXP+EXP",
+                                                                   "SSE OR LIN" = "SSE OR LIN",
+                                                                   "SSE+LIN" = "SSE+LIN",
+                                                                   "DSE" = "DSE",
                                                                    "OTOR" = "OTOR"))
                                ),
 
@@ -111,16 +111,8 @@ function(request) {
                                                                  value = TRUE)
                                                    )
                                         ),
-                                        selectInput(inputId = "legend_pos",
-                                                    label = "Legend position",
-                                                    selected = "topright",
-                                                    choices = c("Top" = "top",
-                                                                "Top left" = "topleft",
-                                                                "Top right"= "topright",
-                                                                "Center" = "center",
-                                                                "Bottom" = "bottom",
-                                                                "Bottom left" = "bottomleft",
-                                                                "Bottom right" = "bottomright")),
+                                        RLumShiny:::legendPositionChooser(inputId = "legend_pos",
+                                                                          selected = "topright"),
 
                                         br(),
                                         div(align = "center", h5("Scaling")),

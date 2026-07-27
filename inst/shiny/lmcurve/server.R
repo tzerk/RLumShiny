@@ -12,8 +12,7 @@ function(input, output, session) {
 
   values <- reactiveValues(data_primary = data,
                            data_bg = data.bg,
-                           args = NULL,
-                           results = NULL)
+                           args = NULL)
 
   session$onSessionEnded(function() {
     stopApp()
@@ -82,7 +81,6 @@ function(input, output, session) {
         ## remove existing notifications
         removeNotification(id = "notification")
       }
-      values$results <- res
     }
   })
 

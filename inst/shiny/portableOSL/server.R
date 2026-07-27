@@ -9,8 +9,7 @@ function(input, output, session) {
     data <- merge_RLum(ExampleData.portableOSL)
   }
   values <- reactiveValues(data_primary = data,
-                           args = NULL,
-                           results = NULL)
+                           args = NULL)
 
   session$onSessionEnded(function() {
     stopApp()
@@ -67,9 +66,7 @@ function(input, output, session) {
     ## remove existing notifications
     removeNotification(id = "notification")
 
-    res <- RLumShiny:::tryNotify(do.call(analyse_portableOSL, values$args))
-    if (inherits(res, "RLum.Results"))
-      values$results <- res
+    RLumShiny:::tryNotify(do.call(analyse_portableOSL, values$args))
   })
 
   observe({

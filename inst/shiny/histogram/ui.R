@@ -37,18 +37,8 @@ function(request) {
                                                  title = "Add numerical output to the plot."
                                           ),
                                           column(width = 6,
-                                                 selectInput(inputId = "sumpos",
-                                                             label = "Summary position",
-                                                             selected = "topleft",
-                                                             choices = list("Subtitle" = "sub",
-                                                                            "Center" = "center",
-                                                                            Top=c("Top" = "top",
-                                                                                  "Top left" = "topleft",
-                                                                                  "Top right"= "topright"),
-                                                                            Bottom=c("Bottom" = "bottom",
-                                                                                     "Bottom left" = "bottomleft",
-                                                                                     "Bottom right" = "bottomright")
-                                                             )),
+                                                 RLumShiny:::summaryPositionChooser(inputId = "sumpos",
+                                                                                    selected = "topleft"),
                                                  title = "Position of the statistical summary. The keyword \"Subtitle\" will only work if no plot subtitle is used."
                                           )
                                         ),
@@ -70,10 +60,10 @@ function(request) {
                                                                choices = c("n" = "n",
                                                                            "Mean" = "mean",
                                                                            "Median" = "median",
-                                                                           "rel. Standard deviation" = "sdrel",
-                                                                           "abs. Standard deviation" = "sdabs",
-                                                                           "rel. Standard error" = "serel",
-                                                                           "abs. Standard error" = "seabs",
+                                                                           "rel. Standard deviation" = "sd.rel",
+                                                                           "abs. Standard deviation" = "sd.abs",
+                                                                           "rel. Standard error" = "se.rel",
+                                                                           "abs. Standard error" = "se.abs",
                                                                            "Skewness" = "skewness",
                                                                            "Kurtosis" = "kurtosis"
                                                                            # "% in 2 sigma range" = "in.2s"

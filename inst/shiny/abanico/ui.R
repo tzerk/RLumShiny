@@ -48,17 +48,8 @@ function(request) {
                                                  title = "Add numerical output to the plot."
                                           ),
                                           column(width = 6,
-                                                 selectInput(inputId = "sumpos",
-                                                             label = "Summary position",
-                                                             selected = "topleft",
-                                                             choices = list("Subtitle" = "sub",
-                                                                            "Center" = "center",
-                                                                            Top=c("Top" = "top",
-                                                                                  "Top left" = "topleft",
-                                                                                  "Top right"= "topright"),
-                                                                            Bottom=c("Bottom" = "bottom",
-                                                                                     "Bottom left" = "bottomleft",
-                                                                                     "Bottom right" = "bottomright"))),
+                                                 RLumShiny:::summaryPositionChooser(inputId = "sumpos",
+                                                                                    selected = "topleft"),
                                                  title = "Position of the statistical summary. The keyword \"Subtitle\" will only work if no plot subtitle is used."
                                           )
                                         ),
@@ -624,16 +615,8 @@ function(request) {
                                                  title = "Legend content to be added to the plot."
                                           ),
                                           column(width = 6,
-                                                 selectInput(inputId = "legend.pos",
-                                                             label = "Legend position",
-                                                             selected = "bottomleft",
-                                                             choices = c("Top" = "top",
-                                                                         "Top left" = "topleft",
-                                                                         "Top right"= "topright",
-                                                                         "Center" = "center",
-                                                                         "Bottom" = "bottom",
-                                                                         "Bottom left" = "bottomleft",
-                                                                         "Bottom right" = "bottomright"))
+                                                 RLumShiny:::legendPositionChooser(inputId = "legend.pos",
+                                                                                   selected = "bottomleft")
                                           )
                                         ),
                                         fluidRow(
