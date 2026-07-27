@@ -180,8 +180,11 @@ function(input, output, session) {
     results <- RLumShiny:::tryNotify(do.call(analyse_SAR.CWOSL, values$args))
 
     ## store the results obtained for each position
-    for (pos in results$data$POS) {
-      values$results[[pos]] <- results$data[results$data$POS == pos, ]
+    if (inherits(results, "RLum.Results")) {
+      for (pos in results$data$POS) {
+        if (is.na(pos)) next()
+        values$results[[pos]] <- results$data[results$data$POS == pos, ]
+      }
     }
 
     ## restore arguments
