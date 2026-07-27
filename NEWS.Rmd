@@ -37,6 +37,7 @@ output: github_document
 * App `KDE`:
   + Show the ui elements regarding the secondary dataset only when the
     corresponding data is present.
+  + Allow specifying a subtitle.
 
 * App `radialplot`:
   + Show the ui elements regarding the secondary dataset only when the

@@ -88,6 +88,10 @@ function(request) {
                                                   label = "Title",
                                                   value = "KDE Plot"),
 
+                                        textInput(inputId = "mtext",
+                                                  label = "Subtitle",
+                                                  value = ""),
+
                                         # inject sliderInput from Server.R
                                         div(align = "left",
                                             uiOutput(outputId = "bw"),

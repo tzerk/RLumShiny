@@ -143,6 +143,7 @@ function(input, output, session) {
       xlab = input$xlab,
       ylab = c(input$ylab1, input$ylab2),
       main = input$main,
+      mtext = input$mtext,
       values.cumulative = input$cumulative,
       na.rm = TRUE,
       rug = input$rug,
