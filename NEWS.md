@@ -25,6 +25,7 @@
     component.
 - App `irsarRF:`
   - Remove an error notification once the plot succeeds.
+  - Remove spurious recalculations at startup.
 - App `KDE`:
   - Show the ui elements regarding the secondary dataset only when the
     corresponding data is present.

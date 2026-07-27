@@ -69,6 +69,7 @@ function(input, output, session) {
   n_MC <- debounce(reactive(if (input$n_MC == 0) NULL else input$n_MC), 500)
 
   observe({
+    req(input$ylab)
     values$args <- list(
       # analyse_IRSAR.RF arguments
       object = values$data_primary,
@@ -89,10 +90,10 @@ function(input, output, session) {
       legend = input$legend,
       legend.pos = input$legend_pos
     )
-    outputOptions(x = output, name = "ylab", suspendWhenHidden = FALSE)
   })
 
   output$main_plot <- renderPlot({
+    req(values$args)
     showNotification(id = "progress", duration = NULL, "This may take a while")
     res <- RLumShiny:::tryNotify(do.call(analyse_IRSAR.RF, values$args))
     removeNotification(id = "progress")
@@ -122,7 +123,7 @@ function(input, output, session) {
               label = "Label y-axis",
               value = paste0("IR-RF [cts / ", resolution.RF, "s]"))
   })
-
+  outputOptions(x = output, name = "ylab", suspendWhenHidden = FALSE)
 
   observe({
     # nested renderText({}) for code output on "R plot code" tab
