@@ -24,7 +24,6 @@ function(request) {
                                ), ## EndOf::Tab_1
 
                                tabPanel("Method",
-
                                         div(align = "center", h5("Fitting")),
                                         radioButtons(inputId = "mode",
                                                      label = "Mode",
@@ -114,30 +113,38 @@ function(request) {
                                         ),
 
                                         br(),
-                                        div(align = "center", h5("Axes")),
+                                        div(align = "center", h5("Scaling")),
+                                        sliderInput(inputId = "cex",
+                                                    label = "Scaling factor",
+                                                    min = 0.5, max = 2,
+                                                    value = 1.0, step = 0.1)
+                               ),
+
+                               tabPanel("Axis",
+                                        div(align = "center", h5("X-axis")),
                                         textInput(inputId = "xlab",
                                                   label = "Label x-axis",
                                                   value = "Dose [s]"),
+
+                                        conditionalPanel(condition = "input.mode != 'extrapolation'",
+                                                         checkboxInput(inputId = "logx",
+                                                                       label = "Logarithmic x-axis",
+                                                                       value = FALSE)
+                                        ),
+
+                                        div(align = "center", h5("Y-axis")),
                                         textInput(inputId = "ylab",
                                                   label = "Label y-axis",
                                                   value = "Luminescence [a.u.]"),
 
                                         conditionalPanel(condition = "input.mode != 'extrapolation'",
-                                                         fluidRow(
-                                                             column(width = 6,
-                                                                    checkboxInput(inputId = "logx",
-                                                                                  label = "Logarithmic x-axis",
-                                                                                  value = FALSE)
-                                                                    ),
-                                                             column(width = 6,
-                                                                    checkboxInput(inputId = "logy",
-                                                                                  label = "Logarithmic y-axis",
-                                                                                  value = FALSE)
-                                                                    )
-                                                         )
-                                        ),
+                                                         checkboxInput(inputId = "logy",
+                                                                       label = "Logarithmic y-axis",
+                                                                       value = FALSE)
+                                        )
+                               ),
 
-                                        br(),
+                               tabPanel("Legend",
                                         div(align = "center", h5("Legend")),
                                         checkboxInput(inputId = "showlegend",
                                                       label = "Show legend",
@@ -145,15 +152,7 @@ function(request) {
 
                                         RLumShiny:::legendPositionChooser(inputId = "legend_pos",
                                                                           selected = "topright"),
-
-                                        br(),
-                                        div(align = "center", h5("Scaling")),
-                                        sliderInput(inputId = "cex",
-                                                    label = "Scaling factor",
-                                                    min = 0.5, max = 2,
-                                                    value = 1.0, step = 0.1)
-
-                               ),##EndOf::Tab_3
+                               ),
 
                                RLumShiny:::exportTab("export", filename = "doseresponsecurve"),
                                RLumShiny:::aboutTab("about", "doseresponsecurve")
