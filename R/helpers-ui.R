@@ -56,6 +56,39 @@ lineWidthChooser <- function(inputId, label = "Line width") {
                min = 0, max = 5, step = 0.5)
 }
 
+#' Internal helper function to choose the legend position
+#'
+#' @noRd
+legendPositionChooser <- function(inputId, selected, label = "Legend position") {
+  selectInput(inputId = inputId,
+              label = label,
+              selected = selected,
+              choices = c("Top" = "top",
+                          "Top left" = "topleft",
+                          "Top right" = "topright",
+                          "Center" = "center",
+                          "Bottom" = "bottom",
+                          "Bottom left" = "bottomleft",
+                          "Bottom right" = "bottomright"))
+}
+
+#' Internal helper function to choose the summary position
+#'
+#' @noRd
+summaryPositionChooser <- function(inputId, selected, label = "Summary position") {
+  selectInput(inputId = inputId,
+              label = label,
+              selected = selected,
+              choices = list("Subtitle" = "sub",
+                             "Center" = "center",
+                             Top=c("Top" = "top",
+                                   "Top left" = "topleft",
+                                   "Top right" = "topright"),
+                             Bottom=c("Bottom" = "bottom",
+                                      "Bottom left" = "bottomleft",
+                                      "Bottom right" = "bottomright")))
+  }
+
 #' Internal helper function to choose a custom symbol
 #'
 #' @noRd
