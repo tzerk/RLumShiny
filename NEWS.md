@@ -3,6 +3,8 @@
 
 ## Current development version (2026-07-27)
 
+**This package version requires R \>= 4.5!**
+
 - App `abanico`:
   - The computation of the y-axis limits no longer requires drawing the
     entire plot in a separate window.
@@ -73,7 +75,7 @@
 
 ## RLumShiny 0.2.6 (Release date: 2025-12-18)
 
-**This package version requires R \> 4.4!**
+**This package version requires R \>= 4.4!**
 
 - New application to plot a dose-response curve for luminescence data.
   Base function: `Luminescence::plot_DoseResponseCurve()`. Keyword for
