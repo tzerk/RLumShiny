@@ -63,6 +63,19 @@ function(input, output, session) {
                 step = 1)
   })
 
+  rf_nat_init <- reactiveVal(FALSE)
+  rf_reg_init <- reactiveVal(FALSE)
+
+  observeEvent(input$RF_nat, {
+    if (rf_nat_init()) values$args$RF_nat.lim <- input$RF_nat
+    rf_nat_init(TRUE)
+  })
+
+  observeEvent(input$RF_reg, {
+    if (rf_reg_init()) values$args$RF_reg.lim <- input$RF_reg
+    rf_reg_init(TRUE)
+  })
+
   ## this is to avoid recomputing everything while changing the number of MC
   ## iterations using the arrows, as otherwise a new computation is started
   ## for each click, causing a potentially massive slowdown
@@ -74,8 +87,8 @@ function(input, output, session) {
       # analyse_IRSAR.RF arguments
       object = values$data_primary,
       method = input$method,
-      RF_nat.lim = input$RF_nat,
-      RF_reg.lim = input$RF_reg,
+      RF_nat.lim = isolate(input$RF_nat),
+      RF_reg.lim = isolate(input$RF_reg),
       n.MC = n_MC(),
       method_control = list(show_density = input$show_density,
                             show_fit = input$show_fit),
