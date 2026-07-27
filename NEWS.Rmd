@@ -65,6 +65,7 @@ output: github_document
   + Add button to analyze all curves.
   + Report the results obtained for each position selected in the Results and
     Highlights tabs.
+  + Remove spurious recalculations at startup.
 
 ## RLumShiny 0.2.7 (Release date: 2026-01-18)
 

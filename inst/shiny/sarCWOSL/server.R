@@ -109,6 +109,7 @@ function(input, output, session) {
 
   observe({
     req(input$positions)
+    req(input$curves)
 
     ## background integral subtraction
     if (input$sub_bg_integral)
@@ -190,12 +191,13 @@ function(input, output, session) {
 
   output$main_plot <- renderPlot({
     req(input$positions)
+    req(values$args)
     set.seed(1)
     results <- RLumShiny:::tryNotify(do.call(analyse_SAR.CWOSL, values$args))
 
     ## store the results obtained for this position
     if (inherits(results, "RLum.Results"))
-      values$results[[input$positions]] <- results$data
+      isolate(values$results[[input$positions]] <- results$data)
   })
 
   getResultsTable <- function(onlyHighlights = FALSE) {
