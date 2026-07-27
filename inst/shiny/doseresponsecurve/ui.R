@@ -165,8 +165,8 @@ function(request) {
 
                                ),##EndOf::Tab_3
 
-                               RLumShiny:::exportTab("export", filename = "lmcurve"),
-                               RLumShiny:::aboutTab("about", "lmcurve")
+                               RLumShiny:::exportTab("export", filename = "doseresponsecurve"),
+                               RLumShiny:::aboutTab("about", "doseresponsecurve")
                    )##EndOf::tabsetPanel
       ),##EndOf::sidebarPanel
 

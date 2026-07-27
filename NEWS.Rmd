@@ -21,6 +21,7 @@ output: github_document
 * App `doseresponsecurve`:
   + Add support to customise line type, width and colour of the dose-response
     curve.
+  - Fix crash occurring when exporting a plot (#115).
 
 * App `filter`:
   + Add support for interactive mode via the `plotly` package.
