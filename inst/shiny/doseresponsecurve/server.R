@@ -2,6 +2,13 @@
 ## MAIN FUNCTION
 function(input, output, session) {
 
+  ## prepare the argument list for plot_DoseResponseCurve()
+  get_plot_args <- function() {
+    args <- values$args.plot
+    args$object <- values$fit
+    args
+  }
+
   # input data (with default)
   if ("startData" %in% names(.GlobalEnv)) {
     data <- startData
@@ -76,10 +83,7 @@ function(input, output, session) {
   })
 
   output$main_plot <- renderPlot({
-    ## modify the object to plot_DoseResponseCurve() to be the fitted object
-    args <- values$args.plot
-    args$object <- values$fit
-    values$results <- do.call(plot_DoseResponseCurve, args)
+    values$results <- do.call(plot_DoseResponseCurve, get_plot_args())
   })
 
   output$table_in_primary <- renderRHandsontable({
@@ -106,7 +110,7 @@ function(input, output, session) {
 
     callModule(RLumShiny:::exportCodeHandler, "export", code = code.output)
     callModule(RLumShiny:::exportPlotHandler, "export", fun = "plot_DoseResponseCurve",
-               args = values$args)
+               args = get_plot_args())
   })
 
 }##EndOf::function(input, output)
