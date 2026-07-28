@@ -173,7 +173,7 @@ function(input, output, session) {
       return()
 
     choices <- seq_along(values$data_primary[[pos]]@records)
-    data <- values$data_filtered %||% values$data_primary
+    data <- isolate(values$data_filtered) %||% values$data_primary
     uids <- get_uids(data[[1]])
     checkboxGroupInput("curves", "Curves",
                        choices = choices,
