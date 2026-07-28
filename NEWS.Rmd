@@ -8,6 +8,9 @@ output: github_document
 
 **This package version requires R >= 4.5!**
 
+* Consolidated several pieces of code spread throughout the package into
+  internal helper functions.
+
 * App `abanico`:
   + The computation of the y-axis limits no longer requires drawing the
     entire plot in a separate window.
@@ -23,7 +26,7 @@ output: github_document
 * App `doseresponsecurve`:
   + Add support to customise line type, width and colour of the dose-response
     curve.
-  - Fix crash occurring when exporting a plot (#115).
+  + Fix crash occurring when exporting a plot (#115).
 
 * App `filter`:
   + Add support for interactive mode via the `plotly` package.
@@ -49,7 +52,7 @@ output: github_document
   + Add support to run selected records only. This way single records can be
     tested without modifying the table, i.e. deleting rows, which was the only 
     option in the past. Selected records are run through the
-    selection of rows in the table. 
+    selection of rows in the table.
   + Adaptation for changes in the underlying function in `'RCarb'` that will
     considerably boost the start of the app (requires `'RCarb'` >= v0.1.8)
 
@@ -71,6 +74,7 @@ output: github_document
     Highlights tabs.
   + Remove spurious recalculations at startup.
 
+
 ## RLumShiny 0.2.7 (Release date: 2026-01-18)
 
 * This is a hotfix release to fix a problem with the way internal functions
@@ -80,6 +84,7 @@ output: github_document
   + Made the backgroud integral slider adjust according to the value of the
     signal integral slider to avoid overlaps that would generate an error in
     Luminescence.
+
 
 ## RLumShiny 0.2.6 (Release date: 2025-12-18)
 
@@ -104,6 +109,7 @@ output: github_document
 
 * Made warnings and errors appear as notification in the app, not only in
   the terminal (#40).
+
 
 ## RLumShiny 0.2.5 (Release date: 2025-07-12)
 
@@ -157,6 +163,7 @@ output: github_document
 * App `transformCW`:
   + Make the secondary axis label respect the scaling factor (#62)
 
+
 ## RLumShiny 0.2.4 (Release date: 2024-03-21)
 
 **This package version requires R >= 4.3!**
@@ -180,27 +187,29 @@ output: github_document
 
 * Non-user visible changes to satisfy CRAN (anchor notes)
 
+
 ## RLumShiny 0.2.3 (Release date: 2022-01-29)
 
-**This package version requires R > 4.0!** 
+**This package version requires R >= 4.0!**
 
 * Updated `surfaceexposure` app now allows considering multiple mu values when
   using the global fit functionality.
-  
-* The `filter` did not work anymore after changes in `'shiny'`; fixed. 
+
+* The app `filter` did not work anymore after changes in `'shiny'`; fixed.
 
 * The filter selector icons were deprecated, causing a warning in the terminal; fixed.
 
-* The app `RCarb App` did not work anymore after changes in `'shiny'`; fixed. 
+* The app `RCarb` did not work anymore after changes in `'shiny'`; fixed.
 
 * The app `scalegamma` started with an error message, because one option for a chosen conversion factor was wrong; fixed.
+
 
 ## RLumShiny 0.2.2 (Release date: 2019-01-11)
 
 * **PREVIEW**: New application that scales the gamma dose rate considering layer-to-layer
   variations in soil radioactivity. Base function: `Luminescence::scale_GammaDose()`.
   Keyword for `app_RLum()`: 'scalegamma'.
-  
+
   **NOTE**: This application will only start if the development version 0.9.x of the
   R package `Luminescence` is installed as the function `scale_GammaDose()` is
   still under development.
@@ -209,7 +218,6 @@ output: github_document
   Keyword for `app_RLum()`: 'RCarb'
 
 * Removed and updated deprecated links from the "About"-tab in all applications.
-
 
 
 ## RLumShiny 0.2.1 (Release date: 2018-06-18)
@@ -305,5 +313,4 @@ output: github_document
 
 ## RLumShiny 0.1.0 (Release date: 2015-03-31)
 
-* Initial release
-
+* Initial release.
