@@ -58,6 +58,10 @@ function(input, output, session) {
                                                        verbose = FALSE)
                                   )
 
+    ## ensure results are reset when a new file is loaded
+    values$results <- list()
+    values$data_filtered <- NULL
+
     ## The only way to identify curves in an RLum.Analysis object is by
     ## using their uids. Therefore, we keep the list of uids in the primary
     ## data, which is updated when the selected position is changed.
@@ -215,6 +219,8 @@ function(input, output, session) {
   })
 
   getResultsTable <- function(onlyHighlights = FALSE) {
+    if (length(values$results) == 0)
+      return(NULL)
     data <- as.data.frame(data.table::rbindlist(values$results))
 
     ## remove internal columns
