@@ -58,6 +58,10 @@ function(input, output, session) {
                                                        verbose = FALSE)
                                   )
 
+    ## ensure results are reset when a new file is loaded
+    values$results <- list()
+    values$data_filtered <- NULL
+
     ## The only way to identify curves in an RLum.Analysis object is by
     ## using their uids. Therefore, we keep the list of uids in the primary
     ## data, which is updated when the selected position is changed.
@@ -145,10 +149,10 @@ function(input, output, session) {
   })
 
   output$positions <- renderUI({
-    positions <- sort(RLumShiny:::get_unique_positions(values$data_primary))
+    values$all_positions <- RLumShiny:::get_unique_positions(values$data_primary)
     radioButtons("positions", "Positions",
-                 choiceNames = positions,
-                 choiceValues = seq_along(positions),
+                 choiceNames = values$all_positions,
+                 choiceValues = seq_along(values$all_positions),
                  selected = 1,
                  inline = TRUE)
   })
@@ -162,8 +166,14 @@ function(input, output, session) {
 
   output$curves <- renderUI({
     req(input$positions)
-    choices <- seq_along(values$data_primary[[as.integer(input$positions)]]@records)
-    data <- values$data_filtered %||% values$data_primary
+    pos <- as.integer(input$positions)
+
+    ## avoid indexing at an inexistent position when the input file changes
+    if (pos > length(values$data_primary))
+      return()
+
+    choices <- seq_along(values$data_primary[[pos]]@records)
+    data <- isolate(values$data_filtered) %||% values$data_primary
     uids <- get_uids(data[[1]])
     checkboxGroupInput("curves", "Curves",
                        choices = choices,
@@ -183,7 +193,8 @@ function(input, output, session) {
     if (inherits(results, "RLum.Results")) {
       for (pos in results$data$POS) {
         if (is.na(pos)) next()
-        values$results[[pos]] <- results$data[results$data$POS == pos, ]
+        idx <- match(pos, values$all_positions)
+        values$results[[idx]] <- results$data[results$data$POS == pos, ]
       }
     }
 
@@ -199,11 +210,17 @@ function(input, output, session) {
     results <- RLumShiny:::tryNotify(do.call(analyse_SAR.CWOSL, values$args))
 
     ## store the results obtained for this position
-    if (inherits(results, "RLum.Results"))
-      isolate(values$results[[input$positions]] <- results$data)
+    if (inherits(results, "RLum.Results")) {
+      idx <- match(results@data$data$POS, values$all_positions)
+      if (!is.na(idx)) {
+        isolate(values$results[[idx]] <- results$data)
+      }
+    }
   })
 
   getResultsTable <- function(onlyHighlights = FALSE) {
+    if (length(values$results) == 0)
+      return(NULL)
     data <- as.data.frame(data.table::rbindlist(values$results))
 
     ## remove internal columns
