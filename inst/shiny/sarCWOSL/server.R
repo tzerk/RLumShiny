@@ -4,6 +4,8 @@ function(input, output, session) {
   options(shiny.maxRequestSize = 30 * 1024^2) # 30MB upload limit
 
   make_selection <- function(positions, recordTypes) {
+    ## remove internal XSYG curves
+    recordTypes <- grepv("^_", recordTypes, invert = TRUE)
     if (length(positions) == 0 || length(recordTypes) == 0)
       return(NULL)
 
