@@ -4,6 +4,8 @@ function(input, output, session) {
   options(shiny.maxRequestSize = 30 * 1024^2) # 30MB upload limit
 
   make_selection <- function(positions, recordTypes) {
+    ## remove internal XSYG curves
+    recordTypes <- grepv("^_", recordTypes, invert = TRUE)
     if (length(positions) == 0 || length(recordTypes) == 0)
       return(NULL)
 
@@ -211,9 +213,10 @@ function(input, output, session) {
 
     ## store the results obtained for this position
     if (inherits(results, "RLum.Results")) {
-      idx <- match(results@data$data$POS, values$all_positions)
-      if (!is.na(idx)) {
-        isolate(values$results[[idx]] <- results$data)
+      for (pos in results$data$POS) {
+        if (is.na(pos)) next()
+        idx <- match(pos, values$all_positions)
+        isolate(values$results[[idx]] <- results$data[results$data$POS == pos, ])
       }
     }
   })
