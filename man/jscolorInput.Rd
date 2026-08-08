@@ -64,9 +64,9 @@ server = function(input, output) {
 }
 }
 \seealso{
-Other input.elements: \link[shiny:sliderInput]{shiny::animationOptions}, \link[shiny:sliderInput]{shiny::sliderInput};
+Other input.elements: \link[shiny:animationOptions]{shiny::animationOptions}, \link[shiny:sliderInput]{shiny::sliderInput};
 \link[shiny:checkboxGroupInput]{shiny::checkboxGroupInput}; \link[shiny:checkboxInput]{shiny::checkboxInput}; \link[shiny:dateInput]{shiny::dateInput};
 \link[shiny:dateRangeInput]{shiny::dateRangeInput}; \link[shiny:fileInput]{shiny::fileInput}; \link[shiny:numericInput]{shiny::numericInput};
 \link[shiny:passwordInput]{shiny::passwordInput}; \link[shiny:radioButtons]{shiny::radioButtons}; \link[shiny:selectInput]{shiny::selectInput},
-\link[shiny:selectInput]{shiny::selectizeInput}; \link[shiny:submitButton]{shiny::submitButton}; \link[shiny:textInput]{shiny::textInput}
+\link[shiny:selectizeInput]{shiny::selectizeInput}; \link[shiny:submitButton]{shiny::submitButton}; \link[shiny:textInput]{shiny::textInput}
 }

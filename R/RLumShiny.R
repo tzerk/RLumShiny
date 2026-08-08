@@ -20,6 +20,7 @@
 #' @importFrom markdown markdownToHTML
 #' @importFrom utils citation
 #' @importFrom grDevices dev.off pdf postscript svg
+#' @importFrom plotly plotlyOutput renderPlotly layout
 #'
 #' @md
 "_PACKAGE"

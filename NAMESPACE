@@ -13,11 +13,20 @@ import(readxl)
 import(rhandsontable)
 import(shiny)
 import(shinydashboard)
-importFrom(RCarb,model_DoseRate)
-importFrom(RCarb,write_InputTemplate)
-importFrom(grDevices,dev.off)
-importFrom(grDevices,pdf)
-importFrom(grDevices,postscript)
-importFrom(grDevices,svg)
+importFrom(RCarb,
+  model_DoseRate,
+  write_InputTemplate
+)
+importFrom(grDevices,
+  dev.off,
+  pdf,
+  postscript,
+  svg
+)
 importFrom(markdown,markdownToHTML)
+importFrom(plotly,
+  layout,
+  plotlyOutput,
+  renderPlotly
+)
 importFrom(utils,citation)

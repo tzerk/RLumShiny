@@ -1,6 +1,6 @@
 ## Test environments
 
--   local Fedora 42 x64 install, R 4.5.2 (2025-10-31)
+-   local Fedora 44 x64 install, R 4.6.1 (2026-06-24)
 -   win-builder (devel, release, oldrel)
 
 ## CRAN Notes
@@ -21,11 +21,7 @@ Status: OK
 
 ### oldrel
 
-Status: 1 NOTE
-
-"Author field differs from that derived from Authors\@R"
-
-In our DESCRIPTION we only provide the Authors\@R.
+Status: OK
 
 ## Downstream dependencies
 
