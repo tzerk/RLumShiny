@@ -283,6 +283,11 @@ function(input, output, session) {
     values$args$plot <- TRUE
   })
 
+  ## clear all stored results and reset the calculation
+  observeEvent(input$clear_results, {
+    values$results <- list()
+  })
+
   output$main_plot <- renderPlot({
     req(input$positions)
     req(values$args)

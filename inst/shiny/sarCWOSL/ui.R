@@ -41,7 +41,12 @@ function(request) {
                                        ),
 
                                        section("Batch processing",
-                                           actionButton("analyze_all", "Analyze all")
+                                           actionButton("analyze_all",
+                                                        icon = icon("play"),
+                                                        label = "Analyze all"),
+                                           actionButton("clear_results",
+                                                        icon = icon("trash-can"),
+                                                        label = "Clear results")
                                        )
                                    )
                                }),
