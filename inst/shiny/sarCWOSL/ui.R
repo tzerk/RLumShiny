@@ -24,16 +24,9 @@ function(request) {
                                                      callback = function() {
 
                                    list(
-                                       section("Curve selection",
-                                           fluidRow(
-                                               column(width = 6,
-                                                      uiOutput("positions")
-
-                                               ),
-                                               column(width = 6,
-                                                      uiOutput("recordTypes")
-                                               )
-                                           )
+                                       section("Aliquot and record type selection",
+                                           uiOutput("positions"),
+                                           uiOutput("recordTypes")
                                        ),
 
                                        section("(De)select individual curves",

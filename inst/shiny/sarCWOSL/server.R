@@ -186,18 +186,40 @@ function(input, output, session) {
 
   output$positions <- renderUI({
     values$all_positions <- RLumShiny:::get_unique_positions(values$data_primary)
-    radioButtons("positions", "Positions",
-                 choiceNames = values$all_positions,
-                 choiceValues = seq_along(values$all_positions),
-                 selected = 1,
-                 inline = TRUE)
+    n <- length(values$all_positions)
+    fluidRow(
+      column(width = 1, align = "center",
+             actionButton("pos_prev", icon("chevron-left"),
+                          style = "padding: 6px;")
+      ),
+      column(width = 10,
+             sliderInput("positions", "Positions",
+                         min = 1, max = max(n, 1), value = 1, step = 1,
+                         ticks = FALSE)
+      ),
+      column(width = 1, align = "center",
+             actionButton("pos_next", icon("chevron-right"),
+                          style = "padding: 6px;")
+      )
+    )
+  })
+
+  observeEvent(input$pos_prev, {
+    updateSliderInput(session, "positions",
+                      value = max(as.numeric(input$positions) - 1, 1))
+  })
+
+  observeEvent(input$pos_next, {
+    updateSliderInput(session, "positions",
+                      value = min(as.numeric(input$positions) + 1, length(values$all_positions)))
   })
 
   output$recordTypes <- renderUI({
     types <- sort(RLumShiny:::get_unique_types(values$data_primary))
     checkboxGroupInput("recordTypes", "Record types",
                        choices = types,
-                       selected = types)
+                       selected = types,
+                       inline = TRUE)
   })
 
   output$curves <- renderRHandsontable({
