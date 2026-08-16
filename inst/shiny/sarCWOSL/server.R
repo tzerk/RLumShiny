@@ -344,7 +344,7 @@ function(input, output, session) {
 
   ## Abanico plot of the De distribution (De and De.Error columns)
   output$abanico_plot <- renderPlot({
-    req(values$results)
+    req(values$results, values$all_positions, input$positions)
     if (length(values$results) == 0)
       return(NULL)
 
@@ -352,13 +352,28 @@ function(input, output, session) {
     if (is.null(df) || !all(c("De", "De.Error") %in% colnames(df)))
       return(NULL)
 
-    df <- df[!is.na(df$De) & !is.na(df$De.Error), ]
+    keep <- !is.na(df$De) & !is.na(df$De.Error)
+    df <- df[keep, ]
     ## an Abanico plot needs at least two dose values
     if (nrow(df) < 2)
       return(NULL)
 
     set.seed(1)
-    Luminescence::plot_AbanicoPlot(df[c("De", "De.Error")])
+    res <- Luminescence::plot_AbanicoPlot(df[c("De", "De.Error")],
+                                          zlab = expression(paste(D[e], " [s]")))
+
+    ## mark the point belonging to the currently selected position
+    if (input$abanico_mark && !is.null(res$data.global)) {
+      k <- match(as.integer(input$positions), values$all_positions)
+      idx <- match(k, which(keep))
+      if (!is.na(idx) && idx <= nrow(res$data.global)) {
+        pts <- res$data.global[idx, ]
+        points(pts$precision, pts$std.estimate,
+               col = "red", pch = 1, lwd = 2, cex = 2)
+      }
+    }
+
+    res
   })
 
   observe({

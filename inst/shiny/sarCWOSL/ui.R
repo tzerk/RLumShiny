@@ -91,7 +91,10 @@ function(request) {
                                         section("Plot elements",
                                             textInput(inputId = "main",
                                                       label = "Title",
-                                                      value = "")
+                                                      value = ""),
+                                            checkboxInput(inputId = "abanico_mark",
+                                                          label = "Mark current position in Abanico plot",
+                                                          value = TRUE)
                                         ),
 
                                         section("Axes",
@@ -153,8 +156,8 @@ function(request) {
                              plotOutput(outputId = "main_plot", height = "600px", width = "95%"),
                              # results table (left) and Abanico plot (right) below the SAR plot
                              fluidRow(
-                               column(width = 6, DT::DTOutput("results_main")),
-                               column(width = 6, plotOutput(outputId = "abanico_plot", height = "400px"))
+                               column(width = 7, DT::DTOutput("results_main")),
+                               column(width = 5, plotOutput(outputId = "abanico_plot", height = "400px"))
                              )),
                     tabPanel("Results", DT::DTOutput("results", width = "95%")),
                     tabPanel("Highlights", DT::DTOutput("highlights", width = "95%")),
