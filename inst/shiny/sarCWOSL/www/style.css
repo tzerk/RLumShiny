@@ -93,7 +93,7 @@ input,textarea,.uneditable-input{
 /* ------------------------------------------------------------------ */
 
 /* The coloured button for the currently selected aliquot/position,
-   shown right below the data import field */
+   shown full-width at the top of the main plot area */
 .current-aliquot {
   display: flex;
   align-items: center;
@@ -153,6 +153,14 @@ input,textarea,.uneditable-input{
 .aliquot-btn:hover {
   transform: scale(1.15);
   box-shadow: 0 0 0 2px rgba(66, 139, 202, 0.4);
+}
+
+/* the currently selected aliquot circle is marked solid red */
+.aliquot-btn.aliquot-selected {
+  background-color: #dc3545;
+  color: #ffffff;
+  border-color: #b02a37;
+  box-shadow: 0 0 0 2px #dc3545;
 }
 
 .aliquot-ok {

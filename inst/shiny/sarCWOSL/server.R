@@ -74,9 +74,10 @@ function(input, output, session) {
   ## bottom status bar; coloured by RC.Status (light green for OK, light red
   ## for FAILED, grey when no result yet) with just the aliquot number inside.
   ## Clicking a circle jumps to that aliquot/position.
-  aliquot_dot <- function(idx, status) {
+  aliquot_dot <- function(idx, status, selected = FALSE) {
     cls <- if (is.null(status) || is.na(status)) "aliquot-none" else
       if (status == "OK") "aliquot-ok" else "aliquot-fail"
+    if (selected) cls <- paste(cls, "aliquot-selected")
     tags$span(
       class = paste("aliquot-btn", cls),
       `data-aliquot` = idx,
@@ -114,10 +115,11 @@ function(input, output, session) {
   ## full-width gray bar at the bottom of the sidebar showing the status of
   ## every aliquot/position
   output$aliquotBar <- renderUI({
-    req(values$all_positions)
+    req(values$all_positions, input$positions)
     n <- length(values$all_positions)
+    cur <- as.integer(input$positions)
     btns <- lapply(seq_len(n), function(i)
-      aliquot_dot(i, get_position_status(i)))
+      aliquot_dot(i, get_position_status(i), selected = (i == cur)))
     div(class = "aliquot-bar", btns)
   })
 

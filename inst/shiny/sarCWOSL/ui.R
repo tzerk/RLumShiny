@@ -24,8 +24,6 @@ function(request) {
                                                      callback = function() {
 
                                    list(
-                                       uiOutput("currentAliquot"),
-
                                        section("Aliquot and record type selection",
                                            uiOutput("positions"),
                                            uiOutput("recordTypes")
@@ -184,6 +182,9 @@ function(request) {
                 fluidRow(
                   tabsetPanel(
                     tabPanel("Plot",
+                             # full-width button showing the current aliquot,
+                             # spanning the whole main plot area
+                             uiOutput("currentAliquot"),
                              plotOutput(outputId = "main_plot", height = "600px", width = "95%"),
                              # results table (left) and Abanico plot (right) below the SAR plot
                              fluidRow(
