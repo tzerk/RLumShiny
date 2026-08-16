@@ -340,7 +340,12 @@ function(input, output, session) {
   ## results table shown in the main panel below the SAR plot
   output$results_main <- DT::renderDT({
     getResultsTable()
-  }, options = list(pageLength = 10, scrollX = TRUE, scrollY = TRUE, searching = FALSE))
+  }, options = list(
+    pageLength = 5,
+    lengthChange = FALSE,
+    scrollX = TRUE,
+    scrollY = TRUE,
+    searching = FALSE))
 
   ## Abanico plot of the De distribution (De and De.Error columns)
   output$abanico_plot <- renderPlot({
