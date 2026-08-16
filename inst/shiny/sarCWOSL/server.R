@@ -460,7 +460,11 @@ function(input, output, session) {
 
     row <- input$curves_select$select$r
     curve <- values$data_primary[[pos]]@records[[row]]
-    p <- Luminescence::plot_RLum.Data.Curve(curve, interactive = TRUE, .shiny = TRUE) |>
+    p <- Luminescence::plot_RLum.Data.Curve(
+      object = curve,
+
+      interactive = TRUE,
+      .shiny = TRUE) |>
       layout(
         plot_bgcolor  = "rgba(0,0,0,0)",
         paper_bgcolor = "rgba(0,0,0,0)"
