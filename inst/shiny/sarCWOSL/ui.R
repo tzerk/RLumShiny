@@ -149,7 +149,7 @@ function(request) {
                 # divide output in separate tabs via tabsetPanel
                 fluidRow(
                   tabsetPanel(
-                    tabPanel("Plot", plotOutput(outputId = "main_plot")),
+                    tabPanel("Plot", plotOutput(outputId = "main_plot", height = "600px", width = "95%")),
                     tabPanel("Results", DT::DTOutput("results")),
                     tabPanel("Highlights", DT::DTOutput("highlights")),
                     tabPanel("R code", verbatimTextOutput("plotCode"))
