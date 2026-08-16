@@ -458,7 +458,7 @@ function(input, output, session) {
     if (pos > length(values$data_primary))
       return(NULL)
 
-    row <- input$curves_select$select$r + 1
+    row <- input$curves_select$select$r
     curve <- values$data_primary[[pos]]@records[[row]]
     p <- Luminescence::plot_RLum.Data.Curve(curve, interactive = TRUE, .shiny = TRUE) |>
       layout(
