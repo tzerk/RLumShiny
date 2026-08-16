@@ -130,7 +130,7 @@ function(request) {
                                             sliderInput(inputId = "cex",
                                                         label = "Scaling factor",
                                                         min = 0.5, max = 2,
-                                                        value = 1.0, step = 0.1)
+                                                        value = 1.3, step = 0.1)
                                         )
 
                                ),##EndOf::Tab_3
