@@ -146,6 +146,13 @@ input,textarea,.uneditable-input{
   border-radius: 50%;
   line-height: 1;
   flex: 0 0 auto;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.aliquot-btn:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 0 2px rgba(66, 139, 202, 0.4);
 }
 
 .aliquot-ok {

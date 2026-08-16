@@ -70,14 +70,18 @@ function(input, output, session) {
       "FAILED" else "OK"
   }
 
-  ## build a small coloured circle showing the aliquot status for the bottom
-  ## status bar; coloured by RC.Status (light green for OK, light red for
-  ## FAILED, grey when no result yet) with just the aliquot number inside
+  ## build a small coloured clickable circle showing the aliquot status for the
+  ## bottom status bar; coloured by RC.Status (light green for OK, light red
+  ## for FAILED, grey when no result yet) with just the aliquot number inside.
+  ## Clicking a circle jumps to that aliquot/position.
   aliquot_dot <- function(idx, status) {
     cls <- if (is.null(status) || is.na(status)) "aliquot-none" else
       if (status == "OK") "aliquot-ok" else "aliquot-fail"
-    span(
+    tags$span(
       class = paste("aliquot-btn", cls),
+      `data-aliquot` = idx,
+      onclick = sprintf("Shiny.setInputValue('aliquot_jump', %d, {priority: 'event'});",
+                        idx),
       idx
     )
   }
@@ -115,6 +119,15 @@ function(input, output, session) {
     btns <- lapply(seq_len(n), function(i)
       aliquot_dot(i, get_position_status(i)))
     div(class = "aliquot-bar", btns)
+  })
+
+  ## clicking an aliquot circle in the status bar jumps to that position
+  observeEvent(input$aliquot_jump, {
+    req(values$all_positions, input$positions)
+    n <- length(values$all_positions)
+    val <- min(max(as.integer(input$aliquot_jump), 1), n)
+    if (val != as.integer(input$positions))
+      updateSliderInput(session, "positions", value = val)
   })
 
 
