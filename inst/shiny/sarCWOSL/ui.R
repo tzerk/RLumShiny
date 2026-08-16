@@ -149,9 +149,15 @@ function(request) {
                 # divide output in separate tabs via tabsetPanel
                 fluidRow(
                   tabsetPanel(
-                    tabPanel("Plot", plotOutput(outputId = "main_plot", height = "600px", width = "95%")),
-                    tabPanel("Results", DT::DTOutput("results")),
-                    tabPanel("Highlights", DT::DTOutput("highlights")),
+                    tabPanel("Plot",
+                             plotOutput(outputId = "main_plot", height = "600px", width = "95%"),
+                             # results table (left) and Abanico plot (right) below the SAR plot
+                             fluidRow(
+                               column(width = 6, DT::DTOutput("results_main")),
+                               column(width = 6, plotOutput(outputId = "abanico_plot", height = "400px"))
+                             )),
+                    tabPanel("Results", DT::DTOutput("results", width = "95%")),
+                    tabPanel("Highlights", DT::DTOutput("highlights", width = "95%")),
                     tabPanel("R code", verbatimTextOutput("plotCode"))
                   )
                 )

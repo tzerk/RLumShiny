@@ -331,11 +331,35 @@ function(input, output, session) {
 
   output$results <- DT::renderDT({
     getResultsTable()
-  }, options = list(pageLength = 10))
+  }, options = list(pageLength = 10, scrollX = TRUE))
 
   output$highlights <- DT::renderDT({
     getResultsTable(onlyHighlights = TRUE)
   }, options = list(pageLength = 10))
+
+  ## results table shown in the main panel below the SAR plot
+  output$results_main <- DT::renderDT({
+    getResultsTable()
+  }, options = list(pageLength = 10, scrollX = TRUE, scrollY = TRUE, searching = FALSE))
+
+  ## Abanico plot of the De distribution (De and De.Error columns)
+  output$abanico_plot <- renderPlot({
+    req(values$results)
+    if (length(values$results) == 0)
+      return(NULL)
+
+    df <- getResultsTable()
+    if (is.null(df) || !all(c("De", "De.Error") %in% colnames(df)))
+      return(NULL)
+
+    df <- df[!is.na(df$De) & !is.na(df$De.Error), ]
+    ## an Abanico plot needs at least two dose values
+    if (nrow(df) < 2)
+      return(NULL)
+
+    set.seed(1)
+    Luminescence::plot_AbanicoPlot(df[c("De", "De.Error")])
+  })
 
   observe({
     # nested renderText({}) for code output on "R plot code" tab
