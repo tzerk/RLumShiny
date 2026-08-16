@@ -192,7 +192,7 @@ function(input, output, session) {
              actionButton("pos_prev", icon("chevron-left"),
                           style = "padding: 6px;")
       ),
-      column(width = 10,
+      column(width = 8,
              sliderInput("positions", "Positions",
                          min = 1, max = max(n, 1), value = 1, step = 1,
                          ticks = FALSE)
@@ -200,6 +200,11 @@ function(input, output, session) {
       column(width = 1, align = "center",
              actionButton("pos_next", icon("chevron-right"),
                           style = "padding: 6px;")
+      ),
+      column(width = 2,
+             numericInput("positions_direct", NULL,
+                          value = 1, min = 1, max = max(n, 1), step = 1,
+                          width = "100%")
       )
     )
   })
@@ -212,6 +217,30 @@ function(input, output, session) {
   observeEvent(input$pos_next, {
     updateSliderInput(session, "positions",
                       value = min(as.numeric(input$positions) + 1, length(values$all_positions)))
+  })
+
+  ## keep the direct position entry in sync with the slider (e.g. arrow clicks)
+  observeEvent(input$positions, {
+    req(input$positions_direct)
+    val <- as.integer(input$positions)
+    if (!is.na(val) && val != input$positions_direct)
+      updateNumericInput(session, "positions_direct", value = val)
+  })
+
+  ## selecting a position by typing it directly; restrict to existing positions
+  observeEvent(input$positions_direct, {
+    req(input$positions)
+    n <- length(values$all_positions)
+    val <- as.integer(input$positions_direct)
+    if (is.na(val)) {
+      updateNumericInput(session, "positions_direct", value = input$positions)
+      return(NULL)
+    }
+    ## clamp to the range of existing positions
+    val <- min(max(val, 1), n)
+    updateNumericInput(session, "positions_direct", value = val)
+    if (val != as.integer(input$positions))
+      updateSliderInput(session, "positions", value = val)
   })
 
   output$recordTypes <- renderUI({
