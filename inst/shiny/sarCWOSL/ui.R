@@ -24,6 +24,8 @@ function(request) {
                                                      callback = function() {
 
                                    list(
+                                       uiOutput("currentAliquot"),
+
                                        section("Aliquot and record type selection",
                                            uiOutput("positions"),
                                            uiOutput("recordTypes")
@@ -165,7 +167,11 @@ function(request) {
 
                                RLumShiny:::exportTab("export", filename = "sarCWOSL"),
                                RLumShiny:::aboutTab("about", "sarCWOSL")
-                   )##EndOf::tabsetPanel
+                   ),##EndOf::tabsetPanel
+
+                   # full-width gray bar at the bottom of the sidebar showing the
+                   # status of every aliquot/position
+                   uiOutput("aliquotBar")
       ),##EndOf::sidebarPanel
 
       # 3 - output panel

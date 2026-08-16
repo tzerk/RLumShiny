@@ -87,3 +87,74 @@ input,textarea,.uneditable-input{
   padding-bottom: 5px;
   border-bottom: 1px solid #e0e0e0;
 }
+
+/* ------------------------------------------------------------------ */
+/* Aliquot/position status buttons                                     */
+/* ------------------------------------------------------------------ */
+
+/* The coloured button for the currently selected aliquot/position,
+   shown right below the data import field */
+.current-aliquot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* the aliquot button inside spans the full width of its container */
+.current-aliquot .aliquot-btn {
+  width: 100%;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+/* The gray bar at the bottom of the sidebar showing all aliquots */
+.aliquot-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  background-color: #e9ecef;
+  border: 1px solid #d3d3d3;
+  border-radius: 6px;
+  padding: 10px;
+  margin-top: 15px;
+}
+
+.aliquot-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 6px 10px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+
+.aliquot-ok {
+  background-color: #d1e7dd; /* light green */
+  color: #0f5132;
+  border-color: #a3cfbb;
+}
+
+.aliquot-fail {
+  background-color: #f8d7da; /* light red */
+  color: #842029;
+  border-color: #f1aeb5;
+}
+
+.aliquot-none {
+  background-color: #e9ecef; /* gray: no result yet */
+  color: #495057;
+  border-color: #ced4da;
+}
+
+/* emphasise the currently selected aliquot */
+.aliquot-current {
+  box-shadow: 0 0 0 2px #428bca;
+}

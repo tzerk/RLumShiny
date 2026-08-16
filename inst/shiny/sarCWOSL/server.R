@@ -54,6 +54,60 @@ function(input, output, session) {
     )
   }
 
+  ## overall RC.Status of a stored result for a given position index, or NULL
+  ## when no result has been stored (yet). A position is considered FAILED as
+  ## soon as any of its aliquots failed.
+  get_position_status <- function(idx) {
+    if (idx < 1 || idx > length(values$results))
+      return(NULL)
+    res <- values$results[[idx]]
+    if (is.null(res) || nrow(res) == 0 || !"RC.Status" %in% colnames(res))
+      return(NULL)
+    st <- res$RC.Status[!is.na(res$RC.Status)]
+    if (length(st) == 0)
+      return(NULL)
+    if (any(toupper(st) == "FAILED"))
+      "FAILED" else "OK"
+  }
+
+  ## build a coloured aliquot status button; coloured by RC.Status (light green
+  ## for OK, light red for FAILED, grey when no result yet) with an OK/Failed
+  ## icon. When `current = TRUE` the button is additionally emphasised.
+  aliquot_button <- function(idx, status, current = FALSE) {
+    cls <- if (is.null(status) || is.na(status)) "aliquot-none" else
+      if (status == "OK") "aliquot-ok" else "aliquot-fail"
+    if (current) cls <- paste(cls, "aliquot-current")
+    icon_name <- if (is.null(status) || is.na(status)) "circle-question" else
+      if (status == "OK") "circle-check" else "circle-xmark"
+    tags$span(
+      class = paste("aliquot-btn", cls),
+      icon(icon_name),
+      paste0("Aliquot: #", idx)
+    )
+  }
+
+  ## coloured button for the currently selected aliquot/position, shown right
+  ## below the data import field
+  output$currentAliquot <- renderUI({
+    req(values$all_positions, input$positions)
+    pos <- as.integer(input$positions)
+    if (length(pos) != 1 || is.na(pos) || pos > length(values$all_positions))
+      return(NULL)
+    div(class = "current-aliquot",
+        aliquot_button(pos, get_position_status(pos), current = TRUE))
+  })
+
+  ## full-width gray bar at the bottom of the sidebar showing the status of
+  ## every aliquot/position
+  output$aliquotBar <- renderUI({
+    req(values$all_positions)
+    n <- length(values$all_positions)
+    btns <- lapply(seq_len(n), function(i)
+      aliquot_button(i, get_position_status(i)))
+    div(class = "aliquot-bar", btns)
+  })
+
+
   # input data (with default)
   if ("startData" %in% names(.GlobalEnv)) {
     data <- startData
