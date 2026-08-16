@@ -292,6 +292,17 @@ function(input, output, session) {
         isolate(values$results[[idx]] <- results$data[results$data$POS == pos, ])
       }
     }
+    ## The one-page layout of analyse_SAR.CWOSL distributes its panels over
+    ## a fixed grid, so the device aspect ratio determines the shape of the
+    ## inner panels and margins. Keeping the device at 75% of its width keeps
+    ## the panels proportioned and avoids the wide-and-flat distortion seen
+    ## with a fixed 600px height when the app is shown full screen in the
+    ## browser.
+  }, height = function() {
+    ## width from getCurrentOutputInfo() is exposed as a reactive function
+    info <- session$getCurrentOutputInfo()$width
+    w <- if (is.function(info)) info() else (info %||% 600)
+    max(300, round(0.6 * w))
   })
 
   getResultsTable <- function(onlyHighlights = FALSE) {
