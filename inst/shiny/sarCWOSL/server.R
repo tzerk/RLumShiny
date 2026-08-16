@@ -253,7 +253,7 @@ function(input, output, session) {
 
     row <- input$curves_select$select$r + 1
     curve <- values$data_primary[[pos]]@records[[row]]
-    plot_RLum.Data.Curve(curve, interactive = TRUE, .shiny = TRUE)
+    Luminescence::plot_RLum.Data.Curve(curve, interactive = TRUE, .shiny = TRUE)
   })
 
   observeEvent(input$analyze_all, {
