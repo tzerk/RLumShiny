@@ -105,10 +105,19 @@ input,textarea,.uneditable-input{
   text-align: center;
 }
 
-/* the aliquot button inside spans the full width of its container */
-.current-aliquot .aliquot-btn {
+/* the currently selected aliquot button spans the full width of its container */
+.current-aliquot .aliquot-btn-current {
   width: 100%;
+  display: inline-flex;
+  align-items: center;
   justify-content: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: bold;
+  padding: 6px 10px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  white-space: nowrap;
   box-sizing: border-box;
 }
 
@@ -116,7 +125,7 @@ input,textarea,.uneditable-input{
 .aliquot-bar {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
   background-color: #e9ecef;
   border: 1px solid #d3d3d3;
   border-radius: 6px;
@@ -124,16 +133,19 @@ input,textarea,.uneditable-input{
   margin-top: 15px;
 }
 
+/* small circular status indicator showing just the aliquot number */
 .aliquot-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-size: 12px;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  font-size: 11px;
   font-weight: bold;
-  padding: 6px 10px;
   border: 1px solid #ced4da;
-  border-radius: 5px;
-  white-space: nowrap;
+  border-radius: 50%;
+  line-height: 1;
+  flex: 0 0 auto;
 }
 
 .aliquot-ok {

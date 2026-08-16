@@ -70,17 +70,27 @@ function(input, output, session) {
       "FAILED" else "OK"
   }
 
-  ## build a coloured aliquot status button; coloured by RC.Status (light green
-  ## for OK, light red for FAILED, grey when no result yet) with an OK/Failed
-  ## icon. When `current = TRUE` the button is additionally emphasised.
-  aliquot_button <- function(idx, status, current = FALSE) {
+  ## build a small coloured circle showing the aliquot status for the bottom
+  ## status bar; coloured by RC.Status (light green for OK, light red for
+  ## FAILED, grey when no result yet) with just the aliquot number inside
+  aliquot_dot <- function(idx, status) {
     cls <- if (is.null(status) || is.na(status)) "aliquot-none" else
       if (status == "OK") "aliquot-ok" else "aliquot-fail"
-    if (current) cls <- paste(cls, "aliquot-current")
+    span(
+      class = paste("aliquot-btn", cls),
+      idx
+    )
+  }
+
+  ## build a coloured aliquot status button for the currently selected aliquot;
+  ## coloured by RC.Status with an OK/Failed icon and an "Aliquot: #n" label
+  aliquot_button <- function(idx, status) {
+    cls <- if (is.null(status) || is.na(status)) "aliquot-none" else
+      if (status == "OK") "aliquot-ok" else "aliquot-fail"
     icon_name <- if (is.null(status) || is.na(status)) "circle-question" else
       if (status == "OK") "circle-check" else "circle-xmark"
     tags$span(
-      class = paste("aliquot-btn", cls),
+      class = paste("aliquot-btn-current", cls),
       icon(icon_name),
       paste0("Aliquot: #", idx)
     )
@@ -94,7 +104,7 @@ function(input, output, session) {
     if (length(pos) != 1 || is.na(pos) || pos > length(values$all_positions))
       return(NULL)
     div(class = "current-aliquot",
-        aliquot_button(pos, get_position_status(pos), current = TRUE))
+        aliquot_button(pos, get_position_status(pos)))
   })
 
   ## full-width gray bar at the bottom of the sidebar showing the status of
@@ -103,7 +113,7 @@ function(input, output, session) {
     req(values$all_positions)
     n <- length(values$all_positions)
     btns <- lapply(seq_len(n), function(i)
-      aliquot_button(i, get_position_status(i)))
+      aliquot_dot(i, get_position_status(i)))
     div(class = "aliquot-bar", btns)
   })
 
