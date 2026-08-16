@@ -46,6 +46,7 @@ Other contributors:
   \item Jan Odvarko (jscolor.js in www/jscolor) [copyright holder]
   \item  AnalytixWare (ShinySky package) [copyright holder]
   \item  RStudio (chooser_inputBinding.js in www/ and chooser.R in R/) [copyright holder]
+  \item Posit Assistant (AI-assisted code contributions) [copyright holder]
 }
 
 }

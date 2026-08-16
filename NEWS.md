@@ -5,7 +5,7 @@
 
 **This package version requires R \>= 4.5!**
 
-- App `sarCWOSL`:
+- App `sarCWOSL` (changes in parts AI supported):
   - Improve user experience through and updated GUI
   - Enable single curve inspection
   - Support rejection criteria setting
