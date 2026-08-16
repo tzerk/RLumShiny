@@ -41,6 +41,9 @@ function(request) {
                                        ),
 
                                        section("Batch processing",
+                                           checkboxInput("fix_seed",
+                                                         label = "Fix random seed",
+                                                         value = FALSE),
                                            actionButton("analyze_all",
                                                         icon = icon("play"),
                                                         label = "Analyze all"),
@@ -89,7 +92,17 @@ function(request) {
                                                                    "SSE+LIN" = "SSE+LIN",
                                                                    "DSE" = "DSE",
                                                                    "OTOR" = "OTOR"))
-                                         )
+                                         ),
+
+                                        conditionalPanel(condition = "input.fix_seed == true",
+                                            section("Random seed",
+                                                numericInput("seed_value",
+                                                             "Seed value",
+                                                             value = 1,
+                                                             min = 0,
+                                                             step = 1)
+                                            )
+                                        )
                                ),
 
                                tabPanel("Plot",

@@ -69,6 +69,36 @@ function(input, output, session) {
                            args = NULL,
                            results = list())
 
+  ## fixed random seed (NULL when not fixing the seed)
+  fixed_seed <- reactiveVal(NULL)
+
+  ## when the "Fix random seed" box is checked, generate a seed once (via
+  ## runif) and keep it until the box is checked again; when unchecked, clear it
+  observeEvent(input$fix_seed, {
+    if (isTRUE(input$fix_seed)) {
+      seed <- round(runif(1, 0, 10000))
+      fixed_seed(seed)
+      updateNumericInput(session, "seed_value", value = seed)
+    } else {
+      fixed_seed(NULL)
+    }
+  })
+
+  ## a user-entered seed in the Method panel overrides the generated one, but
+  ## only takes effect while the box is checked
+  observeEvent(input$seed_value, {
+    if (isTRUE(input$fix_seed) && !is.na(input$seed_value))
+      fixed_seed(input$seed_value)
+  })
+
+  ## return the seed to use, or NULL if the seed is not fixed
+  get_seed <- function() {
+    if (isTRUE(input$fix_seed) && !is.null(fixed_seed()))
+      fixed_seed()
+    else
+      NULL
+  }
+
   session$onSessionEnded(function() {
     stopApp()
   })
@@ -292,7 +322,8 @@ function(input, output, session) {
 
   observeEvent(input$analyze_all, {
     req(input$positions)
-    set.seed(1)
+    seed <- get_seed()
+    if (!is.null(seed)) set.seed(seed)
     obj <- values$args$object
     values$args$object <- values$data_primary
     values$args$plot <- FALSE
@@ -320,7 +351,8 @@ function(input, output, session) {
   output$main_plot <- renderPlot({
     req(input$positions)
     req(values$args)
-    set.seed(1)
+    seed <- get_seed()
+    if (!is.null(seed)) set.seed(seed)
     results <- RLumShiny:::tryNotify(do.call(analyse_SAR.CWOSL, values$args))
 
     ## store the results obtained for this position
@@ -397,7 +429,8 @@ function(input, output, session) {
     if (nrow(df) < 2)
       return(NULL)
 
-    set.seed(1)
+    seed <- get_seed()
+    if (!is.null(seed)) set.seed(seed)
     res <- Luminescence::plot_AbanicoPlot(df[c("De", "De.Error")],
                                           zlab = expression(paste(D[e], " [s]")))
 
