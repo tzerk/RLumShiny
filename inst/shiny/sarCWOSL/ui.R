@@ -94,6 +94,13 @@ function(request) {
                                                                    "OTOR" = "OTOR"))
                                          ),
 
+                                        section("Rejection criteria",
+                                            uiOutput("rejection_criteria"),
+                                            actionButton("apply_criteria",
+                                                         icon = icon("check"),
+                                                         label = "Apply rejection criteria")
+                                        ),
+
                                         conditionalPanel(condition = "input.fix_seed == true",
                                             section("Random seed",
                                                 numericInput("seed_value",

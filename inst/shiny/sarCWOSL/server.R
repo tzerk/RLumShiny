@@ -99,6 +99,99 @@ function(input, output, session) {
       NULL
   }
 
+  ## default rejection criteria as used by analyse_SAR.CWOSL()
+  rejection_defaults <- list(
+    recycling.ratio = 10,
+    recuperation.rate = 10,
+    palaeodose.error = 10,
+    testdose.error = 10,
+    sn.ratio = NA_real_,
+    exceed.max.regpoint = FALSE,
+    consider.uncertainties = FALSE,
+    recuperation_reference = "Natural",
+    sn_reference = "Natural"
+  )
+
+  ## rejection criteria currently applied (defaults at start, replaced by the
+  ## user via the "Apply rejection criteria" button)
+  active_criteria <- reactiveVal(rejection_defaults)
+
+  ## classify the type of a rejection criterion value
+  rejection_type <- function(x) {
+    if (is.logical(x)) "logical" else if (is.numeric(x)) "numeric" else "character"
+  }
+
+  ## valid reference names (e.g. "Natural", "R1", "R2") derived from the dose
+  ## points of the Lx curves of the currently selected position. Mirrors the
+  ## naming scheme used by analyse_SAR.CWOSL().
+  get_reference_labels <- function() {
+    pos <- as.integer(input$positions)
+    if (is.null(values$data_primary) || is.na(pos) ||
+        pos > length(values$data_primary))
+      return(c("Natural"))
+
+    recs <- values$data_primary[[pos]]@records
+    is_osl <- vapply(recs, function(r)
+      grepl("^(OSL|IRSL)", r@recordType, ignore.case = TRUE), logical(1))
+    ## Lx curves are the odd-indexed OSL/IRSL records of each LxTx pair
+    lx_recs <- recs[is_osl][c(TRUE, FALSE)]
+    dose <- sapply(lx_recs, function(r) r@info$IRR_TIME %||% NA)
+    if (length(dose) == 0)
+      return(c("Natural"))
+
+    dose_names <- paste0("R", seq_along(dose) - 1)
+    zero_id <- which(dose == 0)
+    dose_names[zero_id] <- "R0"
+    if (length(zero_id))
+      dose_names[zero_id[1]] <- "Natural"
+    unique(dose_names)
+  }
+
+  ## build a native, type-appropriate input widget for each criterion so the
+  ## user gets a checkbox (logical), numeric field (numeric), dropdown for the
+  ## reference criteria or a free text field (character)
+  output$rejection_criteria <- renderUI({
+    crit <- active_criteria()
+    is_reference <- names(crit) %in% c("recuperation_reference", "sn_reference")
+    ref_choices <- get_reference_labels()
+    inputs <- lapply(names(crit), function(nm) {
+      val <- crit[[nm]]
+      input_id <- paste0("crit_", nm)
+      widget <- switch(
+        rejection_type(val),
+        logical = checkboxInput(input_id, NULL, value = isTRUE(val)),
+        numeric = numericInput(input_id, NULL, value = val,
+                               min = 0, step = 1),
+        character = if (is_reference[match(nm, names(crit))])
+          selectInput(input_id, NULL,
+                      choices = ref_choices,
+                      selected = as.character(val))
+        else
+          textInput(input_id, NULL, value = as.character(val))
+      )
+      fluidRow(
+        column(width = 7, tags$label(class = "control-label", nm)),
+        column(width = 5, widget)
+      )
+    })
+    do.call(tagList, inputs)
+  })
+
+  ## apply the user-edited rejection criteria
+  observeEvent(input$apply_criteria, {
+    crit <- list()
+    for (nm in names(active_criteria())) {
+      val <- input[[paste0("crit_", nm)]]
+      crit[[nm]] <- switch(
+        rejection_type(active_criteria()[[nm]]),
+        logical = isTRUE(val),
+        numeric = if (is.null(val) || is.na(val)) NA_real_ else as.numeric(val),
+        character = as.character(val)
+      )
+    }
+    active_criteria(crit)
+  })
+
   session$onSessionEnded(function() {
     stopApp()
   })
@@ -192,6 +285,7 @@ function(input, output, session) {
       object = values$data_filtered %||% values$data_primary,
       signal_integral = input$signal_integral[1]:input$signal_integral[2],
       background_integral = background_integral,
+      rejection.criteria = active_criteria(),
       verbose = FALSE,
       # fit_DoseResponseCurve arguments
       mode = input$mode,
