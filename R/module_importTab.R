@@ -5,7 +5,7 @@ importTab <- function(id, label, accept, callback = function() NULL) {
 
   tabPanel("Import",
 
-           div(align = "center", h5("Data import")),
+           h5("Data import"),
 
            # file upload button
            fileInput(inputId = "file",

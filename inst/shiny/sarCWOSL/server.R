@@ -24,6 +24,36 @@ function(input, output, session) {
     sapply(data@records, function(x) x@.uid)
   }
 
+  # build the data.frame shown in the rhandsontable used to
+  # (de)select individual curves of the currently selected position
+  make_curve_table <- function() {
+    pos <- as.integer(input$positions)
+    if (is.na(pos) || pos > length(values$data_primary))
+      return(NULL)
+
+    records <- values$data_primary[[pos]]@records
+
+    ## a curve is selected if it is still present in the filtered object
+    if (is.null(values$data_filtered)) {
+      selected <- seq_along(records) %in% numeric(0)
+    } else {
+      kept.uids <- tryCatch(get_uids(values$data_filtered[[1]]),
+                            error = function(e) NULL)
+      if (is.null(kept.uids)) {
+        selected <- rep(TRUE, length(records))
+      } else {
+        selected <- get_uids(values$data_primary[[pos]]) %in% kept.uids
+      }
+    }
+
+    data.frame(
+      ID = seq_along(records),
+      SEL = selected,
+      TYPE = sapply(records, function(x) x@recordType),
+      stringsAsFactors = FALSE
+    )
+  }
+
   # input data (with default)
   if ("startData" %in% names(.GlobalEnv)) {
     data <- startData
@@ -33,6 +63,8 @@ function(input, output, session) {
 
   values <- reactiveValues(data_primary = object,
                            data_filtered = NULL,
+                           curve_table = NULL,
+                           uids = NULL,
                            file_extension = NULL,
                            args = NULL,
                            results = list())
@@ -85,32 +117,34 @@ function(input, output, session) {
   observeEvent(input$positions, {
     values$data_filtered <- make_selection(input$positions, input$recordTypes)
     values$uids <- get_uids(values$data_primary[[as.integer(input$positions)]])
+    values$curve_table <- make_curve_table()
   })
 
   observeEvent(input$recordTypes, {
     values$data_filtered <- make_selection(input$positions, input$recordTypes)
+    values$curve_table <- make_curve_table()
   })
 
+  ## The rhandsontable is (re)rendered whenever a new file is loaded or the
+  ## currently selected position/record types change. Its "SEL" column takes
+  ## over the role previously fulfilled by the curve checkboxes: only the
+  ## curves with SEL == TRUE are kept in the filtered object.
   observeEvent(input$curves, {
-    data <- values$data_filtered %||% values$data_primary
+    res <- RLumShiny:::rhandsontable_workaround(input$curves)
+    if (is.null(res))
+      return(NULL)
 
-    ## uids of the curves in the current object
-    available.uids <- get_uids(data[[1]])
+    values$curve_table <- res
 
-    ## uids of the selected curves
-    selected.uids <- values$uids[as.integer(input$curves)]
-
-    if (length(selected.uids) < length(available.uids)) {
-      ## a curve was deselected
-      record.id <- match(selected.uids, available.uids)
+    selected.idx <- which(res$SEL)
+    if (length(selected.idx) == 0) {
+      values$data_filtered <- NULL
     } else {
-      ## a curve was reselected after being deselected: we restore the
-      ## primary data before applying the selection
-      record.id <- match(selected.uids, values$uids)
-      data <- values$data_primary[as.integer(input$positions)]
+      pos <- as.integer(input$positions)
+      values$data_filtered <- get_RLum(values$data_primary[pos],
+                                       record.id = selected.idx,
+                                       drop = FALSE)
     }
-    values$data_filtered <- get_RLum(data, record.id = record.id,
-                                     drop = FALSE)
   })
 
   observe({
@@ -166,21 +200,38 @@ function(input, output, session) {
                        selected = types)
   })
 
-  output$curves <- renderUI({
+  output$curves <- renderRHandsontable({
+    req(input$positions)
+    req(values$curve_table)
+
+    ## match the height of the individual curve plot window; with more rows
+    ## than fit in that height the surplus is reached via a scrollbar
+    height <- 320
+
+    rhandsontable(values$curve_table,
+                  height = height,
+                  colHeaders = c("ID", "SEL", "TYPE"),
+                  rowHeaders = NULL,
+                  selectCallback = TRUE,
+                  stretchH = "all",
+                  width = "100%") |>
+        hot_col("ID", readOnly = TRUE) |>
+        hot_col("TYPE", readOnly = TRUE) |>
+        hot_table(highlightRow = TRUE)
+  })
+
+  ## clicking a row in the curve table shows the corresponding curve as an
+  ## interactive plotly plot
+  output$curve_plot <- plotly::renderPlotly({
+    req(input$curves_select)
     req(input$positions)
     pos <- as.integer(input$positions)
-
-    ## avoid indexing at an inexistent position when the input file changes
     if (pos > length(values$data_primary))
-      return()
+      return(NULL)
 
-    choices <- seq_along(values$data_primary[[pos]]@records)
-    data <- isolate(values$data_filtered) %||% values$data_primary
-    uids <- get_uids(data[[1]])
-    checkboxGroupInput("curves", "Curves",
-                       choices = choices,
-                       selected = match(uids, values$uids),
-                       inline = TRUE)
+    row <- input$curves_select$select$r + 1
+    curve <- values$data_primary[[pos]]@records[[row]]
+    plot_RLum.Data.Curve(curve, interactive = TRUE, .shiny = TRUE)
   })
 
   observeEvent(input$analyze_all, {

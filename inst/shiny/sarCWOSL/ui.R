@@ -1,5 +1,13 @@
 ## UI.R
 function(request) {
+
+  ## helper to wrap a sidebar section in a bordered panel with its header on top
+  section <- function(title, ...) {
+    div(class = "section-panel",
+        h5(title, class = "section-header"),
+        ...)
+  }
+
   fluidPage(
     titlePanel("SAR CWOSL", windowTitle = "RLumShiny - SAR CWOSL"),
     sidebarLayout(
@@ -16,27 +24,37 @@ function(request) {
                                                      callback = function() {
 
                                    list(
-                                       div(align = "center", h5("Curve selection")),
-                                       fluidRow(
-                                           column(width = 6,
-                                                  uiOutput("positions")
+                                       section("Curve selection",
+                                           fluidRow(
+                                               column(width = 6,
+                                                      uiOutput("positions")
 
-                                           ),
-                                           column(width = 6,
-                                                  uiOutput("recordTypes")
+                                               ),
+                                               column(width = 6,
+                                                      uiOutput("recordTypes")
+                                               )
                                            )
                                        ),
 
-                                       div(align = "center", h5("(De)select individual curves")),
-                                       uiOutput("curves"),
+                                       section("(De)select individual curves",
+                                           fluidRow(
+                                               column(width = 4,
+                                                      rhandsontable::rHandsontableOutput("curves")
+                                               ),
+                                               column(width = 8,
+                                                      plotly::plotlyOutput("curve_plot", height = "320px")
+                                               )
+                                           )
+                                       ),
 
-                                       div(align = "center", h5("Batch processing")),
-                                       actionButton("analyze_all", "Analyze all")
+                                       section("Batch processing",
+                                           actionButton("analyze_all", "Analyze all")
+                                       )
                                    )
                                }),
 
                                tabPanel("Method",
-                                        div(align = "center", h5("Input data preprocessing")),
+                                        section("Input data preprocessing",
                                         sliderInput(inputId = "signal_integral",
                                                     "Signal integral",
                                                     value = c(1, 5),
@@ -73,53 +91,54 @@ function(request) {
                                                                    "SSE+LIN" = "SSE+LIN",
                                                                    "DSE" = "DSE",
                                                                    "OTOR" = "OTOR"))
+                                         )
                                ),
 
                                tabPanel("Plot",
-                                        div(align = "center", h5("Plot elements")),
-                                        textInput(inputId = "main",
-                                                  label = "Title",
-                                                  value = ""),
-
-                                        br(),
-                                        div(align = "center", h5("Axes")),
-
-                                        fluidRow(
-                                            column(width = 6,
-                                                   checkboxInput(inputId = "logx",
-                                                                 label = "Logarithmic x-axis",
-                                                                 value = FALSE)
-                                                   ),
-                                            column(width = 6,
-                                                   checkboxInput(inputId = "logy",
-                                                                 label = "Logarithmic y-axis",
-                                                                 value = FALSE)
-                                                   )
+                                        section("Plot elements",
+                                            textInput(inputId = "main",
+                                                      label = "Title",
+                                                      value = "")
                                         ),
 
-                                        br(),
-                                        div(align = "center", h5("Dose response curve")),
-                                        fluidRow(
-                                            column(width = 6,
-                                                   checkboxInput(inputId = "showlegend",
-                                                                 label = "Show legend",
-                                                                 value = TRUE)
-                                                   ),
-                                            column(width = 6,
-                                                   checkboxInput(inputId = "showrug",
-                                                                 label = "Show rug",
-                                                                 value = TRUE)
-                                                   )
+                                        section("Axes",
+                                            fluidRow(
+                                                column(width = 6,
+                                                       checkboxInput(inputId = "logx",
+                                                                     label = "Logarithmic x-axis",
+                                                                     value = FALSE)
+                                                       ),
+                                                column(width = 6,
+                                                       checkboxInput(inputId = "logy",
+                                                                     label = "Logarithmic y-axis",
+                                                                     value = FALSE)
+                                                       )
+                                            )
                                         ),
-                                        RLumShiny:::legendPositionChooser(inputId = "legend_pos",
-                                                                          selected = "topright"),
 
-                                        br(),
-                                        div(align = "center", h5("Scaling")),
-                                        sliderInput(inputId = "cex",
-                                                    label = "Scaling factor",
-                                                    min = 0.5, max = 2,
-                                                    value = 1.0, step = 0.1)
+                                        section("Dose response curve",
+                                            fluidRow(
+                                                column(width = 6,
+                                                       checkboxInput(inputId = "showlegend",
+                                                                     label = "Show legend",
+                                                                     value = TRUE)
+                                                       ),
+                                                column(width = 6,
+                                                       checkboxInput(inputId = "showrug",
+                                                                     label = "Show rug",
+                                                                     value = TRUE)
+                                                       )
+                                            ),
+                                            RLumShiny:::legendPositionChooser(inputId = "legend_pos",
+                                                                              selected = "topright")
+                                        ),
+
+                                        section("Scaling",
+                                            sliderInput(inputId = "cex",
+                                                        label = "Scaling factor",
+                                                        min = 0.5, max = 2,
+                                                        value = 1.0, step = 0.1)
+                                        )
 
                                ),##EndOf::Tab_3
 

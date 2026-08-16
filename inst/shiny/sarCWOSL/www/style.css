@@ -71,3 +71,19 @@ input,textarea,.uneditable-input{
 #shiny-notification-panel {
   width: 800px
 }
+
+/* Section panels used in the sidebar: header on top, border around the section */
+.section-panel {
+  border: 1px solid #d3d3d3;
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 15px;
+  background-color: #fafafa;
+}
+
+.section-panel > .section-header {
+  margin-top: 0;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #e0e0e0;
+}
