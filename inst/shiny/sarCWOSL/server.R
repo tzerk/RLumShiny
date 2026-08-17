@@ -147,6 +147,35 @@ function(input, output, session) {
                            file_extension = NULL,
                            args = NULL,
                            results = list(),
+                           ## full RLum.Results from analyse_SAR.CWOSL(plot=FALSE);
+                           ## patched in-place when the user edits the LxTx table
+                           sar_result = NULL,
+                           ## unmodified baseline result (used by the Reset button)
+                           sar_result_base = NULL,
+                           ## plot-only args captured at analysis time so output$main_plot
+                           ## does not need to read values$args (avoids double render)
+                           sar_plot_args = list(),
+                           ## freshly computed LxTx table (reset on every args change)
+                           lxtx_table = NULL,
+                           ## the table actually shown in output$lxtx_hot; updated on
+                           ## position/settings changes and on Reset, but NOT on user
+                           ## edits (so rhandsontable never re-renders mid-edit)
+                           lxtx_active_table = NULL,
+                           ## per-position user edits; keyed by position index string;
+                           ## persist for the lifetime of the session
+                           lxtx_edits = list(),
+                           ## track the last position to detect position changes
+                           ## (so we only reset lxtx_active_table on position switch,
+                           ## not on every args change like signal_integral)
+                           lxtx_last_position = NULL,
+                           ## signature of the analysis inputs the current sar_result
+                           ## was computed from; used to skip redundant re-analysis
+                           last_args_object = NULL,
+                           last_args_signal_integral = NULL,
+                           last_args_background = NULL,
+                           last_args_mode = NULL,
+                           last_args_fit_method = NULL,
+                           last_args_criteria = NULL,
                            ## row of the curve table currently shown in the
                            ## interactive plot; defaults to the first curve
                            selected_curve_row = 1)
@@ -520,10 +549,14 @@ function(input, output, session) {
     req(input$positions)
     seed <- get_seed()
     if (!is.null(seed)) set.seed(seed)
-    obj <- values$args$object
-    values$args$object <- values$data_primary
-    values$args$plot <- FALSE
-    results <- RLumShiny:::tryNotify(do.call(analyse_SAR.CWOSL, values$args))
+
+    ## Use a local copy so values$args is never mutated (which would retrigger
+    ## the main observer and cause an unnecessary single-position re-analysis).
+    all_args        <- values$args
+    all_args$object <- values$data_primary
+    all_args$plot   <- FALSE
+
+    results <- RLumShiny:::tryNotify(do.call(analyse_SAR.CWOSL, all_args))
 
     ## store the results obtained for each position
     if (inherits(results, "RLum.Results")) {
@@ -533,10 +566,6 @@ function(input, output, session) {
         values$results[[idx]] <- results$data[results$data$POS == pos, ]
       }
     }
-
-    ## restore arguments
-    values$args$object <- obj
-    values$args$plot <- TRUE
   })
 
   ## clear all stored results and reset the calculation
@@ -544,21 +573,234 @@ function(input, output, session) {
     values$results <- list()
   })
 
-  output$main_plot <- renderPlot({
-    req(input$positions)
+  ## Single observer that runs analyse_SAR.CWOSL(plot = FALSE) once per genuine
+  ## position/settings change.  It stores the full RLum.Results object so
+  ## output$main_plot can call .plot_SAR.CWOSL() directly, and extracts the
+  ## LxTx table for the editable rhandsontable below the plot.
+  observe({
     req(values$args)
+
+    ## Content-based guard: values$args is rebuilt as a fresh list() object on
+    ## every relevant input change, and some of those rebuilds leave the actual
+    ## analysis inputs identical (e.g. a re-render of the hot tables).  The main
+    ## observer therefore fires on every rebuild, causing analyse_SAR.CWOSL to
+    ## run repeatedly.  We compare a compact signature of the analysis-relevant
+    ## inputs and skip re-analysis when nothing meaningful has changed.
+    full_args       <- values$args
+    full_args$plot  <- FALSE
+    sig <- c(
+      object           = identical(full_args$object, values$last_args_object),
+      signal_integral  = identical(full_args$signal_integral,
+                                   values$last_args_signal_integral),
+      background       = identical(full_args$background_integral,
+                                   values$last_args_background),
+      mode             = identical(full_args$mode, values$last_args_mode),
+      fit_method       = identical(full_args[["fit.method"]],
+                                   values$last_args_fit_method),
+      criteria         = identical(full_args$rejection.criteria,
+                                   values$last_args_criteria)
+    )
+    if (all(sig)) return(NULL)
+
+    ## Record the signature that this analysis was computed from.
+    values$last_args_object           <- full_args$object
+    values$last_args_signal_integral  <- full_args$signal_integral
+    values$last_args_background       <- full_args$background_integral
+    values$last_args_mode             <- full_args$mode
+    values$last_args_fit_method       <- full_args[["fit.method"]]
+    values$last_args_criteria         <- full_args$rejection.criteria
+
     seed <- get_seed()
     if (!is.null(seed)) set.seed(seed)
-    results <- RLumShiny:::tryNotify(do.call(analyse_SAR.CWOSL, values$args))
 
-    ## store the results obtained for this position
-    if (inherits(results, "RLum.Results")) {
-      for (pos in results$data$POS) {
-        if (is.na(pos)) next()
-        idx <- match(pos, values$all_positions)
-        isolate(values$results[[idx]] <- results$data[results$data$POS == pos, ])
-      }
+    full_result <- RLumShiny:::tryNotify(do.call(analyse_SAR.CWOSL, full_args))
+    if (!inherits(full_result, "RLum.Results")) return(NULL)
+
+    ## Store both the live result (may later be patched by user edits) and the
+    ## unmodified baseline (used to restore on Reset).
+    values$sar_result      <- full_result
+    values$sar_result_base <- full_result
+
+    ## Capture plot-only arguments once so output$main_plot does not depend on
+    ## values$args (which would cause an unnecessary double render).
+    plot_arg_names <- c("legend", "legend.pos", "density_rug", "log", "main", "cex")
+    values$sar_plot_args <- Filter(
+      Negate(is.null),
+      values$args[intersect(names(values$args), plot_arg_names)]
+    )
+
+    ## Persist results per position for the summary tables.
+    for (pos in full_result$data$POS) {
+      if (is.na(pos)) next()
+      idx <- match(pos, values$all_positions)
+      isolate(values$results[[idx]] <- full_result$data[full_result$data$POS == pos, ])
     }
+
+    ## Extract the LxTx table for the rhandsontable.
+    tbl <- get_RLum(full_result, data.object = "LnLxTnTx.table")
+    tbl <- tbl[, setdiff(colnames(tbl), "UID"), drop = FALSE]
+    values$lxtx_table <- tbl
+
+    ## Restore the stored edits for the current position (if any) so that both
+    ## the table widget and the plot reflect them.  This runs after any fresh
+    ## analysis of the current position — on a position change AND on a settings
+    ## change that re-analyses the same position (e.g. changing signal_integral).
+    current_pos <- isolate(as.integer(input$positions))
+    pos_key <- as.character(current_pos)
+    stored_edits <- isolate(values$lxtx_edits[[pos_key]])
+
+    ## Only reset lxtx_active_table when the position actually changes;
+    ## on a settings change for the same position the widget already holds the edits.
+    if (is.null(values$lxtx_last_position) || values$lxtx_last_position != current_pos) {
+      values$lxtx_active_table <- stored_edits %||% tbl
+      values$lxtx_last_position <- current_pos
+    }
+
+    ## If there are stored edits for this position, apply them to the freshly
+    ## computed sar_result so the plot reflects them (regardless of whether the
+    ## position changed or only the settings did).
+    if (!is.null(stored_edits)) {
+        lxtx_full <- full_result@data$LnLxTnTx.table
+        for (col in intersect(colnames(stored_edits), colnames(lxtx_full)))
+          lxtx_full[[col]] <- stored_edits[[col]]
+        full_result@data$LnLxTnTx.table <- lxtx_full
+
+        ## Refit the DRC with the stored edits.
+        fit_result_restored <- tryCatch(
+          fit_DoseResponseCurve(
+            object         = data.frame(Dose = stored_edits$Dose,
+                                        LxTx = stored_edits$LxTx,
+                                        LxTx.Error = stored_edits$LxTx.Error),
+            mode           = values$args$mode %||% "interpolation",
+            fit.method     = values$args[["fit.method"]] %||% "SSE",
+            verbose        = FALSE,
+            txtProgressBar = FALSE
+          ),
+          error = function(e) NULL
+        )
+
+        if (inherits(fit_result_restored, "RLum.Results")) {
+          de_data_restored <- get_RLum(fit_result_restored)
+          full_result@data$.plot.data[[1]]$GC.fit <- fit_result_restored
+          de_cols <- intersect(c("De", "De.Error", ".De.plot", ".De.raw"),
+                               colnames(de_data_restored))
+          for (col in de_cols)
+            full_result@data$data[[col]] <- de_data_restored[[col]][1]
+        }
+
+        values$sar_result <- full_result
+    }
+  })
+
+  ## output$main_plot only reads values$sar_result (and the captured plot args).
+  ## Whenever the observer above or the LxTx-edit observer patches sar_result,
+  ## this render fires automatically and redraws the full SAR plot.
+  output$main_plot <- renderPlot({
+    req(values$sar_result)
+    seed <- get_seed()
+    if (!is.null(seed)) set.seed(seed)
+
+    do.call(Luminescence:::.plot_SAR.CWOSL,
+            c(list(results      = values$sar_result,
+                   plot_onePage = TRUE),
+              isolate(values$sar_plot_args)))
+  })
+
+  ## Step 2: render the LxTx table as an editable rhandsontable.
+  ## Renders from lxtx_active_table only — NOT from lxtx_edits directly —
+  ## so that user edits do not cause a re-render (which would reset scroll
+  ## position and selected cell).  Vertical scrollbar beyond 10 rows;
+  ## horizontal scrollbar beyond 8 columns (stretchH = "none").
+  output$lxtx_hot <- rhandsontable::renderRHandsontable({
+    req(values$lxtx_active_table)
+    tbl <- values$lxtx_active_table
+
+    row_px    <- 23L
+    header_px <- 30L
+    height <- if (nrow(tbl) > 10L) 10L * row_px + header_px else NULL
+
+    rhandsontable::rhandsontable(tbl,
+                                 rowHeaders  = NULL,
+                                 height      = height,
+                                 stretchH    = "none") |>
+      rhandsontable::hot_col("Name",     readOnly = TRUE) |>
+      rhandsontable::hot_col("Repeated", readOnly = TRUE) |>
+      rhandsontable::hot_table(highlightRow = TRUE)
+  })
+
+  ## Step 3: when the user edits a cell, persist the change, refit the DRC,
+  ## and patch values$sar_result so the main plot re-renders automatically.
+  ## "afterLoadData" events (programmatic re-renders) are skipped to avoid loops.
+  observeEvent(input$lxtx_hot, {
+    event <- input$lxtx_hot$changes$event
+    if (is.null(event) || event == "afterLoadData") return(NULL)
+
+    res <- RLumShiny:::rhandsontable_workaround(input$lxtx_hot)
+    if (is.null(res)) return(NULL)
+
+    ## Persist edits for this position for the rest of the session.
+    pos_key <- as.character(as.integer(input$positions))
+    values$lxtx_edits[[pos_key]] <- res
+
+    ## Refit the dose-response curve with the (possibly modified) LxTx values.
+    fit_result <- tryCatch(
+      fit_DoseResponseCurve(
+        object         = data.frame(Dose = res$Dose,
+                                    LxTx = res$LxTx,
+                                    LxTx.Error = res$LxTx.Error),
+        mode           = values$args$mode %||% "interpolation",
+        fit.method     = values$args[["fit.method"]] %||% "SSE",
+        verbose        = FALSE,
+        txtProgressBar = FALSE
+      ),
+      error = function(e) NULL
+    )
+    if (!inherits(fit_result, "RLum.Results")) return(NULL)
+
+    de_data <- get_RLum(fit_result)
+
+    ## Patch the stored RLum.Results object in-place so the plot re-renders.
+    sar <- isolate(values$sar_result)
+    if (is.null(sar)) return(NULL)
+
+    ## Overwrite the LnLxTnTx.table with the user's edited values.
+    lxtx_full <- sar@data$LnLxTnTx.table
+    for (col in intersect(colnames(res), colnames(lxtx_full)))
+      lxtx_full[[col]] <- res[[col]]
+    sar@data$LnLxTnTx.table <- lxtx_full
+
+    ## Replace the dose-response curve fit (drives the DRC panel in the plot).
+    ## .plot.data is a list-of-lists when object was passed as a list, so [[1]].
+    sar@data$.plot.data[[1]]$GC.fit <- fit_result
+
+    ## Update the De summary columns used by the Checks panel and results tables.
+    de_cols <- intersect(c("De", "De.Error", ".De.plot", ".De.raw"),
+                         colnames(de_data))
+    for (col in de_cols)
+      sar@data$data[[col]] <- de_data[[col]][1]
+
+    ## Writing sar_result triggers output$main_plot to re-render.
+    values$sar_result <- sar
+
+    ## Also update values$results so the Results / Highlights tabs stay in sync.
+    pos <- as.integer(input$positions)
+    idx <- match(pos, values$all_positions)
+    current_result <- isolate(values$results[[idx]])
+    if (!is.null(current_result) && all(c("De", "De.Error") %in% colnames(de_data))) {
+      current_result$De       <- de_data$De[1]
+      current_result$De.Error <- de_data$De.Error[1]
+      isolate(values$results[[idx]] <- current_result)
+    }
+  })
+
+  ## Reset button: discard stored edits for the current position, restore the
+  ## freshly computed LxTx table and the unmodified RLum.Results object.
+  observeEvent(input$lxtx_reset, {
+    req(input$positions, values$lxtx_table, values$sar_result_base)
+    pos_key <- as.character(as.integer(input$positions))
+    values$lxtx_edits[[pos_key]]  <- NULL
+    values$lxtx_active_table      <- values$lxtx_table
+    values$sar_result              <- values$sar_result_base
   })
 
   getResultsTable <- function(onlyHighlights = FALSE) {
@@ -598,16 +840,6 @@ function(input, output, session) {
   output$highlights <- DT::renderDT({
     getResultsTable(onlyHighlights = TRUE)
   }, options = list(pageLength = 10))
-
-  ## results table shown in the main panel below the SAR plot
-  output$results_main <- DT::renderDT({
-    getResultsTable()
-  }, options = list(
-    pageLength = 5,
-    lengthChange = FALSE,
-    scrollX = TRUE,
-    scrollY = TRUE,
-    searching = FALSE))
 
   ## Abanico plot of the De distribution (De and De.Error columns)
   output$abanico_plot <- renderPlot({

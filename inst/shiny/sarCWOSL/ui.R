@@ -208,7 +208,12 @@ function(request) {
                              plotOutput(outputId = "main_plot", height = "600px", width = "95%"),
                              # results table (left) and Abanico plot (right) below the SAR plot
                              fluidRow(
-                               column(width = 7, DT::DTOutput("results_main")),
+                               column(width = 7,
+                                    rhandsontable::rHandsontableOutput("lxtx_hot"),
+                                    actionButton("lxtx_reset",
+                                                 icon  = icon("rotate-left"),
+                                                 label = "Reset table",
+                                                 style = "margin-top: 4px;")),
                                column(width = 5, plotOutput(outputId = "abanico_plot", height = "400px"))
                              )),
                     tabPanel("Results", DT::DTOutput("results", width = "95%")),
