@@ -498,9 +498,15 @@ function(input, output, session) {
         row > length(values$data_primary[[pos]]@records))
       row <- 1
     curve <- values$data_primary[[pos]]@records[[row]]
+
+    ## combine the two log checkboxes into plot_RLum.Data.Curve's log argument
+    log_axis <- paste0(ifelse(input$curve_logx, "x", ""),
+                       ifelse(input$curve_logy, "y", ""))
+
     p <- Luminescence::plot_RLum.Data.Curve(
       object = curve,
-
+      log = log_axis,
+      norm = input$curve_norm,
       interactive = TRUE,
       .shiny = TRUE) |>
       layout(

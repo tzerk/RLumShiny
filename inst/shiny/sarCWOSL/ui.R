@@ -38,7 +38,24 @@ function(request) {
                                                       rhandsontable::rHandsontableOutput("curves")
                                                ),
                                                column(width = 7,
-                                                      plotly::plotlyOutput("curve_plot", height = "320px")
+                                                      plotly::plotlyOutput("curve_plot", height = "280px"),
+                                                      fluidRow(
+                                                          column(width = 4,
+                                                                 checkboxInput("curve_logx",
+                                                                               label = "log(x)",
+                                                                               value = FALSE)
+                                                                 ),
+                                                          column(width = 4,
+                                                                 checkboxInput("curve_logy",
+                                                                               label = "log(y)",
+                                                                               value = FALSE)
+                                                                 ),
+                                                          column(width = 4,
+                                                                 checkboxInput("curve_norm",
+                                                                               label = "norm",
+                                                                               value = FALSE)
+                                                                 )
+                                                      )
                                                )
                                            )
                                        ),
