@@ -25,8 +25,11 @@ function(request) {
 
                                    list(
                                        section("Aliquot and record type selection",
-                                           uiOutput("positions"),
-                                           uiOutput("recordTypes")
+                                           div(
+                                            uiOutput("positions"),
+
+                                            uiOutput("recordTypes"),
+                                           align = "center")
                                        ),
 
                                        section("(De)select individual curves",

@@ -390,25 +390,25 @@ function(input, output, session) {
   output$positions <- renderUI({
     values$all_positions <- RLumShiny:::get_unique_positions(values$data_primary)
     n <- length(values$all_positions)
-    fluidRow(
-      column(width = 1, align = "center",
-             actionButton("pos_prev", icon("chevron-left"),
-                          style = "padding: 6px;")
+    div(
+      ## prev/next buttons pinned to the slider edges, numeric input centered
+      ## between them; the input shares the button height
+      div(class = "positions-row",
+          actionButton("pos_prev", icon("arrow-left", lib = "font-awesome"),
+                       style = "padding: 0;"),
+          div(id = "positions_direct_wrapper",
+              numericInput("positions_direct", NULL,
+                           value = 1, min = 1, max = max(n, 1), step = 1,
+                           width = "80px"),
+              style = "flex: 0 0 auto; margin: 0 8px; text-align: center; display: flex; align-items: center;"
+          ),
+          actionButton("pos_next", icon("arrow-right", lib = "font-awesome"),
+                       style = "padding: 0;")
       ),
-      column(width = 8,
-             sliderInput("positions", "Positions",
-                         min = 1, max = max(n, 1), value = 1, step = 1,
-                         ticks = FALSE)
-      ),
-      column(width = 1, align = "center",
-             actionButton("pos_next", icon("chevron-right"),
-                          style = "padding: 6px;")
-      ),
-      column(width = 2,
-             numericInput("positions_direct", NULL,
-                          value = 1, min = 1, max = max(n, 1), step = 1,
-                          width = "100%")
-      )
+      sliderInput("positions", "",
+                  min = 1, max = max(n, 1), value = 1, step = 1,
+                  ticks = FALSE, width = "100%"),
+      hr()
     )
   })
 
