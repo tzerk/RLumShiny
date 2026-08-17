@@ -146,7 +146,10 @@ function(input, output, session) {
                            uids = NULL,
                            file_extension = NULL,
                            args = NULL,
-                           results = list())
+                           results = list(),
+                           ## row of the curve table currently shown in the
+                           ## interactive plot; defaults to the first curve
+                           selected_curve_row = 1)
 
   ## fixed random seed (NULL when not fixing the seed)
   fixed_seed <- reactiveVal(NULL)
@@ -320,11 +323,13 @@ function(input, output, session) {
     values$data_filtered <- make_selection(input$positions, input$recordTypes)
     values$uids <- get_uids(values$data_primary[[as.integer(input$positions)]])
     values$curve_table <- make_curve_table()
+    values$selected_curve_row <- 1
   })
 
   observeEvent(input$recordTypes, {
     values$data_filtered <- make_selection(input$positions, input$recordTypes)
     values$curve_table <- make_curve_table()
+    values$selected_curve_row <- 1
   })
 
   ## The rhandsontable is (re)rendered whenever a new file is loaded or the
@@ -475,15 +480,23 @@ function(input, output, session) {
   })
 
   ## clicking a row in the curve table shows the corresponding curve as an
-  ## interactive plotly plot
+  ## interactive plotly plot; until the first click the first curve is shown
+  observeEvent(input$curves_select, {
+    if (!is.null(input$curves_select$select$r))
+      values$selected_curve_row <- input$curves_select$select$r
+  })
+
   output$curve_plot <- plotly::renderPlotly({
-    req(input$curves_select)
     req(input$positions)
     pos <- as.integer(input$positions)
     if (pos > length(values$data_primary))
       return(NULL)
 
-    row <- input$curves_select$select$r
+    row <- values$selected_curve_row
+    ## fall back to the first curve if the stored row is not selectable
+    if (is.null(row) || row < 1 ||
+        row > length(values$data_primary[[pos]]@records))
+      row <- 1
     curve <- values$data_primary[[pos]]@records[[row]]
     p <- Luminescence::plot_RLum.Data.Curve(
       object = curve,
