@@ -366,6 +366,16 @@ function(input, output, session) {
   ## over the role previously fulfilled by the curve checkboxes: only the
   ## curves with SEL == TRUE are kept in the filtered object.
   observeEvent(input$curves, {
+    ## Skip programmatic re-renders (e.g. triggered by a position switch).
+    ## rhandsontable reports a load/reload as an "afterChange" event with
+    ## changes == NULL (there are no real cell edits), so the data was already
+    ## computed by the position/record-type observer. Recomputing here would
+    ## replace values$data_filtered with a distinct object and make the main
+    ## analysis observer's identity guard fail, running analyse_SAR twice.
+    chg <- input$curves$changes
+    if (is.null(chg) || is.null(chg$event) || is.null(chg$changes))
+      return(NULL)
+
     res <- RLumShiny:::rhandsontable_workaround(input$curves)
     if (is.null(res))
       return(NULL)
