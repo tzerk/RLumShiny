@@ -329,17 +329,20 @@ function(input, output, session) {
       return(NULL) # if no file was uploaded return NULL
 
     values$file_extension <- tolower(tools::file_ext(inFile$name))
-    values$data_primary <- switch(values$file_extension,
-                                  "xsyg" = read_XSYG2R(inFile$datapath,
-                                                       fastForward = TRUE,
-                                                       verbose = FALSE),
-                                  "bin" = read_BIN2R(inFile$datapath,
-                                                     fastForward = TRUE,
-                                                     verbose = FALSE),
-                                  "binx" = read_BIN2R(inFile$datapath,
-                                                       fastForward = TRUE,
-                                                       verbose = FALSE)
-                                  )
+    values$data_primary <- switch(
+      values$file_extension,
+      "xsyg" = Luminescence::read_XSYG2R(
+        file = inFile$datapath,
+        fastForward = TRUE,
+        verbose = FALSE),
+      "bin" = Luminescence::read_BIN2R(
+        file = inFile$datapath,
+        fastForward = TRUE,
+        verbose = FALSE),
+      "binx" = Luminescence::read_BIN2R(
+        file = inFile$datapath,
+        fastForward = TRUE,
+        verbose = FALSE))
 
     ## ensure results are reset when a new file is loaded
     values$results <- list()
