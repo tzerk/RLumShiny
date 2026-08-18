@@ -51,6 +51,7 @@ function(input, output, session) {
     last_args_background = NULL,
     last_args_mode = NULL,
     last_args_fit_method = NULL,
+    last_args_fit_options = NULL,
     last_args_criteria = NULL,
     ## row of the curve table currently shown in the
     ## interactive plot; defaults to the first curve
@@ -489,7 +490,7 @@ function(input, output, session) {
   ## record-type checkboxes
   output$recordTypes <- renderUI({
     types <- sort(RLumShiny:::get_unique_types(values$data_primary))
-    checkboxGroupInput("recordTypes", "Record types",
+    checkboxGroupInput("recordTypes", "Select record types",
                        choices = types,
                        selected = types,
                        inline = TRUE)
@@ -582,6 +583,9 @@ function(input, output, session) {
       # fit_DoseResponseCurve arguments
       mode = input$mode,
       fit.method = input$fit_method,
+      fit.force_through_origin = input$fit_force_through_origin,
+      fit.weights = input$fit_weights,
+      n.MC = input$n_MC,
       # plot_DoseResponseCurve arguments
       legend = input$showlegend,
       legend.pos = input$legend_pos,
@@ -624,6 +628,13 @@ function(input, output, session) {
       mode             = identical(full_args$mode, values$last_args_mode),
       fit_method       = identical(full_args[["fit.method"]],
                                    values$last_args_fit_method),
+      fit_options      = identical(
+        list(
+          force_through_origin = full_args[["fit.force_through_origin"]],
+          weights             = full_args[["fit.weights"]],
+          n.MC                = full_args[["n.MC"]]
+        ),
+        values$last_args_fit_options),
       criteria         = identical(full_args$rejection.criteria,
                                    values$last_args_criteria)
     )
@@ -635,6 +646,11 @@ function(input, output, session) {
     values$last_args_background       <- full_args$background_integral
     values$last_args_mode             <- full_args$mode
     values$last_args_fit_method       <- full_args[["fit.method"]]
+    values$last_args_fit_options      <- list(
+      force_through_origin = full_args[["fit.force_through_origin"]],
+      weights             = full_args[["fit.weights"]],
+      n.MC                = full_args[["n.MC"]]
+    )
     values$last_args_criteria         <- full_args$rejection.criteria
 
     seed <- get_seed()
@@ -701,6 +717,9 @@ function(input, output, session) {
               LxTx.Error = stored_edits$LxTx.Error),
             mode = values$args$mode %||% "interpolation",
             fit.method = values$args[["fit.method"]] %||% "SSE",
+            fit.force_through_origin = values$args[["fit.force_through_origin"]] %||% FALSE,
+            fit.weights = values$args[["fit.weights"]] %||% "inverse_var",
+            n.MC = values$args[["n.MC"]] %||% 100,
             verbose = FALSE,
             txtProgressBar = FALSE
           ),
@@ -814,6 +833,9 @@ function(input, output, session) {
                                     LxTx.Error = res$LxTx.Error),
         mode           = values$args$mode %||% "interpolation",
         fit.method     = values$args[["fit.method"]] %||% "SSE",
+        fit.force_through_origin = values$args[["fit.force_through_origin"]] %||% FALSE,
+        fit.weights    = values$args[["fit.weights"]] %||% "inverse_var",
+        n.MC           = values$args[["n.MC"]] %||% 100,
         verbose        = FALSE,
         txtProgressBar = FALSE
       ),
