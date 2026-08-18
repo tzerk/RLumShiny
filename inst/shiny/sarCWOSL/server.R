@@ -21,7 +21,7 @@ function(input, output, session) {
   }
 
   get_uids <- function(data) {
-    sapply(data@records, function(x) x@.uid)
+    vapply(data@records, function(x) x@.uid, character(1))
   }
 
   # build the data.frame shown in the rhandsontable used to
@@ -49,7 +49,7 @@ function(input, output, session) {
     data.frame(
       ID = seq_along(records),
       SEL = selected,
-      TYPE = sapply(records, function(x) x@recordType),
+      TYPE = vapply(records, function(x) x@recordType, character(1)),
       stringsAsFactors = FALSE
     )
   }
@@ -837,7 +837,7 @@ function(input, output, session) {
     }
 
     ## round numerical columns
-    num.idx <- sapply(data, is.numeric)
+    num.idx <- vapply(data, is.numeric, logical(1))
     data[num.idx] <- lapply(data[num.idx], round, digits = 3)
 
     data
