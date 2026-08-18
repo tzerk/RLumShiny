@@ -28,9 +28,6 @@ function(input, output, session) {
     sar_result = NULL,
     ## unmodified baseline result (used by the Reset button)
     sar_result_base = NULL,
-    ## plot-only args captured at analysis time so output$main_plot
-    ## does not need to read values$args (avoids double render)
-    sar_plot_args = list(),
     ## freshly computed LxTx table (reset on every args change)
     lxtx_table = NULL,
     ## the table actually shown in output$lxtx_hot; updated on
@@ -664,14 +661,6 @@ function(input, output, session) {
     values$sar_result      <- full_result
     values$sar_result_base <- full_result
 
-    ## Capture plot-only arguments once so output$main_plot does not depend on
-    ## values$args (which would cause an unnecessary double render).
-    plot_arg_names <- c("legend", "legend.pos", "density_rug", "log", "main", "cex")
-    values$sar_plot_args <- Filter(
-      Negate(is.null),
-      values$args[intersect(names(values$args), plot_arg_names)]
-    )
-
     ## Persist results per position for the summary tables.
     for (pos in full_result$data$POS) {
       if (is.na(pos)) next()
@@ -739,18 +728,30 @@ function(input, output, session) {
     }
   })
 
-  ## output$main_plot only reads values$sar_result (and the captured plot args).
-  ## Whenever the observer above or the LxTx-edit observer patches sar_result,
-  ## this render fires automatically and redraws the full SAR plot.
+  ## output$main_plot re-renders whenever the analysis result changes OR any of
+  ## the Plot-tab fields changes, since it reads values$sar_result (reactive) and
+  ## builds its plot arguments directly from the current plot inputs.
   output$main_plot <- renderPlot({
     req(values$sar_result)
     seed <- get_seed()
     if (!is.null(seed)) set.seed(seed)
 
+    ## Assemble plot-only arguments from the current Plot-tab inputs so that
+    ## changing them (title, axes, legend, scaling) redraws the plot immediately.
+    plot_args <- list(
+      legend = input$showlegend,
+      legend.pos = input$legend_pos,
+      density_rug = input$showrug,
+      log = paste0(ifelse(input$logx, "x", ""), ifelse(input$logy, "y", "")),
+      main = if (nchar(input$main) > 0) input$main else NULL,
+      cex = input$cex
+    )
+    plot_args <- Filter(Negate(is.null), plot_args)
+
     do.call(Luminescence:::.plot_SAR.CWOSL,
             c(list(results      = values$sar_result,
                    plot_onePage = TRUE),
-              isolate(values$sar_plot_args)))
+              plot_args))
   })
 
   ## batch run over all positions
