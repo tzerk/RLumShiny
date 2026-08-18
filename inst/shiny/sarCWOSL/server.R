@@ -1,8 +1,85 @@
 ## Server.R
-## MAIN FUNCTION
+## =====================================================================
+## MAIN FUNCTION - reactive server logic for the SAR CWOSL app.
+##
+## The body is organised into clearly labelled sections (see the banner
+## comments below). Shiny observers/render* functions merely register
+## callbacks, which fire only after the session has initialised, so their
+## relative order within this function body does not affect behaviour.
+## Likewise, helper functions are resolved at call time and may therefore
+## be defined in a dedicated section independent of where they are used.
+## =====================================================================
 function(input, output, session) {
   options(shiny.maxRequestSize = 30 * 1024^2) # 30MB upload limit
 
+  # -------------------------------------------------------------------
+  # 1. Default input data
+  # -------------------------------------------------------------------
+  # If a data set "startData" exists in the global environment use it,
+  # otherwise fall back to the bundled example data set.
+  if ("startData" %in% names(.GlobalEnv)) {
+    data <- startData
+  } else {
+    object <- Luminescence::Risoe.BINfileData2RLum.Analysis(CWOSL.SAR.Data, pos = 1:2)
+  }
+
+  # -------------------------------------------------------------------
+  # 2. Reactive state
+  # -------------------------------------------------------------------
+  # Central store for all data and analysis state that is shared between
+  # observers/renders and mutated by the user across the session.
+  values <- reactiveValues(data_primary = object,
+                           data_filtered = NULL,
+                           curve_table = NULL,
+                           uids = NULL,
+                           file_extension = NULL,
+                           args = NULL,
+                           results = list(),
+                           ## full RLum.Results from analyse_SAR.CWOSL(plot=FALSE);
+                           ## patched in-place when the user edits the LxTx table
+                           sar_result = NULL,
+                           ## unmodified baseline result (used by the Reset button)
+                           sar_result_base = NULL,
+                           ## plot-only args captured at analysis time so output$main_plot
+                           ## does not need to read values$args (avoids double render)
+                           sar_plot_args = list(),
+                           ## freshly computed LxTx table (reset on every args change)
+                           lxtx_table = NULL,
+                           ## the table actually shown in output$lxtx_hot; updated on
+                           ## position/settings changes and on Reset, but NOT on user
+                           ## edits (so rhandsontable never re-renders mid-edit)
+                           lxtx_active_table = NULL,
+                           ## per-position user edits; keyed by position index string;
+                           ## persist for the lifetime of the session
+                           lxtx_edits = list(),
+                           ## track the last position to detect position changes
+                           ## (so we only reset lxtx_active_table on position switch,
+                           ## not on every args change like signal_integral)
+                           lxtx_last_position = NULL,
+                           ## signature of the analysis inputs the current sar_result
+                           ## was computed from; used to skip redundant re-analysis
+                           last_args_object = NULL,
+                           last_args_signal_integral = NULL,
+                           last_args_background = NULL,
+                           last_args_mode = NULL,
+                           last_args_fit_method = NULL,
+                           last_args_criteria = NULL,
+                           ## row of the curve table currently shown in the
+                           ## interactive plot; defaults to the first curve
+                           selected_curve_row = 1)
+
+  # -------------------------------------------------------------------
+  # 3. Core helpers
+  # -------------------------------------------------------------------
+  # Small, self-contained functions used across several sections below.
+
+  ## extract the unique curve identifiers of an RLum.Analysis object
+  get_uids <- function(data) {
+    vapply(data@records, function(x) x@.uid, character(1))
+  }
+
+  ## filter the currently selected position down to the given record types,
+  ## dropping internal XSYG curves (those whose record type starts with "_")
   make_selection <- function(positions, recordTypes) {
     ## remove internal XSYG curves
     recordTypes <- grepv("^_", recordTypes, invert = TRUE)
@@ -20,12 +97,8 @@ function(input, output, session) {
     data_filtered
   }
 
-  get_uids <- function(data) {
-    vapply(data@records, function(x) x@.uid, character(1))
-  }
-
-  # build the data.frame shown in the rhandsontable used to
-  # (de)select individual curves of the currently selected position
+  ## build the data.frame shown in the rhandsontable used to
+  ## (de)select individual curves of the currently selected position
   make_curve_table <- function() {
     pos <- as.integer(input$positions)
     if (is.na(pos) || pos > length(values$data_primary))
@@ -70,6 +143,138 @@ function(input, output, session) {
       "FAILED" else "OK"
   }
 
+  ## classify the type of a rejection criterion value
+  rejection_type <- function(x) {
+    if (is.logical(x)) "logical" else if (is.numeric(x)) "numeric" else "character"
+  }
+
+  ## valid reference names (e.g. "Natural", "R1", "R2") derived from the dose
+  ## points of the Lx curves of the currently selected position. Mirrors the
+  ## naming scheme used by analyse_SAR.CWOSL().
+  get_reference_labels <- function() {
+    pos <- as.integer(input$positions)
+    if (is.null(values$data_primary) || is.na(pos) ||
+        pos > length(values$data_primary))
+      return(c("Natural"))
+
+    recs <- values$data_primary[[pos]]@records
+    is_osl <- vapply(recs, function(r)
+      grepl("^(OSL|IRSL)", r@recordType, ignore.case = TRUE), logical(1))
+    ## Lx curves are the odd-indexed OSL/IRSL records of each LxTx pair
+    lx_recs <- recs[is_osl][c(TRUE, FALSE)]
+    dose <- sapply(lx_recs, function(r) r@info$IRR_TIME %||% NA)
+    if (length(dose) == 0)
+      return(c("Natural"))
+
+    dose_names <- paste0("R", seq_along(dose) - 1)
+    zero_id <- which(dose == 0)
+    dose_names[zero_id] <- "R0"
+    if (length(zero_id))
+      dose_names[zero_id[1]] <- "Natural"
+    unique(dose_names)
+  }
+
+  # -------------------------------------------------------------------
+  # 4. Random seed handling
+  # -------------------------------------------------------------------
+  ## fixed random seed (NULL when not fixing the seed)
+  fixed_seed <- reactiveVal(NULL)
+
+  ## return the seed to use, or NULL if the seed is not fixed
+  get_seed <- function() {
+    if (isTRUE(input$fix_seed) && !is.null(fixed_seed()))
+      fixed_seed()
+    else
+      NULL
+  }
+
+  ## when the "Fix random seed" box is checked, generate a seed once (via
+  ## runif) and keep it until the box is checked again; when unchecked, clear it
+  observeEvent(input$fix_seed, {
+    if (isTRUE(input$fix_seed)) {
+      seed <- round(runif(1, 0, 10000))
+      fixed_seed(seed)
+      updateNumericInput(session, "seed_value", value = seed)
+    } else {
+      fixed_seed(NULL)
+    }
+  })
+
+  ## a user-entered seed in the Method panel overrides the generated one, but
+  ## only takes effect while the box is checked
+  observeEvent(input$seed_value, {
+    if (isTRUE(input$fix_seed) && !is.na(input$seed_value))
+      fixed_seed(input$seed_value)
+  })
+
+  # -------------------------------------------------------------------
+  # 5. Rejection criteria
+  # -------------------------------------------------------------------
+  ## default rejection criteria as used by analyse_SAR.CWOSL()
+  rejection_defaults <- list(
+    recycling.ratio = 10,
+    recuperation.rate = 10,
+    palaeodose.error = 10,
+    testdose.error = 10,
+    sn.ratio = NA_real_,
+    exceed.max.regpoint = FALSE,
+    consider.uncertainties = FALSE,
+    recuperation_reference = "Natural",
+    sn_reference = "Natural"
+  )
+
+  ## rejection criteria currently applied (defaults at start, replaced by the
+  ## user via the "Apply rejection criteria" button)
+  active_criteria <- reactiveVal(rejection_defaults)
+
+  ## build a native, type-appropriate input widget for each criterion so the
+  ## user gets a checkbox (logical), numeric field (numeric), dropdown for the
+  ## reference criteria or a free text field (character)
+  output$rejection_criteria <- renderUI({
+    crit <- active_criteria()
+    is_reference <- names(crit) %in% c("recuperation_reference", "sn_reference")
+    ref_choices <- get_reference_labels()
+    inputs <- lapply(names(crit), function(nm) {
+      val <- crit[[nm]]
+      input_id <- paste0("crit_", nm)
+      widget <- switch(
+        rejection_type(val),
+        logical = checkboxInput(input_id, NULL, value = isTRUE(val)),
+        numeric = numericInput(input_id, NULL, value = val,
+                               min = 0, step = 1),
+        character = if (is_reference[match(nm, names(crit))])
+          selectInput(input_id, NULL,
+                      choices = ref_choices,
+                      selected = as.character(val))
+        else
+          textInput(input_id, NULL, value = as.character(val))
+      )
+      fluidRow(
+        column(width = 7, tags$label(class = "control-label", nm)),
+        column(width = 5, widget)
+      )
+    })
+    do.call(tagList, inputs)
+  })
+
+  ## apply the user-edited rejection criteria
+  observeEvent(input$apply_criteria, {
+    crit <- list()
+    for (nm in names(active_criteria())) {
+      val <- input[[paste0("crit_", nm)]]
+      crit[[nm]] <- switch(
+        rejection_type(active_criteria()[[nm]]),
+        logical = isTRUE(val),
+        numeric = if (is.null(val) || is.na(val)) NA_real_ else as.numeric(val),
+        character = as.character(val)
+      )
+    }
+    active_criteria(crit)
+  })
+
+  # -------------------------------------------------------------------
+  # 6. Aliquot status indicators
+  # -------------------------------------------------------------------
   ## build a small coloured clickable circle showing the aliquot status for the
   ## bottom status bar; coloured by RC.Status (light green for OK, light red
   ## for FAILED, grey when no result yet) with just the aliquot number inside.
@@ -132,182 +337,10 @@ function(input, output, session) {
       updateSliderInput(session, "positions", value = val)
   })
 
-
-  # input data (with default)
-  if ("startData" %in% names(.GlobalEnv)) {
-    data <- startData
-  } else {
-    object <- Risoe.BINfileData2RLum.Analysis(CWOSL.SAR.Data, pos = 1:2)
-  }
-
-  values <- reactiveValues(data_primary = object,
-                           data_filtered = NULL,
-                           curve_table = NULL,
-                           uids = NULL,
-                           file_extension = NULL,
-                           args = NULL,
-                           results = list(),
-                           ## full RLum.Results from analyse_SAR.CWOSL(plot=FALSE);
-                           ## patched in-place when the user edits the LxTx table
-                           sar_result = NULL,
-                           ## unmodified baseline result (used by the Reset button)
-                           sar_result_base = NULL,
-                           ## plot-only args captured at analysis time so output$main_plot
-                           ## does not need to read values$args (avoids double render)
-                           sar_plot_args = list(),
-                           ## freshly computed LxTx table (reset on every args change)
-                           lxtx_table = NULL,
-                           ## the table actually shown in output$lxtx_hot; updated on
-                           ## position/settings changes and on Reset, but NOT on user
-                           ## edits (so rhandsontable never re-renders mid-edit)
-                           lxtx_active_table = NULL,
-                           ## per-position user edits; keyed by position index string;
-                           ## persist for the lifetime of the session
-                           lxtx_edits = list(),
-                           ## track the last position to detect position changes
-                           ## (so we only reset lxtx_active_table on position switch,
-                           ## not on every args change like signal_integral)
-                           lxtx_last_position = NULL,
-                           ## signature of the analysis inputs the current sar_result
-                           ## was computed from; used to skip redundant re-analysis
-                           last_args_object = NULL,
-                           last_args_signal_integral = NULL,
-                           last_args_background = NULL,
-                           last_args_mode = NULL,
-                           last_args_fit_method = NULL,
-                           last_args_criteria = NULL,
-                           ## row of the curve table currently shown in the
-                           ## interactive plot; defaults to the first curve
-                           selected_curve_row = 1)
-
-  ## fixed random seed (NULL when not fixing the seed)
-  fixed_seed <- reactiveVal(NULL)
-
-  ## when the "Fix random seed" box is checked, generate a seed once (via
-  ## runif) and keep it until the box is checked again; when unchecked, clear it
-  observeEvent(input$fix_seed, {
-    if (isTRUE(input$fix_seed)) {
-      seed <- round(runif(1, 0, 10000))
-      fixed_seed(seed)
-      updateNumericInput(session, "seed_value", value = seed)
-    } else {
-      fixed_seed(NULL)
-    }
-  })
-
-  ## a user-entered seed in the Method panel overrides the generated one, but
-  ## only takes effect while the box is checked
-  observeEvent(input$seed_value, {
-    if (isTRUE(input$fix_seed) && !is.na(input$seed_value))
-      fixed_seed(input$seed_value)
-  })
-
-  ## return the seed to use, or NULL if the seed is not fixed
-  get_seed <- function() {
-    if (isTRUE(input$fix_seed) && !is.null(fixed_seed()))
-      fixed_seed()
-    else
-      NULL
-  }
-
-  ## default rejection criteria as used by analyse_SAR.CWOSL()
-  rejection_defaults <- list(
-    recycling.ratio = 10,
-    recuperation.rate = 10,
-    palaeodose.error = 10,
-    testdose.error = 10,
-    sn.ratio = NA_real_,
-    exceed.max.regpoint = FALSE,
-    consider.uncertainties = FALSE,
-    recuperation_reference = "Natural",
-    sn_reference = "Natural"
-  )
-
-  ## rejection criteria currently applied (defaults at start, replaced by the
-  ## user via the "Apply rejection criteria" button)
-  active_criteria <- reactiveVal(rejection_defaults)
-
-  ## classify the type of a rejection criterion value
-  rejection_type <- function(x) {
-    if (is.logical(x)) "logical" else if (is.numeric(x)) "numeric" else "character"
-  }
-
-  ## valid reference names (e.g. "Natural", "R1", "R2") derived from the dose
-  ## points of the Lx curves of the currently selected position. Mirrors the
-  ## naming scheme used by analyse_SAR.CWOSL().
-  get_reference_labels <- function() {
-    pos <- as.integer(input$positions)
-    if (is.null(values$data_primary) || is.na(pos) ||
-        pos > length(values$data_primary))
-      return(c("Natural"))
-
-    recs <- values$data_primary[[pos]]@records
-    is_osl <- vapply(recs, function(r)
-      grepl("^(OSL|IRSL)", r@recordType, ignore.case = TRUE), logical(1))
-    ## Lx curves are the odd-indexed OSL/IRSL records of each LxTx pair
-    lx_recs <- recs[is_osl][c(TRUE, FALSE)]
-    dose <- sapply(lx_recs, function(r) r@info$IRR_TIME %||% NA)
-    if (length(dose) == 0)
-      return(c("Natural"))
-
-    dose_names <- paste0("R", seq_along(dose) - 1)
-    zero_id <- which(dose == 0)
-    dose_names[zero_id] <- "R0"
-    if (length(zero_id))
-      dose_names[zero_id[1]] <- "Natural"
-    unique(dose_names)
-  }
-
-  ## build a native, type-appropriate input widget for each criterion so the
-  ## user gets a checkbox (logical), numeric field (numeric), dropdown for the
-  ## reference criteria or a free text field (character)
-  output$rejection_criteria <- renderUI({
-    crit <- active_criteria()
-    is_reference <- names(crit) %in% c("recuperation_reference", "sn_reference")
-    ref_choices <- get_reference_labels()
-    inputs <- lapply(names(crit), function(nm) {
-      val <- crit[[nm]]
-      input_id <- paste0("crit_", nm)
-      widget <- switch(
-        rejection_type(val),
-        logical = checkboxInput(input_id, NULL, value = isTRUE(val)),
-        numeric = numericInput(input_id, NULL, value = val,
-                               min = 0, step = 1),
-        character = if (is_reference[match(nm, names(crit))])
-          selectInput(input_id, NULL,
-                      choices = ref_choices,
-                      selected = as.character(val))
-        else
-          textInput(input_id, NULL, value = as.character(val))
-      )
-      fluidRow(
-        column(width = 7, tags$label(class = "control-label", nm)),
-        column(width = 5, widget)
-      )
-    })
-    do.call(tagList, inputs)
-  })
-
-  ## apply the user-edited rejection criteria
-  observeEvent(input$apply_criteria, {
-    crit <- list()
-    for (nm in names(active_criteria())) {
-      val <- input[[paste0("crit_", nm)]]
-      crit[[nm]] <- switch(
-        rejection_type(active_criteria()[[nm]]),
-        logical = isTRUE(val),
-        numeric = if (is.null(val) || is.na(val)) NA_real_ else as.numeric(val),
-        character = as.character(val)
-      )
-    }
-    active_criteria(crit)
-  })
-
-  session$onSessionEnded(function() {
-    stopApp()
-  })
-
-  # check and read in file (DATA SET 1)
+  # -------------------------------------------------------------------
+  # 7. Data import
+  # -------------------------------------------------------------------
+  # Read in the uploaded XSYG/BIN/BINX file (DATA SET 1).
   observeEvent(input$file, {
     inFile <- input$file
     if(is.null(inFile))
@@ -337,8 +370,8 @@ function(input, output, session) {
     ## selected/deselected.
     values$uids <- get_uids(values$data_primary[[1]])
 
-    RLumShiny:::tryNotify(valid.records <- get_RLum(values$data_primary[[1]],
-                                                    recordType = c("^OSL", "^IRSL")))
+    RLumShiny:::tryNotify(valid.records <- Luminescence::get_RLum(
+      object = values$data_primary[[1]], recordType = c("^OSL", "^IRSL")))
     if (length(valid.records) == 0) {
       return(NULL)
     }
@@ -348,6 +381,13 @@ function(input, output, session) {
                       max = max.channels)
   })
 
+  # -------------------------------------------------------------------
+  # 8. Curve selection & inspection
+  # -------------------------------------------------------------------
+  # Position and record-type controls, the (de)select-curves table, and the
+  # interactive single-curve plot.
+
+  ## (re)build the filtered data and curve table when the position changes
   observeEvent(input$positions, {
     values$data_filtered <- make_selection(input$positions, input$recordTypes)
     values$uids <- get_uids(values$data_primary[[as.integer(input$positions)]])
@@ -355,6 +395,7 @@ function(input, output, session) {
     values$selected_curve_row <- 1
   })
 
+  ## (re)build the filtered data and curve table when the record types change
   observeEvent(input$recordTypes, {
     values$data_filtered <- make_selection(input$positions, input$recordTypes)
     values$curve_table <- make_curve_table()
@@ -387,50 +428,14 @@ function(input, output, session) {
       values$data_filtered <- NULL
     } else {
       pos <- as.integer(input$positions)
-      values$data_filtered <- get_RLum(values$data_primary[pos],
-                                       record.id = selected.idx,
-                                       drop = FALSE)
+      values$data_filtered <- Luminescence::get_RLum(
+        object = values$data_primary[pos],
+        record.id = selected.idx,
+        drop = FALSE)
     }
   })
 
-  observe({
-    req(input$positions)
-    req(input$curves)
-
-    ## background integral subtraction
-    if (input$sub_bg_integral)
-      background_integral <- input$background_integral[1]:input$background_integral[2]
-    else
-      background_integral <- NA
-
-    values$args <- list(
-      # analyse_SAR.CWOSL arguments
-      object = values$data_filtered %||% values$data_primary,
-      signal_integral = input$signal_integral[1]:input$signal_integral[2],
-      background_integral = background_integral,
-      rejection.criteria = active_criteria(),
-      verbose = FALSE,
-      # fit_DoseResponseCurve arguments
-      mode = input$mode,
-      fit.method = input$fit_method,
-      # plot_DoseResponseCurve arguments
-      legend = input$showlegend,
-      legend.pos = input$legend_pos,
-      density_rug = input$showrug,
-      # generic plot arguments
-      log = paste0("", ifelse(input$logx, "x", ""), ifelse(input$logy, "y", "")),
-      main = if (nchar(input$main) > 0) input$main else NULL,
-      cex = input$cex,
-      plot_onePage = TRUE
-    )
-  })
-
-  observeEvent(input$signal_integral, {
-    ## background integral cannot overlap with signal integral
-    updateSliderInput(inputId = "background_integral",
-                      min = max(input$signal_integral) + 1)
-  })
-
+  ## prev/next buttons and direct numeric entry to select the position
   output$positions <- renderUI({
     values$all_positions <- RLumShiny:::get_unique_positions(values$data_primary)
     n <- length(values$all_positions)
@@ -490,6 +495,7 @@ function(input, output, session) {
       updateSliderInput(session, "positions", value = val)
   })
 
+  ## record-type checkboxes
   output$recordTypes <- renderUI({
     types <- sort(RLumShiny:::get_unique_types(values$data_primary))
     checkboxGroupInput("recordTypes", "Record types",
@@ -498,6 +504,7 @@ function(input, output, session) {
                        inline = TRUE)
   })
 
+  ## (de)select individual curves via an editable table
   output$curves <- renderRHandsontable({
     req(input$positions)
     req(values$curve_table)
@@ -555,32 +562,52 @@ function(input, output, session) {
     p
   })
 
-  observeEvent(input$analyze_all, {
+  # -------------------------------------------------------------------
+  # 9. Analysis pipeline
+  # -------------------------------------------------------------------
+  # Assemble the analysis arguments, keep the background integral from
+  # overlapping the signal integral, and run analyse_SAR.CWOSL(plot = FALSE)
+  # once per genuine change. Also handles the "Analyze all" / "Clear results"
+  # batch actions.
+
+  ## collect all analyse_SAR.CWOSL(), fit_DoseResponseCurve() and plotting
+  ## arguments from the current input values into a single args list
+  observe({
     req(input$positions)
-    seed <- get_seed()
-    if (!is.null(seed)) set.seed(seed)
+    req(input$curves)
 
-    ## Use a local copy so values$args is never mutated (which would retrigger
-    ## the main observer and cause an unnecessary single-position re-analysis).
-    all_args        <- values$args
-    all_args$object <- values$data_primary
-    all_args$plot   <- FALSE
+    ## background integral subtraction
+    if (input$sub_bg_integral)
+      background_integral <- input$background_integral[1]:input$background_integral[2]
+    else
+      background_integral <- NA
 
-    results <- RLumShiny:::tryNotify(do.call(analyse_SAR.CWOSL, all_args))
-
-    ## store the results obtained for each position
-    if (inherits(results, "RLum.Results")) {
-      for (pos in results$data$POS) {
-        if (is.na(pos)) next()
-        idx <- match(pos, values$all_positions)
-        values$results[[idx]] <- results$data[results$data$POS == pos, ]
-      }
-    }
+    values$args <- list(
+      # analyse_SAR.CWOSL arguments
+      object = values$data_filtered %||% values$data_primary,
+      signal_integral = input$signal_integral[1]:input$signal_integral[2],
+      background_integral = background_integral,
+      rejection.criteria = active_criteria(),
+      verbose = FALSE,
+      # fit_DoseResponseCurve arguments
+      mode = input$mode,
+      fit.method = input$fit_method,
+      # plot_DoseResponseCurve arguments
+      legend = input$showlegend,
+      legend.pos = input$legend_pos,
+      density_rug = input$showrug,
+      # generic plot arguments
+      log = paste0("", ifelse(input$logx, "x", ""), ifelse(input$logy, "y", "")),
+      main = if (nchar(input$main) > 0) input$main else NULL,
+      cex = input$cex,
+      plot_onePage = TRUE
+    )
   })
 
-  ## clear all stored results and reset the calculation
-  observeEvent(input$clear_results, {
-    values$results <- list()
+  ## background integral cannot overlap with signal integral
+  observeEvent(input$signal_integral, {
+    updateSliderInput(inputId = "background_integral",
+                      min = max(input$signal_integral) + 1)
   })
 
   ## Single observer that runs analyse_SAR.CWOSL(plot = FALSE) once per genuine
@@ -647,13 +674,13 @@ function(input, output, session) {
     }
 
     ## Extract the LxTx table for the rhandsontable.
-    tbl <- get_RLum(full_result, data.object = "LnLxTnTx.table")
+    tbl <- Luminescence::get_RLum(full_result, data.object = "LnLxTnTx.table")
     tbl <- tbl[, setdiff(colnames(tbl), "UID"), drop = FALSE]
     values$lxtx_table <- tbl
 
     ## Restore the stored edits for the current position (if any) so that both
     ## the table widget and the plot reflect them.  This runs after any fresh
-    ## analysis of the current position — on a position change AND on a settings
+    ## analysis of the current position - on a position change AND on a settings
     ## change that re-analyses the same position (e.g. changing signal_integral).
     current_pos <- isolate(as.integer(input$positions))
     pos_key <- as.character(current_pos)
@@ -690,7 +717,7 @@ function(input, output, session) {
         )
 
         if (inherits(fit_result_restored, "RLum.Results")) {
-          de_data_restored <- get_RLum(fit_result_restored)
+          de_data_restored <- Luminescence::get_RLum(fit_result_restored)
           full_result@data$.plot.data[[1]]$GC.fit <- fit_result_restored
           de_cols <- intersect(c("De", "De.Error", ".De.plot", ".De.raw"),
                                colnames(de_data_restored))
@@ -716,8 +743,44 @@ function(input, output, session) {
               isolate(values$sar_plot_args)))
   })
 
+  ## batch run over all positions
+  observeEvent(input$analyze_all, {
+    req(input$positions)
+    seed <- get_seed()
+    if (!is.null(seed)) set.seed(seed)
+
+    ## Use a local copy so values$args is never mutated (which would retrigger
+    ## the main observer and cause an unnecessary single-position re-analysis).
+    all_args        <- values$args
+    all_args$object <- values$data_primary
+    all_args$plot   <- FALSE
+
+    results <- RLumShiny:::tryNotify(do.call(analyse_SAR.CWOSL, all_args))
+
+    ## store the results obtained for each position
+    if (inherits(results, "RLum.Results")) {
+      for (pos in results$data$POS) {
+        if (is.na(pos)) next()
+        idx <- match(pos, values$all_positions)
+        values$results[[idx]] <- results$data[results$data$POS == pos, ]
+      }
+    }
+  })
+
+  ## clear all stored results and reset the calculation
+  observeEvent(input$clear_results, {
+    values$results <- list()
+  })
+
+  # -------------------------------------------------------------------
+  # 10. LxTx table editing
+  # -------------------------------------------------------------------
+  # Render the editable LxTx table below the main plot, apply user edits
+  # (persisting them, refitting the DRC and patching sar_result), and the
+  # Reset button that restores the freshly computed values.
+
   ## Step 2: render the LxTx table as an editable rhandsontable.
-  ## Renders from lxtx_active_table only — NOT from lxtx_edits directly —
+  ## Renders from lxtx_active_table only - NOT from lxtx_edits directly -
   ## so that user edits do not cause a re-render (which would reset scroll
   ## position and selected cell).  Vertical scrollbar beyond 10 rows;
   ## horizontal scrollbar beyond 8 columns (stretchH = "none").
@@ -767,7 +830,7 @@ function(input, output, session) {
     )
     if (!inherits(fit_result, "RLum.Results")) return(NULL)
 
-    de_data <- get_RLum(fit_result)
+    de_data <- Luminescence::get_RLum(fit_result)
 
     ## Patch the stored RLum.Results object in-place so the plot re-renders.
     sar <- isolate(values$sar_result)
@@ -813,6 +876,10 @@ function(input, output, session) {
     values$sar_result              <- values$sar_result_base
   })
 
+  # -------------------------------------------------------------------
+  # 11. Results, Highlights & Abanico plot
+  # -------------------------------------------------------------------
+  ## build the combined results table shown in the Results / Highlights tabs
   getResultsTable <- function(onlyHighlights = FALSE) {
     if (length(values$results) == 0)
       return(NULL)
@@ -869,8 +936,9 @@ function(input, output, session) {
 
     seed <- get_seed()
     if (!is.null(seed)) set.seed(seed)
-    res <- Luminescence::plot_AbanicoPlot(df[c("De", "De.Error")],
-                                          zlab = expression(paste(D[e], " [s]")))
+    res <- Luminescence::plot_AbanicoPlot(
+      data = df[c("De", "De.Error")],
+      zlab = expression(paste(D[e], " [s]")))
 
     ## mark the point belonging to the currently selected position
     if (input$abanico_mark && !is.null(res$data.global)) {
@@ -886,6 +954,11 @@ function(input, output, session) {
     res
   })
 
+  # -------------------------------------------------------------------
+  # 12. Code export
+  # -------------------------------------------------------------------
+  # Build the reproducible R code shown on the "R code" tab and wire up the
+  # export handlers (code and plot).
   observe({
     # nested renderText({}) for code output on "R plot code" tab
     code.output <- callModule(RLumShiny:::printCode, "printCode",
@@ -901,5 +974,12 @@ function(input, output, session) {
 
     callModule(RLumShiny:::exportCodeHandler, "export", code = code.output)
     callModule(RLumShiny:::exportPlotHandler, "export", fun = "analyse_SAR.CWOSL", args = values$args)
+  })
+
+  # -------------------------------------------------------------------
+  # 13. Session lifecycle
+  # -------------------------------------------------------------------
+  session$onSessionEnded(function() {
+    stopApp()
   })
 }##EndOf::function(input, output)
