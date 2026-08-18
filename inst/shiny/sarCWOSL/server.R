@@ -1,20 +1,8 @@
-## Server.R
-## =====================================================================
-## MAIN FUNCTION - reactive server logic for the SAR CWOSL app.
-##
-## The body is organised into clearly labelled sections (see the banner
-## comments below). Shiny observers/render* functions merely register
-## callbacks, which fire only after the session has initialised, so their
-## relative order within this function body does not affect behaviour.
-## Likewise, helper functions are resolved at call time and may therefore
-## be defined in a dedicated section independent of where they are used.
-## =====================================================================
 function(input, output, session) {
   options(shiny.maxRequestSize = 30 * 1024^2) # 30MB upload limit
 
-  # -------------------------------------------------------------------
-  # 1. Default input data
-  # -------------------------------------------------------------------
+
+# 1. Default input data ---------------------------------------------------
   # If a data set "startData" exists in the global environment use it,
   # otherwise fall back to the bundled example data set.
   if ("startData" %in% names(.GlobalEnv)) {
@@ -23,54 +11,52 @@ function(input, output, session) {
     object <- Luminescence::Risoe.BINfileData2RLum.Analysis(CWOSL.SAR.Data, pos = 1:2)
   }
 
-  # -------------------------------------------------------------------
-  # 2. Reactive state
-  # -------------------------------------------------------------------
+
+# 2. Reactive state -------------------------------------------------------
   # Central store for all data and analysis state that is shared between
   # observers/renders and mutated by the user across the session.
-  values <- reactiveValues(data_primary = object,
-                           data_filtered = NULL,
-                           curve_table = NULL,
-                           uids = NULL,
-                           file_extension = NULL,
-                           args = NULL,
-                           results = list(),
-                           ## full RLum.Results from analyse_SAR.CWOSL(plot=FALSE);
-                           ## patched in-place when the user edits the LxTx table
-                           sar_result = NULL,
-                           ## unmodified baseline result (used by the Reset button)
-                           sar_result_base = NULL,
-                           ## plot-only args captured at analysis time so output$main_plot
-                           ## does not need to read values$args (avoids double render)
-                           sar_plot_args = list(),
-                           ## freshly computed LxTx table (reset on every args change)
-                           lxtx_table = NULL,
-                           ## the table actually shown in output$lxtx_hot; updated on
-                           ## position/settings changes and on Reset, but NOT on user
-                           ## edits (so rhandsontable never re-renders mid-edit)
-                           lxtx_active_table = NULL,
-                           ## per-position user edits; keyed by position index string;
-                           ## persist for the lifetime of the session
-                           lxtx_edits = list(),
-                           ## track the last position to detect position changes
-                           ## (so we only reset lxtx_active_table on position switch,
-                           ## not on every args change like signal_integral)
-                           lxtx_last_position = NULL,
-                           ## signature of the analysis inputs the current sar_result
-                           ## was computed from; used to skip redundant re-analysis
-                           last_args_object = NULL,
-                           last_args_signal_integral = NULL,
-                           last_args_background = NULL,
-                           last_args_mode = NULL,
-                           last_args_fit_method = NULL,
-                           last_args_criteria = NULL,
-                           ## row of the curve table currently shown in the
-                           ## interactive plot; defaults to the first curve
-                           selected_curve_row = 1)
+  values <- reactiveValues(
+    data_primary = object,
+    data_filtered = NULL,
+    curve_table = NULL,
+    uids = NULL,
+    file_extension = NULL,
+    args = NULL,
+    results = list(),
+    ## full RLum.Results from analyse_SAR.CWOSL(plot=FALSE);
+    ## patched in-place when the user edits the LxTx table
+    sar_result = NULL,
+    ## unmodified baseline result (used by the Reset button)
+    sar_result_base = NULL,
+    ## plot-only args captured at analysis time so output$main_plot
+    ## does not need to read values$args (avoids double render)
+    sar_plot_args = list(),
+    ## freshly computed LxTx table (reset on every args change)
+    lxtx_table = NULL,
+    ## the table actually shown in output$lxtx_hot; updated on
+    ## position/settings changes and on Reset, but NOT on user
+    ## edits (so rhandsontable never re-renders mid-edit)
+    lxtx_active_table = NULL,
+    ## per-position user edits; keyed by position index string;
+    ## persist for the lifetime of the session
+    lxtx_edits = list(),
+    ## track the last position to detect position changes
+    ## (so we only reset lxtx_active_table on position switch,
+    ## not on every args change like signal_integral)
+    lxtx_last_position = NULL,
+    ## signature of the analysis inputs the current sar_result
+    ## was computed from; used to skip redundant re-analysis
+    last_args_object = NULL,
+    last_args_signal_integral = NULL,
+    last_args_background = NULL,
+    last_args_mode = NULL,
+    last_args_fit_method = NULL,
+    last_args_criteria = NULL,
+    ## row of the curve table currently shown in the
+    ## interactive plot; defaults to the first curve
+    selected_curve_row = 1)
 
-  # -------------------------------------------------------------------
-  # 3. Core helpers
-  # -------------------------------------------------------------------
+# 3. Core helpers ---------------------------------------------------------
   # Small, self-contained functions used across several sections below.
 
   ## extract the unique curve identifiers of an RLum.Analysis object
@@ -174,9 +160,8 @@ function(input, output, session) {
     unique(dose_names)
   }
 
-  # -------------------------------------------------------------------
-  # 4. Random seed handling
-  # -------------------------------------------------------------------
+
+# 4. Random seed handling -------------------------------------------------
   ## fixed random seed (NULL when not fixing the seed)
   fixed_seed <- reactiveVal(NULL)
 
@@ -207,9 +192,8 @@ function(input, output, session) {
       fixed_seed(input$seed_value)
   })
 
-  # -------------------------------------------------------------------
-  # 5. Rejection criteria
-  # -------------------------------------------------------------------
+
+# 5. Rejection criteria ---------------------------------------------------
   ## default rejection criteria as used by analyse_SAR.CWOSL()
   rejection_defaults <- list(
     recycling.ratio = 10,
@@ -272,9 +256,8 @@ function(input, output, session) {
     active_criteria(crit)
   })
 
-  # -------------------------------------------------------------------
-  # 6. Aliquot status indicators
-  # -------------------------------------------------------------------
+
+# # 6. Aliquot status indicators ------------------------------------------
   ## build a small coloured clickable circle showing the aliquot status for the
   ## bottom status bar; coloured by RC.Status (light green for OK, light red
   ## for FAILED, grey when no result yet) with just the aliquot number inside.
@@ -337,9 +320,8 @@ function(input, output, session) {
       updateSliderInput(session, "positions", value = val)
   })
 
-  # -------------------------------------------------------------------
-  # 7. Data import
-  # -------------------------------------------------------------------
+
+# 7. Data import ----------------------------------------------------------
   # Read in the uploaded XSYG/BIN/BINX file (DATA SET 1).
   observeEvent(input$file, {
     inFile <- input$file
@@ -381,9 +363,8 @@ function(input, output, session) {
                       max = max.channels)
   })
 
-  # -------------------------------------------------------------------
-  # 8. Curve selection & inspection
-  # -------------------------------------------------------------------
+
+# 8. Curve selection & inspection -----------------------------------------
   # Position and record-type controls, the (de)select-curves table, and the
   # interactive single-curve plot.
 
@@ -562,9 +543,8 @@ function(input, output, session) {
     p
   })
 
-  # -------------------------------------------------------------------
-  # 9. Analysis pipeline
-  # -------------------------------------------------------------------
+
+# 9. Analysis pipeline ----------------------------------------------------
   # Assemble the analysis arguments, keep the background integral from
   # overlapping the signal integral, and run analyse_SAR.CWOSL(plot = FALSE)
   # once per genuine change. Also handles the "Analyze all" / "Clear results"
@@ -772,9 +752,9 @@ function(input, output, session) {
     values$results <- list()
   })
 
-  # -------------------------------------------------------------------
-  # 10. LxTx table editing
-  # -------------------------------------------------------------------
+
+
+# 10. LxTx table editing --------------------------------------------------
   # Render the editable LxTx table below the main plot, apply user edits
   # (persisting them, refitting the DRC and patching sar_result), and the
   # Reset button that restores the freshly computed values.
@@ -876,9 +856,8 @@ function(input, output, session) {
     values$sar_result              <- values$sar_result_base
   })
 
-  # -------------------------------------------------------------------
-  # 11. Results, Highlights & Abanico plot
-  # -------------------------------------------------------------------
+
+# 11. Results, Highlights & Abanico plot ----------------------------------
   ## build the combined results table shown in the Results / Highlights tabs
   getResultsTable <- function(onlyHighlights = FALSE) {
     if (length(values$results) == 0)
@@ -954,9 +933,8 @@ function(input, output, session) {
     res
   })
 
-  # -------------------------------------------------------------------
-  # 12. Code export
-  # -------------------------------------------------------------------
+
+# 12. Code export ---------------------------------------------------------
   # Build the reproducible R code shown on the "R code" tab and wire up the
   # export handlers (code and plot).
   observe({
@@ -976,9 +954,8 @@ function(input, output, session) {
     callModule(RLumShiny:::exportPlotHandler, "export", fun = "analyse_SAR.CWOSL", args = values$args)
   })
 
-  # -------------------------------------------------------------------
-  # 13. Session lifecycle
-  # -------------------------------------------------------------------
+
+# 13. Session lifecycle ---------------------------------------------------
   session$onSessionEnded(function() {
     stopApp()
   })
