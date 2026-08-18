@@ -29,7 +29,7 @@ function(request) {
                                             uiOutput("positions"),
 
                                             uiOutput("recordTypes"),
-                                           align = "center")
+                                            align = "center")
                                        ),
 
                                        section("(De)select individual curves",

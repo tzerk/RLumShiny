@@ -343,7 +343,7 @@ function(input, output, session) {
   # Read in the uploaded XSYG/BIN/BINX file (DATA SET 1).
   observeEvent(input$file, {
     inFile <- input$file
-    if(is.null(inFile))
+    if (is.null(inFile))
       return(NULL) # if no file was uploaded return NULL
 
     values$file_extension <- tolower(tools::file_ext(inFile$name))
@@ -520,9 +520,9 @@ function(input, output, session) {
                   selectCallback = TRUE,
                   stretchH = "all",
                   width = "100%") |>
-        hot_col("ID", readOnly = TRUE) |>
-        hot_col("TYPE", readOnly = TRUE) |>
-        hot_table(highlightRow = TRUE)
+      hot_col("ID", readOnly = TRUE) |>
+      hot_col("TYPE", readOnly = TRUE) |>
+      hot_table(highlightRow = TRUE)
   })
 
   ## clicking a row in the curve table shows the corresponding curve as an
@@ -968,7 +968,7 @@ function(input, output, session) {
                                    arg1 = "object = data",
                                    args = values$args))
 
-    output$plotCode<- renderText({
+    output$plotCode <- renderText({
       code.output
     })##EndOf::renderText({})
 
