@@ -348,6 +348,12 @@ function(input, output, session) {
     values$results <- list()
     values$data_filtered <- NULL
 
+    ## reset per-position LxTx edits and related state so edits made on the
+    ## previously loaded file are not carried over to the new file
+    values$lxtx_edits <- list()
+    values$lxtx_active_table <- NULL
+    values$lxtx_last_position <- NULL
+
     ## The only way to identify curves in an RLum.Analysis object is by
     ## using their uids. Therefore, we keep the list of uids in the primary
     ## data, which is updated when the selected position is changed.
@@ -361,9 +367,10 @@ function(input, output, session) {
       return(NULL)
     }
     max.channels <- max(vapply(valid.records, nrow, FUN.VALUE = numeric(1)))
-    updateSliderInput(session, "background_integral",
-                      value = c(max(max.channels - 100, 10), max.channels),
-                      max = max.channels)
+    updateSliderInput(
+      session, "background_integral",
+      value = c(max(max.channels - 100, 10), max.channels),
+      max = max.channels)
   })
 
 
@@ -682,18 +689,19 @@ function(input, output, session) {
     if (!is.null(stored_edits)) {
         lxtx_full <- full_result@data$LnLxTnTx.table
         for (col in intersect(colnames(stored_edits), colnames(lxtx_full)))
-          lxtx_full[[col]] <- stored_edits[[col]]
+        lxtx_full[[col]] <- stored_edits[[col]]
         full_result@data$LnLxTnTx.table <- lxtx_full
 
         ## Refit the DRC with the stored edits.
         fit_result_restored <- tryCatch(
           fit_DoseResponseCurve(
-            object         = data.frame(Dose = stored_edits$Dose,
-                                        LxTx = stored_edits$LxTx,
-                                        LxTx.Error = stored_edits$LxTx.Error),
-            mode           = values$args$mode %||% "interpolation",
-            fit.method     = values$args[["fit.method"]] %||% "SSE",
-            verbose        = FALSE,
+            object = data.frame(
+              Dose = stored_edits$Dose,
+              LxTx = stored_edits$LxTx,
+              LxTx.Error = stored_edits$LxTx.Error),
+            mode = values$args$mode %||% "interpolation",
+            fit.method = values$args[["fit.method"]] %||% "SSE",
+            verbose = FALSE,
             txtProgressBar = FALSE
           ),
           error = function(e) NULL
