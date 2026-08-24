@@ -838,8 +838,9 @@ function(input, output, session) {
                                  rowHeaders  = NULL,
                                  height      = height,
                                  stretchH    = "none") |>
-      rhandsontable::hot_col("Name",     readOnly = TRUE) |>
-      rhandsontable::hot_col("Repeated", readOnly = TRUE) |>
+      ## only the "Dose" column is user-editable; everything else is read-only
+      rhandsontable::hot_cols(readOnly = TRUE) |>
+      rhandsontable::hot_col("Dose", readOnly = FALSE) |>
       rhandsontable::hot_table(highlightRow = TRUE)
   })
 
@@ -919,6 +920,101 @@ function(input, output, session) {
     values$lxtx_edits[[pos_key]]  <- NULL
     values$lxtx_active_table      <- values$lxtx_table
     values$sar_result              <- values$sar_result_base
+  })
+
+
+  ## Re-run the analysis for one aliquot, apply a given Dose vector to its LxTx
+  ## table, refit the DRC and store the result. Returns a list with $skipped =
+  ## TRUE (with $table) when the row count does not match, or NULL on failure.
+  ## Only called for aliquots other than the currently selected one.
+  refit_position <- function(idx, dose) {
+    types <- values$selected_record_types
+    if (is.null(types))
+      types <- sort(RLumShiny:::get_unique_types(values$data_primary))
+    types <- grepv("^_", types, invert = TRUE)
+    if (length(types) == 0)
+      return(NULL)
+    data_pos <- values$data_primary[idx]
+    filtered <- lapply(data_pos, function(x) subset(x, recordType %in% types))
+
+    seed <- get_seed()
+    if (!is.null(seed)) set.seed(seed)
+    args <- values$args
+    args$object <- filtered
+    args$plot   <- FALSE
+    res <- RLumShiny:::tryNotify(do.call(analyse_SAR.CWOSL, args))
+    if (!inherits(res, "RLum.Results"))
+      return(NULL)
+
+    tbl <- Luminescence::get_RLum(res, data.object = "LnLxTnTx.table")
+    tbl <- tbl[, setdiff(colnames(tbl), "UID"), drop = FALSE]
+    ## row count mismatch: do not touch this aliquot
+    if (nrow(tbl) != length(dose))
+      return(list(skipped = TRUE, table = tbl))
+
+    tbl$Dose <- dose
+    values$lxtx_edits[[as.character(idx)]] <- tbl
+
+    ## refit the dose-response curve with the new dose values
+    fit <- tryCatch(
+      fit_DoseResponseCurve(
+        object         = data.frame(Dose = tbl$Dose,
+                                    LxTx = tbl$LxTx,
+                                    LxTx.Error = tbl$LxTx.Error),
+        mode           = values$args$mode %||% "interpolation",
+        fit.method     = values$args[["fit.method"]] %||% "SSE",
+        fit.force_through_origin = values$args[["fit.force_through_origin"]] %||% FALSE,
+        fit.weights    = values$args[["fit.weights"]] %||% "inverse_var",
+        n.MC           = values$args[["n.MC"]] %||% 100,
+        verbose        = FALSE,
+        txtProgressBar = FALSE
+      ),
+      error = function(e) NULL
+    )
+    if (!inherits(fit, "RLum.Results"))
+      return(NULL)
+
+    de_data <- Luminescence::get_RLum(fit)
+    row <- res@data$data
+    de_cols <- intersect(c("De", "De.Error", ".De.plot", ".De.raw"),
+                         colnames(de_data))
+    for (col in de_cols)
+      row[[col]] <- de_data[[col]][1]
+    values$results[[idx]] <- row
+    list(skipped = FALSE, table = tbl)
+  }
+
+  ## "Apply dose to all": copy the Dose column of the currently selected
+  ## aliquot to every other aliquot whose LxTx table has the same number of
+  ## rows. Aliquots with a different row count are left untouched and reported.
+  observeEvent(input$apply_dose_all, {
+    req(input$positions, values$lxtx_active_table)
+    src_dose <- values$lxtx_active_table$Dose
+    n_src <- length(src_dose)
+
+    cur <- as.integer(input$positions)
+    n <- length(values$all_positions)
+
+    skipped <- character(0)
+    for (idx in seq_len(n)) {
+      if (idx == cur) next ## the current aliquot already carries these doses
+      out <- refit_position(idx, src_dose)
+      if (is.null(out))
+        next
+      if (isTRUE(out$skipped))
+        skipped <- c(skipped, paste0("#", values$all_positions[idx]))
+    }
+
+    if (length(skipped) > 0) {
+      showNotification(
+        paste0("Dose not applied to aliquot(s) ",
+               paste(skipped, collapse = ", "),
+               " - number of rows does not match."),
+        type = "warning", duration = 8)
+    } else {
+      showNotification("Dose applied to all other aliquots.",
+                       type = "message", duration = 5)
+    }
   })
 
 

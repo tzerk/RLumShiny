@@ -244,10 +244,18 @@ function(request) {
                              fluidRow(
                                column(width = 7,
                                     rhandsontable::rHandsontableOutput("lxtx_hot"),
-                                    actionButton("lxtx_reset",
-                                                 icon  = icon("rotate-left"),
-                                                 label = "Reset table",
-                                                 style = "margin-top: 4px;")),
+                                    fluidRow(
+                                      column(width = 6,
+                                        actionButton("apply_dose_all",
+                                                     icon  = icon("wand-magic-sparkles"),
+                                                     label = "Apply dose to all",
+                                                     style = "margin-top: 4px; width: 100%;")),
+                                      column(width = 6,
+                                        actionButton("lxtx_reset",
+                                                     icon  = icon("rotate-left"),
+                                                     label = "Reset table",
+                                                     style = "margin-top: 4px; width: 100%;"))
+                                    )),
                                column(width = 5, plotOutput(outputId = "abanico_plot", height = "400px"))
                              )),
                     tabPanel("Results", DT::DTOutput("results", width = "95%")),
