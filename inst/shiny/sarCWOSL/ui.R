@@ -84,6 +84,13 @@ function(request) {
                                                       )
                                                )
                                            )
+                                       ),
+                                       ## Abanico plot in its own collapsible section below the
+                                       ## individual curve selection; unfolded by default
+                                       tags$details(class = "section-panel", open = TRUE,
+                                           tags$summary(class = "section-header",
+                                                        "Abanico plot"),
+                                           plotOutput(outputId = "abanico_plot", height = "400px")
                                        )
                                    )
                                    )
@@ -240,23 +247,23 @@ function(request) {
                              # spanning the whole main plot area
                              uiOutput("currentAliquot"),
                              plotOutput(outputId = "main_plot", height = "600px", width = "95%"),
-                             # results table (left) and Abanico plot (right) below the SAR plot
-                             fluidRow(
-                               column(width = 7,
-                                    rhandsontable::rHandsontableOutput("lxtx_hot"),
-                                    fluidRow(
-                                      column(width = 6,
-                                        actionButton("apply_dose_all",
-                                                     icon  = icon("wand-magic-sparkles"),
-                                                     label = "Apply dose to all",
-                                                     style = "margin-top: 4px; width: 100%;")),
-                                      column(width = 6,
-                                        actionButton("lxtx_reset",
-                                                     icon  = icon("rotate-left"),
-                                                     label = "Reset table",
-                                                     style = "margin-top: 4px; width: 100%;"))
-                                    )),
-                               column(width = 5, plotOutput(outputId = "abanico_plot", height = "400px"))
+                             # foldable results table spanning the full width of the main plot area
+                             tags$details(class = "section-panel",
+                                 tags$summary(class = "section-header",
+                                              "Dose table"),
+                                 rhandsontable::rHandsontableOutput("lxtx_hot"),
+                                 fluidRow(
+                                   column(width = 6,
+                                     actionButton("apply_dose_all",
+                                                  icon  = icon("wand-magic-sparkles"),
+                                                  label = "Apply dose to all",
+                                                  style = "margin-top: 4px; width: 100%;")),
+                                   column(width = 6,
+                                     actionButton("lxtx_reset",
+                                                  icon  = icon("rotate-left"),
+                                                  label = "Reset table",
+                                                  style = "margin-top: 4px; width: 100%;"))
+                                 )
                              )),
                     tabPanel("Results", DT::DTOutput("results", width = "95%")),
                     tabPanel("Highlights", DT::DTOutput("highlights", width = "95%")),
