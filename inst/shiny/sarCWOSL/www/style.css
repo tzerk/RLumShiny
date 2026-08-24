@@ -88,6 +88,17 @@ input,textarea,.uneditable-input{
   border-bottom: 1px solid #e0e0e0;
 }
 
+/* Collapsible sections: make the <summary> header look like the section
+   header (blue like h5) and clickable */
+.section-panel > summary.section-header {
+  display: list-item;
+  cursor: pointer;
+  color: #428bca;
+  font-size: 14px;
+  font-weight: bold;
+  user-select: none;
+}
+
 /* Import tab: the two side-by-side panels (aliquot/record selection and
    batch processing) stretch to an equal height */
 #tabs .import-row {

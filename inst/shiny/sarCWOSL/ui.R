@@ -54,7 +54,11 @@ function(request) {
                                        )
                                    ),
                                    fluidRow(
-                                       section("(De)select individual curves",
+                                       ## collapsible by default: the whole section is folded
+                                       ## until the "(De)select individual curves" header is clicked
+                                       tags$details(class = "section-panel",
+                                           tags$summary(class = "section-header",
+                                                        "(De)select individual curves"),
                                            fluidRow(
                                                column(width = 5,
                                                       rhandsontable::rHandsontableOutput("curves")
