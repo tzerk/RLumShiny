@@ -1,12 +1,20 @@
 ## UI.R
 function(request) {
+
+  ## helper to wrap a sidebar section in a bordered panel with its header on top
+  section <- function(title, ...) {
+    div(class = "section-panel",
+        h5(title, class = "section-header"),
+        ...)
+  }
+
   fluidPage(
     titlePanel("SAR CWOSL", windowTitle = "RLumShiny - SAR CWOSL"),
     sidebarLayout(
       # 2- width = 5 -> refers to twitters bootstrap grid system
       # where the the maximum width is 12 that is to be shared between all
       # elements
-      sidebarPanel(width = 5,
+      sidebarPanel(width = 4,
                    # include a tabs in the input panel for easier navigation
                    tabsetPanel(id = "tabs", type = "pill", selected = "Import",
                                # Tab 1: Data input
@@ -15,28 +23,81 @@ function(request) {
                                                      "application/xml, .xsyg, application/octet-stream, .bin, .binx",
                                                      callback = function() {
 
-                                   list(
-                                       div(align = "center", h5("Curve selection")),
-                                       fluidRow(
-                                           column(width = 6,
-                                                  uiOutput("positions")
-
-                                           ),
-                                           column(width = 6,
-                                                  uiOutput("recordTypes")
+                                   tagList(
+                                   section("Aliquot selection",
+                                       div(
+                                        uiOutput("positions"),
+                                        align = "center")
+                                   ),
+                                   fluidRow(class = "import-row",
+                                       column(width = 6, class = "import-col",
+                                              section("Record type selection",
+                                                  rhandsontable::rHandsontableOutput("recordTypes")
+                                              )
+                                       ),
+                                       column(width = 6, class = "import-col",
+                                              section("Batch processing",
+                                                  div(class = "batch-seed",
+                                                      checkboxInput("fix_seed",
+                                                                    label = "Fix random seed",
+                                                                    value = FALSE)
+                                                  ),
+                                                  div(class = "batch-buttons",
+                                                      actionButton("analyze_all",
+                                                                   icon = icon("play"),
+                                                                   label = "Analyze all"),
+                                                      actionButton("clear_results",
+                                                                   icon = icon("trash-can"),
+                                                                   label = "Clear results")
+                                                  )
+                                              )
+                                       )
+                                   ),
+                                   fluidRow(
+                                       ## collapsible by default: the whole section is folded
+                                       ## until the "(De)select individual curves" header is clicked
+                                       tags$details(class = "section-panel",
+                                           tags$summary(class = "section-header",
+                                                        "(De)select individual curves"),
+                                           fluidRow(
+                                               column(width = 5,
+                                                      rhandsontable::rHandsontableOutput("curves")
+                                               ),
+                                               column(width = 7,
+                                                      plotly::plotlyOutput("curve_plot", height = "280px"),
+                                                      fluidRow(
+                                                          column(width = 4,
+                                                                 checkboxInput("curve_logx",
+                                                                               label = "log(x)",
+                                                                               value = FALSE)
+                                                                 ),
+                                                          column(width = 4,
+                                                                 checkboxInput("curve_logy",
+                                                                               label = "log(y)",
+                                                                               value = FALSE)
+                                                                 ),
+                                                          column(width = 4,
+                                                                 checkboxInput("curve_norm",
+                                                                               label = "norm",
+                                                                               value = FALSE)
+                                                                 )
+                                                      )
+                                               )
                                            )
                                        ),
-
-                                       div(align = "center", h5("(De)select individual curves")),
-                                       uiOutput("curves"),
-
-                                       div(align = "center", h5("Batch processing")),
-                                       actionButton("analyze_all", "Analyze all")
+                                       ## Abanico plot in its own collapsible section below the
+                                       ## individual curve selection; unfolded by default
+                                       tags$details(class = "section-panel", open = TRUE,
+                                           tags$summary(class = "section-header",
+                                                        "Abanico plot"),
+                                           plotOutput(outputId = "abanico_plot", height = "400px")
+                                       )
+                                   )
                                    )
                                }),
 
                                tabPanel("Method",
-                                        div(align = "center", h5("Input data preprocessing")),
+                                        section("Input data preprocessing",
                                         sliderInput(inputId = "signal_integral",
                                                     "Signal integral",
                                                     value = c(1, 5),
@@ -60,76 +121,120 @@ function(request) {
                                                      label = "Mode",
                                                      selected = "interpolation",
                                                      choices = c("interpolation" = "interpolation",
-                                                                 "extrapolation" = "extrapolation")
+                                                                 "extrapolation" = "extrapolation"),
+                                                     inline = TRUE
                                                      ),
-                                        selectInput(inputId = "fit_method",
-                                                    "Fit method",
-                                                    selected = "SSE",
-                                                    choices = list("SSE" = "SSE",
-                                                                   "LIN" = "LIN",
-                                                                   "QDR" = "QDR",
-                                                                   "GOK" = "GOK",
-                                                                   "SSE OR LIN" = "SSE OR LIN",
-                                                                   "SSE+LIN" = "SSE+LIN",
-                                                                   "DSE" = "DSE",
-                                                                   "OTOR" = "OTOR"))
+                                        checkboxInput(inputId = "fit_force_through_origin",
+                                                      label = "Force through origin",
+                                                      value = FALSE),
+                                        fluidRow(
+                                            column(width = 6,
+                                                selectInput(inputId = "fit_method",
+                                                            "Fit method",
+                                                            selected = "SSE",
+                                                            choices = list("SSE" = "SSE",
+                                                                           "LIN" = "LIN",
+                                                                           "QDR" = "QDR",
+                                                                           "GOK" = "GOK",
+                                                                           "SSE OR LIN" = "SSE OR LIN",
+                                                                           "SSE+LIN" = "SSE+LIN",
+                                                                           "DSE" = "DSE",
+                                                                           "OTOR" = "OTOR"))),
+                                            column(width = 6,
+                                                selectInput(inputId = "fit_weights",
+                                                            "Fit weights",
+                                                            selected = "inverse_var",
+                                                            choices = c("Inverse variance" = "inverse_var",
+                                                                        "Inverse standard deviation" = "inverse_std",
+                                                                        "Normalized inverse standard deviation" = "norm_inverse_std")))
+                                        ),
+                                        numericInput(inputId = "n_MC",
+                                                     "n.MC",
+                                                     value = 100,
+                                                     min = 1,
+                                                     step = 1)
+                                         ),
+
+                                        section("Rejection criteria",
+                                            uiOutput("rejection_criteria"),
+                                            actionButton("apply_criteria",
+                                                         icon = icon("check"),
+                                                         label = "Apply rejection criteria")
+                                        ),
+
+                                        conditionalPanel(condition = "input.fix_seed == true",
+                                            section("Random seed",
+                                                numericInput("seed_value",
+                                                             "Seed value",
+                                                             value = 1,
+                                                             min = 0,
+                                                             step = 1)
+                                            )
+                                        )
                                ),
 
                                tabPanel("Plot",
-                                        div(align = "center", h5("Plot elements")),
-                                        textInput(inputId = "main",
-                                                  label = "Title",
-                                                  value = ""),
-
-                                        br(),
-                                        div(align = "center", h5("Axes")),
-
-                                        fluidRow(
-                                            column(width = 6,
-                                                   checkboxInput(inputId = "logx",
-                                                                 label = "Logarithmic x-axis",
-                                                                 value = FALSE)
-                                                   ),
-                                            column(width = 6,
-                                                   checkboxInput(inputId = "logy",
-                                                                 label = "Logarithmic y-axis",
-                                                                 value = FALSE)
-                                                   )
+                                        section("Plot elements",
+                                            textInput(inputId = "main",
+                                                      label = "Title",
+                                                      value = ""),
+                                            checkboxInput(inputId = "abanico_mark",
+                                                          label = "Mark current position in Abanico plot",
+                                                          value = TRUE)
                                         ),
 
-                                        br(),
-                                        div(align = "center", h5("Dose response curve")),
-                                        fluidRow(
-                                            column(width = 6,
-                                                   checkboxInput(inputId = "showlegend",
-                                                                 label = "Show legend",
-                                                                 value = TRUE)
-                                                   ),
-                                            column(width = 6,
-                                                   checkboxInput(inputId = "showrug",
-                                                                 label = "Show rug",
-                                                                 value = TRUE)
-                                                   )
+                                        section("Axes",
+                                            fluidRow(
+                                                column(width = 6,
+                                                       checkboxInput(inputId = "logx",
+                                                                     label = "Logarithmic x-axis",
+                                                                     value = FALSE)
+                                                       ),
+                                                column(width = 6,
+                                                       checkboxInput(inputId = "logy",
+                                                                     label = "Logarithmic y-axis",
+                                                                     value = FALSE)
+                                                       )
+                                            )
                                         ),
-                                        RLumShiny:::legendPositionChooser(inputId = "legend_pos",
-                                                                          selected = "topright"),
 
-                                        br(),
-                                        div(align = "center", h5("Scaling")),
-                                        sliderInput(inputId = "cex",
-                                                    label = "Scaling factor",
-                                                    min = 0.5, max = 2,
-                                                    value = 1.0, step = 0.1)
+                                        section("Dose response curve",
+                                            fluidRow(
+                                                column(width = 6,
+                                                       checkboxInput(inputId = "showlegend",
+                                                                     label = "Show legend",
+                                                                     value = TRUE)
+                                                       ),
+                                                column(width = 6,
+                                                       checkboxInput(inputId = "showrug",
+                                                                     label = "Show rug",
+                                                                     value = TRUE)
+                                                       )
+                                            ),
+                                            RLumShiny:::legendPositionChooser(inputId = "legend_pos",
+                                                                              selected = "topright")
+                                        ),
+
+                                        section("Scaling",
+                                            sliderInput(inputId = "cex",
+                                                        label = "Scaling factor",
+                                                        min = 0.5, max = 2,
+                                                        value = 1.4, step = 0.1)
+                                        )
 
                                ),##EndOf::Tab_3
 
                                RLumShiny:::exportTab("export", filename = "sarCWOSL"),
                                RLumShiny:::aboutTab("about", "sarCWOSL")
-                   )##EndOf::tabsetPanel
+                   ),##EndOf::tabsetPanel
+
+                   # full-width gray bar at the bottom of the sidebar showing the
+                   # status of every aliquot/position
+                   uiOutput("aliquotBar")
       ),##EndOf::sidebarPanel
 
       # 3 - output panel
-      mainPanel(width = 7,
+      mainPanel(width = 8,
                 # insert css code inside <head></head> of the generated HTML file:
                 # allow open dropdown menus to reach over the container
                 tags$head(tags$style(type="text/css",".tab-content {overflow: visible;}")),
@@ -137,9 +242,31 @@ function(request) {
                 # divide output in separate tabs via tabsetPanel
                 fluidRow(
                   tabsetPanel(
-                    tabPanel("Plot", plotOutput(outputId = "main_plot", height = "600px")),
-                    tabPanel("Results", DT::DTOutput("results")),
-                    tabPanel("Highlights", DT::DTOutput("highlights")),
+                    tabPanel("Plot",
+                             # full-width button showing the current aliquot,
+                             # spanning the whole main plot area
+                             uiOutput("currentAliquot"),
+                             plotOutput(outputId = "main_plot", height = "600px", width = "95%"),
+                             # foldable results table spanning the full width of the main plot area
+                             tags$details(class = "section-panel",
+                                 tags$summary(class = "section-header",
+                                              "Dose table"),
+                                 rhandsontable::rHandsontableOutput("lxtx_hot"),
+                                 fluidRow(
+                                   column(width = 6,
+                                     actionButton("apply_dose_all",
+                                                  icon  = icon("wand-magic-sparkles"),
+                                                  label = "Apply dose to all",
+                                                  style = "margin-top: 4px; width: 100%;")),
+                                   column(width = 6,
+                                     actionButton("lxtx_reset",
+                                                  icon  = icon("rotate-left"),
+                                                  label = "Reset table",
+                                                  style = "margin-top: 4px; width: 100%;"))
+                                 )
+                             )),
+                    tabPanel("Results", DT::DTOutput("results", width = "95%")),
+                    tabPanel("Highlights", DT::DTOutput("highlights", width = "95%")),
                     tabPanel("R code", verbatimTextOutput("plotCode"))
                   )
                 )

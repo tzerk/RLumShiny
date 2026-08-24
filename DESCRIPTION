@@ -1,7 +1,7 @@
 Package: RLumShiny
 Type: Package
 Title: 'Shiny' Applications for the R Package 'Luminescence'
-Version: 0.2.8
+Version: 0.2.8.9000
 Date: 2026-08-08
 Authors@R: c(
  person("Christoph", "Burow", role = c("aut", "cre"), email = "christoph.burow@gmx.net", comment = c(ORCID = "0000-0002-5023-4046")),
@@ -11,8 +11,8 @@ Authors@R: c(
  person(family = "R Luminescence Package Team", role = c("ctb")),
  person("Jan", "Odvarko", role = c("cph"), comment = "jscolor.js in www/jscolor"),
  person(family = "AnalytixWare", role = c("cph"), comment = "ShinySky package"),
- person(family = "RStudio", role = c("cph"), comment = "chooser_inputBinding.js in www/ and chooser.R in R/")
- )
+ person(family = "RStudio", role = c("cph"), comment = "chooser_inputBinding.js in www/ and chooser.R in R/"),
+ person("Posit", "Assistant", role = c("cph"), comment = "AI-assisted code contributions"))
 Description: A collection of 'shiny' applications for the R package
  'Luminescence'. These mainly, but not exclusively, include applications for
  plotting chronometric data from e.g. luminescence or radiocarbon dating. It
@@ -23,7 +23,7 @@ Encoding: UTF-8
 Depends:
  R (>= 4.5)
 Imports:
- Luminescence (>= 1.3.0),
+ Luminescence (>= 1.3.0.9000),
  shiny (>= 1.14.0),
  rhandsontable (>= 0.3.8),
  data.table (>= 1.18.4),

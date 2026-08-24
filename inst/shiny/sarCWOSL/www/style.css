@@ -71,3 +71,206 @@ input,textarea,.uneditable-input{
 #shiny-notification-panel {
   width: 800px
 }
+
+/* Section panels used in the sidebar: header on top, border around the section */
+.section-panel {
+  border: 1px solid #d3d3d3;
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 15px;
+  background-color: #fafafa;
+}
+
+.section-panel > .section-header {
+  margin-top: 0;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* Collapsible sections: make the <summary> header look like the section
+   header (blue like h5) and clickable */
+.section-panel > summary.section-header {
+  display: list-item;
+  cursor: pointer;
+  color: #428bca;
+  font-size: 14px;
+  font-weight: bold;
+  user-select: none;
+}
+
+/* Import tab: the two side-by-side panels (aliquot/record selection and
+   batch processing) stretch to an equal height */
+#tabs .import-row {
+  display: flex;
+}
+#tabs .import-row > .import-col {
+  display: flex;
+  flex-direction: column;
+}
+#tabs .import-row > .import-col > .section-panel {
+  flex: 1 1 auto;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Aliquot/position status buttons                                     */
+/* ------------------------------------------------------------------ */
+
+/* The coloured button for the currently selected aliquot/position,
+   shown full-width at the top of the main plot area */
+.current-aliquot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* the currently selected aliquot button spans the full width of its container */
+.current-aliquot .aliquot-btn-current {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: bold;
+  padding: 6px 10px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+/* The gray bar at the bottom of the sidebar showing all aliquots */
+.aliquot-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  background-color: #e9ecef;
+  border: 1px solid #d3d3d3;
+  border-radius: 6px;
+  padding: 10px;
+  margin-top: 15px;
+}
+
+/* small circular status indicator showing just the aliquot number */
+.aliquot-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  font-size: 11px;
+  font-weight: bold;
+  border: 1px solid #ced4da;
+  border-radius: 50%;
+  line-height: 1;
+  flex: 0 0 auto;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.aliquot-btn:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 0 2px rgba(66, 139, 202, 0.4);
+}
+
+/* the currently selected aliquot circle is marked solid red */
+.aliquot-btn.aliquot-selected {
+  background-color: #dc3545;
+  color: #ffffff;
+  border-color: #b02a37;
+  box-shadow: 0 0 0 2px #dc3545;
+}
+
+.aliquot-ok {
+  background-color: #d1e7dd; /* light green */
+  color: #0f5132;
+  border-color: #a3cfbb;
+}
+
+.aliquot-fail {
+  background-color: #f8d7da; /* light red */
+  color: #842029;
+  border-color: #f1aeb5;
+}
+
+.aliquot-none {
+  background-color: #e9ecef; /* gray: no result yet */
+  color: #495057;
+  border-color: #ced4da;
+}
+
+/* emphasise the currently selected aliquot */
+.aliquot-current {
+  box-shadow: 0 0 0 2px #428bca;
+}
+
+/* ------------------------------------------------------------------ */
+/* Position selector row (prev/next buttons + direct numeric input)     */
+/* ------------------------------------------------------------------ */
+
+/* flex row wrapping the prev button, the numeric input and the next
+   button; everything is vertically centered with equal spacing */
+#positions_direct_wrapper .form-group { margin-bottom: 0; }
+
+.positions-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2px;
+}
+
+.positions-row .btn {
+  height: 20px;
+  width: 54px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.positions-row .btn i.fa { font-size: 22px; }
+
+.positions-row #positions_direct {
+  height: 20px;
+  box-sizing: border-box;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* ------------------------------------------------------------------ */
+/* Batch processing buttons                                            */
+/* ------------------------------------------------------------------ */
+
+/* centre the "Fix random seed" checkbox horizontally */
+.batch-seed { text-align: center; }
+
+.batch-seed .checkbox {
+  margin: 0;
+  display: inline-block;
+}
+
+/* buttons stacked vertically along a centre line */
+.batch-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.batch-buttons .btn {
+  width: 100%;
+  max-width: 180px;
+}
+
+
