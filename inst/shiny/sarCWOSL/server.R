@@ -989,10 +989,18 @@ function(input, output, session) {
   ## rows. Aliquots with a different row count are left untouched and reported.
   observeEvent(input$apply_dose_all, {
     req(input$positions, values$lxtx_active_table)
-    src_dose <- values$lxtx_active_table$Dose
-    n_src <- length(src_dose)
-
     cur <- as.integer(input$positions)
+
+    ## The doses to copy must reflect any edits the user just typed in the
+    ## HOTS widget. lxtx_active_table is intentionally NOT updated on user
+    ## edits (and rhandsontable never re-renders mid-edit), so it can hold
+    ## stale doses here. Use the persisted edits for the current position
+    ## (updated by the HOTS change handler, and what feeds lxtx_active_table
+    ## on position switch) so both staleness and the rhandsontable #138 row
+    ## inflation are avoided; only fall back to lxtx_active_table.
+    stored <- values$lxtx_edits[[as.character(cur)]]
+    src_dose <- if (!is.null(stored)) stored$Dose else values$lxtx_active_table$Dose
+    n_src <- length(src_dose)
     n <- length(values$all_positions)
 
     skipped <- character(0)
