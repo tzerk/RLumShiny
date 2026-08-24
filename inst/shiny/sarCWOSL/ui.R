@@ -23,15 +23,37 @@ function(request) {
                                                      "application/xml, .xsyg, application/octet-stream, .bin, .binx",
                                                      callback = function() {
 
-                                   list(
-                                       section("Aliquot and record type selection",
-                                           div(
-                                            uiOutput("positions"),
-
-                                            uiOutput("recordTypes"),
-                                            align = "center")
+                                   tagList(
+                                   section("Aliquot selection",
+                                       div(
+                                        uiOutput("positions"),
+                                        align = "center")
+                                   ),
+                                   fluidRow(class = "import-row",
+                                       column(width = 6, class = "import-col",
+                                              section("Record type selection",
+                                                  rhandsontable::rHandsontableOutput("recordTypes")
+                                              )
                                        ),
-
+                                       column(width = 6, class = "import-col",
+                                              section("Batch processing",
+                                                  div(class = "batch-seed",
+                                                      checkboxInput("fix_seed",
+                                                                    label = "Fix random seed",
+                                                                    value = FALSE)
+                                                  ),
+                                                  div(class = "batch-buttons",
+                                                      actionButton("analyze_all",
+                                                                   icon = icon("play"),
+                                                                   label = "Analyze all"),
+                                                      actionButton("clear_results",
+                                                                   icon = icon("trash-can"),
+                                                                   label = "Clear results")
+                                                  )
+                                              )
+                                       )
+                                   ),
+                                   fluidRow(
                                        section("(De)select individual curves",
                                            fluidRow(
                                                column(width = 5,
@@ -58,19 +80,8 @@ function(request) {
                                                       )
                                                )
                                            )
-                                       ),
-
-                                       section("Batch processing",
-                                           checkboxInput("fix_seed",
-                                                         label = "Fix random seed",
-                                                         value = FALSE),
-                                           actionButton("analyze_all",
-                                                        icon = icon("play"),
-                                                        label = "Analyze all"),
-                                           actionButton("clear_results",
-                                                        icon = icon("trash-can"),
-                                                        label = "Clear results")
                                        )
+                                   )
                                    )
                                }),
 

@@ -52,7 +52,10 @@ function(input, output, session) {
     last_args_criteria = NULL,
     ## row of the curve table currently shown in the
     ## interactive plot; defaults to the first curve
-    selected_curve_row = 1)
+    selected_curve_row = 1,
+    ## record types currently selected in the record-type table;
+    ## NULL means "all record types selected"
+    selected_record_types = NULL)
 
 # 3. Core helpers ---------------------------------------------------------
   # Small, self-contained functions used across several sections below.
@@ -65,6 +68,9 @@ function(input, output, session) {
   ## filter the currently selected position down to the given record types,
   ## dropping internal XSYG curves (those whose record type starts with "_")
   make_selection <- function(positions, recordTypes) {
+    ## NULL means "all record types selected"
+    if (is.null(recordTypes))
+      recordTypes <- sort(RLumShiny:::get_unique_types(values$data_primary))
     ## remove internal XSYG curves
     recordTypes <- grepv("^_", recordTypes, invert = TRUE)
     if (length(positions) == 0 || length(recordTypes) == 0)
@@ -315,7 +321,7 @@ function(input, output, session) {
     n <- length(values$all_positions)
     val <- min(max(as.integer(input$aliquot_jump), 1), n)
     if (val != as.integer(input$positions))
-      updateSliderInput(session, "positions", value = val)
+      updateNumericInput(session, "positions", value = val)
   })
 
 
@@ -378,7 +384,8 @@ function(input, output, session) {
 
   ## (re)build the filtered data and curve table when the position changes
   observeEvent(input$positions, {
-    values$data_filtered <- make_selection(input$positions, input$recordTypes)
+    values$data_filtered <- make_selection(input$positions,
+                                           values$selected_record_types)
     values$uids <- get_uids(values$data_primary[[as.integer(input$positions)]])
     values$curve_table <- make_curve_table()
     values$selected_curve_row <- 1
@@ -386,7 +393,21 @@ function(input, output, session) {
 
   ## (re)build the filtered data and curve table when the record types change
   observeEvent(input$recordTypes, {
-    values$data_filtered <- make_selection(input$positions, input$recordTypes)
+    ## Skip programmatic re-renders (load/reload events with no real edits),
+    ## mirroring the guard used for the curves table.
+    chg <- input$recordTypes$changes
+    if (is.null(chg) || is.null(chg$event) || is.null(chg$changes))
+      return(NULL)
+
+    res <- RLumShiny:::rhandsontable_workaround(input$recordTypes)
+    if (is.null(res))
+      return(NULL)
+
+    ## record which record types are currently selected
+    values$selected_record_types <- res$TYPE[res$SEL]
+
+    values$data_filtered <- make_selection(input$positions,
+                                           values$selected_record_types)
     values$curve_table <- make_curve_table()
     values$selected_curve_row <- 1
   })
@@ -429,13 +450,13 @@ function(input, output, session) {
     values$all_positions <- RLumShiny:::get_unique_positions(values$data_primary)
     n <- length(values$all_positions)
     div(
-      ## prev/next buttons pinned to the slider edges, numeric input centered
-      ## between them; the input shares the button height
+      ## prev/next buttons pinned to the numeric input, centered between them;
+      ## the input shares the button height
       div(class = "positions-row",
           actionButton("pos_prev", icon("arrow-left", lib = "font-awesome"),
                        style = "padding: 0;"),
           div(id = "positions_direct_wrapper",
-              numericInput("positions_direct", NULL,
+              numericInput("positions", NULL,
                            value = 1, min = 1, max = max(n, 1), step = 1,
                            width = "80px"),
               style = "flex: 0 0 auto; margin: 0 8px; text-align: center; display: flex; align-items: center;"
@@ -443,54 +464,64 @@ function(input, output, session) {
           actionButton("pos_next", icon("arrow-right", lib = "font-awesome"),
                        style = "padding: 0;")
       ),
-      sliderInput("positions", "",
-                  min = 1, max = max(n, 1), value = 1, step = 1,
-                  ticks = FALSE, width = "100%"),
-      hr()
+      ## text showing the total number of aliquots
+      div(class = "positions-total",
+          paste0("(total: ", n, " aliquots)"),
+          style = "margin: 4px 0 0 0; text-align: center; font-size: 12px; color: #888;")
     )
   })
 
   observeEvent(input$pos_prev, {
-    updateSliderInput(session, "positions",
-                      value = max(as.numeric(input$positions) - 1, 1))
+    updateNumericInput(session, "positions",
+                       value = max(as.numeric(input$positions) - 1, 1))
   })
 
   observeEvent(input$pos_next, {
-    updateSliderInput(session, "positions",
-                      value = min(as.numeric(input$positions) + 1, length(values$all_positions)))
-  })
-
-  ## keep the direct position entry in sync with the slider (e.g. arrow clicks)
-  observeEvent(input$positions, {
-    req(input$positions_direct)
-    val <- as.integer(input$positions)
-    if (!is.na(val) && val != input$positions_direct)
-      updateNumericInput(session, "positions_direct", value = val)
+    updateNumericInput(session, "positions",
+                       value = min(as.numeric(input$positions) + 1, length(values$all_positions)))
   })
 
   ## selecting a position by typing it directly; restrict to existing positions
-  observeEvent(input$positions_direct, {
+  observeEvent(input$positions, {
     req(input$positions)
     n <- length(values$all_positions)
-    val <- as.integer(input$positions_direct)
+    val <- as.integer(input$positions)
     if (is.na(val)) {
-      updateNumericInput(session, "positions_direct", value = input$positions)
+      updateNumericInput(session, "positions", value = 1)
       return(NULL)
     }
     ## clamp to the range of existing positions
     val <- min(max(val, 1), n)
-    updateNumericInput(session, "positions_direct", value = val)
     if (val != as.integer(input$positions))
-      updateSliderInput(session, "positions", value = val)
+      updateNumericInput(session, "positions", value = val)
   })
 
-  ## record-type checkboxes
-  output$recordTypes <- renderUI({
+  ## record types rendered as a compact table with an Include column;
+  ## exactly three rows are shown before a vertical scrollbar appears
+  output$recordTypes <- renderRHandsontable({
     types <- sort(RLumShiny:::get_unique_types(values$data_primary))
-    checkboxGroupInput("recordTypes", "Select record types",
-                       choices = types,
-                       selected = types,
-                       inline = TRUE)
+    sel <- values$selected_record_types
+    df <- data.frame(
+      SEL = if (is.null(sel)) rep(TRUE, length(types)) else types %in% sel,
+      TYPE = types,
+      stringsAsFactors = FALSE
+    )
+
+    ## height for three visible rows plus the table header
+    row_px    <- 23L
+    header_px <- 30L
+    height    <- 3L * row_px + header_px
+
+    rhandsontable(df,
+                  height = height,
+                  colHeaders = c("Incl.", "Type"),
+                  rowHeaders = NULL,
+                  stretchH = "all",
+                  width = "100%") |>
+      ## use the positional index: the custom "Incl."/"Type" colHeaders make
+      ## hot_col() unable to resolve "TYPE" by name (get1index error)
+      rhandsontable::hot_col(2, readOnly = TRUE) |>
+      rhandsontable::hot_table(highlightRow = FALSE)
   })
 
   ## (de)select individual curves via an editable table

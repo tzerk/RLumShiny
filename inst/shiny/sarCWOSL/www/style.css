@@ -88,6 +88,21 @@ input,textarea,.uneditable-input{
   border-bottom: 1px solid #e0e0e0;
 }
 
+/* Import tab: the two side-by-side panels (aliquot/record selection and
+   batch processing) stretch to an equal height */
+#tabs .import-row {
+  display: flex;
+}
+#tabs .import-row > .import-col {
+  display: flex;
+  flex-direction: column;
+}
+#tabs .import-row > .import-col > .section-panel {
+  flex: 1 1 auto;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
 /* ------------------------------------------------------------------ */
 /* Aliquot/position status buttons                                     */
 /* ------------------------------------------------------------------ */
@@ -220,3 +235,31 @@ input,textarea,.uneditable-input{
   font-weight: bold;
   text-align: center;
 }
+
+/* ------------------------------------------------------------------ */
+/* Batch processing buttons                                            */
+/* ------------------------------------------------------------------ */
+
+/* centre the "Fix random seed" checkbox horizontally */
+.batch-seed { text-align: center; }
+
+.batch-seed .checkbox {
+  margin: 0;
+  display: inline-block;
+}
+
+/* buttons stacked vertically along a centre line */
+.batch-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.batch-buttons .btn {
+  width: 100%;
+  max-width: 180px;
+}
+
+
