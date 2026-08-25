@@ -724,6 +724,7 @@ function(input, output, session) {
       log = paste0("", ifelse(input$logx, "x", ""), ifelse(input$logy, "y", "")),
       main = if (nchar(input$main) > 0) input$main else NULL,
       cex = input$cex,
+      trim_channels = TRUE,
       plot_onePage = TRUE
     )
   })
