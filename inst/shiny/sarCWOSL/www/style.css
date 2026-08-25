@@ -273,4 +273,59 @@ input,textarea,.uneditable-input{
   max-width: 180px;
 }
 
+/* ------------------------------------------------------------------ */
+/* Import tab: example-data / reset buttons                            */
+/* ------------------------------------------------------------------ */
+
+/* the two actions sit side by side right below the upload control; the
+   bottom margin keeps them clear of the "Aliquot selection" section */
+.import-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: -8px;  /* pull the buttons closer to the browse control above */
+  margin-bottom: 20px;
+}
+
+.import-actions .btn {
+  flex: 1 1 0;
+}
+
+/* subtler, low-contrast buttons for loading the example data and resetting */
+.import-actions .btn {
+  background-color: #f7f8f9; /* light, neutral */
+  color: #5f6672;
+  border-color: #d7dbe0;
+  border-radius: 5px;
+  box-shadow: none;
+}
+
+.import-actions .btn:hover {
+  background-color: #eceff1;
+  border-color: #c4c9cf;
+  color: #333;
+}
+
+/* ------------------------------------------------------------------ */
+/* Main plot: empty-state placeholder                                  */
+/* ------------------------------------------------------------------ */
+
+/* centered "Please load data" message filling the plot area when no data
+   is loaded */
+.empty-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 600px;
+  width: 95%;
+  border: 1px dashed #d0d4d9;
+  border-radius: 6px;
+  background-color: #fafbfc;
+  color: #8a919c;
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+
 

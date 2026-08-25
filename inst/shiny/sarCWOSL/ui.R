@@ -24,6 +24,19 @@ function(request) {
                                                      callback = function() {
 
                                    tagList(
+                                   ## two buttons next to the upload control:
+                                   ## load the bundled example data or reset the
+                                   ## app back to its (empty) start state
+                                   div(class = "import-actions",
+                                       actionButton("load_example",
+                                                    icon = icon("file-import"),
+                                                    label = "Load example data",
+                                                    width = "100%"),
+                                       actionButton("reset_app",
+                                                    icon = icon("rotate-left"),
+                                                    label = "Reset",
+                                                    width = "100%")
+                                   ),
                                    section("Aliquot selection",
                                        div(
                                         uiOutput("positions"),
@@ -246,6 +259,9 @@ function(request) {
                              # full-width button showing the current aliquot,
                              # spanning the whole main plot area
                              uiOutput("currentAliquot"),
+                             # centered placeholder shown in the plot area while
+                             # no data is loaded
+                             uiOutput("emptyState"),
                              plotOutput(outputId = "main_plot", height = "600px", width = "95%"),
                              # foldable results table spanning the full width of the main plot area
                              tags$details(class = "section-panel",

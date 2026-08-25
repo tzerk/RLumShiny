@@ -2,21 +2,11 @@ function(input, output, session) {
   options(shiny.maxRequestSize = 30 * 1024^2) # 30MB upload limit
 
 
-# 1. Default input data ---------------------------------------------------
-  # If a data set "startData" exists in the global environment use it,
-  # otherwise fall back to the bundled example data set.
-  if ("startData" %in% names(.GlobalEnv)) {
-    data <- startData
-  } else {
-    object <- Luminescence::Risoe.BINfileData2RLum.Analysis(CWOSL.SAR.Data, pos = 1:2)
-  }
-
-
-# 2. Reactive state -------------------------------------------------------
+# 1. Reactive state -------------------------------------------------------
   # Central store for all data and analysis state that is shared between
   # observers/renders and mutated by the user across the session.
   values <- reactiveValues(
-    data_primary = object,
+    data_primary = NULL,
     data_filtered = NULL,
     curve_table = NULL,
     uids = NULL,
@@ -261,6 +251,108 @@ function(input, output, session) {
   })
 
 
+# 5.1 Load example data / Reset ------------------------------------------
+  ## Reset the app to its start state: no data loaded, no results and all
+  ## input controls back to their defaults.
+  resetAll <- function() {
+    ## clear all data/analysis state
+    values$data_primary       <- NULL
+    values$data_filtered      <- NULL
+    values$curve_table        <- NULL
+    values$uids               <- NULL
+    values$file_extension     <- NULL
+    values$results            <- list()
+    values$sar_result         <- NULL
+    values$sar_result_base    <- NULL
+    values$lxtx_table         <- NULL
+    values$lxtx_active_table  <- NULL
+    values$lxtx_edits         <- list()
+    values$lxtx_last_position <- NULL
+    values$last_args_object           <- NULL
+    values$last_args_signal_integral  <- NULL
+    values$last_args_background       <- NULL
+    values$last_args_mode             <- NULL
+    values$last_args_fit_method       <- NULL
+    values$last_args_fit_options      <- NULL
+    values$last_args_criteria         <- NULL
+    ## the assembled analysis/plot arguments; must be cleared too, otherwise the
+    ## analysis observer sees the stale previous object and re-runs
+    ## analyse_SAR.CWOSL on the old data after a reset / re-load
+    values$args               <- NULL
+    values$selected_curve_row  <- 1
+    values$selected_record_types <- NULL
+    values$all_positions       <- NULL
+
+    ## reset reactive state
+    fixed_seed(NULL)
+    active_criteria(rejection_defaults)
+
+    ## restore every input control to its default (start state) value
+    updateSliderInput(session, "signal_integral", value = c(1, 5))
+    updateCheckboxInput(session, "sub_bg_integral", value = TRUE)
+    updateSliderInput(session, "background_integral",
+                      value = c(900, 1000), min = 1, max = 1000)
+    updateRadioButtons(session, "mode", selected = "interpolation")
+    updateCheckboxInput(session, "fit_force_through_origin", value = FALSE)
+    updateSelectInput(session, "fit_method", selected = "SSE")
+    updateSelectInput(session, "fit_weights", selected = "inverse_var")
+    updateNumericInput(session, "n_MC", value = 100)
+    updateCheckboxInput(session, "fix_seed", value = FALSE)
+    updateNumericInput(session, "seed_value", value = 1)
+    updateTextInput(session, "main", value = "")
+    updateCheckboxInput(session, "abanico_mark", value = TRUE)
+    updateCheckboxInput(session, "logx", value = FALSE)
+    updateCheckboxInput(session, "logy", value = FALSE)
+    updateCheckboxInput(session, "showlegend", value = TRUE)
+    updateCheckboxInput(session, "showrug", value = TRUE)
+    updateSliderInput(session, "cex", value = 1.4)
+  }
+
+  ## Load the bundled example data set (or startData from the global
+  ## environment if present, mirroring the former start-up behaviour).  This
+  ## reproduces the state a file upload would set up.
+  loadExampleData <- function() {
+    if ("startData" %in% names(.GlobalEnv)) {
+      object <- startData
+    } else {
+      object <- Luminescence::Risoe.BINfileData2RLum.Analysis(CWOSL.SAR.Data,
+                                                              pos = 1:2)
+    }
+
+    values$file_extension   <- "binx"
+    values$data_primary     <- object
+    values$results          <- list()
+    values$data_filtered    <- NULL
+    values$lxtx_edits       <- list()
+    values$lxtx_active_table <- NULL
+    values$lxtx_last_position <- NULL
+    values$uids             <- get_uids(values$data_primary[[1]])
+
+    valid.records <- tryCatch(
+      Luminescence::get_RLum(object = values$data_primary[[1]],
+                             recordType = c("^OSL", "^IRSL")),
+      error = function(e) NULL)
+    if (length(valid.records) > 0) {
+      max.channels <- max(vapply(valid.records, nrow, FUN.VALUE = numeric(1)))
+      updateSliderInput(
+        session, "background_integral",
+        value = c(max(max.channels - 100, 10), max.channels),
+        max = max.channels)
+    }
+  }
+
+  ## "Load example data" button
+  observeEvent(input$load_example, {
+    resetAll()
+    loadExampleData()
+  })
+
+  ## "Reset" button
+  observeEvent(input$reset_app, {
+    resetAll()
+  })
+
+
 # # 6. Aliquot status indicators ------------------------------------------
   ## build a small coloured clickable circle showing the aliquot status for the
   ## bottom status bar; coloured by RC.Status (light green for OK, light red
@@ -382,8 +474,14 @@ function(input, output, session) {
   # Position and record-type controls, the (de)select-curves table, and the
   # interactive single-curve plot.
 
-  ## (re)build the filtered data and curve table when the position changes
-  observeEvent(input$positions, {
+  ## (re)build the filtered data and curve table when the position changes OR
+  ## when a data set is (re)loaded.  It must run on data loads as well as on
+  ## position changes: reloading a file (e.g. the example data) does not change
+  ## input$positions, so a position-only observer would leave values$data_filtered
+  ## as NULL and make the analysis run over ALL positions at once (producing a
+  ## doubled/combined LxTx table).
+  observe({
+    req(input$positions, values$data_primary)
     values$data_filtered <- make_selection(input$positions,
                                            values$selected_record_types)
     values$uids <- get_uids(values$data_primary[[as.integer(input$positions)]])
@@ -447,6 +545,8 @@ function(input, output, session) {
 
   ## prev/next buttons and direct numeric entry to select the position
   output$positions <- renderUI({
+    if (is.null(values$data_primary))
+      return(NULL)
     values$all_positions <- RLumShiny:::get_unique_positions(values$data_primary)
     n <- length(values$all_positions)
     div(
@@ -499,6 +599,8 @@ function(input, output, session) {
   ## record types rendered as a compact table with an Include column;
   ## exactly three rows are shown before a vertical scrollbar appears
   output$recordTypes <- renderRHandsontable({
+    if (is.null(values$data_primary))
+      return(NULL)
     types <- sort(RLumShiny:::get_unique_types(values$data_primary))
     sel <- values$selected_record_types
     df <- data.frame(
@@ -638,6 +740,11 @@ function(input, output, session) {
   ## LxTx table for the editable rhandsontable below the plot.
   observe({
     req(values$args)
+    ## Never run the analysis while no data is loaded.  This is a safety net
+    ## after a Reset: even if a stale values$args or a lingering position/curve
+    ## input were to re-trigger this observer, it must not re-populate
+    ## values$sar_result / values$results with previously analysed data.
+    req(values$data_primary)
 
     ## Content-based guard: values$args is rebuilt as a fresh list() object on
     ## every relevant input change, and some of those rebuilds leave the actual
@@ -757,6 +864,15 @@ function(input, output, session) {
 
         values$sar_result <- full_result
     }
+  })
+
+  ## centered "Please load data" placeholder filling the plot area; shown only
+  ## while no data is loaded (empty start state / after a reset)
+  output$emptyState <- renderUI({
+    if (!is.null(values$data_primary))
+      return(NULL)
+    div(class = "empty-state",
+        "Please load data")
   })
 
   ## output$main_plot re-renders whenever the analysis result changes OR any of
