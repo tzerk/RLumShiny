@@ -1144,39 +1144,9 @@ function(input, output, session) {
 
 
 # 11. Results, Highlights & Abanico plot ----------------------------------
-  ## build the combined results table shown in the Results / Highlights tabs
-  getResultsTable <- function(onlyHighlights = FALSE) {
-    if (length(values$results) == 0)
-      return(NULL)
-    data <- as.data.frame(data.table::rbindlist(values$results))
-
-    ## remove internal columns
-    rm.idx <- grep("^\\.", colnames(data))
-    data <- data[, -rm.idx]
-
-    if (onlyHighlights) {
-      ## remove columns for secondary model parameters
-      rm.idx <- match(c("D01", "D01.ERROR", "D02", "D02.ERROR",
-                        "R", "R.LOWER", "R.UPPER",
-                        "Dc", "Dc.LOWER", "Dc.UPPER",
-                        "D63", "D63.LOWER", "D63.UPPER",
-                        "D80", "D80.LOWER", "D80.UPPER",
-                        "HPDI68_L", "HPDI68_U", "HPDI95_L", "HPDI95_U",
-                        "signal.range", "background.range",
-                        "signal.range.Tx", "background.range.Tx", "UID"),
-                      colnames(data))
-      data <- data[, -rm.idx]
-    }
-
-    ## round numerical columns
-    num.idx <- vapply(data, is.numeric, logical(1))
-    data[num.idx] <- lapply(data[num.idx], round, digits = 3)
-
-    data
-  }
-
+   ## build the combined results table shown in the Results / Highlights tabs
   output$results <- DT::renderDT({
-    getResultsTable()
+    .getResultsTable(values$results)
   }, options = list(pageLength = 10, scrollX = TRUE))
 
   output$highlights <- DT::renderDT({
@@ -1189,7 +1159,7 @@ function(input, output, session) {
     if (length(values$results) == 0)
       return(NULL)
 
-    df <- getResultsTable()
+    df <- .getResultsTable(values$results)
     if (is.null(df) || !all(c("De", "De.Error") %in% colnames(df)))
       return(NULL)
 
@@ -1201,6 +1171,7 @@ function(input, output, session) {
 
     seed <- get_seed()
     if (!is.null(seed)) set.seed(seed)
+
     res <- Luminescence::plot_AbanicoPlot(
       data = df[c("De", "De.Error")],
       zlab = expression(paste(D[e], " [s]")))
