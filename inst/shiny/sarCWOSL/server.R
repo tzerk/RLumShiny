@@ -215,11 +215,18 @@ function(input, output, session) {
     inputs <- lapply(names(crit), function(nm) {
       val <- crit[[nm]]
       input_id <- paste0("crit_", nm)
+      ## numeric criteria can be switched off entirely by setting them to NA,
+      ## which is the native "do not apply" mechanism of analyse_SAR.CWOSL()
+      ## (a NA threshold passes the criterion); expose this with a checkbox
+      noapply_id <- paste0("crit_noapply_", nm)
       widget <- switch(
         rejection_type(val),
         logical = checkboxInput(input_id, NULL, value = isTRUE(val)),
-        numeric = numericInput(input_id, NULL, value = val,
-                               min = 0, step = 1),
+        numeric = div(class = "crit-noapply",
+                      numericInput(input_id, NULL, value = val,
+                                   min = 0, step = 1),
+                      checkboxInput(noapply_id, "do not apply",
+                                    value = is.na(val))),
         character = if (is_reference[match(nm, names(crit))])
           selectInput(input_id, NULL,
                       choices = ref_choices,
@@ -228,11 +235,30 @@ function(input, output, session) {
           textInput(input_id, NULL, value = as.character(val))
       )
       fluidRow(
-        column(width = 7, tags$label(class = "control-label", nm)),
-        column(width = 5, widget)
+        column(width = 5, tags$label(class = "control-label", nm)),
+        column(width = 7, widget)
       )
     })
-    do.call(tagList, inputs)
+    ## when a "do not apply" box is checked, grey out / disable the numeric
+    ## field next to it so it is obvious the criterion is not applied
+    tagList(
+      do.call(tagList, inputs),
+      tags$script(HTML(
+        "$(function() {
+           $('.crit-noapply').each(function() {
+             var box = $(this).find('input[type=\"checkbox\"]');
+             var num = $(this).find('input[type=\"number\"]');
+             var sync = function() {
+               var on = box.is(':checked');
+               num.prop('disabled', on);
+               if (on) num.val('');
+             };
+             box.on('change', sync);
+             sync();
+           });
+         });"
+      ))
+    )
   })
 
   ## apply the user-edited rejection criteria
@@ -240,10 +266,13 @@ function(input, output, session) {
     crit <- list()
     for (nm in names(active_criteria())) {
       val <- input[[paste0("crit_", nm)]]
+      ## a numeric criterion with the "do not apply" box checked is set to NA
+      noapply <- input[[paste0("crit_noapply_", nm)]]
       crit[[nm]] <- switch(
         rejection_type(active_criteria()[[nm]]),
         logical = isTRUE(val),
-        numeric = if (is.null(val) || is.na(val)) NA_real_ else as.numeric(val),
+        numeric = if (isTRUE(noapply) || is.null(val) || is.na(val))
+          NA_real_ else as.numeric(val),
         character = as.character(val)
       )
     }

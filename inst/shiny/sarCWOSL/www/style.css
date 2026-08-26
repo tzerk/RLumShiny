@@ -283,6 +283,21 @@ input,textarea,.uneditable-input{
 }
 
 /* ------------------------------------------------------------------ */
+/* Rejection criteria ("do not apply" checkboxes)                      */
+/* ------------------------------------------------------------------ */
+
+/* stack the numeric field above its "do not apply" checkbox and give
+   the numeric field the full width of the widget column */
+.crit-noapply .form-group { margin-bottom: 4px; }
+.crit-noapply input[type="number"] { width: 100%; }
+.crit-noapply .checkbox { margin: 0; font-size: 12px; }
+/* a disabled ("do not apply") numeric field is dimmed to match */
+.crit-noapply input[type="number"]:disabled {
+  background-color: #eceff1;
+  color: #8a919c;
+}
+
+/* ------------------------------------------------------------------ */
 /* Import tab: example-data / reset buttons                            */
 /* ------------------------------------------------------------------ */
 
