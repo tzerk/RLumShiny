@@ -1019,8 +1019,9 @@ function(input, output, session) {
     values$sar_result <- sar
 
     ## Also update values$results so the Results / Highlights tabs stay in sync.
-    pos <- as.integer(input$positions)
-    idx <- match(pos, values$all_positions)
+    ## input$positions is the list index (not the position number), so use it
+    ## directly - values$results is keyed 1..N in the same order as all_positions.
+    idx <- as.integer(input$positions)
     current_result <- isolate(values$results[[idx]])
     if (!is.null(current_result) && all(c("De", "De.Error") %in% colnames(de_data))) {
       current_result$De       <- de_data$De[1]
@@ -1177,8 +1178,9 @@ function(input, output, session) {
       zlab = expression(paste(D[e], " [s]")))
 
     ## mark the point belonging to the currently selected position
+    ## (input$positions is the list index, which also indexes the results table)
     if (input$abanico_mark && !is.null(res$data.global)) {
-      k <- match(as.integer(input$positions), values$all_positions)
+      k <- as.integer(input$positions)
       idx <- match(k, which(keep))
       if (!is.na(idx) && idx <= nrow(res$data.global)) {
         pts <- res$data.global[idx, ]
