@@ -266,7 +266,7 @@ function(request) {
                              # foldable results table spanning the full width of the main plot area
                              tags$details(class = "section-panel",
                                  tags$summary(class = "section-header",
-                                              "Dose table"),
+                                              "Aliquot data table"),
                                  rhandsontable::rHandsontableOutput("lxtx_hot"),
                                  fluidRow(
                                    column(width = 6,
