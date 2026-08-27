@@ -128,30 +128,15 @@ function(input, output, session) {
     if (is.logical(x)) "logical" else if (is.numeric(x)) "numeric" else "character"
   }
 
-  ## valid reference names (e.g. "Natural", "R1", "R2") derived from the dose
-  ## points of the Lx curves of the currently selected position. Mirrors the
-  ## naming scheme used by analyse_SAR.CWOSL().
+  ## valid reference names (e.g. "Natural", "R1", "R2") are simply the unique
+  ## values of the "Name" column of the LxTx table, which is exactly the source
+  ## analyse_SAR.CWOSL() itself uses. Before any analysis has run there is no
+  ## LxTx table yet, so fall back to the single "Natural" reference.
   get_reference_labels <- function() {
-    pos <- as.integer(input$positions)
-    if (is.null(values$data_primary) || is.na(pos) ||
-        pos > length(values$data_primary))
+    tbl <- values$lxtx_table
+    if (is.null(tbl) || !"Name" %in% colnames(tbl) || nrow(tbl) == 0)
       return(c("Natural"))
-
-    recs <- values$data_primary[[pos]]@records
-    is_osl <- vapply(recs, function(r)
-      grepl("^(OSL|IRSL)", r@recordType, ignore.case = TRUE), logical(1))
-    ## Lx curves are the odd-indexed OSL/IRSL records of each LxTx pair
-    lx_recs <- recs[is_osl][c(TRUE, FALSE)]
-    dose <- sapply(lx_recs, function(r) r@info$IRR_TIME %||% NA)
-    if (length(dose) == 0)
-      return(c("Natural"))
-
-    dose_names <- paste0("R", seq_along(dose) - 1)
-    zero_id <- which(dose == 0)
-    dose_names[zero_id] <- "R0"
-    if (length(zero_id))
-      dose_names[zero_id[1]] <- "Natural"
-    unique(dose_names)
+    sort(unique(tbl$Name))
   }
 
 
@@ -211,6 +196,10 @@ function(input, output, session) {
   output$rejection_criteria <- renderUI({
     crit <- active_criteria()
     is_reference <- names(crit) %in% c("recuperation_reference", "sn_reference")
+    ## values$lxtx_table is read here so the dropdown re-renders (and its
+    ## choices follow the current position) whenever a fresh LxTx table is
+    ## produced; get_reference_labels() reads the same table.
+    assert_lxtx <- values$lxtx_table
     ref_choices <- get_reference_labels()
     inputs <- lapply(names(crit), function(nm) {
       val <- crit[[nm]]
@@ -221,7 +210,20 @@ function(input, output, session) {
       noapply_id <- paste0("crit_noapply_", nm)
       widget <- switch(
         rejection_type(val),
-        logical = checkboxInput(input_id, NULL, value = isTRUE(val)),
+        logical = {
+          ## logical criteria get a main checkbox plus a "do not apply" one;
+          ## checking the latter forces the criterion into its inactive state,
+          ## which differs per criterion: exceed.max.regpoint can be set to NA
+          ## (the package's native skip), whereas consider.uncertainties must
+          ## remain a logical scalar (NA is rejected by the validator), so its
+          ## inactive value is FALSE.
+          noapply_checked <- if (nm == "exceed.max.regpoint")
+            is.na(val) else !isTRUE(val)
+          div(class = "crit-noapply-logical",
+              checkboxInput(input_id, NULL, value = isTRUE(val)),
+              checkboxInput(noapply_id, "do not apply",
+                            value = noapply_checked))
+        },
         numeric = div(class = "crit-noapply",
                       numericInput(input_id, NULL, value = val,
                                    min = 0, step = 1),
@@ -239,8 +241,9 @@ function(input, output, session) {
         column(width = 7, widget)
       )
     })
-    ## when a "do not apply" box is checked, grey out / disable the numeric
-    ## field next to it so it is obvious the criterion is not applied
+    ## when a "do not apply" box is checked, grey out / disable the field next
+    ## to it so it is obvious the criterion is not applied: a number for the
+    ## numeric criteria, a checkbox for the logical ones
     tagList(
       do.call(tagList, inputs),
       tags$script(HTML(
@@ -254,6 +257,15 @@ function(input, output, session) {
                if (on) num.val('');
              };
              box.on('change', sync);
+             sync();
+           });
+           $('.crit-noapply-logical').each(function() {
+             var main = $(this).find('input[type=\"checkbox\"]').first();
+             var noapply = $(this).find('input[type=\"checkbox\"]').last();
+             var sync = function() {
+               main.prop('disabled', noapply.is(':checked'));
+             };
+             noapply.on('change', sync);
              sync();
            });
          });"
@@ -270,13 +282,19 @@ function(input, output, session) {
       noapply <- input[[paste0("crit_noapply_", nm)]]
       crit[[nm]] <- switch(
         rejection_type(active_criteria()[[nm]]),
-        logical = isTRUE(val),
+        logical = if (isTRUE(noapply))
+          if (nm == "exceed.max.regpoint") NA else FALSE
+        else
+          isTRUE(val),
         numeric = if (isTRUE(noapply) || is.null(val) || is.na(val))
           NA_real_ else as.numeric(val),
         character = as.character(val)
       )
     }
     active_criteria(crit)
+    ## Re-run the analysis over all positions with the newly applied criteria
+    ## so every value is updated (not just the currently selected position).
+    run_batch_analysis(crit)
   })
 
 
@@ -297,13 +315,13 @@ function(input, output, session) {
     values$lxtx_active_table  <- NULL
     values$lxtx_edits         <- list()
     values$lxtx_last_position <- NULL
-    values$last_args_object           <- NULL
+    values$last_args_object  <- NULL
     values$last_args_signal_integral  <- NULL
-    values$last_args_background       <- NULL
-    values$last_args_mode             <- NULL
-    values$last_args_fit_method       <- NULL
-    values$last_args_fit_options      <- NULL
-    values$last_args_criteria         <- NULL
+    values$last_args_background <- NULL
+    values$last_args_mode <- NULL
+    values$last_args_fit_method <- NULL
+    values$last_args_fit_options<- NULL
+    values$last_args_criteria <- NULL
     ## the assembled analysis/plot arguments; must be cleared too, otherwise the
     ## analysis observer sees the stale previous object and re-runs
     ## analyse_SAR.CWOSL on the old data after a reset / re-load
@@ -344,8 +362,8 @@ function(input, output, session) {
     if ("startData" %in% names(.GlobalEnv)) {
       object <- startData
     } else {
-      object <- Luminescence::Risoe.BINfileData2RLum.Analysis(CWOSL.SAR.Data,
-                                                              pos = 1:2)
+      object <- Luminescence::Risoe.BINfileData2RLum.Analysis(
+        CWOSL.SAR.Data, pos = 1:2)
     }
 
     values$file_extension   <- "binx"
@@ -931,16 +949,21 @@ function(input, output, session) {
               plot_args))
   })
 
-  ## batch run over all positions
-  observeEvent(input$analyze_all, {
-    req(input$positions)
+  ## Run analyse_SAR.CWOSL() over every position with the given rejection
+  ## criteria and store the per-position results.  It reads the remaining
+  ## analysis inputs from values$args but always overrides object and
+  ## rejection.criteria with the passed values, so it can be driven with
+  ## criteria that are newer than the last values$args rebuild.  A local copy
+  ## is used so values$args is never mutated (which would retrigger the main
+  ## observer and cause an unnecessary single-position re-analysis).
+  run_batch_analysis <- function(criteria) {
+    req(values$data_primary, values$args)
     seed <- get_seed()
     if (!is.null(seed)) set.seed(seed)
 
-    ## Use a local copy so values$args is never mutated (which would retrigger
-    ## the main observer and cause an unnecessary single-position re-analysis).
     all_args        <- values$args
     all_args$object <- values$data_primary
+    all_args$rejection.criteria <- criteria
     all_args$plot   <- FALSE
 
     results <- RLumShiny:::tryNotify(do.call(analyse_SAR.CWOSL, all_args))
@@ -953,6 +976,12 @@ function(input, output, session) {
         values$results[[idx]] <- results$data[results$data$POS == pos, ]
       }
     }
+    invisible(results)
+  }
+
+  ## batch run over all positions
+  observeEvent(input$analyze_all, {
+    run_batch_analysis(active_criteria())
   })
 
   ## clear all stored results and reset the calculation
