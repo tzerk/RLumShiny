@@ -839,7 +839,12 @@ function(input, output, session) {
     seed <- get_seed()
     if (!is.null(seed)) set.seed(seed)
 
-    full_result <- RLumShiny:::tryNotify(do.call(analyse_SAR.CWOSL, full_args))
+    full_result <- withProgress(
+      message = "Analysing SAR CWOSL data",
+      detail  = "Fitting dose response curve ...",
+      min = 0, max = 1, value = 0.5,
+      expr = RLumShiny:::tryNotify(do.call(analyse_SAR.CWOSL, full_args))
+    )
     if (!inherits(full_result, "RLum.Results")) return(NULL)
 
     ## Store both the live result (may later be patched by user edits) and the
@@ -884,21 +889,26 @@ function(input, output, session) {
         full_result@data$LnLxTnTx.table <- lxtx_full
 
         ## Refit the DRC with the stored edits.
-        fit_result_restored <- tryCatch(
-          fit_DoseResponseCurve(
-            object = data.frame(
-              Dose = stored_edits$Dose,
-              LxTx = stored_edits$LxTx,
-              LxTx.Error = stored_edits$LxTx.Error),
-            mode = values$args$mode %||% "interpolation",
-            fit.method = values$args[["fit.method"]] %||% "SSE",
-            fit.force_through_origin = values$args[["fit.force_through_origin"]] %||% FALSE,
-            fit.weights = values$args[["fit.weights"]] %||% "inverse_var",
-            n.MC = values$args[["n.MC"]] %||% 100,
-            verbose = FALSE,
-            txtProgressBar = FALSE
-          ),
-          error = function(e) NULL
+        fit_result_restored <- withProgress(
+          message = "Refitting dose response curve",
+          detail  = "Running Monte-Carlo simulation ...",
+          min = 0, max = 1, value = 0.5,
+          expr = tryCatch(
+            fit_DoseResponseCurve(
+              object = data.frame(
+                Dose = stored_edits$Dose,
+                LxTx = stored_edits$LxTx,
+                LxTx.Error = stored_edits$LxTx.Error),
+              mode = values$args$mode %||% "interpolation",
+              fit.method = values$args[["fit.method"]] %||% "SSE",
+              fit.force_through_origin = values$args[["fit.force_through_origin"]] %||% FALSE,
+              fit.weights = values$args[["fit.weights"]] %||% "inverse_var",
+              n.MC = values$args[["n.MC"]] %||% 100,
+              verbose = FALSE,
+              txtProgressBar = FALSE
+            ),
+            error = function(e) NULL
+          )
         )
 
         if (inherits(fit_result_restored, "RLum.Results")) {
@@ -966,17 +976,29 @@ function(input, output, session) {
     all_args$rejection.criteria <- criteria
     all_args$plot   <- FALSE
 
-    results <- RLumShiny:::tryNotify(do.call(analyse_SAR.CWOSL, all_args))
-
-    ## store the results obtained for each position
-    if (inherits(results, "RLum.Results")) {
-      for (pos in results$data$POS) {
-        if (is.na(pos)) next()
-        idx <- match(pos, values$all_positions)
-        values$results[[idx]] <- results$data[results$data$POS == pos, ]
+    ## Analyse each position individually inside a progress bar so the user
+    ## gets live feedback while every aliquot is being processed (the DRC fit
+    ## with its Monte-Carlo simulation is the slow step).  The stored results
+    ## are the per-position rows, exactly as before.
+    positions <- values$all_positions
+    withProgress(
+      message = "Analyzing all aliquots",
+      detail  = "Fitting dose response curves ...",
+      min = 0, max = length(positions),
+      expr = {
+        for (idx in seq_along(positions)) {
+          incProgress(1, detail = paste0("Fitting dose response curve ",
+                                         idx, "/", length(positions),
+                                         " (aliquot #", positions[idx], ")"))
+          pos_args        <- all_args
+          pos_args$object <- values$data_primary[idx]
+          res <- RLumShiny:::tryNotify(do.call(analyse_SAR.CWOSL, pos_args))
+          if (inherits(res, "RLum.Results"))
+            values$results[[idx]] <- res$data[res$data$POS == positions[idx], ]
+        }
       }
-    }
-    invisible(results)
+    )
+    invisible(NULL)
   }
 
   ## batch run over all positions
@@ -1053,20 +1075,25 @@ function(input, output, session) {
     values$lxtx_edits[[pos_key]] <- res
 
     ## Refit the dose-response curve with the (possibly modified) LxTx values.
-    fit_result <- tryCatch(
-      fit_DoseResponseCurve(
-        object         = data.frame(Dose = res$Dose,
-                                    LxTx = res$LxTx,
-                                    LxTx.Error = res$LxTx.Error),
-        mode           = values$args$mode %||% "interpolation",
-        fit.method     = values$args[["fit.method"]] %||% "SSE",
-        fit.force_through_origin = values$args[["fit.force_through_origin"]] %||% FALSE,
-        fit.weights    = values$args[["fit.weights"]] %||% "inverse_var",
-        n.MC           = values$args[["n.MC"]] %||% 100,
-        verbose        = FALSE,
-        txtProgressBar = FALSE
-      ),
-      error = function(e) NULL
+    fit_result <- withProgress(
+      message = "Refitting dose response curve",
+      detail  = "Running Monte-Carlo simulation ...",
+      min = 0, max = 1, value = 0.5,
+      expr = tryCatch(
+        fit_DoseResponseCurve(
+          object         = data.frame(Dose = res$Dose,
+                                      LxTx = res$LxTx,
+                                      LxTx.Error = res$LxTx.Error),
+          mode           = values$args$mode %||% "interpolation",
+          fit.method     = values$args[["fit.method"]] %||% "SSE",
+          fit.force_through_origin = values$args[["fit.force_through_origin"]] %||% FALSE,
+          fit.weights    = values$args[["fit.weights"]] %||% "inverse_var",
+          n.MC           = values$args[["n.MC"]] %||% 100,
+          verbose        = FALSE,
+          txtProgressBar = FALSE
+        ),
+        error = function(e) NULL
+      )
     )
     if (!inherits(fit_result, "RLum.Results")) return(NULL)
 
@@ -1214,14 +1241,23 @@ function(input, output, session) {
     n <- length(values$all_positions)
 
     skipped <- character(0)
-    for (idx in seq_len(n)) {
-      if (idx == cur) next ## the current aliquot already carries these doses
-      out <- refit_position(idx, src_dose)
-      if (is.null(out))
-        next
-      if (isTRUE(out$skipped))
-        skipped <- c(skipped, paste0("#", values$all_positions[idx]))
-    }
+    withProgress(
+      message = "Applying dose to all aliquots",
+      detail  = "Refitting dose response curves ...",
+      min = 0, max = n,
+      expr = {
+        for (idx in seq_len(n)) {
+          if (idx == cur) next ## the current aliquot already carries these doses
+          incProgress(1, detail = paste0("Refitting aliquot #",
+                                         values$all_positions[idx]))
+          out <- refit_position(idx, src_dose)
+          if (is.null(out))
+            next
+          if (isTRUE(out$skipped))
+            skipped <- c(skipped, paste0("#", values$all_positions[idx]))
+        }
+      }
+    )
 
     if (length(skipped) > 0) {
       showNotification(
