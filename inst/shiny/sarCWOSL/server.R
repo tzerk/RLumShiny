@@ -1000,6 +1000,25 @@ function(input, output, session) {
     res <- RLumShiny:::rhandsontable_workaround(input$lxtx_hot)
     if (is.null(res)) return(NULL)
 
+    ## Let analyse_SAR.CWOSL() recompute the dose-derived columns (Dose, Name
+    ## and Repeated) with the edited dose points, so we keep the package's own
+    ## logic for the "Repeated" flags rather than re-deriving them here.
+    re_args <- values$args
+    re_args$dose.points    <- res$Dose
+    re_args$plot           <- FALSE
+    re_args$onlyLxTxTable  <- TRUE
+    re_result <- tryCatch(do.call(analyse_SAR.CWOSL, re_args),
+                          error = function(e) NULL)
+    if (inherits(re_result, "RLum.Results")) {
+      fresh <- Luminescence::get_RLum(re_result, data.object = "LnLxTnTx.table")
+      fresh <- fresh[, setdiff(colnames(fresh), "UID"), drop = FALSE]
+      ## Carry over the user-edited LxTx/LxTx.Error (identical to the fresh
+      ## table's, since the user only edits the Dose column) and use the
+      ## package-computed Name/Repeated/Dose.
+      res <- fresh
+      values$lxtx_active_table <- fresh
+    }
+
     ## Persist edits for this position for the rest of the session.
     pos_key <- as.character(as.integer(input$positions))
     values$lxtx_edits[[pos_key]] <- res
@@ -1087,11 +1106,27 @@ function(input, output, session) {
     seed <- get_seed()
     if (!is.null(seed)) set.seed(seed)
     args <- values$args
-    args$object <- filtered
-    args$plot   <- FALSE
+    args$object      <- filtered
+    args$plot        <- FALSE
+    args$dose.points <- dose
     res <- RLumShiny:::tryNotify(do.call(analyse_SAR.CWOSL, args))
-    if (!inherits(res, "RLum.Results"))
+
+    ## A dose vector of the wrong length for this aliquot makes the package
+    ## error before the row count can be compared. In that case fall back to a
+    ## plain run (no dose.points) just to determine the mismatch and report the
+    ## aliquot as skipped rather than aborting the whole "apply to all" action.
+    if (!inherits(res, "RLum.Results")) {
+      args0 <- values$args
+      args0$object <- filtered
+      args0$plot   <- FALSE
+      res0 <- tryCatch(do.call(analyse_SAR.CWOSL, args0), error = function(e) NULL)
+      if (inherits(res0, "RLum.Results")) {
+        tbl0 <- Luminescence::get_RLum(res0, data.object = "LnLxTnTx.table")
+        tbl0 <- tbl0[, setdiff(colnames(tbl0), "UID"), drop = FALSE]
+        return(list(skipped = TRUE, table = tbl0))
+      }
       return(NULL)
+    }
 
     tbl <- Luminescence::get_RLum(res, data.object = "LnLxTnTx.table")
     tbl <- tbl[, setdiff(colnames(tbl), "UID"), drop = FALSE]
@@ -1099,7 +1134,6 @@ function(input, output, session) {
     if (nrow(tbl) != length(dose))
       return(list(skipped = TRUE, table = tbl))
 
-    tbl$Dose <- dose
     values$lxtx_edits[[as.character(idx)]] <- tbl
 
     ## refit the dose-response curve with the new dose values
