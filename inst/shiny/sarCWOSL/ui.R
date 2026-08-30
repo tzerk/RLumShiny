@@ -103,7 +103,7 @@ function(request) {
                                        tags$details(class = "section-panel", open = TRUE,
                                            tags$summary(class = "section-header",
                                                         "Abanico plot"),
-                                           plotOutput(outputId = "abanico_plot", height = "400px")
+                                           plotly::plotlyOutput(outputId = "abanico_plot", height = "400px")
                                        )
                                    )
                                    )

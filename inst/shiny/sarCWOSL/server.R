@@ -1282,8 +1282,9 @@ function(input, output, session) {
     getResultsTable(onlyHighlights = TRUE)
   }, options = list(pageLength = 10))
 
-  ## Abanico plot of the De distribution (De and De.Error columns)
-  output$abanico_plot <- renderPlot({
+  ## Abanico plot of the De distribution (De and De.Error columns),
+  ## rendered as an interactive plotly plot
+  output$abanico_plot <- plotly::renderPlotly({
     req(values$results, values$all_positions, input$positions)
     if (length(values$results) == 0)
       return(NULL)
@@ -1301,23 +1302,90 @@ function(input, output, session) {
     seed <- get_seed()
     if (!is.null(seed)) set.seed(seed)
 
-    res <- Luminescence::plot_AbanicoPlot(
+    ## the computation still touches base graphics (par(no.readonly));
+    ## divert to a null device so no plot window is opened
+    pd <- grDevices::pdf(NULL)
+    on.exit(grDevices::dev.off(), add = TRUE)
+
+    p <- Luminescence::plot_AbanicoPlot(
       data = df[c("De", "De.Error")],
-      zlab = expression(paste(D[e], " [s]")))
+      zlab = "D<sub>e</sub> [s]",
+      main = "Equivalent dose distribution",
+      interactive = TRUE,
+      .shiny = TRUE) |>
+      plotly::layout(
+        plot_bgcolor  = "rgba(0,0,0,0)",
+        paper_bgcolor = "rgba(0,0,0,0)")
+
+    ## the first "Points" trace of the plotly object carries the
+    ## precision/std.estimate coordinates of every aliquot, in the same
+    ## order as df
+    attrs <- p$x$attrs
+    pt_trace <- if (length(attrs) > 0) which(
+      vapply(attrs, function(a) is.list(a) && identical(a$name, "Points"),
+             logical(1), USE.NAMES = FALSE))[1] else NA_integer_
+    pts <- if (is.na(pt_trace) || !is.list(attrs[[pt_trace]])) NULL else attrs[[pt_trace]]
 
     ## mark the point belonging to the currently selected position
     ## (input$positions is the list index, which also indexes the results table)
-    if (input$abanico_mark && !is.null(res$data.global)) {
+    if (input$abanico_mark && !is.null(pts)) {
       k <- as.integer(input$positions)
       idx <- match(k, which(keep))
-      if (!is.na(idx) && idx <= nrow(res$data.global)) {
-        pts <- res$data.global[idx, ]
-        points(pts$precision, pts$std.estimate,
-               col = "red", pch = 1, lwd = 2, cex = 2)
-      }
+      if (!is.na(idx) && idx <= length(pts$x))
+        p <- plotly::add_trace(
+          p,
+          x = pts$x[idx],
+          y = pts$y[idx],
+          type = "scatter",
+           mode = "markers",
+          showlegend = FALSE, hoverinfo = "none",
+          marker = list(
+            symbol = "circle", color = "red", size = 13,
+            line = list(color = "white", width = 1)))
     }
 
-    res
+    ## remember the list index of every plotted aliquot so that a click on
+    ## the "Points" trace (curve 0, 0-based) can be mapped back to a position
+    values$abanico_positions <- which(keep)
+
+    ## give the plot a deterministic source: plotly namespaces its event
+    ## inputs as "plotly_click-<source>", so the click lands on
+    ## input[["plotly_click-abanico"]] (NOT input$abanico_plot_click)
+    p$x$source <- "abanico"
+    p <- plotly::event_register(p, "plotly_click")
+
+    p
+  })
+
+  ## clicking a data point selects the corresponding aliquot, which in turn
+  ## updates all other position-driven views. We read the namespaced event
+  ## input (plotly namespaces inputs as "plotly_click-<source>") directly and
+  ## parse the JSON payload ourselves: plotly::event_data() would emit an
+  ## "event is not registered" warning on the observer's initial flush at
+  ## server startup, before the plot has been rendered and registered.
+  abanico_click <- reactive({
+    raw <- input[["plotly_click-abanico"]]
+    if (is.null(raw) || length(raw) == 0)
+      return(NULL)
+    click <- tryCatch(
+      jsonlite::fromJSON(raw, simplifyVector = TRUE),
+      error = function(e) NULL)
+    if (!is.data.frame(click) || nrow(click) == 0)
+      return(NULL)
+    click
+  })
+
+  observeEvent(abanico_click(), {
+    req(values$abanico_positions)
+    click <- abanico_click()
+    ## only clicks on the "Points" data trace (curve 0) map to an aliquot;
+    ## clicks on the red marker or the decorative traces are ignored
+    if (click$curveNumber[1] != 0)
+      return(NULL)
+    j <- click$pointNumber[1] + 1
+    if (j < 1 || j > length(values$abanico_positions))
+      return(NULL)
+    updateNumericInput(session, "positions", value = values$abanico_positions[j])
   })
 
 

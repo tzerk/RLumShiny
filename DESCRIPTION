@@ -33,6 +33,7 @@ Imports:
  RCarb (>= 0.1.8),
  markdown (>= 2.0),
  plotly (>= 4.12.1),
+ jsonlite (>= 1.8.0),
  readxl (>= 1.5.0),
  DT (>= 0.34),
  knitr (>= 1.51)
