@@ -8,11 +8,15 @@ output: github_document
 
 **This package version requires R >= 4.5!**
 
+* Add new dependency to `'jsonlite'`, which is already imported through `'plotly'`./
+
 * App `sarCWOSL` (changes in parts AI supported):
-  + Improve user experience through and updated GUI
+  + Improve user experience through an updated GUI
   + Enable single curve inspection
   + Support rejection criteria setting
   + Support random seed fixing
-  + Add Abanico plot as combined output
+  + Add interactive Abanico plot as combined output
+  + Add dose table that also enables data manipulation
+  + Various minor bug fixes. 
 
 
