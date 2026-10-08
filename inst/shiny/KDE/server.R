@@ -145,7 +145,6 @@ function(input, output, session) {
       main = input$main,
       mtext = input$mtext,
       values.cumulative = input$cumulative,
-      na.rm = TRUE,
       rug = input$rug,
       boxplot = input$boxplot,
       summary = summary,
