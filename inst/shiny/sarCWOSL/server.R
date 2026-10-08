@@ -1279,7 +1279,7 @@ function(input, output, session) {
   }, options = list(pageLength = 10, scrollX = TRUE))
 
   output$highlights <- DT::renderDT({
-    getResultsTable(onlyHighlights = TRUE)
+    .getResultsTable(values$results, onlyHighlights = TRUE)
   }, options = list(pageLength = 10))
 
   ## Abanico plot of the De distribution (De and De.Error columns),
