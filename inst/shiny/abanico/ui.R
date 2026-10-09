@@ -649,21 +649,15 @@ function(request) {
                                         )
                                ),##EndOf::Tab_7
 
-                               # Tab 10: Layout
-                               tabPanel("Layout",
-                                        RLumShiny:::section("Layout",
-                                        div(id = "layout",
-                                            selectInput(inputId = "layout",
-                                                        label = "Choose layout",
-                                                        selected = "default",
-                                                        choices = c("Default"="default",
-                                                                    "Journal"="journal")),
-                                            title = "Allows to modify the entire plot in a more sophisticated manner. Each element of the plot can be addressed and its properties can be defined. This includes font type, size and decoration, colours and sizes of all plot items. To infer the definition of a specific layout style cf. get_Layout() or type eg. for the layout type \"journal\" get_Layout(\"journal\"). A layout type can be modified by the user by assigning new values to the list object."
-                                            )
-                                        )
-                                        ),
-
-                               RLumShiny:::exportTab("export", filename = "abanico plot"),
+                               RLumShiny:::exportTab("export", filename = "abanico plot", callback = function() {
+                                 div(id = "layout",
+                                     selectInput(inputId = "layout",
+                                                 label = "Choose layout",
+                                                 selected = "default",
+                                                 choices = c("Default" = "default",
+                                                             "Journal" = "journal")),
+                                     title = "Apply a predefined layout.")
+                               }),
                                RLumShiny:::aboutTab("about", "abanico")
                    )##EndOf::tabsetPanel
       ),##EndOf::sidebarPanel

@@ -45,7 +45,7 @@ exportPlotHandler <- function(input, output, session, fun, args) {
   )#EndOf::dowmloadHandler()
 }
 
-exportTab <- function(id, filename) {
+exportTab <- function(id, filename, callback = function() NULL) {
 
   # Create a namespace function using the provided id
   ns <- NS(id)
@@ -82,6 +82,10 @@ exportTab <- function(id, filename) {
                                    "Courier" = "Courier",
                                    "Bookman" = "Bookman",
                                    "Palatino" = "Palatino")),
+
+           ## callback function
+           callback(),
+
            tags$hr(),
            downloadButton(outputId = ns("exportFile"),
                           label = "Download plot")
