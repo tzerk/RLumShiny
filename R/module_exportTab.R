@@ -1,5 +1,4 @@
 exportCodeHandler <- function(input, output, session, code) {
-  
   output$exportScript <- downloadHandler(
     filename = function() { paste(input$filename, ".", "R", sep="") },
     content = function(file) {
@@ -7,15 +6,13 @@ exportCodeHandler <- function(input, output, session, code) {
     },#EO content =,
     contentType = "text"
   )#EndOf::dowmloadHandler()
-  
 }
 
 exportPlotHandler <- function(input, output, session, fun, args) {
-  
   output$exportFile <- downloadHandler(
     filename = function() { paste(input$filename, ".", input$fileformat, sep="") },
     content = function(file) {
-      
+
       # determine desired fileformat and set arguments
       if(input$fileformat == "pdf") {
         pdf(file, 
@@ -38,25 +35,25 @@ exportPlotHandler <- function(input, output, session, fun, args) {
                    paper = "special", 
                    family = input$fontfamily)
       }
-      
-      # plot  
+
+      # plot
       do.call(fun, args)
-      
+
       dev.off()
     },#EO content =,
     contentType = "image"
   )#EndOf::dowmloadHandler()
 }
 
-
 exportTab <- function(id, filename) {
-  
+
   # Create a namespace function using the provided id
   ns <- NS(id)
-  
+
   tabPanel("Export",
-           radioButtons(inputId = ns("fileformat"), 
-                        label = "Fileformat", 
+      section("Plot export",
+           radioButtons(inputId = ns("fileformat"),
+                        label = "Fileformat",
                         selected = "pdf",
                         choices = c("PDF   (Portable Document Format)" = "pdf",
                                     "SVG   (Scalable Vector Graphics)" = "svg",
@@ -86,15 +83,16 @@ exportTab <- function(id, filename) {
                                    "Bookman" = "Bookman",
                                    "Palatino" = "Palatino")),
            tags$hr(),
-           downloadButton(outputId = ns("exportFile"), 
-                          label = "Download plot"),
-           
-           tags$hr(),
+           downloadButton(outputId = ns("exportFile"),
+                          label = "Download plot")
+           ),
+
+      section("R script export",
            helpText("Additionally, you can download a corresponding .R file that contains",
                     "a fully functional script to reproduce the plot in your R environment!"),
-           
-           downloadButton(outputId = ns("exportScript"), 
+
+           downloadButton(outputId = ns("exportScript"),
                           label = "Download R script")
-           
+           )
   )
 }

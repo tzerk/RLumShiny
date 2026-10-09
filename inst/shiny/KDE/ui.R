@@ -11,8 +11,7 @@ function(request) {
                    tabsetPanel(id = "tabs", type = "pill", selected = "Data",
                                # Tab 1: Data input
                                tabPanel("Data",
-                                        # informational text
-                                        div(align = "center", h5("Data upload")),
+                                        RLumShiny:::section("Data upload",
 
                                         # file upload button (data set 1)
                                         fileInput(inputId = "file1",
@@ -35,15 +34,16 @@ function(request) {
                                         hr(),
                                         actionButton(inputId = "refresh", label = "Refresh",
                                                      icon = icon("fas fa-sync"), title = "Redraw the plot.")
+                                        )
                                ),##EndOf::Tab_1
 
                                # Tab 2: Statistical information
                                tabPanel("Statistics",
-                                        div(align = "center", h5("Summary")),
+                                        RLumShiny:::section("Summary",
                                         fluidRow(
                                           column(width = 6,
                                                  checkboxInput(inputId = "summary",
-                                                               label = "Show summary",
+                                                               label = "Show summary statistics",
                                                                value = FALSE),
                                                  title = "Add numerical output to the plot."
                                           ),
@@ -77,12 +77,13 @@ function(request) {
                                                                            "Kurtosis" = "kurtosis",
                                                                            "% in 2 sigma range" = "in.2s")),
                                             title = "Statistical parameters to be shown in the summary.")
+                                        )
 
                                ),##EndOf::Tab_2
 
                                # Tab 3: input that refer to the plot rather than the data
                                tabPanel("Plot",
-                                        div(align = "center", h5("Title")),
+                                        RLumShiny:::section("Title",
 
                                         textInput(inputId = "main",
                                                   label = "Title",
@@ -95,15 +96,17 @@ function(request) {
                                         # inject sliderInput from Server.R
                                         div(align = "left",
                                             uiOutput(outputId = "bw"),
-                                            title = "Bin width of the kernel density estimate."),
-                                        br(),
-                                        div(align = "center", h5("Scaling")),
+                                            title = "Bin width of the kernel density estimate.")
+                                        ),
+
+                                        RLumShiny:::section("Scaling",
                                         sliderInput(inputId = "cex",
                                                     label = "Scaling factor",
                                                     min = 0.5, max = 2,
-                                                    value = 1.0, step = 0.1),
+                                                    value = 1.0, step = 0.1)
+                                        ),
 
-                                        div(align = "center", h5("Further options")),
+                                        RLumShiny:::section("Further options",
                                         div(align = "left",
                                             checkboxInput(inputId = "cumulative",
                                                           label = "Show individual data",
@@ -123,11 +126,12 @@ function(request) {
                                                                                   value = TRUE))
                                                          )
                                         )
+                                        )
                                ),##EndOf::Tab_3
 
                                # Tab 4: modify axis parameters
                                tabPanel("Axis",
-                                        div(align = "center", h5("X-axis")),
+                                        RLumShiny:::section("X-axis",
                                         checkboxInput(inputId = "logx",
                                                       label = "Logarithmic x-axis",
                                                       value = FALSE),
@@ -135,9 +139,10 @@ function(request) {
                                                   label = "Label x-axis",
                                                   value = "Equivalent dose [Gy]"),
                                         # inject sliderInput from Server.R
-                                        uiOutput(outputId = "xlim"),
-                                        br(),
-                                        div(align = "center", h5("Y-axis")),
+                                        uiOutput(outputId = "xlim")
+                                        ),
+
+                                        RLumShiny:::section("Y-axis",
                                         fluidRow(
                                           column(width = 6,
                                                  textInput(inputId = "ylab1",
@@ -150,11 +155,12 @@ function(request) {
                                                            value = "Cumulative frequency")
                                           )
                                         )
+                                        )
                                ),##EndOf::Tab_4
 
                                # Tab 5: modify data point representation
                                tabPanel("Datapoints",
-                                        div(align = "center", h5("Primary data set")),
+                                        RLumShiny:::section("Primary data set",
                                         fluidRow(
                                           column(width = 6,
                                                  selectInput(inputId = "color", label = "Datapoint color",
@@ -171,9 +177,10 @@ function(request) {
                                                                   jscolorInput(inputId = "rgb",
                                                                                label = "Choose a color"))
                                           )
+                                        )
                                         ),
                                         conditionalPanel(condition = "output.hasSecondaryData == true",
-                                          div(align = "center", h5("Secondary data set")),
+                                          RLumShiny:::section("Secondary data set",
                                           fluidRow(
                                             column(width = 6,
                                                  selectInput(inputId = "color2", label = "Datapoint color",
@@ -192,6 +199,7 @@ function(request) {
                                                                   jscolorInput(inputId = "rgb2",
                                                                                label = "Choose a color"))
                                             )
+                                          )
                                           )
                                         )
                                ),##EndOf::Tab_5

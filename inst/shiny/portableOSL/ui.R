@@ -14,7 +14,7 @@ function(request) {
                                                      accept = "text/plain, .psl"),
 
                                tabPanel("Method",
-                                        div(align = "center", h5("Input data preprocessing")),
+                                        RLumShiny:::section("Input data preprocessing",
                                         sliderInput(inputId = "signal_integral",
                                                     "Signal integral",
                                                     value = c(1, 5),
@@ -32,10 +32,11 @@ function(request) {
                                         checkboxInput(inputId = "normalise",
                                                       "Normalise",
                                                       value = FALSE)
+                                        )
                                ),
 
                                tabPanel("Plot",
-                                        div(align = "center", h5("Plot elements")),
+                                        RLumShiny:::section("Plot elements",
                                         textInput(inputId = "main",
                                                   label = "Title",
                                                   value = "Portable OSL"),
@@ -90,9 +91,9 @@ function(request) {
                                                                                      jscolorInput(inputId = "jscol"))
                                                                     )
                                                          )
-                                        ),
+                                        )),
 
-                                        div(align = "center", h5("Axis")),
+                                        RLumShiny:::section("Axis",
                                         conditionalPanel(condition = "input.mode == 'surface'",
                                                          textInput(inputId = "xlab",
                                                                    label = "Label x-axis",
@@ -108,14 +109,15 @@ function(request) {
                                                          checkboxInput(inputId = "legend",
                                                                        label = "Show legend",
                                                                        value = TRUE)
-                                                         ),
+                                                         )
+                                        ),
 
-                                        div(align = "center", h5("Scaling")),
+                                        RLumShiny:::section("Scaling",
                                         sliderInput(inputId = "cex",
                                                     label = "Scaling factor",
                                                     min = 0.5, max = 2,
                                                     value = 1.0, step = 0.1)
-
+                                        )
                                ),##EndOf::Tab_3
                                RLumShiny:::exportTab("export", filename = "portableOSL"),
                                RLumShiny:::aboutTab("about", "portableOSL")

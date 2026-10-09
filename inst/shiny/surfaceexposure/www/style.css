@@ -68,11 +68,54 @@ input,textarea,.uneditable-input{
 	width: auto;
 	}
 
-.help-block {
-  margin-top: 13px;
-  margin-bottom: 0px;
-}
-
 #shiny-notification-panel {
   width: 800px
+}
+
+/* Main output panel: leave a little breathing room on the right of the
+   main window and the table below it, matching the gutter spacing used on
+   the left where the sidebar sits */
+.col-sm-8 {
+  padding-right: 15px;
+}
+
+/* Section panels used in the sidebar: header on top, border around the section */
+.section-panel {
+  border: 1px solid #d3d3d3;
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 15px;
+  background-color: #fafafa;
+}
+
+.section-panel > .section-header {
+  margin-top: 0;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+}
+
+/* Collapsible sections: make the <summary> header look like the section
+   header (blue like h5) and clickable */
+.section-panel > summary.section-header {
+  display: list-item;
+  cursor: pointer;
+  color: #428bca;
+  font-size: 14px;
+  font-weight: bold;
+  user-select: none;
+}
+
+/* Import tab: the two side-by-side panels (aliquot/record selection and
+   batch processing) stretch to an equal height */
+#tabs .import-row {
+  display: flex;
+}
+#tabs .import-row > .import-col {
+  display: flex;
+  flex-direction: column;
+}
+#tabs .import-row > .import-col > .section-panel {
+  flex: 1 1 auto;
+  width: 100%;
+  margin-bottom: 15px;
 }

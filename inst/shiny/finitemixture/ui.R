@@ -24,7 +24,7 @@ function(request) {
                                ), ## EndOf::Tab_1
 
                                tabPanel("Method",
-                                        div(align = "center", h5("Model parameters")),
+                                        RLumShiny:::section("Model parameters",
                                         div(align = "left",
                                             sliderInput(inputId = "sigmab",
                                                         HTML("Spread in De values (&sigma;<sub>b</sub>)"),
@@ -43,10 +43,11 @@ function(request) {
                                                         step = 1,
                                                         dragRange = FALSE),
                                             title = "Number of components to be fitted.")
+                                        )
                                         ),
 
                                tabPanel("Plot",
-                                        div(align = "center", h5("Plot elements")),
+                                        RLumShiny:::section("Plot elements",
                                         textInput(inputId = "main",
                                                   label = "Title",
                                                   value = "Finite Mixture Model"),
@@ -71,10 +72,10 @@ function(request) {
                                                      choices = c("Colour" = "colors",
                                                                  "Grayscale" = "gray",
                                                                  "None" = "none")
-                                                     ),
+                                                     )
+                                        ),
 
-                                        div(align = "center", h5("Density plots")),
-
+                                        RLumShiny:::section("Density plots",
                                         div(align = "left",
                                             checkboxInput(inputId = "pdf_weight",
                                                           label = "Use component proportions as weights",
@@ -85,20 +86,21 @@ function(request) {
                                             checkboxInput(inputId = "pdf_sigma",
                                                           label = "Use common standard deviation",
                                                           value = TRUE),
-                                            title = "The components normal distributions can be plotted using a common standard deviation (i.e. `sigmab`) or using the standard error of each component."),
+                                            title = "The components normal distributions can be plotted using a common standard deviation (i.e. `sigmab`) or using the standard error of each component.")
+                                        ),
 
-                                        div(align = "center", h5("Scaling")),
+                                        RLumShiny:::section("Scaling",
                                         sliderInput(inputId = "cex",
                                                     label = "Scaling factor",
                                                     min = 0.5, max = 2,
                                                     value = 1.0, step = 0.1)
+                                        )
 
                                ),##EndOf::Tab_3
 
-                               tabPanel("Subplot labels",
+                               tabPanel("Labels",
 
-                                        div(align = "center", h5("Density plots")),
-
+                                        RLumShiny:::section("Density plots",
                                         textInput(inputId = "main_densities",
                                                   label = "Densities label",
                                                   value = "Normal distributions"),
@@ -114,7 +116,7 @@ function(request) {
                                                                    label = "Line plot label",
                                                                    value = "Statistical criteria")
                                                          )
-
+                                        )
                                ),##EndOf::Tab_4
 
                                RLumShiny:::exportTab("export", filename = "finitemixture"),

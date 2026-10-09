@@ -11,9 +11,7 @@ function(request) {
                    tabsetPanel(id = "tabs", type = "pill", selected = "Data",
                                # Tab 1: Data input
                                tabPanel("Data",
-
-                                        # informational text
-                                        div(align = "center", h5("Data input")),
+                                        RLumShiny:::section("Data input",
                                         div(align = "left",
                                             sliderInput(inputId = "grain_size",
                                                         label = "Range of grain sizes (microns)",
@@ -39,10 +37,10 @@ function(request) {
                                                                 step = 0.1),
                                                    title = "Diameter of the sample carrier."
                                                    )
+                                        )
                                         ),
 
-                                        # informational text
-                                        div(align = "center", h5("Computation mode")),
+                                        RLumShiny:::section("Computation mode",
                                         radioButtons(inputId = "mode",
                                                      label = "",
                                                      selected = "pd",
@@ -81,12 +79,12 @@ function(request) {
                                                                     )
                                                    )
                                         )
-
+                                        )
                                ),##EndOf::Tab_1
 
                                # Tab 2: Plot
                                tabPanel("Plot",
-                                        div(align = "center", h5("Main elements")),
+                                        RLumShiny:::section("Main elements",
 
                                         textInput(inputId = "main",
                                                   label = "Title",
@@ -130,9 +128,10 @@ function(request) {
                                                                   HTML("Choose a color<br>"),
                                                                   jscolorInput(inputId = "jscol2"))
                                           )
+                                        )
                                         ),
 
-                                        div(align = "center", h5("Additional elements")),
+                                        RLumShiny:::section("Additional elements",
                                         fluidRow(
                                             column(width = 6,
                                                    checkboxInput(inputId = "rug",
@@ -156,14 +155,15 @@ function(request) {
                                                                  label = "Show legend",
                                                                  value = TRUE)
                                                    )
+                                        )
                                         ),
 
-                                        br(),
-                                        div(align = "center", h5("Scaling")),
+                                        RLumShiny:::section("Scaling",
                                         sliderInput(inputId = "cex",
                                                     label = "Scaling factor",
                                                     min = 0.5, max = 2,
                                                     value = 1.0, step = 0.1)
+                                        )
                                ),##EndOf::Tab_2
 
                                RLumShiny:::exportTab("export", filename = "aliquot size"),

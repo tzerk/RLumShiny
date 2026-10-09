@@ -1,13 +1,6 @@
 ## UI.R
 function(request) {
 
-  ## helper to wrap a sidebar section in a bordered panel with its header on top
-  section <- function(title, ...) {
-    div(class = "section-panel",
-        h5(title, class = "section-header"),
-        ...)
-  }
-
   fluidPage(
     titlePanel("SAR CWOSL", windowTitle = "RLumShiny - SAR CWOSL"),
     sidebarLayout(
@@ -37,19 +30,19 @@ function(request) {
                                                     label = "Reset",
                                                     width = "100%")
                                    ),
-                                   section("Aliquot selection",
+                                   RLumShiny:::section("Aliquot selection",
                                        div(
                                         uiOutput("positions"),
                                         align = "center")
                                    ),
                                    fluidRow(class = "import-row",
                                        column(width = 6, class = "import-col",
-                                              section("Record type selection",
+                                              RLumShiny:::section("Record type selection",
                                                   rhandsontable::rHandsontableOutput("recordTypes")
                                               )
                                        ),
                                        column(width = 6, class = "import-col",
-                                              section("Batch processing",
+                                              RLumShiny:::section("Batch processing",
                                                   div(class = "batch-seed",
                                                       checkboxInput("fix_seed",
                                                                     label = "Fix random seed",
@@ -110,7 +103,7 @@ function(request) {
                                }),
 
                                tabPanel("Method",
-                                        section("Input data preprocessing",
+                                        RLumShiny:::section("Input data preprocessing",
                                         sliderInput(inputId = "signal_integral",
                                                     "Signal integral",
                                                     value = c(1, 5),
@@ -168,7 +161,7 @@ function(request) {
                                                      step = 1)
                                          ),
 
-                                        section("Rejection criteria",
+                                        RLumShiny:::section("Rejection criteria",
                                             uiOutput("rejection_criteria"),
                                             actionButton("apply_criteria",
                                                          icon = icon("check"),
@@ -176,7 +169,7 @@ function(request) {
                                         ),
 
                                         conditionalPanel(condition = "input.fix_seed == true",
-                                            section("Random seed",
+                                            RLumShiny:::section("Random seed",
                                                 numericInput("seed_value",
                                                              "Seed value",
                                                              value = 1,
@@ -187,7 +180,7 @@ function(request) {
                                ),
 
                                tabPanel("Plot",
-                                        section("Plot elements",
+                                        RLumShiny:::section("Plot elements",
                                             textInput(inputId = "main",
                                                       label = "Title",
                                                       value = ""),
@@ -196,7 +189,7 @@ function(request) {
                                                           value = TRUE)
                                         ),
 
-                                        section("Axes",
+                                        RLumShiny:::section("Axes",
                                             fluidRow(
                                                 column(width = 6,
                                                        checkboxInput(inputId = "logx",
@@ -211,7 +204,7 @@ function(request) {
                                             )
                                         ),
 
-                                        section("Dose response curve",
+                                        RLumShiny:::section("Dose response curve",
                                             fluidRow(
                                                 column(width = 6,
                                                        checkboxInput(inputId = "showlegend",
@@ -228,7 +221,7 @@ function(request) {
                                                                               selected = "topright")
                                         ),
 
-                                        section("Scaling",
+                                        RLumShiny:::section("Scaling",
                                             sliderInput(inputId = "cex",
                                                         label = "Scaling factor",
                                                         min = 0.5, max = 2,

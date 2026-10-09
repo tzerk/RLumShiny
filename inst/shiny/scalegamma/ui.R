@@ -11,9 +11,7 @@ function(request) {
                    tabsetPanel(id = "tabs", type = "pill", selected = "Data",
                                # Tab 1: Data input
                                tabPanel("Data",
-
-                                        # informational text
-                                        div(align = "center", h5("Data upload")),
+                                        RLumShiny:::section("Data upload",
                                         # file upload button (data set 1)
                                         fileInput(inputId = "file",
                                                   label = strong("Primary data set"),
@@ -25,12 +23,11 @@ function(request) {
                                           tags$b("NOTE: "), "The uploaded file must have exactly 12 columns (<i>see pre-loaded data set above</i>). ",
                                           "Only one value in 'Sample offset (cm)' allowed, which indicates the position of the sample in a layer, measured from the bottom of respective layer.",
                                           "<br>Right-click on the table to add or remove rows. Copy-paste is supported.")
-                                        ))
-
+                                        )))
                                ),##EndOf::Tab_1
 
-                               tabPanel("Settings",
-                                        tags$br(),
+                               tabPanel("Method",
+                                        RLumShiny:::section("Settings",
                                         selectInput(inputId = "frac_dose", "Fractional gamma dose table",
                                                     choices = c("Aitken 1985" = "Aitken1985")
                                         ),
@@ -41,7 +38,7 @@ function(request) {
                                                       "Guerin et al. 2011" = "Guerinetal2011",
                                                       "Adamiec & Aitken 1998" = "AdamiecAitken1998"
                                                     )
-                                        )
+                                        ))
                                ),
 
                                RLumShiny:::exportTab("export", filename = "scalegammadose"),

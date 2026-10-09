@@ -9,7 +9,7 @@ function(request) {
                                # Tab 1: Data input
                                tabPanel("Data",
                                         # informational text
-                                        div(align = "center", h5("Data upload")),
+                                        RLumShiny:::section("Data upload",
                                         # file upload button (data set 1)
                                         fileInput(inputId = "file1",
                                                   label = strong("Primary data set"),
@@ -32,11 +32,12 @@ function(request) {
 
                                         actionButton(inputId = "refresh", label = "Refresh",
                                                      icon = icon("fas fa-sync"), title = "Redraw the plot.")
+                                        )
                                ),##EndOf::Tab_1
 
                                # Tab 2: Statistical information
                                tabPanel("Statistics",
-                                        div(align = "center", h5("Summary")),
+                                        RLumShiny:::section("Summary",
                                         div(align = "left",
                                             RLumShiny:::summaryPositionChooser(inputId = "sumpos",
                                                                                selected = "topleft"),
@@ -59,18 +60,20 @@ function(request) {
                                                                            "Skewness" = "skewness",
                                                                            "Kurtosis" = "kurtosis")),
                                             title = "Statistical parameters to be shown in the summary.")
+                                        )
                                ),##EndOf::Tab_2
 
                                # Tab 3: input that refer to the plot rather than the data
                                tabPanel("DRT Details",
-                                        div(align = "center", h5("Experimental details")),
+                                        RLumShiny:::section("Experimental details",
                                         div(align = "left",
                                             numericInput(inputId = "dose",
                                                          label = "Given dose (primary data set)",
                                                          value = 2800),
                                             title = "Given dose used for the dose recovery test to normalise data. If set to 0, values are plotted without normalisation (might be useful for preheat plateau tests). Note: Unit has to be the same as from the input values (e.g., Seconds or Gray)."),
-                                        numericInput(inputId = "dose2", label = "Given dose (secondary data set)", value = 3000),
-                                        div(align = "center", h5("Preheat temperatures")),
+                                        numericInput(inputId = "dose2", label = "Given dose (secondary data set)", value = 3000)
+                                        ),
+                                        RLumShiny:::section("Preheat temperatures",
                                         div(align = "left",
                                             checkboxInput(inputId = "preheat",
                                                           label = "Group values by preheat temperature",
@@ -91,12 +94,13 @@ function(request) {
                                                          numericInput(inputId = "ph6", "PH Temperature #6", 280, min = 0),
                                                          numericInput(inputId = "ph7", "PH Temperature #7", 300, min = 0),
                                                          numericInput(inputId = "ph8", "PH Temperature #8", 320, min = 0)
+                                                         )
                                         )
                                ),##EndOf::Tab_3
 
                                # Tab 3: input that refer to the plot rather than the data
                                tabPanel("Plot",
-                                        div(align = "center", h5("Title")),
+                                        RLumShiny:::section("Title",
                                         fluidRow(
                                           column(width = 6,
                                                  textInput(inputId = "main",
@@ -108,43 +112,47 @@ function(request) {
                                                            label = "Subtitle",
                                                            value = "")
                                           )
+                                        )
                                         ),
 
-                                        div(align = "center", h5("Error range")),
+                                        RLumShiny:::section("Error range",
                                         div(align = "left",
                                             numericInput(inputId = "error",
                                                          label = "Symmetric error range (%)",
                                                          value = 10, min = 0, max = 100, step = 1),
-                                            title = "Symmetric error range in percent that will be shown as dashed lines in the plot. It can be set to 0 to remove the error ranges."),
+                                            title = "Symmetric error range in percent that will be shown as dashed lines in the plot. It can be set to 0 to remove the error ranges.")
+                                        ),
 
-                                        div(align = "center", h5("Scaling")),
+                                        RLumShiny:::section("Scaling",
                                         sliderInput(inputId = "cex",
                                                     label = "Scaling factor",
                                                     min = 0.5, max = 2,
                                                     value = 1.0, step = 0.1)
+                                        )
                                ),##EndOf::Tab_3
 
                                # Tab 4: modify axis parameters
                                tabPanel("Axis",
-                                        div(align = "center", h5("X-axis")),
+                                        RLumShiny:::section("X-axis",
                                         textInput(inputId = "xlab",
                                                   label = "Label x-axis",
                                                   value = "# Aliquot"),
                                         # inject xlim sliderInput from server.R
                                         conditionalPanel(condition = 'input.preheat != true',
                                                          uiOutput(outputId = "xlim")
-                                        ),
-                                        br(),
-                                        div(align = "center", h5("Y-axis")),
+                                        )),
+
+                                        RLumShiny:::section("Y-axis",
                                         textInput(inputId = "ylab",
                                                   label = "Label y-axis",
                                                   value = "Normalised De"),
                                         # inject ylim sliderInput from server.R
                                         uiOutput(outputId = "ylim")
+                                        )
                                ),##EndOf::Tab_4
 
                                tabPanel("Datapoints",
-                                        div(align = "center", h5("Primary data set")),
+                                        RLumShiny:::section("Primary data set",
                                         fluidRow(
                                           column(width = 6,
                                                  RLumShiny:::pointSymbolChooser(inputId = "pch",
@@ -174,10 +182,9 @@ function(request) {
                                                                   jscolorInput(inputId = "rgb",
                                                                                label = "Choose a color"))
                                           )
-                                        ),
+                                        )),
                                         conditionalPanel(condition = "output.hasSecondaryData == true",
-                                          br(),
-                                          div(align = "center", h5("Secondary data set")),
+                                          RLumShiny:::section("Secondary data set",
                                           fluidRow(
                                             column(width = 6,
                                                  ## DATA SET 2
@@ -210,12 +217,13 @@ function(request) {
                                                                                label = "Choose a color"))
                                             )
                                           )
+                                          )
                                         )
                                ),##EndOf::Tab_5
 
                                # Tab xy: add and customize legend
                                tabPanel("Legend",
-                                        div(align = "center", h5("Legend")),
+                                        RLumShiny:::section("Legend",
                                         fluidRow(
                                           column(width = 6,
                                                  checkboxInput(inputId = "showlegend",
@@ -239,6 +247,7 @@ function(request) {
                                         ),
                                         RLumShiny:::legendPositionChooser(inputId = "legend.pos",
                                                                           selected = "bottomleft")
+                                        )
                                ),##EndOf::Tab_xy
 
                                RLumShiny:::exportTab("export", filename = "dose recovery"),

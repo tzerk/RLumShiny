@@ -25,7 +25,7 @@ function(request) {
 
                                tabPanel("Method",
                                         withMathJax(),
-                                        div(align = "center", h5("Rho prime")),
+                                        RLumShiny:::section("Rho prime",
                                         fluidRow(
                                           column(width = 6,
                                                  numericInput(inputId = "rhop",
@@ -41,9 +41,9 @@ function(request) {
                                                               min = 0,
                                                               step = 1e-8)
                                           )
-                                        ),
+                                        )),
 
-                                        div(align = "center", h5("Dose rates")),
+                                        RLumShiny:::section("Dose rates",
                                         fluidRow(
                                           column(width = 6,
                                                  numericInput(inputId = "ddot",
@@ -77,10 +77,9 @@ function(request) {
                                                               min = 0,
                                                               step = 0.001)
                                           )
-                                        ),
+                                        )),
 
-                                        div(align = "center", h5("Model")),
-
+                                        RLumShiny:::section("Model",
                                         fluidRow(
                                           column(width = 6,
                                                  radioButtons(inputId = "fit_method",
@@ -97,9 +96,9 @@ function(request) {
                                                               min = 2,
                                                               step = 500)
                                           )
-                                        ),
+                                        )),
 
-                                        div(align = "center", h5("Dose response curves")),
+                                        RLumShiny:::section("Dose response curves",
                                         fluidRow(
                                           column(width = 6,
                                                  radioButtons(inputId = "mode",
@@ -118,20 +117,21 @@ function(request) {
                                                                label = "Force fit through origin",
                                                                value = FALSE)
                                           )
-                                        )
+                                        ))
                                ),
 
                                tabPanel("Plot",
-                                        div(align = "center", h5("Plot elements")),
+                                        RLumShiny:::section("Plot elements",
                                         textInput(inputId = "main",
                                                   label = "Title",
                                                   value = "Dose response curves"),
 
                                         checkboxInput(inputId = "summary",
-                                                      label = "Show summary",
-                                                      value = TRUE),
+                                                      label = "Show summary statistics",
+                                                      value = TRUE)
+                                        ),
 
-                                        div(align = "center", h5("Axes")),
+                                        RLumShiny:::section("Axes",
                                         textInput(inputId = "xlab",
                                                   label = "Label x-axis",
                                                   value = "Dose [Gy]"),
@@ -142,13 +142,15 @@ function(request) {
 
                                         checkboxInput(inputId = "normalise",
                                                       "Normalise y-axis",
-                                                      value = FALSE),
+                                                      value = FALSE)
+                                        ),
 
-                                        div(align = "center", h5("Scaling")),
+                                        RLumShiny:::section("Scaling",
                                         sliderInput(inputId = "cex",
                                                     label = "Scaling factor",
                                                     min = 0.5, max = 2,
                                                     value = 1.0, step = 0.1)
+                                        )
 
                                ),##EndOf::Tab_3
                                RLumShiny:::exportTab("export", filename = "huntley2006"),
