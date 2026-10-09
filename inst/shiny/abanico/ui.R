@@ -6,7 +6,7 @@ function(request) {
       # 2- width = 5 -> refers to twitters bootstrap grid system
       # where the the maximum width is 12 that is to be shared between all
       # elements
-      sidebarPanel(width = 5,
+      sidebarPanel(width = 4,
                    # include a tabs in the input panel for easier navigation
                    tabsetPanel(id = "tabs", type = "pill", selected = "Data",
                                # Tab 1: Data input
@@ -30,7 +30,7 @@ function(request) {
                                           column(width = 6,
                                                  rHandsontableOutput(outputId = "table_in_secondary"))
                                         ),
-                                        hr(),
+                                        br(),
                                         actionButton(inputId = "refresh", label = "Refresh",
                                                      icon = icon("fas fa-sync"), title = "Redraw the plot.")
                                         )
@@ -179,39 +179,6 @@ function(request) {
                                             title = "Symmetric percentile range with e.g. `5` indicating the range between 5 and 95 %")
                                         ),
 
-                                        RLumShiny:::section(HTML("2&sigma; bar"),
-                                        fluidRow(
-                                          column(width = 6,
-                                                 checkboxInput(inputId = "customSigBar",
-                                                               label = HTML("Customise 2&sigma; bar"),
-                                                               value = FALSE)
-                                          ),
-                                          column(width = 6,
-                                                 checkboxInput(inputId = "addBar",
-                                                               label = HTML("Second 2&sigma; bar"),
-                                                               value = FALSE)
-                                          )
-                                        ),
-
-                                        fluidRow(
-                                          column(width = 6,
-                                                 conditionalPanel(condition = "input.customSigBar == true",
-                                                                  numericInput(inputId = "sigmabar1",
-                                                                               label = HTML("2&sigma; bar 1"),
-                                                                               min = 0, max = 100,
-                                                                               value = 60)
-                                                 )
-                                          ),
-                                          column(width = 6,
-                                                 conditionalPanel(condition = "input.customSigBar == true",
-                                                                  numericInput(inputId = "sigmabar2",
-                                                                               label = HTML("2&sigma; bar 2"),
-                                                                               min = 0, max = 100,
-                                                                               value = 100)
-                                                 )
-                                          )
-                                        )),
-
                                         RLumShiny:::section("Central line",
                                         fluidRow(
                                           column(width = 6,
@@ -234,42 +201,70 @@ function(request) {
                                           )
                                         )),
 
-                                        RLumShiny:::section("Further options",
+                                        RLumShiny:::section("Legend",
                                         fluidRow(
                                           column(width = 6,
-                                                 checkboxInput(inputId = "rug",
-                                                               label = "Rug",
+                                                 checkboxInput(inputId = "showlegend",
+                                                               label = "Show legend",
                                                                value = FALSE),
-                                                 title = "Add a rug to the KDE part to indicate the location of individual values."
+                                                 title = "Legend content to be added to the plot."
                                           ),
                                           column(width = 6,
-                                                 checkboxInput(inputId = "rotate",
-                                                               label = "Rotate plot",
-                                                               value = FALSE),
-                                                 title = "Rotate the plot by 90°."
-                                          ),
+                                                 RLumShiny:::legendPositionChooser(inputId = "legend.pos",
+                                                                                   selected = "bottomleft")
+                                          )
+                                        ),
+                                        fluidRow(
                                           column(width = 6,
-                                                 checkboxInput(inputId = "boxplot",
-                                                               label = "Boxplot",
-                                                               value = FALSE),
-                                                 title = "Add a boxplot to the dispersion part."
+                                                 textInput(inputId = "legendname",
+                                                           label = "Primary data label",
+                                                           value = "primary data")
                                           ),
-                                          column(width = 6,
+                                          conditionalPanel(condition = "output.hasSecondaryData == true",
+                                            column(width = 6,
+                                                 textInput(inputId = "legendname2",
+                                                           label = "Secondary data label",
+                                                           value = "secondary data")
+                                            )
+                                          )
+                                        )),
+
+                                        RLumShiny:::section("Additional elements",
+                                        fluidRow(
+                                          column(width = 4,
                                                  checkboxInput(inputId = "kde",
                                                                label = "KDE",
                                                                value = TRUE),
                                                  title = "Add a KDE plot to the dispersion part."
                                           ),
-                                          column(width = 6,
+                                          column(width = 4,
                                                  checkboxInput(inputId = "histogram",
                                                                label = "Histogram",
-                                                               value = TRUE),
+                                                               value = FALSE),
                                                  title = "Add a histogram to the dispersion part. Only meaningful when not more than one data set is plotted."
                                           ),
-                                          column(width = 6,
+                                          column(width = 4,
+                                                 checkboxInput(inputId = "rotate",
+                                                               label = "Rotate plot",
+                                                               value = FALSE),
+                                                 title = "Rotate the plot by 90°."
+                                          ),
+                                          column(width = 4,
+                                                 checkboxInput(inputId = "rug",
+                                                               label = "Rug",
+                                                               value = FALSE),
+                                                 title = "Add a rug to the KDE part to indicate the location of individual values."
+                                          ),
+                                          column(width = 4,
+                                                 checkboxInput(inputId = "boxplot",
+                                                               label = "Boxplot",
+                                                               value = FALSE),
+                                                 title = "Add a boxplot to the dispersion part."
+                                          ),
+                                          column(width = 4,
                                                  checkboxInput(inputId = "dots",
                                                                label = "Dots",
-                                                               value = TRUE),
+                                                               value = FALSE),
                                                  title = "Add a dot plot to the dispersion part. If number of dots exceeds space in the dispersion part, a square indicates this."
                                          )
                                         ))
@@ -351,7 +346,12 @@ function(request) {
                                                                   HTML("Choose a color<br>"),
                                                                   jscolorInput(inputId = "jscol1"))
                                           )
-                                        )),
+                                        ),
+                                        selectInput(inputId = "filter.prim", label = "Filter values",
+                                                    choices = "", multiple = TRUE, selected = ""),
+                                        actionButton(inputId = "exclude", label = "Apply filter",
+                                                     icon = icon("fas fa-filter"))
+                                        ),
 
                                         conditionalPanel(condition = "output.hasSecondaryData == true",
                                           RLumShiny:::section("Secondary data set",
@@ -385,12 +385,15 @@ function(request) {
                                                                   HTML("Choose a color<br>"),
                                                                   jscolorInput(inputId = "jscol2"))
                                             )
-                                          )
-                                        )
-                               ),##EndOf::Tab_5
+                                          ),
 
-                               # Tab 6: add additional lines to the plot
-                               tabPanel("Lines",
+                                          selectInput(inputId = "filter.sec", label = "Filter values",
+                                                      choices = "", multiple = TRUE, selected = ""),
+                                          actionButton(inputId = "exclude", label = "Apply filter",
+                                                       icon = icon("fas fa-filter"))
+                                          )
+                                        ),
+
                                         RLumShiny:::section("Additional lines",
                                         # options for custom lines:
                                         # 1 - z-value, 2 - color, 3 - label, 4 - line type
@@ -505,7 +508,7 @@ function(request) {
                                                          )
                                                          )
                                         )
-                               ),##EndOf::Tab_6
+                               ),##EndOf::Tab_5
 
                                # Tab 7: modify the 2-sigma bar (radial plot), grid (both) and polygon (KDE)
                                tabPanel("Bars & Grid",
@@ -580,8 +583,39 @@ function(request) {
                                         sliderInput(inputId = "alpha.bar",
                                                     label = "Transparency",
                                                     min = 0, max = 100,
-                                                    step = 1, value = 66)
+                                                    step = 1, value = 66),
+
+                                        fluidRow(
+                                          column(width = 6,
+                                                 checkboxInput(inputId = "customSigBar",
+                                                               label = HTML("Customise 2&sigma; bar"),
+                                                               value = FALSE)
+                                          ),
+                                          column(width = 6,
+                                                 checkboxInput(inputId = "addBar",
+                                                               label = HTML("Second 2&sigma; bar"),
+                                                               value = FALSE)
+                                          )
                                         ),
+
+                                        fluidRow(
+                                          column(width = 6,
+                                                 conditionalPanel(condition = "input.customSigBar == true",
+                                                                  numericInput(inputId = "sigmabar1",
+                                                                               label = HTML("2&sigma; bar 1"),
+                                                                               min = 0, max = 100,
+                                                                               value = 60)
+                                                 )
+                                          ),
+                                          column(width = 6,
+                                                 conditionalPanel(condition = "input.customSigBar == true",
+                                                                  numericInput(inputId = "sigmabar2",
+                                                                               label = HTML("2&sigma; bar 2"),
+                                                                               min = 0, max = 100,
+                                                                               value = 100)
+                                                 )
+                                          )
+                                        )),
 
                                         RLumShiny:::section("Grid",
                                         fluidRow(
@@ -604,7 +638,7 @@ function(request) {
                                                     min = 0, max = 100,
                                                     step = 1, value = 50)
 
-                                        )),
+                                        ),
 
                                         RLumShiny:::section("Frame",
                                         selectInput(inputId = "frame", label = "Frame", selected = 1,
@@ -614,52 +648,6 @@ function(request) {
                                                                    "Rectangle" = 3))
                                         )
                                ),##EndOf::Tab_7
-
-                               # Tab 8: add and customize legend
-                               tabPanel("Legend",
-                                        RLumShiny:::section("Legend",
-                                        fluidRow(
-                                          column(width = 6,
-                                                 checkboxInput(inputId = "showlegend",
-                                                               label = "Show legend",
-                                                               value = FALSE),
-                                                 title = "Legend content to be added to the plot."
-                                          ),
-                                          column(width = 6,
-                                                 RLumShiny:::legendPositionChooser(inputId = "legend.pos",
-                                                                                   selected = "bottomleft")
-                                          )
-                                        ),
-                                        fluidRow(
-                                          column(width = 6,
-                                                 textInput(inputId = "legendname",
-                                                           label = "Primary data label",
-                                                           value = "primary data")
-                                          ),
-                                          conditionalPanel(condition = "output.hasSecondaryData == true",
-                                            column(width = 6,
-                                                 textInput(inputId = "legendname2",
-                                                           label = "Secondary data label",
-                                                           value = "secondary data")
-                                            )
-                                          )
-                                        )
-                                        )
-                               ),##EndOf::Tab_8
-
-                               # Tab 9: Filter data
-                               tabPanel("Filter",
-                                        RLumShiny:::section("Primary data set",
-                                        selectInput(inputId = "filter.prim", label = "Choose values to exclude",
-                                                    choices = "", multiple = TRUE, selected = "")
-                                        ),
-
-                                        RLumShiny:::section("Secondary data set",
-                                        selectInput(inputId = "filter.sec", label = "Choose values to exclude",
-                                                    choices = "", multiple = TRUE, selected = ""),
-                                        actionButton(inputId = "exclude", label = "Exclude")
-                                        )
-                               ),##EndOf::Tab_9
 
                                # Tab 10: Layout
                                tabPanel("Layout",
@@ -681,7 +669,7 @@ function(request) {
       ),##EndOf::sidebarPanel
 
       # 3 - output panel
-      mainPanel(width = 7,
+      mainPanel(width = 8,
                 # insert css code inside <head></head> of the generated HTML file:
                 # allow open dropdown menus to reach over the container
                 tags$head(tags$style(type="text/css",".tab-content {overflow: visible;}")),
