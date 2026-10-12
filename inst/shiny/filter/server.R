@@ -55,7 +55,7 @@ shinyServer(function(input, output, session) {
         show_net_transmission = input$net_transmission,
         legend.text = input$filterInput$right,
         interactive = TRUE,
-        .shiny_server = TRUE)
+        .shiny = TRUE)
 
        ## translation of the standard plot with the
        ## help of ChatGPT5
