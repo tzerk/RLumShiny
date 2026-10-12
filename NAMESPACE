@@ -23,6 +23,7 @@ importFrom(grDevices,
   postscript,
   svg
 )
+importFrom(jsonlite,fromJSON)
 importFrom(markdown,markdownToHTML)
 importFrom(plotly,
   layout,

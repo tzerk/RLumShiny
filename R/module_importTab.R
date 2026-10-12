@@ -4,7 +4,7 @@ importTab <- function(id, label, accept, callback = function() NULL) {
   ns <- NS(id)
 
   tabPanel("Import",
-      RLumShiny:::section("Data import",
+      section("Data import",
 
            ## file upload button
            fileInput(inputId = "file",
