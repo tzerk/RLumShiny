@@ -6,7 +6,7 @@ function(request) {
       # 2- width = 5 -> refers to twitters bootstrap grid system
       # where the the maximum width is 12 that is to be shared between all
       # elements
-      sidebarPanel(width = 5,
+      sidebarPanel(width = 4,
                    # include a tabs in the input panel for easier navigation
                    tabsetPanel(id = "tabs", type = "pill", selected = "Data",
                                # Tab 1: Data input
@@ -122,6 +122,35 @@ function(request) {
                                                              "Weighted mean" = "mean.weighted",
                                                              "Weighted median" = "median.weighted")),
                                             title = "Measure of centrality, used for the standardisation, centering the plot and drawing the central line.")
+                                        ),
+
+                                        RLumShiny:::section("Legend",
+                                        fluidRow(
+                                          column(width = 6,
+                                                 checkboxInput(inputId = "showlegend",
+                                                               label = "Show legend",
+                                                               value = FALSE),
+                                                 title = "Legend content to be added to the plot."
+                                          ),
+                                          column(width = 6,
+                                                 RLumShiny:::legendPositionChooser(inputId = "legend.pos",
+                                                                                   selected = "bottomleft")
+                                          )
+                                        ),
+                                        fluidRow(
+                                          column(width = 6,
+                                                 textInput(inputId = "legendname",
+                                                           label = "Primary data label",
+                                                           value = "primary data")
+                                          ),
+                                          conditionalPanel(condition = "output.hasSecondaryData == true",
+                                            column(width = 6,
+                                                 textInput(inputId = "legendname2",
+                                                           label = "Secondary data label",
+                                                           value = "secondary data")
+                                            )
+                                          )
+                                        )
                                         )
                                ),##EndOf::Tab_3
 
@@ -240,11 +269,8 @@ function(request) {
                                             )
                                           )
                                           )
-                                        )
-                               ),##EndOf::Tab_5
+                                          ),
 
-                               # Tab 6: add additional lines to the plot
-                               tabPanel("Lines",
                                         RLumShiny:::section("Additional lines",
                                         # options for custom lines:
                                         # 1 - z-value, 2 - color, 3 - label
@@ -407,44 +433,13 @@ function(request) {
                                         )
                                ),##EndOf::Tab_7
 
-                               tabPanel("Legend",
-                                        RLumShiny:::section("Legend",
-                                        fluidRow(
-                                          column(width = 6,
-                                                 checkboxInput(inputId = "showlegend",
-                                                               label = "Show legend",
-                                                               value = FALSE),
-                                                 title = "Legend content to be added to the plot."
-                                          ),
-                                          column(width = 6,
-                                                 RLumShiny:::legendPositionChooser(inputId = "legend.pos",
-                                                                                   selected = "bottomleft")
-                                          )
-                                        ),
-                                        fluidRow(
-                                          column(width = 6,
-                                                 textInput(inputId = "legendname",
-                                                           label = "Primary data label",
-                                                           value = "primary data")
-                                          ),
-                                          conditionalPanel(condition = "output.hasSecondaryData == true",
-                                            column(width = 6,
-                                                 textInput(inputId = "legendname2",
-                                                           label = "Secondary data label",
-                                                           value = "secondary data")
-                                            )
-                                          )
-                                        )
-                                        )
-                               ),##EndOf::Tab_8
-
                                RLumShiny:::exportTab("export", filename = "radial plot"),
                                RLumShiny:::aboutTab("about", "radialplot")
                    )##EndOf::tabsetPanel
       ),##EndOf::sidebarPanel
 
       # 3 - output panel
-      mainPanel(width = 7,
+      mainPanel(width = 8,
                 # insert css code inside <head></head> of the generated HTML file:
                 # allow open dropdown menus to reach over the container
                 tags$head(tags$style(type="text/css",".tab-content {overflow: visible;}")),
