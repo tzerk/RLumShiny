@@ -2,7 +2,7 @@ function(request) {
   fluidPage(
     titlePanel("Histogram Plot", windowTitle = "RLumShiny - Histogram Plot"),
     sidebarLayout(
-      sidebarPanel(width = 5,
+      sidebarPanel(width = 4,
 
                    # include a tabs in the input panel for easier navigation
                    tabsetPanel(id = "tabs", type = "pill", selected = "Data",
@@ -262,7 +262,7 @@ function(request) {
 
 
       # 3 - output panel
-      mainPanel(width = 7,
+      mainPanel(width = 8,
                 # insert css code inside <head></head> of the generated HTML file:
                 # allow open dropdown menus to reach over the container
                 tags$head(tags$style(type="text/css",".tab-content {overflow: visible;}")),

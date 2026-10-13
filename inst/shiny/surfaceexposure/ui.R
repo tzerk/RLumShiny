@@ -6,7 +6,7 @@ function(request) {
       # 2- width = 5 -> refers to twitters bootstrap grid system
       # where the the maximum width is 12 that is to be shared between all
       # elements
-      sidebarPanel(width = 5,
+      sidebarPanel(width = 4,
                    # include a tabs in the input panel for easier navigation
                    tabsetPanel(id = "tabs", type = "pill", selected = "Data",
                                # Tab 1: Data input
@@ -143,8 +143,8 @@ function(request) {
                                                              selected = "red",
                                                              choices = list("Black" = "black",
                                                                             "Grey" = "grey50",
-                                                                            "Red" = "red", #"#b22222", 
-                                                                            "Green" = "#6E8B3D", 
+                                                                            "Red" = "red", #"#b22222",
+                                                                            "Green" = "#6E8B3D",
                                                                             "Blue" = "#428bca",
                                                                             "Custom" = "custom"))
                                           ),
@@ -174,8 +174,8 @@ function(request) {
                                                              choices = list("Default" = "default",
                                                                             "Black" = "black",
                                                                             "Grey" = "grey50",
-                                                                            "Red" = "#b22222", 
-                                                                            "Green" = "#6E8B3D", 
+                                                                            "Red" = "#b22222",
+                                                                            "Green" = "#6E8B3D",
                                                                             "Blue" = "#428bca",
                                                                             "Custom" = "custom"))
                                           ),
@@ -204,7 +204,7 @@ function(request) {
                                         RLumShiny:::section("Scaling",
                                         sliderInput(inputId = "cex",
                                                     label = "Scaling factor",
-                                                    min = 0.5, max = 2, 
+                                                    min = 0.5, max = 2,
                                                     value = 1.1, step = 0.1)
                                         )
                                ),##EndOf::Tab_3
@@ -215,7 +215,7 @@ function(request) {
                                         checkboxInput(inputId = "logx",
                                                       label = "Logarithmic x-axis",
                                                       value = FALSE),
-                                        textInput(inputId = "xlab", 
+                                        textInput(inputId = "xlab",
                                                   label = "Label x-axis",
                                                   value = "Depth (mm)"),
                                         # inject sliderInput from Server.R
@@ -244,7 +244,7 @@ function(request) {
       ),##EndOf::sidebarPanel
 
       # 3 - output panel
-      mainPanel(width = 7,
+      mainPanel(width = 8,
                 # insert css code inside <head></head> of the generated HTML file:
                 # allow open dropdown menus to reach over the container
                 tags$head(tags$style(type="text/css",".tab-content {overflow: visible;}")),
