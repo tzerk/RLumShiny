@@ -6,14 +6,12 @@ function(request) {
       # 2- width = 5 -> refers to twitters bootstrap grid system
       # where the the maximum width is 12 that is to be shared between all
       # elements
-      sidebarPanel(width = 5,
+      sidebarPanel(width = 4,
                    # include a tabs in the input panel for easier navigation
                    tabsetPanel(id = "tabs", type = "pill", selected = "Data",
                                # Tab 1: Data input
                                tabPanel("Data",
-
-                                        # informational text
-                                        div(align = "center", h5("Data upload")),
+                                        RLumShiny:::section("Data upload",
                                         # file upload button (data set 1)
                                         fileInput(inputId = "file",
                                                   label = strong("Primary data set"),
@@ -26,12 +24,11 @@ function(request) {
                                           ),
                                           column(width = 6)
                                         )
-
+                                        )
                                ),##EndOf::Tab_1
 
                                tabPanel("Method",
-                                        hr(),
-                                        div(align = "center", h5("Transformation settings")),
+                                        RLumShiny:::section("Transformation settings",
                                         radioButtons("method", "Method", selected = "convert_CW2pHMi",
                                                      choices = c("Hyperbolic" = "convert_CW2pHMi",
                                                                  "Linear" = "convert_CW2pLM",
@@ -42,13 +39,14 @@ function(request) {
                                                          numericInput("delta", "Delta", value = 1, min = 0)),
                                         conditionalPanel(condition = "input.method == 'CW2pLMi' || input.method == 'CW2pPMi'",
                                                          numericInput("p", "P", value = 1, min = 0))
+                                        )
                                ),
-                               
-                               tabPanel("Plot", 
-                                        div(align = "center", h5("Title")),
-                                        
-                                        textInput(inputId = "main", 
-                                                  label = "Title", 
+
+                               tabPanel("Plot",
+                                        RLumShiny:::section("Plot elements",
+
+                                        textInput(inputId = "main",
+                                                  label = "Title",
                                                   value = "CW Curve Transfomation"),
 
                                         radioButtons("type", "Type", selected = "l", inline = TRUE,
@@ -90,26 +88,30 @@ function(request) {
                                         br(),
                                         checkboxInput(inputId = "showCW", 
                                                       label = "Show CW-OSL curve",
-                                                      value = TRUE),
-                                        div(align = "center", h5("Scaling")),
-                                        sliderInput(inputId = "cex", 
+                                                      value = TRUE)
+                                        ),
+
+                                        RLumShiny:::section("Scaling",
+                                        sliderInput(inputId = "cex",
                                                     label = "Scaling factor",
                                                     min = 0.5, max = 2, 
                                                     value = 1.0, step = 0.1)
+                                        )
                                ),##EndOf::Tab_3
-                               
+
                                # Tab 4: modify axis parameters
                                tabPanel("Axis",
-                                        div(align = "center", h5("X-axis")),
+                                        RLumShiny:::section("X-axis",
                                         checkboxInput(inputId = "logx",
                                                       label = "Logarithmic x-axis",
                                                       value = TRUE),
                                         textInput(inputId = "xlab", 
                                                   label = "Label x-axis",
                                                   value = "t [s]"),
+                                        ),
+
                                         # inject sliderInput from Server.R
-                                        br(),
-                                        div(align = "center", h5("Y-axis")),
+                                        RLumShiny:::section("Y-axis",
                                         checkboxInput(inputId = "logy",
                                                       label = "Logarithmic y-axis",
                                                       value = FALSE),
@@ -119,15 +121,16 @@ function(request) {
                                         textInput(inputId = "ylab2", 
                                                   label = "Label y-axis (right)",
                                                   value = "CW-OSL [cts/s]")
+                                        )
                                ),##EndOf::Tab_4
-                               
+
                                RLumShiny:::exportTab("export", filename = "transformCW"),
                                RLumShiny:::aboutTab("about", "transformCW")
                    )##EndOf::tabsetPanel
       ),##EndOf::sidebarPanel
-      
+
       # 3 - output panel
-      mainPanel(width = 7,
+      mainPanel(width = 8,
                 # insert css code inside <head></head> of the generated HTML file:
                 # allow open dropdown menus to reach over the container
                 tags$head(tags$style(type="text/css",".tab-content {overflow: visible;}")),
