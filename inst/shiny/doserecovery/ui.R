@@ -38,10 +38,19 @@ function(request) {
                                # Tab 2: Statistical information
                                tabPanel("Statistics",
                                         RLumShiny:::section("Summary",
-                                        div(align = "left",
-                                            RLumShiny:::summaryPositionChooser(inputId = "sumpos",
-                                                                               selected = "topleft"),
-                                            title = "Position of the statistical summary. The keyword \"Subtitle\" will only work if no plot subtitle is used."),
+                                        fluidRow(
+                                          column(width = 6,
+                                                 checkboxInput(inputId = "summary",
+                                                               label = "Show summary statistics",
+                                                               value = TRUE),
+                                                 title = "Add numerical output to the plot."
+                                          ),
+                                          column(width = 6,
+                                                 RLumShiny:::summaryPositionChooser(inputId = "sumpos",
+                                                                                    selected = "topleft"),
+                                                 title = "Position of the statistical summary. The keyword \"Subtitle\" will only work if no plot subtitle is used."
+                                          )
+                                        ),
                                         div(align = "left",
                                             checkboxGroupInput(inputId = "stats",
                                                                label = "Parameters",

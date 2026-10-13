@@ -6,7 +6,10 @@ output: github_document
 
 ## RLumShiny 0.2.9 (Release date: `r Sys.Date()`)
 
-* Add new dependency to `'jsonlite'`, which is already imported through `'plotly'`./
+* Add new dependency to `'jsonlite'`, which is already imported through `'plotly'`.
+
+* App `doserecovery`:
+  + Allow switching off the summary statistics.
 
 * App `sarCWOSL` (changes in parts AI supported):
   + Improve user experience through an updated GUI
@@ -16,7 +19,6 @@ output: github_document
   + Add interactive Abanico plot as combined output
   + Add dose table that also enables data manipulation
   + Various minor bug fixes.
-
 
 ## RLumShiny 0.2.8 (Release date: 2026-08-24)
 
