@@ -6,7 +6,7 @@ function(request) {
       # 2- width = 5 -> refers to twitters bootstrap grid system
       # where the the maximum width is 12 that is to be shared between all
       # elements
-      sidebarPanel(width = 5,
+      sidebarPanel(width = 4,
                    # include a tabs in the input panel for easier navigation
                    tabsetPanel(id = "tabs", type = "pill", selected = "Import",
                                # Tab 1: Data input
@@ -24,7 +24,7 @@ function(request) {
                                ), ## EndOf::Tab_1
 
                                tabPanel("Method",
-                                        div(align = "center", h5("Fitting")),
+                                        RLumShiny:::section("Fitting",
                                         radioButtons(inputId = "mode",
                                                      label = "Mode",
                                                      selected = "interpolation",
@@ -55,10 +55,11 @@ function(request) {
                                         checkboxInput(inputId = "force_through_origin",
                                                       label = "Force through origin",
                                                       value = TRUE)
+                                        )
                                ),
 
                                tabPanel("Plot",
-                                        div(align = "center", h5("Plot elements")),
+                                        RLumShiny:::section("Plot elements",
                                         textInput(inputId = "main",
                                                   label = "Title",
                                                   value = "Dose Response Curve"),
@@ -79,10 +80,10 @@ function(request) {
                                                                  label = "Density rug",
                                                                  value = TRUE)
                                                    )
+                                        )
                                         ),
 
-                                        br(),
-                                        div(align = "center", h5("Curve")),
+                                        RLumShiny:::section("Curve",
                                         fluidRow(
                                           column(width = 6,
                                                  RLumShiny:::lineTypeChooser(inputId = "lty_drc",
@@ -110,18 +111,28 @@ function(request) {
                                                                     HTML("Choose a colour<br>"),
                                                                     jscolorInput(inputId = "jscol"))
                                                    )
+                                        )
                                         ),
 
-                                        br(),
-                                        div(align = "center", h5("Scaling")),
+                                        RLumShiny:::section("Scaling",
                                         sliderInput(inputId = "cex",
                                                     label = "Scaling factor",
                                                     min = 0.5, max = 2,
                                                     value = 1.0, step = 0.1)
+                                        ),
+
+                                        RLumShiny:::section("Legend",
+                                        checkboxInput(inputId = "showlegend",
+                                                      label = "Show legend",
+                                                      value = TRUE),
+
+                                        RLumShiny:::legendPositionChooser(inputId = "legend_pos",
+                                                                          selected = "topright")
+                                        )
                                ),
 
                                tabPanel("Axis",
-                                        div(align = "center", h5("X-axis")),
+                                        RLumShiny:::section("X-axis",
                                         textInput(inputId = "xlab",
                                                   label = "Label x-axis",
                                                   value = "Dose [s]"),
@@ -130,9 +141,9 @@ function(request) {
                                                          checkboxInput(inputId = "logx",
                                                                        label = "Logarithmic x-axis",
                                                                        value = FALSE)
-                                        ),
+                                        )),
 
-                                        div(align = "center", h5("Y-axis")),
+                                        RLumShiny:::section("Y-axis",
                                         textInput(inputId = "ylab",
                                                   label = "Label y-axis",
                                                   value = "Luminescence [a.u.]"),
@@ -141,17 +152,7 @@ function(request) {
                                                          checkboxInput(inputId = "logy",
                                                                        label = "Logarithmic y-axis",
                                                                        value = FALSE)
-                                        )
-                               ),
-
-                               tabPanel("Legend",
-                                        div(align = "center", h5("Legend")),
-                                        checkboxInput(inputId = "showlegend",
-                                                      label = "Show legend",
-                                                      value = TRUE),
-
-                                        RLumShiny:::legendPositionChooser(inputId = "legend_pos",
-                                                                          selected = "topright"),
+                                        ))
                                ),
 
                                RLumShiny:::exportTab("export", filename = "doseresponsecurve"),
@@ -160,7 +161,7 @@ function(request) {
       ),##EndOf::sidebarPanel
 
       # 3 - output panel
-      mainPanel(width = 7,
+      mainPanel(width = 8,
                 # insert css code inside <head></head> of the generated HTML file:
                 # allow open dropdown menus to reach over the container
                 tags$head(tags$style(type="text/css",".tab-content {overflow: visible;}")),

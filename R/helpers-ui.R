@@ -1,3 +1,12 @@
+#' Internal helper to wrap a sidebar section in a panel with header
+#'
+#' @noRd
+section <- function(title, ...) {
+  div(class = "section-panel",
+      h5(title, class = "section-header"),
+      ...)
+}
+
 #' Internal helper function to choose the symbol for points
 #'
 #' @noRd

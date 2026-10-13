@@ -21,6 +21,7 @@
 #' @importFrom utils citation
 #' @importFrom grDevices dev.off pdf postscript svg
 #' @importFrom plotly plotlyOutput renderPlotly layout
+#' @importFrom jsonlite fromJSON
 #'
 #' @md
 "_PACKAGE"

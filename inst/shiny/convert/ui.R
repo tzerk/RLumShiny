@@ -6,7 +6,7 @@ function(request) {
       # 2- width = 5 -> refers to twitters bootstrap grid system
       # where the the maximum width is 12 that is to be shared between all
       # elements
-      sidebarPanel(width = 5,
+      sidebarPanel(width = 4,
                    # include a tabs in the input panel for easier navigation
                    tabsetPanel(id = "tabs", type = "pill", selected = "Import",
                                # Tab 1: Data input
@@ -15,7 +15,7 @@ function(request) {
                                                      "application/octet-stream, .bin, .binx",
                                                      callback = function() {
                                    list(
-                                       div(align = "center", h5("Curve selection")),
+                                       RLumShiny:::section("Curve selection",
                                        fluidRow(
                                           column(width = 6,
                                                  uiOutput("positions")
@@ -24,10 +24,11 @@ function(request) {
                                           column(width = 6,
                                                  uiOutput("recordTypes")
                                           )
-                                        ),
+                                        )),
 
-                                        div(align = "center", h5("(De)select individual curves")),
+                                        RLumShiny:::section("(De)select individual curves",
                                         checkboxGroupInput("curves", "Curves")
+                                        )
                                    )
                                }),
 
@@ -43,7 +44,7 @@ function(request) {
       ),##EndOf::sidebarPanel
 
       # 3 - output panel
-      mainPanel(width = 7,
+      mainPanel(width = 8,
                 # insert css code inside <head></head> of the generated HTML file:
                 # allow open dropdown menus to reach over the container
                 tags$head(tags$style(type="text/css",".tab-content {overflow: visible;}")),

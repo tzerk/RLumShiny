@@ -6,7 +6,7 @@ function(request) {
       # 2- width = 5 -> refers to twitters bootstrap grid system
       # where the the maximum width is 12 that is to be shared between all
       # elements
-      sidebarPanel(width = 5,
+      sidebarPanel(width = 4,
                    # include a tabs in the input panel for easier navigation
                    tabsetPanel(id = "tabs", type = "pill", selected = "Import",
                                RLumShiny:::importTab("import",
@@ -14,7 +14,7 @@ function(request) {
                                                      accept = "text/plain, .psl"),
 
                                tabPanel("Method",
-                                        div(align = "center", h5("Input data preprocessing")),
+                                        RLumShiny:::section("Input data preprocessing",
                                         sliderInput(inputId = "signal_integral",
                                                     "Signal integral",
                                                     value = c(1, 5),
@@ -32,10 +32,11 @@ function(request) {
                                         checkboxInput(inputId = "normalise",
                                                       "Normalise",
                                                       value = FALSE)
+                                        )
                                ),
 
                                tabPanel("Plot",
-                                        div(align = "center", h5("Plot elements")),
+                                        RLumShiny:::section("Plot elements",
                                         textInput(inputId = "main",
                                                   label = "Title",
                                                   value = "Portable OSL"),
@@ -90,9 +91,9 @@ function(request) {
                                                                                      jscolorInput(inputId = "jscol"))
                                                                     )
                                                          )
-                                        ),
+                                        )),
 
-                                        div(align = "center", h5("Axis")),
+                                        RLumShiny:::section("Axis",
                                         conditionalPanel(condition = "input.mode == 'surface'",
                                                          textInput(inputId = "xlab",
                                                                    label = "Label x-axis",
@@ -108,14 +109,15 @@ function(request) {
                                                          checkboxInput(inputId = "legend",
                                                                        label = "Show legend",
                                                                        value = TRUE)
-                                                         ),
+                                                         )
+                                        ),
 
-                                        div(align = "center", h5("Scaling")),
+                                        RLumShiny:::section("Scaling",
                                         sliderInput(inputId = "cex",
                                                     label = "Scaling factor",
                                                     min = 0.5, max = 2,
                                                     value = 1.0, step = 0.1)
-
+                                        )
                                ),##EndOf::Tab_3
                                RLumShiny:::exportTab("export", filename = "portableOSL"),
                                RLumShiny:::aboutTab("about", "portableOSL")
@@ -123,7 +125,7 @@ function(request) {
       ),##EndOf::sidebarPanel
 
       # 3 - output panel
-      mainPanel(width = 7,
+      mainPanel(width = 8,
                 # insert css code inside <head></head> of the generated HTML file:
                 # allow open dropdown menus to reach over the container
                 tags$head(tags$style(type="text/css",".tab-content {overflow: visible;}")),

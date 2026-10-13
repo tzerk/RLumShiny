@@ -6,14 +6,12 @@ function(request) {
       # 2- width = 5 -> refers to twitters bootstrap grid system
       # where the the maximum width is 12 that is to be shared between all
       # elements
-      sidebarPanel(width = 5,
+      sidebarPanel(width = 4,
                    # include a tabs in the input panel for easier navigation
                    tabsetPanel(id = "tabs", type = "pill", selected = "Data",
                                # Tab 1: Data input
                                tabPanel("Data",
-
-                                        # informational text
-                                        div(align = "center", h5("Data upload")),
+                                        RLumShiny:::section("Data upload",
                                         # file upload button (data set 1)
                                         fileInput(inputId = "file",
                                                   label = strong("Primary data set"),
@@ -26,11 +24,13 @@ function(request) {
                                           "If the file contains three columns, it is automatically assumed that the third column ",
                                           "is the error on the signal. The fourth column (<i>Group</i>) is only required for global fitting ",
                                           "of multiple data sets.")
-                                        ))
+                                        )))
 
                                ),##EndOf::Tab_1
 
-                               tabPanel("Parameters",
+                               tabPanel("Fitting",
+
+                                        RLumShiny:::section("Parameters",
                                         fluidRow(
                                           column(width = 4,
                                                  checkboxInput(inputId = "global_fit", "Global fit", TRUE)
@@ -94,10 +94,11 @@ function(request) {
                                                  ),
                                                  title = "The charge detrapping rate."
                                           )
-                                        )
+                                        ))
                                ),
 
                                tabPanel("Dose rate",
+                                        RLumShiny:::section("Dose rate",
                                         checkboxInput("doserate", "Consider dose rate", FALSE),
                                         helpText(HTML(paste(
                                           "This will fit eq. 12 in Sohbati et al. (2012b) to the data. <b>Note</b>, however,",
@@ -114,13 +115,13 @@ function(request) {
                                         ),
                                         hr(),
                                         helpText(HTML(paste(tags$b("Reference:"), "Sohbati, R., Jain, M., Murray, A.S., 2012b. Surface exposure dating of non-terrestial bodies using optically stimulated luminescence: A new method. Icarus 221, 160-166.")))
+                               )
                                ),
-                               
-                               tabPanel("Plot", 
-                                        div(align = "center", h5("Title")),
-                                        
-                                        textInput(inputId = "main", 
-                                                  label = "Title", 
+
+                               tabPanel("Plot",
+                                        RLumShiny:::section("Plot elements",
+                                        textInput(inputId = "main",
+                                                  label = "Title",
                                                   value = "OSL Surface Exposure Dating"),
 
                                         fluidRow(
@@ -142,8 +143,8 @@ function(request) {
                                                              selected = "red",
                                                              choices = list("Black" = "black",
                                                                             "Grey" = "grey50",
-                                                                            "Red" = "red", #"#b22222", 
-                                                                            "Green" = "#6E8B3D", 
+                                                                            "Red" = "red", #"#b22222",
+                                                                            "Green" = "#6E8B3D",
                                                                             "Blue" = "#428bca",
                                                                             "Custom" = "custom"))
                                           ),
@@ -173,8 +174,8 @@ function(request) {
                                                              choices = list("Default" = "default",
                                                                             "Black" = "black",
                                                                             "Grey" = "grey50",
-                                                                            "Red" = "#b22222", 
-                                                                            "Green" = "#6E8B3D", 
+                                                                            "Red" = "#b22222",
+                                                                            "Green" = "#6E8B3D",
                                                                             "Blue" = "#428bca",
                                                                             "Custom" = "custom"))
                                           ),
@@ -186,7 +187,6 @@ function(request) {
                                           )
                                         ),
 
-                                        br(),
                                         fluidRow(
                                           column(width = 6,
                                                  checkboxInput(inputId = "legend",
@@ -199,49 +199,52 @@ function(request) {
                                                                value = TRUE),
                                                  title = "Show or hide error bars (only applies if errors are provided)."
                                           )
-                                        ),
-                                        div(align = "center", h5("Scaling")),
-                                        sliderInput(inputId = "cex", 
+                                        )),
+
+                                        RLumShiny:::section("Scaling",
+                                        sliderInput(inputId = "cex",
                                                     label = "Scaling factor",
-                                                    min = 0.5, max = 2, 
+                                                    min = 0.5, max = 2,
                                                     value = 1.1, step = 0.1)
+                                        )
                                ),##EndOf::Tab_3
-                               
+
                                # Tab 4: modify axis parameters
                                tabPanel("Axis",
-                                        div(align = "center", h5("X-axis")),
+                                        RLumShiny:::section("X-axis",
                                         checkboxInput(inputId = "logx",
                                                       label = "Logarithmic x-axis",
                                                       value = FALSE),
-                                        textInput(inputId = "xlab", 
+                                        textInput(inputId = "xlab",
                                                   label = "Label x-axis",
                                                   value = "Depth (mm)"),
                                         # inject sliderInput from Server.R
-                                        sliderInput(inputId = "xlim", "X-axis limits", min = -15, max = 20, 
-                                                    value = c(-0, 10), step = 0.1),
-                                        br(),
-                                        div(align = "center", h5("Y-axis")),
+                                        sliderInput(inputId = "xlim", "X-axis limits", min = -15, max = 20,
+                                                    value = c(-0, 10), step = 0.1)
+                                        ),
+
+                                        RLumShiny:::section("Y-axis",
                                         checkboxInput(inputId = "logy",
                                                       label = "Logarithmic y-axis",
                                                       value = FALSE),
-                                        textInput(inputId = "ylab", 
+                                        textInput(inputId = "ylab",
                                                   label = "Label y-axis (left)",
                                                   value = "OSL intensity (Ln/Tn)"),
                                         sliderInput(inputId = "ylim", "Y-axis limits", min = -1, max = 2,
                                                     value = c(-0.1, 1.1), step = 0.1),
-                                        br(),
                                         checkboxInput(inputId = "coord_flip",
                                                       label = "Flip the coordinate system",
                                                       value = FALSE)
+                                        )
                                ),##EndOf::Tab_4
 
                                RLumShiny:::exportTab("export", filename = "surfaceexposure"),
                                RLumShiny:::aboutTab("about", "surfaceExposure")
                    )##EndOf::tabsetPanel
       ),##EndOf::sidebarPanel
-      
+
       # 3 - output panel
-      mainPanel(width = 7,
+      mainPanel(width = 8,
                 # insert css code inside <head></head> of the generated HTML file:
                 # allow open dropdown menus to reach over the container
                 tags$head(tags$style(type="text/css",".tab-content {overflow: visible;}")),

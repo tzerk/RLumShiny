@@ -164,7 +164,7 @@ function(input, output, session) {
       object = values$data,
       error.range = input$error,
       given.dose = as.numeric(given.dose),
-      summary = as.character(input$stats),
+      summary = if (input$summary) as.character(input$stats) else "",
       summary.pos = input$sumpos,
       boxplot = input$boxplot,
       legend = legend,

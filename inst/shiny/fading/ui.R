@@ -6,14 +6,12 @@ function(request) {
       # 2- width = 5 -> refers to twitters bootstrap grid system
       # where the the maximum width is 12 that is to be shared between all
       # elements
-      sidebarPanel(width = 5,
+      sidebarPanel(width = 4,
                    # include a tabs in the input panel for easier navigation
                    tabsetPanel(id = "tabs", type = "pill", selected = "Data",
                                # Tab 1: Data input
                                tabPanel("Data",
-
-                                        # informational text
-                                        div(align = "center", h5("Data upload")),
+                                        RLumShiny:::section("Data upload",
                                         # file upload button (data set 1)
                                         fileInput(inputId = "file",
                                                   label = strong("Primary data set"),
@@ -28,15 +26,15 @@ function(request) {
                                           which is why the number of Monte Carlo simulations is fixed to 100 and 1000,
                                           respectively. Consider running the code given in the R code panels with a higher
                                           number of MC iterations in a local R environment."
-                                          )))
+                                          ))))
                                ),##EndOf::Tab_1
+
                                # Tab 2: Fading correction
                                tabPanel("Age correction",
-                                        div(align = "center", h5("Fading correction after Huntley & Lamothe (2001)")),
-                                        hr(),
+                                        RLumShiny:::section("Fading correction after Huntley & Lamothe (2001)",
                                         fluidRow(
                                           column(width = 6,
-                                                 numericInput(inputId = "age_faded", HTML("Age (ka)", "<em>(faded)</em>"), 
+                                                 numericInput(inputId = "age_faded", HTML("Age (ka)", "<em>(faded)</em>"),
                                                               min = 0, step = 1, value = 10)),
                                           column(width = 6,
                                                  numericInput(inputId = "age_error_faded", "Age error",
@@ -72,7 +70,7 @@ function(request) {
                                                          )
 
                                         )
-
+                                        )
                                ),
 
                                # Tab 4: modify axis parameters
@@ -83,7 +81,7 @@ function(request) {
       ),##EndOf::sidebarPanel
 
       # 3 - output panel
-      mainPanel(width = 7,
+      mainPanel(width = 8,
                 # insert css code inside <head></head> of the generated HTML file:
                 # allow open dropdown menus to reach over the container
                 tags$head(tags$style(type="text/css",".tab-content {overflow: visible;}")),

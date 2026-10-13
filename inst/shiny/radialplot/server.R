@@ -254,7 +254,6 @@ function(input, output, session) {
       summary.pos = input$sumpos,
       legend = legend,
       legend.pos = legend.pos,
-      na.rm = TRUE,
       central.value = input$centValue,
       centrality = input$centrality,
       lwd = c(input$lwd, lwd2),

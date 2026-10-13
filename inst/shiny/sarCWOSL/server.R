@@ -714,11 +714,11 @@ function(input, output, session) {
       row <- 1
     curve <- values$data_primary[[pos]]@records[[row]]
 
-    ## combine the two log checkboxes into plot_RLum.Data.Curve's log argument
+    ## combine the two log checkboxes into plot_RLum's log argument
     log_axis <- paste0(ifelse(input$curve_logx, "x", ""),
                        ifelse(input$curve_logy, "y", ""))
 
-    p <- Luminescence::plot_RLum.Data.Curve(
+    p <- Luminescence::plot_RLum(
       object = curve,
       log = log_axis,
       norm = input$curve_norm,
@@ -1279,7 +1279,7 @@ function(input, output, session) {
   }, options = list(pageLength = 10, scrollX = TRUE))
 
   output$highlights <- DT::renderDT({
-    getResultsTable(onlyHighlights = TRUE)
+    .getResultsTable(values$results, onlyHighlights = TRUE)
   }, options = list(pageLength = 10))
 
   ## Abanico plot of the De distribution (De and De.Error columns),

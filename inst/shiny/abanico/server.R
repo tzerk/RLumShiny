@@ -347,7 +347,6 @@ function(input, output, session) {
                 grid.col = grid.col,
                 legend = legend,
                 legend.pos = legend.pos,
-                na.rm = TRUE,
                 lwd = c(input$lwd, input$lwd2),
                 xlab = c(input$xlab1, input$xlab2),
                 ylab = input$ylab,

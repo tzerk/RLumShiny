@@ -85,7 +85,6 @@ input,textarea,.uneditable-input{
   border-radius: 6px;
   padding: 10px;
   margin-bottom: 15px;
-  margin-right: 15px;
   background-color: #fafafa;
 }
 
@@ -93,7 +92,6 @@ input,textarea,.uneditable-input{
   margin-top: 0;
   margin-bottom: 10px;
   padding-bottom: 5px;
-  border-bottom: 1px solid #e0e0e0;
 }
 
 /* Collapsible sections: make the <summary> header look like the section

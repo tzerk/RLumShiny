@@ -6,7 +6,7 @@ function(request) {
       # 2- width = 5 -> refers to twitters bootstrap grid system
       # where the the maximum width is 12 that is to be shared between all
       # elements
-      sidebarPanel(width = 5,
+      sidebarPanel(width = 4,
                    # include a tabs in the input panel for easier navigation
                    tabsetPanel(id = "tabs", type = "pill", selected = "Import",
                                # Tab 1: Data input
@@ -34,7 +34,7 @@ function(request) {
                                ), ## EndOf::Tab_1
 
                                tabPanel("Method",
-                                        div(align = "center", h5("Fitting")),
+                                        RLumShiny:::section("Fitting",
                                         sliderInput(inputId = "n_components",
                                                     "Number of components",
                                                     value = 2,
@@ -49,9 +49,10 @@ function(request) {
                                                                  "linear" = "linear",
                                                                  "channel" = "channel",
                                                                  "none" = "none")
-                                                     ),
+                                                     )
+                                        ),
 
-                                        div(align = "center", h5("Absolute photoionisation cross-section")),
+                                        RLumShiny:::section("Absolute photoionisation cross-section",
                                         sliderInput(inputId = "LED_power",
                                                     "LED power (mW/cm²)",
                                                     min = 0, max = 100,
@@ -62,10 +63,11 @@ function(request) {
                                                     min = 100, max = 700,
                                                     value = 470,
                                                     step = 1)
+                                        )
                                ),
 
                                tabPanel("Plot",
-                                        div(align = "center", h5("Plot elements")),
+                                        RLumShiny:::section("Plot elements",
                                         textInput(inputId = "main",
                                                   label = "Title",
                                                   value = "LM Curve"),
@@ -81,11 +83,9 @@ function(request) {
                                                                  label = "Plot component contribution",
                                                                  value = TRUE)
                                                    )
-                                        ),
+                                        )),
 
-                                        br(),
-                                        div(align = "center", h5("Axes")),
-
+                                        RLumShiny:::section("Axis",
                                         radioButtons(inputId = "datatype",
                                                      label = "Input data type",
                                                      selected = "LM",
@@ -104,24 +104,23 @@ function(request) {
                                                                  label = "Logarithmic y-axis",
                                                                  value = FALSE)
                                                    )
-                                        ),
+                                        )),
 
-                                        br(),
-                                        div(align = "center", h5("Legend")),
+                                        RLumShiny:::section("Legend",
                                         checkboxInput(inputId = "showlegend",
                                                       label = "Show legend",
                                                       value = TRUE),
 
                                         RLumShiny:::legendPositionChooser(inputId = "legend_pos",
-                                                                          selected = "topright"),
+                                                                          selected = "topright")
+                                        ),
 
-                                        br(),
-                                        div(align = "center", h5("Scaling")),
+                                        RLumShiny:::section("Scaling",
                                         sliderInput(inputId = "cex",
                                                     label = "Scaling factor",
                                                     min = 0.5, max = 2,
                                                     value = 1.0, step = 0.1)
-
+                                        )
                                ),##EndOf::Tab_3
 
                                RLumShiny:::exportTab("export", filename = "lmcurve"),
@@ -130,7 +129,7 @@ function(request) {
       ),##EndOf::sidebarPanel
 
       # 3 - output panel
-      mainPanel(width = 7,
+      mainPanel(width = 8,
                 # insert css code inside <head></head> of the generated HTML file:
                 # allow open dropdown menus to reach over the container
                 tags$head(tags$style(type="text/css",".tab-content {overflow: visible;}")),

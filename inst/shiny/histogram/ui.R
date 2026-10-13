@@ -2,14 +2,13 @@ function(request) {
   fluidPage(
     titlePanel("Histogram Plot", windowTitle = "RLumShiny - Histogram Plot"),
     sidebarLayout(
-      sidebarPanel(width = 5,
+      sidebarPanel(width = 4,
 
                    # include a tabs in the input panel for easier navigation
                    tabsetPanel(id = "tabs", type = "pill", selected = "Data",
                                # Tab 1: Data input
                                tabPanel("Data",
-                                        # informational text
-                                        div(align = "center", h5("Data upload")),
+                                        RLumShiny:::section("Data upload",
                                         # file upload button (data set 1)
                                         fileInput(inputId = "file1",
                                                   label = strong("Primary data set"),
@@ -25,14 +24,16 @@ function(request) {
                                         hr(),
                                         actionButton(inputId = "refresh", label = "Refresh",
                                                      icon = icon("fas fa-sync"), title = "Redraw the plot.")
+                                        )
                                ),##EndOf::Tab_1
 
                                # Tab 2: Statistical information
                                tabPanel("Statistics",
+                                        RLumShiny:::section("Summary",
                                         fluidRow(
                                           column(width = 6,
                                                  checkboxInput(inputId = "summary",
-                                                               label = "Show summary",
+                                                               label = "Show summary statistics",
                                                                value = FALSE),
                                                  title = "Add numerical output to the plot."
                                           ),
@@ -69,18 +70,20 @@ function(request) {
                                                                            # "% in 2 sigma range" = "in.2s"
                                                                            )
                                                                ),
-                                            title = "Statistical parameters to be shown in the summary"),
-                                        div(align = "center", h5("Error bars")),
+                                            title = "Statistical parameters to be shown in the summary")
+                                        ),
+                                        RLumShiny:::section("Error bars",
                                         div(align = "left",
                                             checkboxInput(inputId = "errorBars",
                                                           label = "Show standard error points",
                                                           value = TRUE),
                                             title = "Plot the standard error points over the histogram.")
+                                        )
                                ),##EndOf::Tab_2
 
                                # Tab 1: Data input
                                tabPanel("Plot",
-                                        div(align = "center", h5("Title")),
+                                        RLumShiny:::section("Title",
                                         fluidRow(
                                           column(width = 6,
                                                  textInput(inputId = "main",
@@ -92,8 +95,8 @@ function(request) {
                                                            label = "Subtitle",
                                                            value = "")
                                           )
-                                        ),
-                                        div(align = "center", h5("Histogram bars")),
+                                        )),
+                                        RLumShiny:::section("Histogram bars",
                                         fluidRow(
                                           column(width = 6,
                                                  selectInput(inputId = "breaks", label = "Breaks",
@@ -136,8 +139,8 @@ function(request) {
                                                     label = "Bar transparency",
                                                     min = 0, max = 100,
                                                     step = 1, value = 66),
-                                        br(),
-                                        div(align = "center", h5("Normal curve")),
+                                        ),
+                                        RLumShiny:::section("Normal curve",
                                         div(align = "left",
                                             checkboxInput(inputId = "norm",
                                                           label = "Add normal curve",
@@ -160,14 +163,14 @@ function(request) {
                                                                   jscolorInput(inputId = "normalRgb",
                                                                                label = "Choose a color"))
                                           )
-                                        ),
-                                        div(align = "center", h5("Scaling")),
+                                        )),
+                                        RLumShiny:::section("Scaling",
                                         sliderInput(inputId = "cex",
                                                     label = "Scaling factor",
                                                     min = 0.5, max = 2,
                                                     value = 1.0, step = 0.1),
-                                        br(),
-                                        div(align = "center", h5("Rugs")),
+                                        ),
+                                        RLumShiny:::section("Rug",
                                         div(align = "left",
                                             checkboxInput(inputId = "rugs",
                                                           label = "Add rugs",
@@ -190,17 +193,19 @@ function(request) {
                                                                                label = "Choose a color"))
                                           )
                                         )
+                                        )
                                ),##EndOf::Tab_9
 
                                # Tab 4: modify axis parameters
                                tabPanel("Axis",
-                                        div(align = "center", h5("X-axis")),
+                                        RLumShiny:::section("X-axis",
                                         textInput(inputId = "xlab",
                                                   label = "Label x-axis",
                                                   value = "Equivalent dose [Gy]"),
                                         # inject sliderInput from Server.R
-                                        uiOutput(outputId = "xlim"),
-                                        div(align = "center", h5("Y-axis")),
+                                        uiOutput(outputId = "xlim")
+                                        ),
+                                        RLumShiny:::section("Y-axis",
                                         fluidRow(
                                           column(width = 6,
                                                  textInput(inputId = "ylab1",
@@ -213,11 +218,12 @@ function(request) {
                                                            value = "Error")
                                           )
                                         )
+                                        )
                                ),##EndOf::Tab_4
 
                                # Tab 5: modify data point representation
                                tabPanel("Datapoints",
-                                        div(align = "center", h5("Primary data set")),
+                                        RLumShiny:::section("Primary data set",
                                         fluidRow(
                                           column(width = 6,
                                                  RLumShiny:::pointSymbolChooser(inputId = "pch",
@@ -247,6 +253,7 @@ function(request) {
                                                                                label = "Choose a color"))
                                           )
                                         )
+                                        )
                                ),##EndOf::Tab_5
                                RLumShiny:::exportTab("export", filename = "histogram"),
                                RLumShiny:::aboutTab("about", "histogram")
@@ -255,7 +262,7 @@ function(request) {
 
 
       # 3 - output panel
-      mainPanel(width = 7,
+      mainPanel(width = 8,
                 # insert css code inside <head></head> of the generated HTML file:
                 # allow open dropdown menus to reach over the container
                 tags$head(tags$style(type="text/css",".tab-content {overflow: visible;}")),

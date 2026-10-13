@@ -6,13 +6,12 @@ function(request) {
       # 2- width = 5 -> refers to twitters bootstrap grid system
       # where the the maximum width is 12 that is to be shared between all
       # elements
-      sidebarPanel(width = 5,
+      sidebarPanel(width = 4,
                    # include a tabs in the input panel for easier navigation
                    tabsetPanel(id = "tabs", type = "pill", selected = "Data",
                                # Tab 1: Data input
                                tabPanel("Data",
-                                        # informational text
-                                        div(align = "center", h5("Data upload")),
+                                        RLumShiny:::section("Data upload",
                                         # file upload button (data set 1)
                                         fileInput(inputId = "file1",
                                                   label = strong("Primary data set"),
@@ -34,15 +33,16 @@ function(request) {
                                         hr(),
                                         actionButton(inputId = "refresh", label = "Refresh",
                                                      icon = icon("fas fa-sync"), title = "Redraw the plot.")
+                                        )
                                ),##EndOf::Tab_1
 
                                # Tab 2: Statistical information
                                tabPanel("Statistics",
-                                        div(align = "center", h5("Summary")),
+                                        RLumShiny:::section("Summary",
                                         fluidRow(
                                           column(width = 6,
                                                  checkboxInput(inputId = "summary",
-                                                               label = "Show summary",
+                                                               label = "Show summary statistics",
                                                                value = FALSE),
                                                  title = "Add numerical output to the plot."
                                           ),
@@ -71,20 +71,22 @@ function(request) {
                                                                            "Skewness" = "skewness",
                                                                            "Kurtosis" = "kurtosis")
                                                                ),
-                                            title = "Statistical parameters to be shown in the summary."),
-                                        br(),
-                                        div(align = "center", h5("Datapoint labels")),
+                                            title = "Statistical parameters to be shown in the summary.")
+                                        ),
+
+                                        RLumShiny:::section("Datapoint labels",
                                         div(align = "center", checkboxGroupInput(inputId = "statlabels", inline = TRUE,
                                                                                  label = NULL,
                                                                                  choices = c("Min" = "min",
                                                                                              "Max" = "max",
                                                                                              "Median" = "median")),
                                             title = "Additional labels of statistically important values in the plot.")
+                                        )
                                ),##EndOf::Tab_2
 
                                # Tab 3: input that refer to the plot rather than the data
                                tabPanel("Plot",
-                                        div(align = "center", h5("Title")),
+                                        RLumShiny:::section("Title",
                                         fluidRow(
                                           column(width = 6,
                                                  textInput(inputId = "main",
@@ -96,8 +98,9 @@ function(request) {
                                                            label = "Subtitle",
                                                            value = "")
                                           )
-                                        ),
-                                        div(align = "center", h5("Scaling")),
+                                        )),
+
+                                        RLumShiny:::section("Scaling",
                                         fluidRow(
                                           column(width = 6,
                                                  # inject sliderInput from Server.R
@@ -119,11 +122,41 @@ function(request) {
                                                              "Weighted mean" = "mean.weighted",
                                                              "Weighted median" = "median.weighted")),
                                             title = "Measure of centrality, used for the standardisation, centering the plot and drawing the central line.")
+                                        ),
+
+                                        RLumShiny:::section("Legend",
+                                        fluidRow(
+                                          column(width = 6,
+                                                 checkboxInput(inputId = "showlegend",
+                                                               label = "Show legend",
+                                                               value = FALSE),
+                                                 title = "Legend content to be added to the plot."
+                                          ),
+                                          column(width = 6,
+                                                 RLumShiny:::legendPositionChooser(inputId = "legend.pos",
+                                                                                   selected = "bottomleft")
+                                          )
+                                        ),
+                                        fluidRow(
+                                          column(width = 6,
+                                                 textInput(inputId = "legendname",
+                                                           label = "Primary data label",
+                                                           value = "primary data")
+                                          ),
+                                          conditionalPanel(condition = "output.hasSecondaryData == true",
+                                            column(width = 6,
+                                                 textInput(inputId = "legendname2",
+                                                           label = "Secondary data label",
+                                                           value = "secondary data")
+                                            )
+                                          )
+                                        )
+                                        )
                                ),##EndOf::Tab_3
 
                                # Tab 4: modify axis parameters
                                tabPanel("Axis",
-                                        div(align = "center", h5("X-axis")),
+                                        RLumShiny:::section("X-axis",
                                         fluidRow(
                                           column(width = 6,
                                                  textInput(inputId = "xlab1",
@@ -137,8 +170,10 @@ function(request) {
                                           )
                                         ),
                                         # inject sliderInput from Server.R
-                                        uiOutput(outputId = "xlim"),
-                                        div(align = "center", h5("Y-axis")),
+                                        uiOutput(outputId = "xlim")
+                                        ),
+
+                                        RLumShiny:::section("Y-axis",
                                         div(align = "left",
                                             checkboxInput(inputId = "yticks",
                                                           label = HTML("Show &plusmn;2&sigma; label"),
@@ -146,8 +181,10 @@ function(request) {
                                             title = "Hide y-axis labels."),
                                         textInput(inputId = "ylab",
                                                   label = "Label y-axis",
-                                                  value = "Standardised estimate"),
-                                        div(align = "center", h5("Z-axis")),
+                                                  value = "Standardised estimate")
+                                        ),
+
+                                        RLumShiny:::section("Z-axis",
                                         div(align = "left",
                                             checkboxInput(inputId = "logz",
                                                           label = "Logarithmic z-axis",
@@ -163,11 +200,12 @@ function(request) {
                                                         min = 0, max = 3,
                                                         value = 4.5/5.5, step = 0.01, round = FALSE),
                                             title = "User-defined plot area ratio (i.e. curvature of the z-axis). If omitted, the default value (4.5/5.5) is used and modified automatically to optimise the z-axis curvature. The parameter should be decreased when data points are plotted outside the z-axis or when the z-axis gets too elliptic.")
+                                        )
                                ),##EndOf::Tab_4
 
                                # Tab 5: modify data point representation
                                tabPanel("Datapoints",
-                                        div(align = "center", h5("Primary data set")),
+                                        RLumShiny:::section("Primary data set",
                                         fluidRow(
                                           column(width = 6,
                                                  RLumShiny:::pointSymbolChooser(inputId = "pch",
@@ -196,9 +234,9 @@ function(request) {
                                                                   jscolorInput(inputId = "rgb",
                                                                                label = "Choose a color"))
                                           )
-                                        ),
+                                        )),
                                         conditionalPanel(condition = "output.hasSecondaryData == true",
-                                          div(align = "center", h5("Secondary data set")),
+                                          RLumShiny:::section("Secondary data set",
                                           fluidRow(
                                             column(width = 6,
                                                  ## DATA SET 2
@@ -230,12 +268,10 @@ function(request) {
                                                                                label = "Choose a color"))
                                             )
                                           )
-                                        )
-                               ),##EndOf::Tab_5
+                                          )
+                                          ),
 
-                               # Tab 6: add additional lines to the plot
-                               tabPanel("Lines",
-                                        helpText("Here you can add additional lines."),
+                                        RLumShiny:::section("Additional lines",
                                         # options for custom lines:
                                         # 1 - z-value, 2 - color, 3 - label
                                         # only the options for the first line are shown
@@ -310,13 +346,13 @@ function(request) {
                                                            column(width = 6, HTML("Choose a color<br>"),jscolorInput(inputId = "colline8")),
                                                            column(width = 6, textInput("labline8","Label",value = ""))
                                                          )
+                                                         )
                                         )
-
                                ),##EndOf::Tab_6
 
                                # Tab 7: modify the 2-sigma bar (radial plot), grid (both) and polygon (KDE)
                                tabPanel("Bars & Grid",
-                                        div(align = "center", h5("Central line")),
+                                        RLumShiny:::section("Central line",
                                         fluidRow(
                                           column(width = 6,
                                                  RLumShiny:::lineWidthChooser(inputId = "lwd",
@@ -336,8 +372,9 @@ function(request) {
                                                  RLumShiny:::lineTypeChooser(inputId = "lty2",
                                                                              selected = 2)
                                           )
-                                        ),
-                                        div(align = "center", HTML("<h5>2&sigma; bar</h5>")),
+                                        )),
+
+                                        RLumShiny:::section(HTML("<h5>2&sigma; bar</h5>"),
                                         fluidRow(
                                           column(width = 6,
                                                  selectInput(inputId = "bar", label = HTML("2&sigma; bar color"),
@@ -370,8 +407,10 @@ function(request) {
                                         sliderInput(inputId = "alpha.bar",
                                                     label = "Transparency",
                                                     min = 0, max = 100,
-                                                    step = 1, value = 66),
-                                        div(align = "center", h5("Grid")),
+                                                    step = 1, value = 66)
+                                        ),
+
+                                        RLumShiny:::section("Grid",
                                         fluidRow(
                                           column(width = 6,
                                                  selectInput("grid", "Grid color",
@@ -391,37 +430,8 @@ function(request) {
                                                     label = "Transparency",
                                                     min = 0, max = 100,
                                                     step = 1, value = 100)
-                               ),##EndOf::Tab_7
-
-                               tabPanel("Legend",
-                                        div(align = "center", h5("Legend")),
-                                        fluidRow(
-                                          column(width = 6,
-                                                 checkboxInput(inputId = "showlegend",
-                                                               label = "Show legend",
-                                                               value = FALSE),
-                                                 title = "Legend content to be added to the plot."
-                                          ),
-                                          column(width = 6,
-                                                 RLumShiny:::legendPositionChooser(inputId = "legend.pos",
-                                                                                   selected = "bottomleft")
-                                          )
-                                        ),
-                                        fluidRow(
-                                          column(width = 6,
-                                                 textInput(inputId = "legendname",
-                                                           label = "Primary data label",
-                                                           value = "primary data")
-                                          ),
-                                          conditionalPanel(condition = "output.hasSecondaryData == true",
-                                            column(width = 6,
-                                                 textInput(inputId = "legendname2",
-                                                           label = "Secondary data label",
-                                                           value = "secondary data")
-                                            )
-                                          )
                                         )
-                               ),##EndOf::Tab_8
+                               ),##EndOf::Tab_7
 
                                RLumShiny:::exportTab("export", filename = "radial plot"),
                                RLumShiny:::aboutTab("about", "radialplot")
@@ -429,7 +439,7 @@ function(request) {
       ),##EndOf::sidebarPanel
 
       # 3 - output panel
-      mainPanel(width = 7,
+      mainPanel(width = 8,
                 # insert css code inside <head></head> of the generated HTML file:
                 # allow open dropdown menus to reach over the container
                 tags$head(tags$style(type="text/css",".tab-content {overflow: visible;}")),
