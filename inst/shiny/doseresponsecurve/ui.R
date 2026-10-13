@@ -6,7 +6,7 @@ function(request) {
       # 2- width = 5 -> refers to twitters bootstrap grid system
       # where the the maximum width is 12 that is to be shared between all
       # elements
-      sidebarPanel(width = 5,
+      sidebarPanel(width = 4,
                    # include a tabs in the input panel for easier navigation
                    tabsetPanel(id = "tabs", type = "pill", selected = "Import",
                                # Tab 1: Data input
@@ -119,6 +119,15 @@ function(request) {
                                                     label = "Scaling factor",
                                                     min = 0.5, max = 2,
                                                     value = 1.0, step = 0.1)
+                                        ),
+
+                                        RLumShiny:::section("Legend",
+                                        checkboxInput(inputId = "showlegend",
+                                                      label = "Show legend",
+                                                      value = TRUE),
+
+                                        RLumShiny:::legendPositionChooser(inputId = "legend_pos",
+                                                                          selected = "topright")
                                         )
                                ),
 
@@ -146,24 +155,13 @@ function(request) {
                                         ))
                                ),
 
-                               tabPanel("Legend",
-                                        RLumShiny:::section("Legend",
-                                        checkboxInput(inputId = "showlegend",
-                                                      label = "Show legend",
-                                                      value = TRUE),
-
-                                        RLumShiny:::legendPositionChooser(inputId = "legend_pos",
-                                                                          selected = "topright")
-                                        )
-                               ),
-
                                RLumShiny:::exportTab("export", filename = "doseresponsecurve"),
                                RLumShiny:::aboutTab("about", "doseresponsecurve")
                    )##EndOf::tabsetPanel
       ),##EndOf::sidebarPanel
 
       # 3 - output panel
-      mainPanel(width = 7,
+      mainPanel(width = 8,
                 # insert css code inside <head></head> of the generated HTML file:
                 # allow open dropdown menus to reach over the container
                 tags$head(tags$style(type="text/css",".tab-content {overflow: visible;}")),
