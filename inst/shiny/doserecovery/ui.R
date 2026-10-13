@@ -2,7 +2,7 @@ function(request) {
   fluidPage(
     titlePanel("Dose Recovery", windowTitle = "RLumShiny - Dose Recovery"),
     sidebarLayout(
-      sidebarPanel(width = 5,
+      sidebarPanel(width = 4,
 
                    # include a tabs in the input panel for easier navigation
                    tabsetPanel(id = "tabs", type = "pill", selected = "Data",
@@ -128,6 +128,32 @@ function(request) {
                                                     label = "Scaling factor",
                                                     min = 0.5, max = 2,
                                                     value = 1.0, step = 0.1)
+                                        ),
+
+                                        RLumShiny:::section("Legend",
+                                        fluidRow(
+                                          column(width = 6,
+                                                 checkboxInput(inputId = "showlegend",
+                                                               label = "Show legend",
+                                                               value = TRUE),
+                                                 title = "Legend content to be added to the plot.")
+                                          ),
+                                        fluidRow(
+                                          column(width = 6,
+                                                 textInput(inputId = "legendname",
+                                                           label = "Primary data label",
+                                                           value = "primary data")
+                                          ),
+                                          conditionalPanel(condition = "output.hasSecondaryData == true",
+                                            column(width = 6,
+                                                 textInput(inputId = "legendname2",
+                                                           label = "Secondary data label",
+                                                           value = "secondary data")
+                                            )
+                                          )
+                                        ),
+                                        RLumShiny:::legendPositionChooser(inputId = "legend.pos",
+                                                                          selected = "bottomleft")
                                         )
                                ),##EndOf::Tab_3
 
@@ -221,35 +247,6 @@ function(request) {
                                         )
                                ),##EndOf::Tab_5
 
-                               # Tab xy: add and customize legend
-                               tabPanel("Legend",
-                                        RLumShiny:::section("Legend",
-                                        fluidRow(
-                                          column(width = 6,
-                                                 checkboxInput(inputId = "showlegend",
-                                                               label = "Show legend",
-                                                               value = TRUE),
-                                                 title = "Legend content to be added to the plot.")
-                                          ),
-                                        fluidRow(
-                                          column(width = 6,
-                                                 textInput(inputId = "legendname",
-                                                           label = "Primary data label",
-                                                           value = "primary data")
-                                          ),
-                                          conditionalPanel(condition = "output.hasSecondaryData == true",
-                                            column(width = 6,
-                                                 textInput(inputId = "legendname2",
-                                                           label = "Secondary data label",
-                                                           value = "secondary data")
-                                            )
-                                          )
-                                        ),
-                                        RLumShiny:::legendPositionChooser(inputId = "legend.pos",
-                                                                          selected = "bottomleft")
-                                        )
-                               ),##EndOf::Tab_xy
-
                                RLumShiny:::exportTab("export", filename = "dose recovery"),
                                RLumShiny:::aboutTab("about", "doserecovery")
                    )
@@ -257,7 +254,7 @@ function(request) {
 
 
       # Show a plot of the generated distribution
-      mainPanel(width = 7,
+      mainPanel(width = 8,
                 # insert css code inside <head></head> of the generated HTML file:
                 # allow open dropdown menus to reach over the container
                 tags$head(tags$style(type="text/css",".tab-content {overflow: visible;}")),
