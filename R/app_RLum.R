@@ -36,6 +36,9 @@
 #' Via the `...` argument further arguments can be directly passed to [shiny::runApp].
 #' See `?shiny::runApp` for further details on valid arguments.
 #'
+#' When an app is started from the dashboard, it is launched in a separate R
+#' process, so that the dashboard remains responsive and can be used to start
+#' further apps.
 #'
 #' @param app [character] (**required**):
 #' name of the application to start. See details for a list of available apps.
@@ -121,6 +124,63 @@ app_RLum <- function(app = NULL, ...) {
 
     # start application
     app <- valid_apps[match.idx]
-    app <- shiny::runApp(system.file(paste0("shiny/", app), package = "RLumShiny"), launch.browser = TRUE,  ...)
+    opts <- list(...)
+    if (!"launch.browser" %in% names(opts))
+      opts$launch.browser <- TRUE
+
+    app <- do.call(shiny::runApp,
+                   c(list(system.file(paste0("shiny/", app),
+                                      package = "RLumShiny")), opts))
   }
+}
+
+# Environment for apps launched in the background. Keeping a reference is
+# necessary because processx kills a process when its R object is garbage
+# collected.
+.rlumshiny_bg_apps <- new.env(parent = emptyenv())
+
+#' Start an RLumShiny app in a separate R process
+#'
+#' Used by the dashboard: running the app in the background leaves the
+#' single-threaded R session of the dashboard free, so the dashboard stays
+#' responsive and can launch further apps.
+#'
+#' @param app [character] app keyword, see [app_RLum].
+#' @param ... further arguments passed to [shiny::runApp].
+#'
+#' @return The `callr::r_bg` process handle, invisibly.
+#'
+#' @noRd
+start_app_in_background <- function(app, ...) {
+
+  log <- tempfile(pattern = "rlumshiny-", fileext = ".log")
+
+  # callr defaults to R_BROWSER="false", which would stop the child from
+  # opening the app. Use this session's browser if there is one; otherwise
+  # leave the variable unset so Windows can fall back to shell.exec().
+  browser <- Sys.getenv("R_BROWSER")
+  if (!nzchar(browser)) {
+    browser_option <- getOption("browser")
+    if (is.character(browser_option) && length(browser_option) == 1L)
+      browser <- browser_option
+  }
+
+  # start the background process
+  process <- callr::r_bg(
+    func = function(app, opts) {
+      do.call(RLumShiny::app_RLum, c(list(app = app), opts))
+    },
+    args = list(app = app, opts = list(...)),
+    stdout = log,
+    stderr = log,
+    env = if (nzchar(browser)) c(R_BROWSER = browser) else character(),
+    supervise = TRUE,
+    cleanup = FALSE
+  )
+
+  # keep the handle alive for as long as the dashboard session lives
+  key <- paste0(app, "_", format(Sys.time(), "%Y%m%d_%H%M%OS3"))
+  .rlumshiny_bg_apps[[key]] <- process
+
+  invisible(process)
 }

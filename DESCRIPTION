@@ -23,6 +23,7 @@ Encoding: UTF-8
 Depends:
  R (>= 4.5)
 Imports:
+ callr (>= 3.8),
  Luminescence (>= 1.3.1),
  shiny (>= 1.14.0),
  rhandsontable (>= 0.3.8),
@@ -39,4 +40,4 @@ Imports:
  knitr (>= 1.51)
 URL: https://tzerk.github.io/RLumShiny/
 BugReports: https://github.com/tzerk/RLumShiny/issues
-Config/roxygen2/version: 8.1.0
+Config/roxygen2/version: 8.1.1

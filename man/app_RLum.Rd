@@ -48,6 +48,10 @@ RCarb app \tab \emph{RCarb} \tab \link[RCarb:model_DoseRate]{RCarb::model_DoseRa
 The \code{app_RLum()} function is just a wrapper for \link[shiny:runApp]{shiny::runApp}.
 Via the \code{...} argument further arguments can be directly passed to \link[shiny:runApp]{shiny::runApp}.
 See \code{?shiny::runApp} for further details on valid arguments.
+
+When an app is started from the dashboard, it is launched in a separate R
+process, so that the dashboard remains responsive and can be used to start
+further apps.
 }
 \examples{
 

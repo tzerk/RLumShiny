@@ -189,8 +189,7 @@ RLumShinyAddin <- function() {
     # the input$linkClicked variable that can be used within the server logic
     tags$script(HTML("
 function clickFunction(link){
-alert('The following application will now be started: ' + link + '\\n\\nNote: This window will become unresponsive. \\nDo not close until done with the application!');
-Shiny.onInputChange('linkClicked', link);
+Shiny.setInputValue('linkClicked', link, {priority: 'event'});
 }
 ")),
 
@@ -272,18 +271,15 @@ Shiny.onInputChange('linkClicked', link);
 
 
     ## Start application
-    # workaround: clicking on any of the infoboxes causes the gadget to
-    # terminate, which triggers the custom onSessionEnded callback.
-    # We have to terminate the gadget first to make room for starting
-    # another shiny instance, i.e., the chosen app
+    # The app runs in its own R process so that this dashboard keeps running
+    # and remains usable while the app is open.
     observeEvent(input$linkClicked, {
-      stopApp(NULL)
-    })
-    session$onSessionEnded(function() {
-      isolate({
-        if (!is.null(input$linkClicked))
-          app_RLum(input$linkClicked)
-      })
+      shiny::showNotification(
+        paste("Starting app:", input$linkClicked),
+        type = "message",
+        duration = 3
+      )
+      start_app_in_background(input$linkClicked)
     })
 
   }#EndOf:ServerLogic
